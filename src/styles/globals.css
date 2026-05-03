@@ -1,0 +1,30 @@
+@import 'tailwindcss';
+
+@theme {
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --color-brand: #f0593a;
+  /* Primary text */
+  --color-ink: #1e2d3e;
+}
+
+/* Content width: 1300px centered on wide */
+@layer components {
+  .site-container {
+    @apply mx-auto w-full max-w-[1300px] px-0;
+  }
+
+  /* Header UI: 16px - 1920px */
+  .header-fluid-text {
+    font-size: clamp(14px, calc(8px + 0.416666vw), 16px);
+    line-height: 1.35;
+  }
+
+  /* Footer*/
+  .footer-body-text {
+    color: #fff;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 130%;
+  }
+}
