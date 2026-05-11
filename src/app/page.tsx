@@ -6,6 +6,15 @@ import {
   SuccessStoriesSection,
   defaultSuccessStoriesContent,
 } from '@/components/success-stories';
+import { AwardsSection, defaultAwardsContent } from '@/components/awards';
+import {
+  LiveSessionsSection,
+  defaultLiveSessionsContent,
+} from '@/components/live-sessions';
+import { WorkforceSection, defaultWorkforceContent } from '@/components/workforce';
+import { MentorsSection, defaultMentorsContent } from '@/components/mentors';
+import { WhyScaleXSection, defaultWhyScaleXContent } from '@/components/why-scalex';
+import { GuidanceSection, defaultGuidanceContent } from '@/components/guidance';
 import { SITE_DESCRIPTION, SITE_NAME } from '@/lib/site';
 
 export const metadata: Metadata = {
@@ -24,6 +33,12 @@ export default function HomePage() {
       <CoursesSection {...defaultCoursesContent} />
       <TestimonialsSection {...defaultTestimonialsContent} />
       <SuccessStoriesSection {...defaultSuccessStoriesContent} />
+      <AwardsSection {...defaultAwardsContent} />
+      <LiveSessionsSection {...defaultLiveSessionsContent} />
+      <WorkforceSection {...defaultWorkforceContent} />
+      <MentorsSection {...defaultMentorsContent} />
+      <WhyScaleXSection {...defaultWhyScaleXContent} />
+      <GuidanceSection {...defaultGuidanceContent} />
     </>
   );
 }

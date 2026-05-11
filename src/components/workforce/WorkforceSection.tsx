@@ -1,0 +1,294 @@
+'use client';
+
+import Image from 'next/image';
+import Link from 'next/link';
+import type { ReactNode } from 'react';
+
+export interface WorkforceStat {
+  id: string;
+  label: string;
+  value: string;
+  /** Optional icon. Defaults to a built-in award/users icon. */
+  icon?: ReactNode;
+  /** Color variant for the icon circle (alternates by default). */
+  variant?: 'mentors' | 'learners';
+}
+
+export interface WorkforceFeature {
+  id: string;
+  label: string;
+}
+
+export interface WorkforcePartner {
+  id: string;
+  name: string;
+  logoSrc: string;
+  logoAlt: string;
+}
+
+export interface WorkforceSectionProps {
+  /** Heading split around the inline brand image (e.g. "Future-Proof Your Workforce with " + brand + " Hiring Partners"). */
+  headingBefore: string;
+  /** Alt text for the inline ScaleX wordmark (SVG). */
+  brandLogo: { alt: string };
+  headingAfter: string;
+  subheading: string;
+  features: WorkforceFeature[];
+  cta: { label: string; href: string };
+  stats: WorkforceStat[];
+  partners: WorkforcePartner[];
+  /** Optional decorative background arrow on the left. */
+  decorativeArrow?: { src: string; alt?: string };
+}
+
+function ArrowRightIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} width="18" height="15" viewBox="0 0 18 15" fill="currentColor" aria-hidden>
+      <path d="M10.6333 15c.2326 0 .4361-.0891.63-.2771l6.4459-6.5599c.1938-.188.2908-.4156.2908-.663s-.097-.475-.2908-.663L11.2827.2968C11.0694.0792 10.8659 0 10.6333 0c-.475 0-.8434.3562-.8434.851 0 .2375.0775.465.2326.6234l2.1714 2.2559 4.0419 3.7698-4.0419 3.7697-2.1714 2.256c-.1551.1484-.2326.3859-.2326.6233 0 .495.3684.851.8434.851ZM.853 8.3806h12.2617l3.1211-.1979c.3974-.0297.6688-.277.6688-.6827 0-.4057-.2714-.6531-.6688-.6828l-3.1211-.1978H.853C.349 6.6194 0 6.9855 0 7.5c0 .5145.349.8806.853.8806Z" />
+    </svg>
+  );
+}
+
+function CheckIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden>
+      <circle cx="10" cy="10" r="9" fill="#22C55E" />
+      <path d="M6 10.5l2.5 2.5L14 7.5" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+function DefaultStatIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 20 20" fill="none" aria-hidden>
+      <path
+        d="M12.9 10.74L14.16 17.85c.01.08 0 .17-.04.24a.34.34 0 01-.16.18.36.36 0 01-.25.04.43.43 0 01-.23-.09L10.5 16a.99.99 0 00-.5-.16.95.95 0 00-.5.16l-2.99 2.24a.43.43 0 01-.23.09.36.36 0 01-.24-.04.34.34 0 01-.17-.18.42.42 0 01-.04-.24l1.27-7.13"
+        stroke="currentColor"
+        strokeWidth="1.66667"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <circle cx="10" cy="6.67" r="5" stroke="currentColor" strokeWidth="1.66667" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+function WorkforceScaleWordmark({ className }: { className?: string }) {
+  return (
+    <svg
+      className={className}
+      xmlns="http://www.w3.org/2000/svg"
+      width={102}
+      height={23}
+      viewBox="0 0 102 23"
+      fill="none"
+      aria-hidden
+    >
+      <path
+        d="M8.59867 22.4439C13.9266 22.4439 17.2122 19.766 17.2122 15.5346V15.5198C17.2122 12.191 15.2438 10.386 10.7298 9.45394L8.46548 8.9953C5.94951 8.47747 4.91353 7.64896 4.91353 6.25824V6.24345C4.91353 4.6456 6.37871 3.63954 8.58388 3.62475C10.8334 3.62475 12.3134 4.68998 12.565 6.21386L12.5946 6.39139H16.7978L16.783 6.19906C16.5018 2.63349 13.5714 0 8.58388 0C3.84794 0 0.443994 2.6187 0.443994 6.58373V6.59852C0.443994 9.8386 2.35317 11.9099 6.7931 12.8124L9.04267 13.271C11.6918 13.8184 12.7426 14.6026 12.7426 16.0081V16.0229C12.7426 17.6651 11.0998 18.8043 8.71707 18.8043C6.21591 18.8043 4.48433 17.7243 4.32154 16.1264L4.30674 15.9785H0L0.0147998 16.2152C0.266396 20.0027 3.49275 22.4439 8.59867 22.4439Z"
+        fill="white"
+      />
+      <path
+        d="M31.5126 22.4439C36.6629 22.4439 40.3185 19.3961 40.7773 14.928L40.7921 14.7653H36.441L36.4114 14.8837C35.9378 17.1621 34.0878 18.6564 31.5274 18.6564C28.1531 18.6564 26.0663 15.8157 26.0663 11.2293V11.1997C26.0663 6.61332 28.1531 3.78749 31.5126 3.78749C34.0582 3.78749 35.9674 5.41493 36.4262 7.8117V7.91527H40.7773V7.73773C40.3629 3.22529 36.5741 0 31.5126 0C25.3115 0 21.4932 4.27572 21.4932 11.1997V11.2293C21.4932 18.1533 25.3263 22.4439 31.5126 22.4439Z"
+        fill="white"
+      />
+      <path
+        d="M43.7266 21.8962H48.4181L50.0017 16.7179H57.5348L59.1183 21.8962H63.8247L56.3952 0.547119H51.1413L43.7266 21.8962ZM53.6424 4.80805H53.9088L56.5136 13.3743H51.0229L53.6424 4.80805Z"
+        fill="white"
+      />
+      <path d="M68.4609 21.8962H82.4319V18.2122H72.9305V0.547119H68.4609V21.8962Z" fill="white" />
+      <path
+        d="M87.4971 21.8962H101.646V18.2122H91.9666V12.8121H101.098V9.37967H91.9666V4.23105H101.646V0.547119H87.4971V21.8962Z"
+        fill="white"
+      />
+    </svg>
+  );
+}
+
+function WorkforceScaleXMark({ className }: { className?: string }) {
+  return (
+    <svg
+      className={className}
+      xmlns="http://www.w3.org/2000/svg"
+      width={47}
+      height={51}
+      viewBox="0 0 47 51"
+      fill="none"
+      aria-hidden
+    >
+      <path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M9.56738 15.0413L29.2686 36.7562H36.0124L15.9738 15.0413H9.56738Z"
+        fill="white"
+      />
+      <path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M31.787 7.77035L7.42468 42.2213C6.76847 43.1492 6.63072 43.3415 6.48989 43.543C6.34906 43.7444 6.25872 43.8791 6.12587 44.0859C5.99302 44.2926 5.8674 44.4931 5.25812 45.4525L2.60094 49.6365C2.40969 49.9377 2.49886 50.3368 2.8001 50.528C3.06232 50.6944 3.40589 50.6508 3.61813 50.4241L7.06718 46.7399C7.8244 45.931 7.97857 45.7681 8.13596 45.5988C8.29336 45.4294 8.39217 45.3197 8.54415 45.1455C8.69613 44.9713 8.84208 44.801 9.56748 43.9635L36.8667 12.4482C37.2326 12.0257 37.5683 11.5779 37.8711 11.1082C38.3196 10.4132 38.5699 10.5656 38.6223 11.5658C38.6588 12.2632 38.7089 13.2176 38.7724 14.429C38.8594 16.0883 40.2756 17.3631 41.9355 17.2761C43.5954 17.1891 44.8706 15.7734 44.7836 14.114L44.2474 3.88646C44.243 3.8035 44.2396 3.72049 44.237 3.63746C44.1863 2.01931 43.906 1.03637 43.3959 0.688639C42.0623 -0.220417 39.218 0.311341 38.4398 0.448905C37.3519 0.641217 33.5028 1.21016 26.8924 2.15574C25.473 2.35879 24.4869 3.67371 24.69 5.0927C24.7015 5.17305 24.7168 5.25281 24.7358 5.33173L24.7502 5.3916C25.1169 6.9166 26.6067 7.89358 28.1521 7.62246L30.8096 7.15612C30.8682 7.14584 30.9267 7.13511 30.9851 7.12394C31.5315 7.01933 31.8595 7.00614 31.9691 7.08416C32.0842 7.16608 32.0235 7.39481 31.787 7.77035Z"
+        fill="white"
+      />
+    </svg>
+  );
+}
+
+function StatPill({ stat }: { stat: WorkforceStat }) {
+  const iconBg =
+    stat.variant === 'learners'
+      ? 'bg-[#CEFAFE] text-[#0092B8]'
+      : 'bg-[#DBEAFE] text-[#155DFC]';
+
+  return (
+    <div className="inline-flex h-[62px] min-w-[180px] items-center rounded-xl border border-zinc-100 bg-white px-3 py-2 shadow-lg shadow-zinc-900/10">
+      <div className="flex w-full items-start gap-2.5">
+        <div className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full ${iconBg}`} aria-hidden>
+          {stat.icon ?? <DefaultStatIcon className="h-[18px] w-[18px]" />}
+        </div>
+        <div className="min-w-0">
+          <p className="whitespace-nowrap text-[12px] font-medium leading-[16px] text-[#64748B]">{stat.label}</p>
+          <p className="whitespace-nowrap text-[14px] font-bold leading-[20px] text-[#020817]">{stat.value}</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default function WorkforceSection({
+  headingBefore,
+  brandLogo,
+  headingAfter,
+  subheading,
+  features,
+  cta,
+  stats,
+  partners,
+  decorativeArrow,
+}: WorkforceSectionProps) {
+  return (
+    <section
+      className="full-bleed relative z-20 overflow-visible bg-[linear-gradient(89deg,#83BC53_-49.52%,#F4AA1F_4.15%,#EF4444_139.42%)] pt-16 pb-0 md:pt-20 lg:pt-24"
+      aria-labelledby="workforce-heading"
+    >
+      {decorativeArrow ? (
+        <div className="pointer-events-none absolute left-0 top-1/4 z-0 h-64 w-64 opacity-30 lg:h-80 lg:w-80" aria-hidden>
+          <Image
+            src={decorativeArrow.src}
+            alt=""
+            fill
+            sizes="(max-width: 768px) 256px, 320px"
+            className="object-contain object-left"
+          />
+        </div>
+      ) : null}
+
+      {/* Bottom-left large arrow watermark */}
+      <div
+        className="pointer-events-none absolute -bottom-8 left-0 z-0"
+        style={{
+          width: '290px',
+          height: '307px',
+          transform: 'rotate(0.428deg)',
+        }}
+        aria-hidden
+      >
+        <Image
+          src="/images/big-aerox.png"
+          alt=""
+          fill
+          sizes="312px"
+          className="object-contain object-bottom-left"
+        />
+      </div>
+
+      <div className="site-container relative z-10 px-4 sm:px-6 lg:px-0">
+        <div className="grid items-center gap-10 lg:grid-cols-[1.1fr_1fr] lg:gap-16">
+          {/* Left: pyramid-stacked stat badges (3 / 2 / 1) */}
+          <div className="flex flex-col gap-5">
+            {/* Row 1: first 3 stats, left-aligned */}
+            <div className="flex flex-wrap items-center gap-4">
+              {stats.slice(0, 3).map((s, i) => {
+                const variant: 'learners' | 'mentors' =
+                  s.variant ?? (i % 2 === 0 ? 'mentors' : 'learners');
+                return <StatPill key={s.id} stat={{ ...s, variant }} />;
+              })}
+            </div>
+            {/* Row 2: next 2 stats, indented */}
+            <div className="flex flex-wrap items-center gap-4 pl-12 md:pl-16 lg:pl-20">
+              {stats.slice(3, 5).map((s, i) => {
+                const variant: 'learners' | 'mentors' =
+                  s.variant ?? ((i + 3) % 2 === 0 ? 'mentors' : 'learners');
+                return <StatPill key={s.id} stat={{ ...s, variant }} />;
+              })}
+            </div>
+            {/* Row 3: final stat, more indented */}
+            {stats[5] ? (
+              <div className="flex pl-20 md:pl-32 lg:pl-40">
+                <StatPill
+                  stat={{
+                    ...stats[5],
+                    variant: stats[5].variant ?? 'mentors',
+                  }}
+                />
+              </div>
+            ) : null}
+          </div>
+
+          {/* Right: headline, subheading, features, CTA */}
+          <div className="text-white lg:ml-auto lg:w-full lg:max-w-[560px] lg:justify-self-end">
+            <h2
+              id="workforce-heading"
+              className="text-[28px] font-extrabold leading-tight md:text-[34px] lg:text-[36px]"
+            >
+              {headingBefore}
+              <span
+                className="mx-2 inline-flex items-center gap-0 align-middle"
+                aria-label={brandLogo.alt}
+              >
+                <WorkforceScaleWordmark className="h-[23px] w-[102px] shrink-0" />
+                <WorkforceScaleXMark className="h-[51px] w-[47px] shrink-0" />
+              </span>
+              {headingAfter}
+            </h2>
+            <p className="mt-4 text-[18px] font-medium leading-[140%] text-white">
+              {subheading}
+            </p>
+
+            <ul className="mt-6 grid grid-cols-1 gap-x-8 gap-y-3 sm:grid-cols-2">
+              {features.map((f) => (
+                <li key={f.id} className="inline-flex items-center gap-2 text-[14px] font-semibold text-white">
+                  <CheckIcon className="h-4 w-4" />
+                  {f.label}
+                </li>
+              ))}
+            </ul>
+
+            <Link
+              href={cta.href}
+              className="mt-7 inline-flex h-[48px] items-center justify-center gap-2 rounded-lg bg-[#1E293B] px-6 text-[14px] font-semibold text-white shadow-[0_4px_4px_0_rgba(30,41,59,0.03),0_4px_4px_0_rgba(30,41,59,0.08),0_4px_4px_0_rgba(30,41,59,0.11),0_4px_4px_0_rgba(30,41,59,0.11)] transition hover:bg-[#0F172A]"
+            >
+              {cta.label}
+              <ArrowRightIcon className="h-3.5 w-3.5" />
+            </Link>
+          </div>
+        </div>
+
+        {/* Bottom: hiring partners strip (overlaps next section by half) */}
+        {partners.length > 0 ? (
+          <div className="relative z-50 mt-0 mb-0 grid translate-y-1/2 grid-cols-3 items-center gap-6 rounded-2xl bg-white px-10 py-14 shadow-[0_10px_30px_-10px_rgba(15,23,42,0.25)] sm:grid-cols-4 md:mt-0 md:mb-0 md:grid-cols-8 md:px-12 md:py-16">
+            {partners.map((p) => (
+              <div key={p.id} className="relative h-8 w-full md:h-9">
+                <Image
+                  src={p.logoSrc}
+                  alt={p.logoAlt}
+                  fill
+                  sizes="160px"
+                  className="object-contain"
+                />
+              </div>
+            ))}
+          </div>
+        ) : null}
+      </div>
+    </section>
+  );
+}

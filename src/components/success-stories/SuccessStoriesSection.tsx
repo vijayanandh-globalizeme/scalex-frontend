@@ -180,7 +180,7 @@ export default function SuccessStoriesSection({
 
   return (
     <section
-      className="full-bleed relative hidden bg-[#F4F4F4] py-16 md:py-20 lg:py-24"
+      className="full-bleed relative bg-[#F4F4F4] pt-20 pb-16 md:pt-28 md:pb-20 lg:pt-36 lg:pb-24"
       aria-labelledby="success-stories-heading"
     >
       <div className="site-container relative z-10 px-4 sm:px-6 lg:px-0">

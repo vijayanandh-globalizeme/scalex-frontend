@@ -264,7 +264,7 @@ export default function TestimonialsSection({
 
   return (
     <section
-      className="full-bleed relative overflow-hidden bg-[linear-gradient(89deg,#EF4444_-27.47%,#F4AA1F_90.29%,#83BC53_139.44%)] py-16 md:py-20 lg:py-24"
+      className="full-bleed relative z-10 bg-[linear-gradient(89deg,#EF4444_-27.47%,#F4AA1F_90.29%,#83BC53_139.44%)] py-16 md:py-20 lg:py-24"
       aria-labelledby="stories-heading"
     >
       <div className="site-container relative z-10 px-4 sm:px-6 lg:px-0">
@@ -342,9 +342,9 @@ export default function TestimonialsSection({
           </div>
         </div>
 
-        {/* Bottom: review platforms */}
+        {/* Bottom: review platforms — overlaps the next section by ~50% */}
         {reviews.length > 0 ? (
-          <div className="mt-10 grid grid-cols-2 items-center gap-6 rounded-2xl bg-white px-6 py-5 shadow-[0_10px_30px_-10px_rgba(15,23,42,0.25)] sm:grid-cols-4 md:mt-12 md:px-10 md:py-6">
+          <div className="relative z-50 mt-10 mb-[-60px] grid translate-y-1/2 grid-cols-2 items-center gap-6 rounded-2xl bg-white px-6 py-5 shadow-[0_10px_30px_-10px_rgba(15,23,42,0.25)] sm:grid-cols-4 md:mt-12 md:mb-[-112px] md:px-10 md:py-6">
             {reviews.map((r) => (
               <div key={r.id} className="flex flex-col items-center gap-2">
                 <div className="relative h-7 w-24">
