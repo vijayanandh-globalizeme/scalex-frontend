@@ -36,7 +36,7 @@ export interface MentorsSectionProps {
 function LinkedInBadge({ href, name }: { href?: string; name: string }) {
   const inner = (
     <span
-      className="flex h-7 w-7 items-center justify-center rounded-md bg-[#0A66C2] text-white shadow-md ring-2 ring-white"
+      className="flex h-7 w-7 items-center justify-center rounded-md bg-linkedin text-white shadow-md ring-2 ring-white"
       aria-hidden={!href}
     >
       <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
@@ -87,8 +87,8 @@ function StatPillInline({ stat }: { stat: MentorStat }) {
         {stat.icon ?? <DefaultStatIcon className="h-[18px] w-[18px]" />}
       </div>
       <div>
-        <p className="whitespace-nowrap text-[12px] font-medium leading-[16px] text-[#64748B]">{stat.label}</p>
-        <p className="whitespace-nowrap text-[14px] font-bold leading-[20px] text-[#020817]">{stat.value}</p>
+        <p className="whitespace-nowrap text-[12px] font-medium leading-[16px] text-subtle">{stat.label}</p>
+        <p className="whitespace-nowrap text-[14px] font-bold leading-[20px] text-strong">{stat.value}</p>
       </div>
     </div>
   );
@@ -111,14 +111,14 @@ function MentorCard({ mentor }: { mentor: Mentor }) {
           <LinkedInBadge href={mentor.linkedinUrl} name={mentor.name} />
         </div>
       </div>
-      <h3 className="mt-3 text-center text-[18px] font-medium leading-[140%] text-[#1E293B]">
+      <h3 className="mt-3 text-center text-[18px] font-medium leading-[140%] text-heading">
         {mentor.name}
       </h3>
-      <p className="mt-1 text-center text-[14px] font-medium leading-[140%] text-[#788593]">
+      <p className="mt-1 text-center text-[14px] font-medium leading-[140%] text-muted">
         {mentor.role}
       </p>
       {mentor.workedWith.length > 0 ? (
-        <div className="mt-4 flex flex-nowrap items-center justify-center gap-2 whitespace-nowrap text-[12px] font-medium text-[#64748B]">
+        <div className="mt-4 flex flex-nowrap items-center justify-center gap-2 whitespace-nowrap text-[12px] font-medium text-subtle">
           <span>Worked with</span>
           {mentor.workedWith.map((logo) => (
             <div key={logo.id} className="relative h-[16px] w-[68px] shrink-0">
@@ -146,11 +146,11 @@ export default function MentorsSection({
         <header className="w-full text-center">
           <h2
             id="mentors-heading"
-            className="text-center text-[34px] font-bold leading-[140%] text-[#1E293B]"
+            className="text-center text-[34px] font-bold leading-[140%] text-heading"
           >
             {heading}
           </h2>
-          <p className="mt-3 text-center text-[18px] font-medium leading-[140%] text-[#788593]">
+          <p className="mt-3 text-center text-[18px] font-medium leading-[140%] text-muted">
             {subheading}
           </p>
         </header>

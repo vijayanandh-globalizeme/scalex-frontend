@@ -52,14 +52,14 @@ export default function WhyScaleXSection({
 }: WhyScaleXSectionProps) {
   return (
     <section
-      className="full-bleed relative bg-[#F4F4F4] py-16 md:py-20 lg:py-24"
+      className="full-bleed relative bg-surface py-16 md:py-20 lg:py-24"
       aria-labelledby="why-scalex-heading"
     >
       <div className="site-container relative z-10 px-4 sm:px-6 lg:px-0">
         <header className="w-full text-center">
           <h2
             id="why-scalex-heading"
-            className="inline-flex flex-wrap items-center justify-center gap-x-3 text-center text-[34px] font-bold leading-[140%] text-[#1E293B]"
+            className="inline-flex flex-wrap items-center justify-center gap-x-3 text-center text-[34px] font-bold leading-[140%] text-heading"
           >
             <span>{headingBefore}</span>
             <span className="inline-flex items-center">
@@ -73,7 +73,7 @@ export default function WhyScaleXSection({
             </span>
             <span>{headingAfter}</span>
           </h2>
-          <p className="mt-3 text-center text-[18px] font-medium leading-[140%] text-[#788593]">
+          <p className="mt-3 text-center text-[18px] font-medium leading-[140%] text-muted">
             {subheading}
           </p>
         </header>
@@ -85,7 +85,7 @@ export default function WhyScaleXSection({
             {rows.map((r) => (
               <div
                 key={`label-${r.id}`}
-                className="text-[16px] font-medium leading-normal text-[#1E293B]"
+                className="text-[16px] font-medium leading-normal text-heading"
               >
                 {r.label}
               </div>
@@ -94,7 +94,7 @@ export default function WhyScaleXSection({
 
           {/* Others column */}
           <div className="rounded-2xl bg-white px-6 pb-8 pt-6 shadow-[0_8px_30px_-12px_rgba(15,23,42,0.15)] md:rounded-r-none md:rounded-l-2xl md:px-8 md:pt-8">
-            <h3 className="mb-6 text-center text-[18px] font-semibold text-[#1E293B] md:text-[20px]">
+            <h3 className="mb-6 text-center text-[18px] font-semibold text-heading md:text-[20px]">
               {othersLabel}
             </h3>
             <ul className="flex flex-col gap-6">
@@ -102,10 +102,10 @@ export default function WhyScaleXSection({
                 <li key={`others-${r.id}`} className="flex items-start gap-3">
                   <CrossIcon className="mt-0.5 h-[18px] w-[18px] shrink-0" />
                   <div>
-                    <p className="text-[16px] font-medium leading-normal text-[#1E293B]">
+                    <p className="text-[16px] font-medium leading-normal text-heading">
                       {r.others.title}
                     </p>
-                    <p className="mt-0.5 text-[14px] font-normal leading-normal text-[#788593]">
+                    <p className="mt-0.5 text-[14px] font-normal leading-normal text-muted">
                       {r.others.description}
                     </p>
                   </div>
@@ -115,7 +115,7 @@ export default function WhyScaleXSection({
           </div>
 
           {/* ScaleX column */}
-          <div className="rounded-2xl bg-[#0F1F36] px-6 pb-8 pt-6 text-white shadow-[0_8px_30px_-12px_rgba(15,23,42,0.35)] md:rounded-l-none md:rounded-r-2xl md:px-8 md:pt-8">
+          <div className="rounded-2xl bg-navy px-6 pb-8 pt-6 text-white shadow-[0_8px_30px_-12px_rgba(15,23,42,0.35)] md:rounded-l-none md:rounded-r-2xl md:px-8 md:pt-8">
             <div className="mb-6 flex items-center justify-center">
               {scalexBrandLogo ? (
                 <Image
@@ -137,7 +137,7 @@ export default function WhyScaleXSection({
                     <p className="text-[16px] font-medium leading-normal text-white">
                       {r.scalex.title}
                     </p>
-                    <p className="mt-0.5 text-[14px] font-normal leading-normal text-[#CCCCCC]">
+                    <p className="mt-0.5 text-[14px] font-normal leading-normal text-navy-muted">
                       {r.scalex.description}
                     </p>
                   </div>

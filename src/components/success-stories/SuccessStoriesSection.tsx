@@ -56,8 +56,18 @@ function ArrowRightIcon({ className }: { className?: string }) {
 
 function StarIcon({ className }: { className?: string }) {
   return (
-    <svg className={className} width="16" height="16" viewBox="0 0 16 16" fill="#F4AA1F" aria-hidden>
-      <path d="M3.02 14.86c.29.23.66.15 1.1-.17l3.75-2.75 3.75 2.75c.44.32.8.4 1.1.17.29-.22.36-.58.18-1.09l-1.48-4.4 3.78-2.71c.44-.31.62-.64.5-.99-.11-.34-.44-.5-.99-.5h-4.64L8.66.78C8.49.26 8.23 0 7.87 0c-.36 0-.62.26-.79.78L5.67 5.17H1.03c-.55 0-.88.16-.99.5-.12.35.05.68.49.99l3.78 2.71-1.48 4.4c-.18.51-.11.87.18 1.09Z" />
+    <svg className={className} width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden>
+      <g clipPath="url(#success-star-clip)">
+        <path
+          d="M3.01902 14.8627C3.30952 15.0888 3.67795 15.0111 4.11724 14.6932L7.86538 11.9453L11.6206 14.6932C12.0598 15.0111 12.4212 15.0888 12.7188 14.8627C13.0093 14.6437 13.073 14.2835 12.8959 13.7678L11.4151 9.37398L15.1986 6.66138C15.638 6.35057 15.8151 6.02562 15.7017 5.67242C15.5883 5.33335 15.2553 5.17087 14.7098 5.17087H10.0689L8.65889 0.784104C8.4889 0.261369 8.2338 0 7.86538 0C7.50399 0 7.24894 0.261369 7.0789 0.784104L5.66892 5.17087H1.02805C0.482481 5.17087 0.149473 5.33335 0.0361076 5.67242C-0.0843426 6.02562 0.099875 6.35057 0.539164 6.66138L4.32271 9.37398L2.84188 13.7678C2.66475 14.2835 2.72852 14.6437 3.01902 14.8627Z"
+          fill="currentColor"
+        />
+      </g>
+      <defs>
+        <clipPath id="success-star-clip">
+          <rect width="16" height="16" fill="white" />
+        </clipPath>
+      </defs>
     </svg>
   );
 }
@@ -105,13 +115,13 @@ function VideoThumbnail({
           aria-label="Play testimonial video"
           className="absolute inset-0 z-10 flex items-center justify-center"
         >
-          <span className="flex h-14 w-14 items-center justify-center rounded-full bg-[#F0593A] text-white shadow-lg transition hover:scale-105">
+          <span className="flex h-14 w-14 items-center justify-center rounded-full bg-brand text-white shadow-lg transition hover:scale-105">
             <PlayIcon className="ml-0.5 h-6 w-6" />
           </span>
         </a>
       ) : (
         <span className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center">
-          <span className="flex h-14 w-14 items-center justify-center rounded-full bg-[#F0593A] text-white shadow-lg">
+          <span className="flex h-14 w-14 items-center justify-center rounded-full bg-brand text-white shadow-lg">
             <PlayIcon className="ml-0.5 h-6 w-6" />
           </span>
         </span>
@@ -126,7 +136,7 @@ function TestimonialCardOnly({ story }: { story: SuccessStory }) {
       className="flex flex-col justify-between gap-4 rounded-2xl bg-white p-5 shadow-[0_10px_30px_-10px_rgba(15,23,42,0.18)] md:p-6"
       style={{ width: SLIDE_W, height: SLIDE_H, minWidth: SLIDE_W, maxWidth: SLIDE_W }}
     >
-      <p className="text-[13px] leading-[20px] text-[#475569] md:text-[14px] md:leading-[22px]">
+      <p className="text-[13px] leading-[20px] text-body md:text-[14px] md:leading-[22px]">
         {story.quote}
       </p>
       <footer className="flex items-center gap-3 border-t border-zinc-100 pt-3">
@@ -140,11 +150,14 @@ function TestimonialCardOnly({ story }: { story: SuccessStory }) {
           />
         </div>
         <div className="min-w-0 flex-1">
-          <p className="text-[13px] font-bold uppercase tracking-wide text-[#1E293B]">{story.name}</p>
-          <p className="text-[11px] font-medium text-[#64748B]">{story.role}</p>
+          <p className="text-[13px] font-bold uppercase tracking-wide text-heading">{story.name}</p>
+          <p className="text-[11px] font-medium text-subtle">{story.role}</p>
           <div className="mt-1 flex items-center gap-0.5">
             {Array.from({ length: 5 }).map((_, i) => (
-              <StarIcon key={i} className={i < story.rating ? 'h-3.5 w-3.5' : 'h-3.5 w-3.5 opacity-30'} />
+              <StarIcon
+                key={i}
+                className={i < story.rating ? 'h-3.5 w-3.5 text-black' : 'h-3.5 w-3.5 text-black opacity-30'}
+              />
             ))}
           </div>
         </div>
@@ -180,18 +193,18 @@ export default function SuccessStoriesSection({
 
   return (
     <section
-      className="full-bleed relative bg-[#F4F4F4] pt-20 pb-16 md:pt-28 md:pb-20 lg:pt-36 lg:pb-24"
+      className="full-bleed relative bg-surface pt-20 pb-16 md:pt-28 md:pb-20 lg:pt-36 lg:pb-24"
       aria-labelledby="success-stories-heading"
     >
       <div className="site-container relative z-10 px-4 sm:px-6 lg:px-0">
         <header className="relative mx-auto max-w-3xl text-center">
           <h2
             id="success-stories-heading"
-            className="text-[28px] font-bold leading-[140%] text-[#1E293B] md:text-[34px]"
+            className="text-[28px] font-bold leading-[140%] text-heading md:text-[34px]"
           >
             {heading}
           </h2>
-          <p className="mt-3 text-[16px] font-medium leading-[140%] text-[#788593] md:text-[18px]">
+          <p className="mt-3 text-[16px] font-medium leading-[140%] text-muted md:text-[18px]">
             {subheading}
           </p>
         </header>
@@ -204,7 +217,7 @@ export default function SuccessStoriesSection({
                 type="button"
                 onClick={goPrev}
                 aria-label="Previous story"
-                className="flex h-10 w-10 items-center justify-center rounded-full border border-[#F49114] bg-white text-[#F49114] transition hover:bg-[#FFF7E8]"
+                className="flex h-10 w-10 items-center justify-center rounded-full border border-accent bg-white text-accent transition hover:bg-accent-soft"
               >
                 <ArrowRightIcon className="h-3.5 w-3.5 rotate-180" />
               </button>
@@ -212,7 +225,7 @@ export default function SuccessStoriesSection({
                 type="button"
                 onClick={goNext}
                 aria-label="Next story"
-                className="flex h-10 w-10 items-center justify-center rounded-full bg-[#F49114] text-white transition hover:bg-[#E08210]"
+                className="flex h-10 w-10 items-center justify-center rounded-full bg-accent text-white transition hover:bg-accent-hover"
               >
                 <ArrowRightIcon className="h-3.5 w-3.5" />
               </button>
@@ -277,7 +290,7 @@ export default function SuccessStoriesSection({
                 type="button"
                 onClick={goPrev}
                 aria-label="Previous story"
-                className="flex h-10 w-10 items-center justify-center rounded-full border border-[#F49114] bg-white text-[#F49114]"
+                className="flex h-10 w-10 items-center justify-center rounded-full border border-accent bg-white text-accent"
               >
                 <ArrowRightIcon className="h-3.5 w-3.5 rotate-180" />
               </button>
@@ -285,7 +298,7 @@ export default function SuccessStoriesSection({
                 type="button"
                 onClick={goNext}
                 aria-label="Next story"
-                className="flex h-10 w-10 items-center justify-center rounded-full bg-[#F49114] text-white"
+                className="flex h-10 w-10 items-center justify-center rounded-full bg-accent text-white"
               >
                 <ArrowRightIcon className="h-3.5 w-3.5" />
               </button>

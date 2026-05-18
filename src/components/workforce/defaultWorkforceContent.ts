@@ -13,7 +13,6 @@ export const defaultWorkforceContent: WorkforceSectionProps = {
     { id: 'future', label: 'Future-Ready Workforce' },
   ],
   cta: { label: 'Request A Demo', href: '/request-demo' },
-  decorativeArrow: { src: '/images/xaero.png', alt: '' },
   stats: [
     { id: 'avg-salary', label: 'Average Salary', value: '60 LPA' },
     { id: 'highest-salary', label: 'Highest Salary', value: '110LPA' },

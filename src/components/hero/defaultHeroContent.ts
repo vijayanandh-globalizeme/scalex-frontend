@@ -1,7 +1,8 @@
 import type { HeroSectionProps } from './HeroSection';
 
 export const defaultHeroContent: HeroSectionProps = {
-  headingIntro: 'The Ultimate Launchpad for Your',
+  headingIntro: 'The Ultimate Launchpad for',
+  headingYour: 'Your',
   headingAccent: 'Career Growth',
   subheading: 'Expert-led courses designed to help you thrive in the digital age',
   primaryCta: { href: '/courses', label: 'Scale Your Expertise' },
@@ -32,10 +33,9 @@ export const defaultHeroContent: HeroSectionProps = {
   figure: {
     src: '/images/hero/person.png',
     alt: 'Professional learner smiling, representing ScaleX career growth programs',
-    panelBgClassName: 'bg-[#BB9255]',
   },
   backgroundImage: {
-    src: '/images/hero/aero-bg.png',
+    src: '/images/hero/aero-bg-v2.png',
   },
   badges: [
     {
@@ -55,7 +55,7 @@ export const defaultHeroContent: HeroSectionProps = {
     {
       id: 'mentors',
       variant: 'mentors',
-      placement: 'bottom-center',
+      placement: 'bottom-right',
       title: 'Expert Mentors',
       subtitle: '1,000+',
     },

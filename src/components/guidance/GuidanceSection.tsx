@@ -37,7 +37,7 @@ function CheckCircle({ className, checked }: { className?: string; checked: bool
   return (
     <span
       className={`inline-flex h-4 w-4 shrink-0 items-center justify-center rounded ${
-        checked ? 'bg-[#22C55E]' : 'border border-[#CBD5E1] bg-white'
+        checked ? 'bg-success' : 'border border-border-muted bg-white'
       } ${className ?? ''}`}
       aria-hidden
     >
@@ -76,7 +76,7 @@ export default function GuidanceSection({
 
   return (
     <section
-      className="full-bleed relative z-10 overflow-visible bg-[linear-gradient(89deg,#EF4444_-27.47%,#F4AA1F_90.29%,#83BC53_139.44%)] pt-10 pb-0"
+      className="full-bleed relative z-10 overflow-visible bg-[#0D0D0D] pt-10 pb-0"
       aria-labelledby="guidance-heading"
     >
       {decorativeArrow ? (
@@ -121,7 +121,7 @@ export default function GuidanceSection({
               onSubmit={handleSubmit}
               className="mx-auto w-full max-w-[696px] rounded-lg bg-white p-6 shadow-[0_4px_4px_0_rgba(30,41,59,0.11),0_4px_4px_0_rgba(30,41,59,0.03)] md:h-[578px] md:p-8 lg:w-[695.792px]"
             >
-              <h3 className="text-[20px] font-medium leading-normal text-[#1E293B]">
+              <h3 className="text-[20px] font-medium leading-normal text-heading">
                 {formTitle}
               </h3>
 
@@ -130,30 +130,30 @@ export default function GuidanceSection({
                   type="text"
                   required
                   placeholder="First Name"
-                  className="h-11 w-full rounded-lg border border-[#EBEBEB] bg-[#F7F6F3] px-4 text-[14px] text-[#1E293B] placeholder:text-[#94A3B8] focus:border-[#F0593A] focus:outline-none"
+                  className="h-11 w-full rounded-lg border border-border bg-surface-input px-4 text-[14px] text-heading placeholder:text-placeholder focus:border-brand focus:outline-none"
                 />
                 <input
                   type="text"
                   required
                   placeholder="Last Name"
-                  className="h-11 w-full rounded-lg border border-[#EBEBEB] bg-[#F7F6F3] px-4 text-[14px] text-[#1E293B] placeholder:text-[#94A3B8] focus:border-[#F0593A] focus:outline-none"
+                  className="h-11 w-full rounded-lg border border-border bg-surface-input px-4 text-[14px] text-heading placeholder:text-placeholder focus:border-brand focus:outline-none"
                 />
                 <input
                   type="email"
                   required
                   placeholder="Email ID"
-                  className="h-11 w-full rounded-lg border border-[#EBEBEB] bg-[#F7F6F3] px-4 text-[14px] text-[#1E293B] placeholder:text-[#94A3B8] focus:border-[#F0593A] focus:outline-none"
+                  className="h-11 w-full rounded-lg border border-border bg-surface-input px-4 text-[14px] text-heading placeholder:text-placeholder focus:border-brand focus:outline-none"
                 />
                 <input
                   type="tel"
                   required
                   placeholder="Contact Number"
-                  className="h-11 w-full rounded-lg border border-[#EBEBEB] bg-[#F7F6F3] px-4 text-[14px] text-[#1E293B] placeholder:text-[#94A3B8] focus:border-[#F0593A] focus:outline-none"
+                  className="h-11 w-full rounded-lg border border-border bg-surface-input px-4 text-[14px] text-heading placeholder:text-placeholder focus:border-brand focus:outline-none"
                 />
                 <select
                   required
                   defaultValue=""
-                  className="h-11 w-full rounded-lg border border-[#EBEBEB] bg-[#F7F6F3] px-4 text-[14px] text-[#1E293B] focus:border-[#F0593A] focus:outline-none"
+                  className="h-11 w-full rounded-lg border border-border bg-surface-input px-4 text-[14px] text-heading focus:border-brand focus:outline-none"
                 >
                   <option value="" disabled>
                     Select Course
@@ -167,7 +167,7 @@ export default function GuidanceSection({
                 <select
                   required
                   defaultValue=""
-                  className="h-11 w-full rounded-lg border border-[#EBEBEB] bg-[#F7F6F3] px-4 text-[14px] text-[#1E293B] focus:border-[#F0593A] focus:outline-none"
+                  className="h-11 w-full rounded-lg border border-border bg-surface-input px-4 text-[14px] text-heading focus:border-brand focus:outline-none"
                 >
                   <option value="" disabled>
                     Select Purpose
@@ -180,7 +180,7 @@ export default function GuidanceSection({
                 </select>
               </div>
 
-              <label className="mt-4 flex items-start gap-2 text-[12px] text-[#64748B]">
+              <label className="mt-4 flex items-start gap-2 text-[12px] text-subtle">
                 <button
                   type="button"
                   onClick={() => setAgreed((v) => !v)}
@@ -192,11 +192,11 @@ export default function GuidanceSection({
                 </button>
                 <span>
                   I agree to ScaleX&apos;s{' '}
-                  <Link href={termsHref} className="text-[#0F172A] underline">
+                  <Link href={termsHref} className="text-link underline">
                     Terms &amp; Conditions
                   </Link>{' '}
                   and{' '}
-                  <Link href={privacyHref} className="text-[#0F172A] underline">
+                  <Link href={privacyHref} className="text-link underline">
                     Privacy Policy.
                   </Link>
                 </span>
@@ -205,7 +205,7 @@ export default function GuidanceSection({
               <button
                 type="submit"
                 disabled={!agreed}
-                className="mt-5 inline-flex h-[44px] items-center justify-center gap-2 rounded-md bg-[#1E293B] px-6 text-[14px] font-semibold text-white transition hover:bg-[#0F172A] disabled:cursor-not-allowed disabled:opacity-60"
+                className="mt-5 inline-flex h-[44px] items-center justify-center gap-2 rounded-md bg-brand px-6 text-[14px] font-semibold text-white transition hover:bg-brand/90 disabled:cursor-not-allowed disabled:opacity-60"
               >
                 {ctaLabel}
                 <svg width="18" height="15" viewBox="0 0 18 15" fill="currentColor" aria-hidden>

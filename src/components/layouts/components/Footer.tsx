@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { SITE_NAME } from '@/lib/site';
 
 const footerLinkClass =
-  'block text-sm font-normal leading-relaxed tracking-[-0.16px] text-zinc-400 transition hover:text-white';
+  'block text-sm font-normal leading-relaxed tracking-[-0.16px] text-heading transition hover:text-brand';
 
 const COLUMN_GROUPS: { title: string; links: { label: string; href: string }[] }[] = [
   {
@@ -203,8 +203,8 @@ function ChatFab() {
 
 function CourseGridSection({ title, cells, showTopBorder }: { title: string; cells: string[]; showTopBorder?: boolean }) {
   return (
-    <section className={showTopBorder ? 'border-t border-white/10 pt-10 lg:pt-12' : ''}>
-      <h2 className="mb-5 text-base font-semibold leading-tight text-white lg:mb-6">{title}</h2>
+    <section className={showTopBorder ? 'border-t border-zinc-200 pt-10 lg:pt-12' : ''}>
+      <h2 className="mb-5 text-base font-semibold leading-tight text-heading lg:mb-6">{title}</h2>
       <ul className="grid grid-cols-2 gap-x-4 gap-y-2.5 sm:grid-cols-3 md:grid-cols-6 md:gap-x-6">
         {cells.map((label, i) => (
           <li key={`${title}-${i}`}>
@@ -221,14 +221,14 @@ function CourseGridSection({ title, cells, showTopBorder }: { title: string; cel
 const Footer = () => {
   return (
     <>
-      <footer className="bg-ink text-white">
+      <footer className="bg-white text-heading">
         <div className="site-container pb-8 pt-14 md:pb-12 md:pt-16 lg:pt-[4.5rem]">
           {/* Top: 4 tight link columns + logo column with larger inset */}
           <div className="flex flex-col gap-10 md:flex-row md:items-start md:gap-0">
             <div className="grid min-w-0 flex-1 grid-cols-1 gap-y-8 sm:grid-cols-2 sm:gap-x-4 sm:gap-y-8 md:grid-cols-4 md:gap-x-2 md:gap-y-0 lg:gap-x-3">
               {COLUMN_GROUPS.map((col) => (
                 <div key={col.title} className="min-w-0">
-                  <h3 className="mb-4 text-sm font-semibold tracking-wide text-white">{col.title}</h3>
+                  <h3 className="mb-4 text-sm font-semibold tracking-wide text-heading">{col.title}</h3>
                   <ul className="space-y-2.5">
                     {col.links.map((item) => (
                       <li key={item.label}>

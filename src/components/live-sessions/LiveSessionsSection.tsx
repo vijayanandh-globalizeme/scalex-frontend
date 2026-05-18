@@ -74,8 +74,8 @@ function SessionCard({ session }: { session: LiveSession }) {
         />
       </div>
       <div className="flex flex-1 flex-col gap-3 p-5">
-        <h3 className="text-[16px] font-bold leading-tight text-[#1E293B]">{session.title}</h3>
-        <ul className="flex flex-col gap-2 text-[12px] font-medium text-[#475569]">
+        <h3 className="text-[16px] font-bold leading-tight text-heading">{session.title}</h3>
+        <ul className="flex flex-col gap-2 text-[12px] font-medium text-body">
           <li className="inline-flex items-center gap-2">
             <CalendarIcon className="h-3.5 w-3.5" />
             <span>
@@ -93,7 +93,7 @@ function SessionCard({ session }: { session: LiveSession }) {
         </ul>
         <a
           href={session.href}
-          className="mt-2 inline-flex w-full items-center justify-center gap-2 rounded-lg border border-[#F49114] bg-white py-3 text-[14px] font-semibold text-[#F49114] shadow-[0_4px_4px_0_rgba(244,145,20,0.11),0_4px_4px_0_rgba(244,145,20,0.08)] transition hover:bg-[#FFF7E8]"
+          className="mt-2 inline-flex w-full items-center justify-center gap-2 rounded-lg border border-accent bg-white py-3 text-[14px] font-semibold text-accent shadow-[0_4px_4px_0_rgba(253,2,45,0.11),0_4px_4px_0_rgba(253,2,45,0.08)] transition hover:bg-accent-soft"
         >
           Register Now
           <ArrowRightIcon className="h-4 w-4" />
@@ -110,18 +110,18 @@ export default function LiveSessionsSection({
 }: LiveSessionsSectionProps) {
   return (
     <section
-      className="full-bleed relative bg-[#F4F4F4] py-14 md:py-16 lg:py-20"
+      className="full-bleed relative bg-surface py-14 md:py-16 lg:py-20"
       aria-labelledby="live-sessions-heading"
     >
       <div className="site-container relative z-10 px-4 sm:px-6 lg:px-0">
         <header className="mx-auto text-center">
           <h2
             id="live-sessions-heading"
-            className="text-[28px] font-bold leading-[140%] text-[#1E293B] md:text-[34px]"
+            className="text-[28px] font-bold leading-[140%] text-heading md:text-[34px]"
           >
             {heading}
           </h2>
-          <p className="mt-3 text-[14px] font-medium leading-[140%] text-[#788593] md:text-[15px]">
+          <p className="mt-3 text-[14px] font-medium leading-[140%] text-muted md:text-[15px]">
             {subheading}
           </p>
         </header>

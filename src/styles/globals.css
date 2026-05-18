@@ -1,40 +1,113 @@
 @import 'tailwindcss';
 
+/*
+ * Design tokens — change values here to update the whole site.
+ * Use Tailwind utilities: text-brand, bg-surface, border-accent, etc.
+ */
 @theme {
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-  --color-brand: #f0593a;
-  /* Primary text */
+
+  /* Brand (primary red) */
+  --color-brand: #fd022d;
+
+  /* Typography */
   --color-ink: #1e2d3e;
+  --color-heading: #1e293b;
+  --color-muted: #788593;
+  --color-subtle: #64748b;
+  --color-body: #475569;
+  --color-strong: #020817;
+  --color-placeholder: #94a3b8;
+  --color-nav-chevron: #b9a286;
+  --color-link: #0f172a;
+
+  /* Surfaces */
+  --color-surface: #f4f4f4;
+  --color-surface-raised: #fcfcfc;
+  --color-surface-input: #f7f6f3;
+  --color-surface-card: #fff3e4;
+  --color-border: #ebebeb;
+  --color-border-muted: #cbd5e1;
+  --color-border-tag: #a7b6c6;
+
+  /* Dark panels */
+  --color-navy: #0f1f36;
+  --color-navy-muted: #cccccc;
+
+  /* Accent — always follows brand (change --color-brand only) */
+  --color-accent: var(--color-brand);
+  --color-accent-hover: #d90227;
+  --color-accent-soft: #fff0f2;
+  --color-gold: #f4aa1f;
+
+  /* Semantic */
+  --color-success: #22c55e;
+  --color-linkedin: #0a66c2;
 }
-.site-container {
-  /* border: 1px solid red; */
-}
+/* .site-container {
+  border: 1px solid red;
+} */
 /* Content width: 1300px centered on wide */
 @layer components {
   .site-container {
     @apply mx-auto w-full max-w-[1300px] px-0;
   }
 
-  /* Break out contianer. */
   .full-bleed {
     width: 100vw;
     margin-left: calc(50% - 50vw);
     margin-right: calc(50% - 50vw);
   }
 
-  /* Header UI: 16px - 1920px */
   .header-fluid-text {
     font-size: clamp(14px, calc(8px + 0.416666vw), 16px);
     line-height: 1.35;
   }
 
-  /* Footer*/
   .footer-body-text {
-    color: #fff;
+    color: #1e293b;
     font-size: 14px;
     font-style: normal;
     font-weight: 400;
     line-height: 130%;
+  }
+
+  /* Brand outline button (Sign In, All Courses, hero secondary CTA) */
+  .btn-brand-outline {
+    border-radius: 8px;
+    border: 1px solid var(--color-brand);
+    background: #fff;
+    @apply font-medium text-brand;
+  }
+
+  /* Accent outline button (course cards, live sessions) */
+  .btn-accent-outline {
+    border-radius: 8px;
+    border: 1px solid var(--color-brand);
+    background: #fff;
+    @apply font-semibold text-brand transition hover:bg-accent-soft;
+  }
+
+  /* Brand filled button (hero primary CTA) */
+  .btn-brand {
+    border-radius: 8px;
+    background: var(--color-brand);
+    box-shadow:
+      0 4px 4px 0 rgba(30, 41, 59, 0.03),
+      0 4px 4px 0 rgba(30, 41, 59, 0.08),
+      0 4px 4px 0 rgba(30, 41, 59, 0.11),
+      0 4px 4px 0 rgba(30, 41, 59, 0.11);
+    color: #fff;
+    @apply inline-flex items-center justify-center text-center text-base font-semibold leading-[1.4];
+  }
+
+  /* Hero heading accent — unique gradient, not tied to --color-brand */
+  .text-career-growth-gradient {
+    background: linear-gradient(89deg, #ff0031 21.4%, #ffb700 54.29%, #00c017 99.54%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
   }
 }
 

@@ -1,5 +1,26 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import NavDropdown from './NavDropdown';
+
+const INTERVIEW_PREP_ITEMS = [
+  { label: 'DevOps With Placement', href: '#' },
+  { label: 'Data Science With Placement', href: '#' },
+  { label: 'Automation Testing With Placement', href: '#' },
+] as const;
+
+const CERTIFICATION_PREP_ITEMS = [
+  { label: 'PMP Certification Training', href: '#' },
+  { label: 'AWS Solutions Architect', href: '#' },
+  { label: 'Scrum Master Certification', href: '#' },
+  { label: 'Six Sigma Green Belt', href: '#' },
+] as const;
+
+const RESOURCES_ITEMS = [
+  { label: 'Blog & Articles', href: '#' },
+  { label: 'Free Study Guides', href: '#' },
+  { label: 'Webinars & Events', href: '#' },
+  { label: 'Career Resources', href: '#' },
+] as const;
 
 function AllCoursesChevron({ className }: { className?: string }) {
   return (
@@ -20,25 +41,6 @@ function AllCoursesChevron({ className }: { className?: string }) {
   );
 }
 
-function ChevronDown({ className }: { className?: string }) {
-  return (
-    <svg
-      className={className}
-      xmlns="http://www.w3.org/2000/svg"
-      width="13"
-      height="8"
-      viewBox="0 0 13 8"
-      fill="none"
-      aria-hidden
-    >
-      <path
-        d="M6.3681 8.00004C6.5513 8.00004 6.73451 7.92489 6.85908 7.78221L12.531 1.8254C12.6556 1.69769 12.7289 1.53244 12.7289 1.34465C12.7289 0.954031 12.4431 0.653564 12.062 0.653564C11.8788 0.653564 11.7103 0.728682 11.5857 0.848873L5.97238 6.73055H6.75649L1.14318 0.848873C1.02593 0.728682 0.857387 0.653564 0.666855 0.653564C0.285795 0.653564 0 0.954031 0 1.34465C0 1.53244 0.0732808 1.69769 0.197858 1.8329L5.8698 7.78221C6.00902 7.92489 6.17757 8.00004 6.3681 8.00004Z"
-        fill="currentColor"
-      />
-    </svg>
-  );
-}
-
 function SignInArrow({ className }: { className?: string }) {
   return (
     <svg
@@ -50,10 +52,17 @@ function SignInArrow({ className }: { className?: string }) {
       fill="none"
       aria-hidden
     >
-      <path
-        d="M10.7129 14.8047C10.9473 14.8047 11.1523 14.7168 11.3477 14.5312L17.8418 8.05664C18.0371 7.87109 18.1348 7.64648 18.1348 7.40234C18.1348 7.1582 18.0371 6.93359 17.8418 6.74805L11.3672 0.292969C11.1523 0.078125 10.9473 0 10.7129 0C10.2344 0 9.86328 0.351562 9.86328 0.839844C9.86328 1.07422 9.94141 1.29883 10.0977 1.45508L12.2852 3.68164L16.3574 7.40234L12.2852 11.123L10.0977 13.3496C9.94141 13.4961 9.86328 13.7305 9.86328 13.9648C9.86328 14.4531 10.2344 14.8047 10.7129 14.8047ZM0.859375 8.27148H13.2129L16.3574 8.07617C16.7578 8.04688 17.0312 7.80273 17.0312 7.40234C17.0312 7.00195 16.7578 6.75781 16.3574 6.72852L13.2129 6.5332H0.859375C0.351562 6.5332 0 6.89453 0 7.40234C0 7.91016 0.351562 8.27148 0.859375 8.27148Z"
-        fill="currentColor"
-      />
+      <g clipPath="url(#clip0_sign_in_arrow)">
+        <path
+          d="M10.7129 14.8047C10.9473 14.8047 11.1523 14.7168 11.3477 14.5312L17.8418 8.05664C18.0371 7.87109 18.1348 7.64648 18.1348 7.40234C18.1348 7.1582 18.0371 6.93359 17.8418 6.74805L11.3672 0.292969C11.1523 0.078125 10.9473 0 10.7129 0C10.2344 0 9.86328 0.351562 9.86328 0.839844C9.86328 1.07422 9.94141 1.29883 10.0977 1.45508L12.2852 3.68164L16.3574 7.40234L12.2852 11.123L10.0977 13.3496C9.94141 13.4961 9.86328 13.7305 9.86328 13.9648C9.86328 14.4531 10.2344 14.8047 10.7129 14.8047ZM0.859375 8.27148H13.2129L16.3574 8.07617C16.7578 8.04688 17.0312 7.80273 17.0312 7.40234C17.0312 7.00195 16.7578 6.75781 16.3574 6.72852L13.2129 6.5332H0.859375C0.351562 6.5332 0 6.89453 0 7.40234C0 7.91016 0.351562 8.27148 0.859375 8.27148Z"
+          fill="currentColor"
+        />
+      </g>
+      <defs>
+        <clipPath id="clip0_sign_in_arrow">
+          <rect width="18.4961" height="14.8145" fill="white" />
+        </clipPath>
+      </defs>
     </svg>
   );
 }
@@ -82,7 +91,7 @@ const navLinkClass =
 
 const Header = () => {
   return (
-    <header className="border-b border-zinc-100 bg-white">
+    <header className="relative z-40 border-b border-zinc-100 bg-white">
       <div className="site-container py-3 md:py-4 lg:flex lg:h-16 lg:items-center lg:py-0">
         <div className="flex w-full flex-col gap-4 lg:flex-row lg:items-center lg:gap-0">
           <div className="flex shrink-0 flex-wrap items-center gap-x-[48px] gap-y-3 lg:mr-[33px]">
@@ -100,10 +109,10 @@ const Header = () => {
 
             <button
               type="button"
-              className="header-fluid-text group flex h-[40px] w-[133px] shrink-0 items-center justify-center gap-1 rounded-lg border border-brand bg-brand/10 font-medium text-brand transition hover:bg-brand hover:text-white"
+              className="btn-brand-outline header-fluid-text flex h-[40px] w-[133px] shrink-0 items-center justify-center gap-1"
             >
               All Courses
-              <AllCoursesChevron className="shrink-0 text-brand transition-colors group-hover:text-white" />
+              <AllCoursesChevron className="shrink-0 text-brand" />
             </button>
           </div>
 
@@ -123,18 +132,21 @@ const Header = () => {
                 className="flex flex-wrap items-center gap-x-5 gap-y-2 sm:gap-x-6 xl:gap-x-7 min-[1920px]:gap-x-4 min-[1920px]:sm:gap-x-5 min-[1920px]:xl:gap-x-6"
                 aria-label="Primary"
               >
-                <Link href="#" className={`group ${navLinkClass}`}>
-                  Interview Prep
-                  <ChevronDown className="shrink-0 text-[#B9A286] transition-opacity group-hover:opacity-90" />
-                </Link>
-                <Link href="#" className={`group ${navLinkClass}`}>
-                  Certification Prep
-                  <ChevronDown className="shrink-0 text-[#B9A286] transition-opacity group-hover:opacity-90" />
-                </Link>
-                <Link href="#" className={`group ${navLinkClass}`}>
-                  Resources
-                  <ChevronDown className="shrink-0 text-[#B9A286] transition-opacity group-hover:opacity-90" />
-                </Link>
+                <NavDropdown
+                  label="Interview Prep"
+                  items={[...INTERVIEW_PREP_ITEMS]}
+                  triggerClassName={`${navLinkClass} cursor-pointer hover:opacity-100`}
+                />
+                <NavDropdown
+                  label="Certification Prep"
+                  items={[...CERTIFICATION_PREP_ITEMS]}
+                  triggerClassName={`${navLinkClass} cursor-pointer hover:opacity-100`}
+                />
+                <NavDropdown
+                  label="Resources"
+                  items={[...RESOURCES_ITEMS]}
+                  triggerClassName={`${navLinkClass} cursor-pointer hover:opacity-100`}
+                />
                 <Link href="#" className={`${navLinkClass} !gap-0`}>
                   Contact Us
                 </Link>
@@ -142,10 +154,10 @@ const Header = () => {
 
               <Link
                 href="#"
-                className="header-fluid-text group flex items-center gap-2 rounded-lg border border-brand bg-brand/10 px-4 py-2 font-medium text-brand transition hover:bg-brand hover:text-white lg:h-10 lg:py-0"
+                className="btn-brand-outline header-fluid-text flex items-center gap-2 px-4 py-2 lg:h-10 lg:py-0"
               >
                 Sign In
-                <SignInArrow className="shrink-0 text-brand transition-colors group-hover:text-white" />
+                <SignInArrow className="shrink-0 text-brand" />
               </Link>
             </div>
           </div>

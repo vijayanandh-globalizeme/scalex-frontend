@@ -67,6 +67,35 @@ function ArrowRightIcon({ className }: { className?: string }) {
   );
 }
 
+function StoriesDecorIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      className={className}
+      xmlns="http://www.w3.org/2000/svg"
+      width="188"
+      height="206"
+      viewBox="0 0 188 206"
+      fill="none"
+      aria-hidden
+    >
+      <g opacity="0.1">
+        <path
+          fillRule="evenodd"
+          clipRule="evenodd"
+          d="M39.6735 60.9703L118.511 149.177L145.721 149.379L65.5219 61.1626L39.6735 60.9703Z"
+          fill="white"
+        />
+        <path
+          fillRule="evenodd"
+          clipRule="evenodd"
+          d="M129.542 32.3058L30.2113 170.576C27.5358 174.3 26.9742 175.072 26.4 175.881C25.8257 176.689 25.4571 177.23 24.9149 178.06C24.3727 178.89 23.8598 179.696 21.3727 183.548L10.5259 200.35C9.74522 201.56 10.093 203.173 11.3027 203.953C12.3557 204.632 13.7433 204.466 14.6064 203.558L28.6332 188.797C31.7127 185.556 32.3396 184.903 32.9798 184.225C33.6199 183.546 34.0219 183.107 34.6403 182.408C35.2588 181.71 35.8527 181.027 38.8047 177.67L149.897 51.3323C151.386 49.6387 152.754 47.842 153.99 45.9557C155.82 43.1651 156.826 43.7878 157.007 47.8248C157.134 50.6399 157.307 54.4922 157.527 59.3815C157.828 66.0794 163.504 71.2651 170.204 70.964C176.904 70.663 182.091 64.9892 181.79 58.2913L179.934 17.0093C179.919 16.6744 179.907 16.3394 179.899 16.0043C179.744 9.4739 178.642 5.49954 176.594 4.0812C171.241 0.373318 159.749 2.43344 156.605 2.96511C152.21 3.70838 136.662 5.88837 109.962 9.50508C104.229 10.2817 100.211 15.5575 100.988 21.289C101.032 21.6135 101.091 21.9358 101.165 22.2547L101.222 22.4967C102.656 28.6608 108.637 32.6474 114.881 31.5999L125.617 29.7981C125.854 29.7584 126.09 29.7169 126.326 29.6736C128.534 29.2679 129.858 29.2245 130.298 29.5426C130.76 29.8766 130.508 30.7977 129.542 32.3058Z"
+          fill="white"
+        />
+      </g>
+    </svg>
+  );
+}
+
 function StatPill({
   badge,
   iconVariant = 'mentors',
@@ -89,8 +118,8 @@ function StatPill({
           {badge.icon ?? <DefaultStatIcon className="h-[18px] w-[18px]" />}
         </div>
         <div className="min-w-0">
-          <p className="whitespace-nowrap text-[12px] font-medium leading-[16px] text-[#64748B]">{badge.label}</p>
-          <p className="whitespace-nowrap text-[14px] font-bold leading-[20px] text-[#020817]">{badge.value}</p>
+          <p className="whitespace-nowrap text-[12px] font-medium leading-[16px] text-subtle">{badge.label}</p>
+          <p className="whitespace-nowrap text-[14px] font-bold leading-[20px] text-strong">{badge.value}</p>
         </div>
       </div>
     </div>
@@ -192,7 +221,7 @@ function TestimonialCard({
             />
           </div>
           <div>
-            <p className="flex items-center gap-1.5 text-[15px] font-bold text-[#1E293B]">
+            <p className="flex items-center gap-1.5 text-[15px] font-bold text-heading">
               {testimonial.name}
               {testimonial.linkedinUrl ? (
                 <a
@@ -200,29 +229,29 @@ function TestimonialCard({
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={`${testimonial.name} on LinkedIn`}
-                  className="text-[#0A66C2]"
+                  className="text-linkedin"
                 >
                   <LinkedInIcon className="h-3.5 w-3.5" />
                 </a>
               ) : null}
             </p>
-            <p className="text-[12px] font-medium text-[#64748B]">{testimonial.role}</p>
+            <p className="text-[12px] font-medium text-subtle">{testimonial.role}</p>
           </div>
         </div>
         <div className="text-right">
-          <p className="inline-flex items-center gap-1 text-[20px] font-extrabold text-[#F0593A]">
+          <p className="inline-flex items-center gap-1 text-[20px] font-extrabold text-brand">
             {testimonial.metricValue}
-            <ArrowUpRightIcon className="h-4 w-4 text-[#F0593A]" />
+            <ArrowUpRightIcon className="h-4 w-4 text-brand" />
           </p>
-          <p className="text-[12px] font-semibold text-[#F0593A]">{testimonial.metricLabel}</p>
+          <p className="text-[12px] font-semibold text-brand">{testimonial.metricLabel}</p>
         </div>
       </header>
-      <p className="mt-4 text-[14px] leading-[22px] text-[#475569]">{testimonial.quote}</p>
+      <p className="mt-4 text-[14px] leading-[22px] text-body">{testimonial.quote}</p>
       <footer className="mt-5 flex items-center gap-4">
         <div className="relative h-7 w-16">
           <Image src={testimonial.fromLogoSrc} alt={testimonial.fromLogoAlt} fill sizes="64px" className="object-contain object-left" />
         </div>
-        <span className="text-[#F0593A]">→</span>
+        <span className="text-brand">→</span>
         <div className="relative h-7 w-20">
           <Image src={testimonial.toLogoSrc} alt={testimonial.toLogoAlt} fill sizes="80px" className="object-contain object-left" />
         </div>
@@ -264,9 +293,10 @@ export default function TestimonialsSection({
 
   return (
     <section
-      className="full-bleed relative z-10 bg-[linear-gradient(89deg,#EF4444_-27.47%,#F4AA1F_90.29%,#83BC53_139.44%)] py-16 md:py-20 lg:py-24"
+      className="full-bleed relative z-10 overflow-visible bg-[#0D0D0D] py-16 pb-20 md:py-20 md:pb-28 lg:py-24 lg:pb-32"
       aria-labelledby="stories-heading"
     >
+      <StoriesDecorIcon className="pointer-events-none absolute bottom-0 right-0 z-0 h-auto w-[120px] md:w-[160px] lg:w-[188px]" />
       <div className="site-container relative z-10 px-4 sm:px-6 lg:px-0">
         <div className="grid items-start gap-10 lg:grid-cols-[1fr_1.1fr_1fr]">
           {/* Left: heading & subheading */}
@@ -350,12 +380,15 @@ export default function TestimonialsSection({
                 <div className="relative h-7 w-24">
                   <Image src={r.logoSrc} alt={r.logoAlt} fill sizes="96px" className="object-contain" />
                 </div>
-                <div className="flex items-center gap-2 text-[13px] font-semibold text-[#1E293B]">
-                  <svg width="14" height="14" viewBox="0 0 16 16" fill="#F4AA1F" aria-hidden>
-                    <path d="M3.02 14.86c.29.23.66.15 1.1-.17l3.75-2.75 3.75 2.75c.44.32.8.4 1.1.17.29-.22.36-.58.18-1.09l-1.48-4.4 3.78-2.71c.44-.31.62-.64.5-.99-.11-.34-.44-.5-.99-.5h-4.64L8.66.78C8.49.26 8.23 0 7.87 0c-.36 0-.62.26-.79.78L5.67 5.17H1.03c-.55 0-.88.16-.99.5-.12.35.05.68.49.99l3.78 2.71-1.48 4.4c-.18.51-.11.87.18 1.09Z" />
+                <div className="flex items-center gap-2 text-[13px] font-semibold text-heading">
+                  <svg width="14" height="14" viewBox="0 0 16 16" fill="none" className="text-black" aria-hidden>
+                    <path
+                      d="M3.01902 14.8627C3.30952 15.0888 3.67795 15.0111 4.11724 14.6932L7.86538 11.9453L11.6206 14.6932C12.0598 15.0111 12.4212 15.0888 12.7188 14.8627C13.0093 14.6437 13.073 14.2835 12.8959 13.7678L11.4151 9.37398L15.1986 6.66138C15.638 6.35057 15.8151 6.02562 15.7017 5.67242C15.5883 5.33335 15.2553 5.17087 14.7098 5.17087H10.0689L8.65889 0.784104C8.4889 0.261369 8.2338 0 7.86538 0C7.50399 0 7.24894 0.261369 7.0789 0.784104L5.66892 5.17087H1.02805C0.482481 5.17087 0.149473 5.33335 0.0361076 5.67242C-0.0843426 6.02562 0.099875 6.35057 0.539164 6.66138L4.32271 9.37398L2.84188 13.7678C2.66475 14.2835 2.72852 14.6437 3.01902 14.8627Z"
+                      fill="currentColor"
+                    />
                   </svg>
                   {r.rating}
-                  <span className="font-medium text-[#64748B]">{r.reviewsLabel}</span>
+                  <span className="font-medium text-subtle">{r.reviewsLabel}</span>
                 </div>
               </div>
             ))}

@@ -1,4 +1,5 @@
 import type { CoursesSectionProps } from './CoursesSection';
+import { getCategoryHref } from '@/lib/categories';
 
 const placeholderImage = '/images/course/course-1.png';
 
@@ -19,21 +20,24 @@ export const defaultCoursesContent: CoursesSectionProps = {
     { id: 'testing', label: 'Software Testing' },
     { id: 'it-service', label: 'IT Service & Infrastructure' },
   ],
-  courses: Array.from({ length: 12 }).map((_, i) => ({
-    id: `course-${i + 1}`,
-    category: i % 5 === 0 ? 'product' : i % 4 === 0 ? 'devops' : 'agile-scrum',
-    categoryLabel:
-      i % 5 === 0 ? 'Product Management' : i % 4 === 0 ? 'DevOps' : 'Agile and Scrum',
-    title: 'Certified Scrum Master',
-    imageSrc: placeholderImage,
-    imageAlt: 'Certified Scrum Master training class',
-    rating: 4.8,
-    hours: 16,
-    learners: '75K+ Learners',
-    price: 12999,
-    originalPrice: 18999,
-    savePercent: 40,
-    slotsLeft: 4,
-    href: '/courses/certified-scrum-master',
-  })),
+  courses: Array.from({ length: 12 }).map((_, i) => {
+    const category = i % 5 === 0 ? 'product' : i % 4 === 0 ? 'devops' : 'agile-scrum';
+    return {
+      id: `course-${i + 1}`,
+      category,
+      categoryLabel:
+        i % 5 === 0 ? 'Product Management' : i % 4 === 0 ? 'DevOps' : 'Agile and Scrum',
+      title: 'Certified Scrum Master',
+      imageSrc: placeholderImage,
+      imageAlt: 'Certified Scrum Master training class',
+      rating: 4.8,
+      hours: 16,
+      learners: '75K+ Learners',
+      price: 12999,
+      originalPrice: 18999,
+      savePercent: 40,
+      slotsLeft: 4,
+      href: getCategoryHref(category),
+    };
+  }),
 };

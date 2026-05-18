@@ -48,12 +48,12 @@ function MedalBadge({ src, alt }: { src?: string; alt?: string }) {
   }
   return (
     <div
-      className="flex h-[100px] w-[100px] items-center justify-center rounded-full border-4 border-[#1E293B]/80 bg-[#1E293B] text-white shadow-md"
+      className="flex h-[100px] w-[100px] items-center justify-center rounded-full border-4 border-heading/80 bg-heading text-white shadow-md"
       aria-hidden
     >
       <div className="flex flex-col items-center leading-none">
-        <span className="text-[10px] font-semibold uppercase tracking-wide text-[#F4AA1F]">Top</span>
-        <span className="text-[24px] font-extrabold text-[#F4AA1F]">10</span>
+        <span className="text-[10px] font-semibold uppercase tracking-wide text-gold">Top</span>
+        <span className="text-[24px] font-extrabold text-gold">10</span>
       </div>
     </div>
   );
@@ -115,18 +115,18 @@ export default function AwardsSection({
 
   return (
     <section
-      className="full-bleed relative bg-[#F4F4F4] pt-0"
+      className="full-bleed relative bg-surface pt-0"
       aria-labelledby="awards-heading"
     >
       <div className="site-container relative z-10 px-4 sm:px-6 lg:px-0">
         <header className="mx-auto text-center">
           <h2
             id="awards-heading"
-            className="whitespace-nowrap text-[28px] font-bold leading-[140%] text-[#1E293B] md:text-[34px]"
+            className="whitespace-nowrap text-[28px] font-bold leading-[140%] text-heading md:text-[34px]"
           >
             {heading}
           </h2>
-          <p className="mt-3 whitespace-nowrap text-[14px] font-medium leading-[140%] text-[#788593] md:text-[15px]">
+          <p className="mt-3 whitespace-nowrap text-[14px] font-medium leading-[140%] text-muted md:text-[15px]">
             {subheading}
           </p>
         </header>
@@ -163,7 +163,7 @@ export default function AwardsSection({
               type="button"
               onClick={goPrev}
               aria-label="Previous awards"
-              className="flex h-10 w-10 items-center justify-center rounded-full border border-[#F49114] bg-white text-[#F49114] transition hover:bg-[#FFF7E8]"
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-accent bg-white text-accent transition hover:bg-accent-soft"
             >
               <ArrowRightIcon className="h-3.5 w-3.5 rotate-180" />
             </button>
@@ -171,7 +171,7 @@ export default function AwardsSection({
               type="button"
               onClick={goNext}
               aria-label="Next awards"
-              className="flex h-10 w-10 items-center justify-center rounded-full bg-[#F49114] text-white transition hover:bg-[#E08210]"
+              className="flex h-10 w-10 items-center justify-center rounded-full bg-accent text-white transition hover:bg-accent-hover"
             >
               <ArrowRightIcon className="h-3.5 w-3.5" />
             </button>

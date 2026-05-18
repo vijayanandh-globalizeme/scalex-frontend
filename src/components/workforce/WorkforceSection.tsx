@@ -49,6 +49,35 @@ function ArrowRightIcon({ className }: { className?: string }) {
   );
 }
 
+function WorkforceDecorIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      className={className}
+      xmlns="http://www.w3.org/2000/svg"
+      width="190"
+      height="206"
+      viewBox="0 0 190 206"
+      fill="none"
+      aria-hidden
+    >
+      <g opacity="0.1">
+        <path
+          fillRule="evenodd"
+          clipRule="evenodd"
+          d="M39.6735 60.9705L118.511 149.177L145.721 149.38L65.5219 61.1628L39.6735 60.9705Z"
+          fill="white"
+        />
+        <path
+          fillRule="evenodd"
+          clipRule="evenodd"
+          d="M129.542 32.3057L30.2113 170.576C27.5358 174.3 26.9742 175.072 26.4 175.881C25.8257 176.689 25.4571 177.23 24.9149 178.06C24.3727 178.89 23.8598 179.695 21.3727 183.548L10.5259 200.35C9.74522 201.559 10.093 203.172 11.3027 203.953C12.3557 204.632 13.7433 204.466 14.6064 203.558L28.6332 188.797C31.7127 185.556 32.3396 184.903 32.9798 184.225C33.6199 183.546 34.0219 183.107 34.6403 182.408C35.2588 181.71 35.8527 181.027 38.8047 177.67L149.897 51.3322C151.386 49.6386 152.754 47.8419 153.99 45.9556C155.82 43.165 156.826 43.7877 157.007 47.8247C157.134 50.6398 157.307 54.4921 157.527 59.3814C157.828 66.0793 163.504 71.265 170.204 70.9639C176.904 70.6629 182.091 64.9891 181.79 58.2912L179.934 17.0092C179.919 16.6743 179.907 16.3393 179.899 16.0042C179.744 9.47381 178.642 5.49945 176.594 4.08111C171.241 0.373226 159.749 2.43335 156.605 2.96502C152.21 3.70829 136.662 5.88828 109.962 9.50499C104.229 10.2816 100.211 15.5574 100.988 21.2889C101.032 21.6134 101.091 21.9357 101.165 22.2546L101.222 22.4966C102.656 28.6607 108.637 32.6473 114.881 31.5998L125.617 29.798C125.854 29.7583 126.09 29.7168 126.326 29.6735C128.534 29.2678 129.858 29.2244 130.298 29.5425C130.76 29.8765 130.508 30.7976 129.542 32.3057Z"
+          fill="white"
+        />
+      </g>
+    </svg>
+  );
+}
+
 function CheckIcon({ className }: { className?: string }) {
   return (
     <svg className={className} width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden>
@@ -145,8 +174,8 @@ function StatPill({ stat }: { stat: WorkforceStat }) {
           {stat.icon ?? <DefaultStatIcon className="h-[18px] w-[18px]" />}
         </div>
         <div className="min-w-0">
-          <p className="whitespace-nowrap text-[12px] font-medium leading-[16px] text-[#64748B]">{stat.label}</p>
-          <p className="whitespace-nowrap text-[14px] font-bold leading-[20px] text-[#020817]">{stat.value}</p>
+          <p className="whitespace-nowrap text-[12px] font-medium leading-[16px] text-subtle">{stat.label}</p>
+          <p className="whitespace-nowrap text-[14px] font-bold leading-[20px] text-strong">{stat.value}</p>
         </div>
       </div>
     </div>
@@ -162,43 +191,13 @@ export default function WorkforceSection({
   cta,
   stats,
   partners,
-  decorativeArrow,
 }: WorkforceSectionProps) {
   return (
     <section
-      className="full-bleed relative z-20 overflow-visible bg-[linear-gradient(89deg,#83BC53_-49.52%,#F4AA1F_4.15%,#EF4444_139.42%)] pt-16 pb-0 md:pt-20 lg:pt-24"
+      className="full-bleed relative z-20 overflow-visible bg-[#0D0D0D] pt-16 pb-20 md:pt-20 md:pb-28 lg:pt-24 lg:pb-32"
       aria-labelledby="workforce-heading"
     >
-      {decorativeArrow ? (
-        <div className="pointer-events-none absolute left-0 top-1/4 z-0 h-64 w-64 opacity-30 lg:h-80 lg:w-80" aria-hidden>
-          <Image
-            src={decorativeArrow.src}
-            alt=""
-            fill
-            sizes="(max-width: 768px) 256px, 320px"
-            className="object-contain object-left"
-          />
-        </div>
-      ) : null}
-
-      {/* Bottom-left large arrow watermark */}
-      <div
-        className="pointer-events-none absolute -bottom-8 left-0 z-0"
-        style={{
-          width: '290px',
-          height: '307px',
-          transform: 'rotate(0.428deg)',
-        }}
-        aria-hidden
-      >
-        <Image
-          src="/images/big-aerox.png"
-          alt=""
-          fill
-          sizes="312px"
-          className="object-contain object-bottom-left"
-        />
-      </div>
+      <WorkforceDecorIcon className="pointer-events-none absolute bottom-0 left-0 z-0 h-auto w-[120px] md:w-[160px] lg:w-[190px]" />
 
       <div className="site-container relative z-10 px-4 sm:px-6 lg:px-0">
         <div className="grid items-center gap-10 lg:grid-cols-[1.1fr_1fr] lg:gap-16">
@@ -264,7 +263,7 @@ export default function WorkforceSection({
 
             <Link
               href={cta.href}
-              className="mt-7 inline-flex h-[48px] items-center justify-center gap-2 rounded-lg bg-[#1E293B] px-6 text-[14px] font-semibold text-white shadow-[0_4px_4px_0_rgba(30,41,59,0.03),0_4px_4px_0_rgba(30,41,59,0.08),0_4px_4px_0_rgba(30,41,59,0.11),0_4px_4px_0_rgba(30,41,59,0.11)] transition hover:bg-[#0F172A]"
+              className="mt-7 inline-flex h-[48px] items-center justify-center gap-2 rounded-lg bg-heading px-6 text-[14px] font-semibold text-white shadow-[0_4px_4px_0_rgba(30,41,59,0.03),0_4px_4px_0_rgba(30,41,59,0.08),0_4px_4px_0_rgba(30,41,59,0.11),0_4px_4px_0_rgba(30,41,59,0.11)] transition hover:bg-link"
             >
               {cta.label}
               <ArrowRightIcon className="h-3.5 w-3.5" />
@@ -274,7 +273,7 @@ export default function WorkforceSection({
 
         {/* Bottom: hiring partners strip (overlaps next section by half) */}
         {partners.length > 0 ? (
-          <div className="relative z-50 mt-0 mb-0 grid translate-y-1/2 grid-cols-3 items-center gap-6 rounded-2xl bg-white px-10 py-14 shadow-[0_10px_30px_-10px_rgba(15,23,42,0.25)] sm:grid-cols-4 md:mt-0 md:mb-0 md:grid-cols-8 md:px-12 md:py-16">
+          <div className="relative z-50 mt-10 mb-[-72px] grid translate-y-1/2 grid-cols-3 items-center gap-6 rounded-2xl bg-white px-10 py-14 shadow-[0_10px_30px_-10px_rgba(15,23,42,0.25)] sm:grid-cols-4 md:mt-12 md:mb-[-130px] md:grid-cols-8 md:px-12 md:py-16">
             {partners.map((p) => (
               <div key={p.id} className="relative h-8 w-full md:h-9">
                 <Image

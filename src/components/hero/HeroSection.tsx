@@ -12,12 +12,14 @@ export interface HeroBadge {
   title: string;
   subtitle: string;
   variant: 'learners' | 'mentors';
-  placement: 'top-left' | 'mid-left' | 'bottom-center';
+  placement: 'top-left' | 'mid-left' | 'bottom-center' | 'bottom-right';
 }
 
 export interface HeroSectionProps {
-  /** Intro line before the gradient accent*/
+  /** Intro line before "Your" */
   headingIntro: string;
+  /** Middle line (e.g. "Your") */
+  headingYour: string;
   /** Gradient accent line */
   headingAccent: string;
   subheading: string;
@@ -42,16 +44,26 @@ export interface HeroSectionProps {
   backgroundImage?: {
     src: string;
     className?: string;
+    /** Bump when replacing the file (same path) to bust browser/Next image cache */
+    version?: number | string;
   };
   badges: HeroBadge[];
 }
 
 function ArrowRightIcon({ className }: { className?: string }) {
   return (
-    <svg className={className} width="18" height="15" viewBox="0 0 18 15" fill="none" aria-hidden>
+    <svg
+      className={className}
+      xmlns="http://www.w3.org/2000/svg"
+      width="18"
+      height="15"
+      viewBox="0 0 18 15"
+      fill="none"
+      aria-hidden
+    >
       <path
         d="M10.6333 15C10.8659 15 11.0694 14.9109 11.2633 14.7229L17.7092 8.16292C17.903 7.97492 18 7.74735 18 7.49999C18 7.25263 17.903 7.02506 17.7092 6.83707L11.2827 0.296834C11.0694 0.0791556 10.8659 0 10.6333 0C10.1583 0 9.78996 0.3562 9.78996 0.850923C9.78996 1.08839 9.86751 1.31596 10.0226 1.47428L12.1939 3.73021L16.2358 7.49999L12.1939 11.2697L10.0226 13.5257C9.86751 13.6741 9.78996 13.9116 9.78996 14.149C9.78996 14.6438 10.1583 15 10.6333 15ZM0.852987 8.3806H13.1147L16.2358 8.18271C16.6332 8.15303 16.9046 7.90566 16.9046 7.49999C16.9046 7.09432 16.6332 6.84696 16.2358 6.81728L13.1147 6.61938H0.852987C0.348949 6.61938 0 6.98548 0 7.49999C0 8.01451 0.348949 8.3806 0.852987 8.3806Z"
-        fill="currentColor"
+        fill="white"
       />
     </svg>
   );
@@ -166,7 +178,7 @@ function HeroLogoRow({
               alt={logo.alt}
               width={size === 'sm' ? 130 : size === 'md' ? 160 : 500}
               height={size === 'sm' ? 30 : size === 'md' ? 36 : 48}
-              className="h-full w-full object-contain"
+              className="h-auto max-h-full w-auto max-w-full object-contain"
               sizes={size === 'sm' ? '130px' : size === 'md' ? '160px' : '500px'}
             />
           ) : (
@@ -186,7 +198,9 @@ function FloatingBadge({ badge }: { badge: HeroBadge }) {
       ? 'left-0 top-10 md:-left-6 md:top-25'
       : badge.placement === 'mid-left'
         ? 'left-0 top-[60%] -translate-y-1/2 md:-left-10'
-        : 'bottom-10 left-[42%] -translate-x-1/2 md:-bottom-2';
+        : badge.placement === 'bottom-right'
+          ? 'bottom-32 -right-2 md:-right-8 md:bottom-28'
+          : 'bottom-10 left-[42%] -translate-x-1/2 md:-bottom-2';
 
   const iconBg =
     badge.variant === 'learners'
@@ -216,8 +230,8 @@ function FloatingBadge({ badge }: { badge: HeroBadge }) {
           )}
         </div>
         <div className="min-w-0">
-          <p className="text-[12px] font-medium leading-[16px] text-[#64748B]">{badge.title}</p>
-          <p className="text-[14px] font-bold leading-[20px] text-[#020817]">{badge.subtitle}</p>
+          <p className="text-[12px] font-medium leading-[16px] text-subtle">{badge.title}</p>
+          <p className="text-[14px] font-bold leading-[20px] text-strong">{badge.subtitle}</p>
         </div>
       </div>
     </div>
@@ -227,6 +241,7 @@ function FloatingBadge({ badge }: { badge: HeroBadge }) {
 export default function HeroSection(props: HeroSectionProps) {
   const {
     headingIntro,
+    headingYour,
     headingAccent,
     subheading,
     primaryCta,
@@ -238,14 +253,13 @@ export default function HeroSection(props: HeroSectionProps) {
     badges,
   } = props;
 
-  const panelBg = figure.panelBgClassName ?? 'bg-[#BB9255]';
   const bgClassName =
     backgroundImage?.className ??
-    'absolute right-[8%] top-[-5%] h-[58%] w-[42%] md:w-[30%] lg:w-[18%]';
+    'absolute right-[6%] top-[10%] h-[54%] w-[46%] md:w-[33%] lg:w-[24%]';
 
   return (
     <section
-      className="full-bleed relative overflow-hidden bg-[#F4F4F4] pb-12 pt-16 md:pb-16 md:pt-20 lg:pb-20 lg:pt-30"
+      className="full-bleed relative overflow-hidden bg-surface pb-8 pt-14 md:pb-10 md:pt-16 lg:pb-12 lg:pt-20"
       aria-labelledby="hero-heading"
     >
       {/* Decorative background (non-content) */}
@@ -253,17 +267,20 @@ export default function HeroSection(props: HeroSectionProps) {
         {backgroundImage?.src ? (
           <div className={bgClassName}>
             <Image
-              src={backgroundImage.src}
+              src={
+                backgroundImage.version != null
+                  ? `${backgroundImage.src}?v=${backgroundImage.version}`
+                  : backgroundImage.src
+              }
               alt=""
               fill
               priority={false}
-              sizes="(max-width: 768px) 35vw, (max-width: 1024px) 28vw, 320px"
+              sizes="(max-width: 768px) 46vw, (max-width: 1024px) 33vw, 400px"
               className="object-contain object-center"
             />
           </div>
         ) : null}
-        <div className="absolute -bottom-16 left-[-10%] h-56 w-56 rounded-full bg-amber-200/35 blur-3xl" />
-        <div className="absolute bottom-0 right-[15%] h-48 w-48 rounded-full bg-orange-200/30 blur-3xl" />
+        <div className="absolute bottom-0 right-[15%] h-48 w-48 rounded-full bg-orange-200/30 blur-3xl" aria-hidden />
       </div>
 
       <div className="site-container relative z-10">
@@ -272,34 +289,34 @@ export default function HeroSection(props: HeroSectionProps) {
           <div className="max-w-xl lg:max-w-none">
             <h1
               id="hero-heading"
-              className="pt-10 text-[40px] font-extrabold leading-[60px] tracking-tight text-[#1E293B]"
+              className="pt-10 text-[40px] font-extrabold leading-[60px] tracking-tight text-heading"
             >
               <span className="block whitespace-nowrap">{headingIntro}</span>
-              <span className="mt-1 block bg-[linear-gradient(89deg,#EF4444_-27.47%,#F4AA1F_90.29%,#83BC53_139.44%)] bg-clip-text text-[68px] font-extrabold leading-[80px] text-transparent">
-                {headingAccent}
+              <span className="mt-1 block whitespace-nowrap">
+                <span className="text-[40px] font-extrabold leading-[60px] text-heading">{headingYour}</span>{' '}
+                <span className="text-career-growth-gradient text-[68px] font-extrabold leading-[80px]">
+                  {headingAccent}
+                </span>
               </span>
             </h1>
-            <p className="mt-5 whitespace-nowrap text-[18px] font-semibold leading-normal text-[#788593]">{subheading}</p>
+            <p className="mt-5 whitespace-nowrap text-[18px] font-semibold leading-normal text-muted">{subheading}</p>
 
             <div className="mt-8 flex flex-wrap gap-3 sm:gap-4">
-              <Link
-                href={primaryCta.href}
-                className="inline-flex h-[54px] items-center justify-center gap-2 rounded-lg bg-[#1E293B] px-6 text-sm font-semibold text-white shadow-[0_4px_4px_0_rgba(30,41,59,0.03),0_4px_4px_0_rgba(30,41,59,0.08),0_4px_4px_0_rgba(30,41,59,0.11),0_4px_4px_0_rgba(30,41,59,0.11)] transition hover:bg-[#1E293B]/90 md:px-7 md:text-[15px]"
-              >
+              <Link href={primaryCta.href} className="btn-brand h-[54px] gap-2 px-6 md:px-7">
                 {primaryCta.label}
-                <ArrowRightIcon className="h-[15px] w-[18px]" />
+                <ArrowRightIcon className="shrink-0" />
               </Link>
               <Link
                 href={secondaryCta.href}
-                className="inline-flex h-[54px] w-[275px] items-center justify-center gap-[18px] rounded-lg border border-[#F0593A] bg-[#FFF9F8] pl-[34px] pr-[26px] text-sm font-semibold text-[#F0593A] shadow-[0_4px_4px_0_rgba(30,41,59,0.03),0_4px_4px_0_rgba(30,41,59,0.08),0_4px_4px_0_rgba(30,41,59,0.11),0_4px_4px_0_rgba(30,41,59,0.11)] transition hover:bg-[#FFF1ED] md:text-[15px]"
+                className="btn-brand-outline inline-flex h-[54px] w-[275px] items-center justify-center gap-[18px] pl-[34px] pr-[26px] text-sm font-semibold shadow-[0_4px_4px_0_rgba(30,41,59,0.03),0_4px_4px_0_rgba(30,41,59,0.08),0_4px_4px_0_rgba(30,41,59,0.11),0_4px_4px_0_rgba(30,41,59,0.11)] transition hover:bg-brand/5 md:text-[15px]"
               >
                 {secondaryCta.label}
                 <PhoneIcon className="h-5 w-5" />
               </Link>
             </div>
 
-            <div className="mt-10 flex flex-nowrap items-center gap-x-3 border-t border-zinc-200/80 pt-3">
-              <p className="shrink-0 text-[18px] font-semibold leading-[18px] tracking-[-0.18px] text-[#1E293B]">
+            <div className="mt-10 flex flex-nowrap items-center gap-x-3 border-t border-zinc-200/80 pt-5">
+              <p className="shrink-0 text-[18px] font-semibold leading-[18px] tracking-[-0.18px] text-heading">
                 {trustedBy.label}
               </p>
               <div className="min-w-0 flex-1 overflow-hidden">
@@ -312,16 +329,19 @@ export default function HeroSection(props: HeroSectionProps) {
           <div className="relative mx-auto w-full max-w-md lg:mx-0 lg:max-w-none">
             <div className="relative ml-auto mr-0 aspect-[4/5] w-full max-w-[420px] lg:max-w-[480px]">
               <div
-                className={`absolute right-0 top-1/2 z-[1] h-[508px] w-[364px] -translate-y-1/2 rounded-[156px] ${panelBg} shadow-inner shadow-black/5`}
+                className="absolute right-0 top-1/2 z-[1] h-[579px] w-[389px] -translate-y-1/2 rounded-[400px] shadow-inner shadow-black/5"
+                style={{
+                  background: 'linear-gradient(180deg, #BB9255 -140.92%, #FADCBA 165.92%)',
+                }}
                 aria-hidden
               />
-              <div className="absolute right-0 -top-[95px] z-[2] h-[613px] w-[312px]">
+              <div className="absolute right-6 -top-[60px] z-[2] h-[544px] w-[350px]">
                 <Image
                   src={figure.src}
                   alt={figure.alt}
                   fill
                   priority
-                  sizes="312px"
+                  sizes="350px"
                   className="object-contain object-bottom drop-shadow-xl"
                 />
               </div>
@@ -333,20 +353,11 @@ export default function HeroSection(props: HeroSectionProps) {
         </div>
 
         {/* Collaboration strip */}
-        <div className="relative mt-12 md:mt-16">
-          {/* Decorative glows behind the box (left-bottom & right-top) */}
-          <span
-            aria-hidden
-            className="pointer-events-none absolute -bottom-20 -left-20 z-0 h-56 w-56 rounded-full bg-[rgba(229,172,38,0.16)] blur-[32px]"
-          />
-          <span
-            aria-hidden
-            className="pointer-events-none absolute -right-20 -top-20 z-0 h-56 w-56 rounded-full bg-[rgba(229,172,38,0.16)] blur-[32px]"
-          />
-          <div className="relative z-10 rounded-lg border border-zinc-100 bg-white px-6 py-8 shadow-[0_4px_4px_0_rgba(30,41,59,0.11),0_4px_4px_0_rgba(30,41,59,0.03)] md:px-10 md:py-10">
-            <p className="mb-6 text-center text-[28px] font-semibold leading-normal text-[#1E293B]">
+        <div className="relative -mt-10 md:-mt-12">
+<div className="relative z-10 rounded-lg border border-zinc-100 bg-white px-6 py-8 shadow-[0_4px_4px_0_rgba(30,41,59,0.11),0_4px_4px_0_rgba(30,41,59,0.03)] md:px-10 md:py-10">
+            <p className="mb-6 text-center text-[28px] font-semibold leading-normal text-heading">
               {collaboration.lineBefore}
-              <span className="bg-[linear-gradient(89deg,#EF4444_-27.47%,#F4AA1F_90.29%,#83BC53_139.44%)] bg-clip-text font-semibold text-transparent">
+              <span className="font-semibold text-brand">
                 {collaboration.lineHighlight}
               </span>
               {collaboration.lineAfter}
