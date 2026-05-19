@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import {
   CategoryCarouselControls,
   CategoryCarouselTrack,
@@ -53,7 +53,7 @@ function BlogCardFooter({
         <span
           className={`relative shrink-0 overflow-hidden rounded-full ${compact ? 'h-8 w-8' : 'h-9 w-9'} ${isSolid ? 'ring-2 ring-white/30' : 'ring-1 ring-zinc-200'}`}
         >
-          <Image src={avatarSrc} alt="" fill sizes="36px" className="object-cover" />
+          <Image src={avatarSrc} alt="" fill sizes="36px" loading="eager" className="object-cover" />
         </span>
         <span className="min-w-0">
           <span
@@ -89,7 +89,14 @@ function BlogCard({ blog }: { blog: RelatedBlogItem }) {
       >
         <h3 className="text-[17px] font-bold leading-snug text-heading">{blog.title}</h3>
         <div className="relative mt-4 h-[150px] w-full overflow-hidden rounded-xl">
-          <Image src={imageSrc} alt="" fill sizes="(max-width: 1024px) 33vw, 400px" className="object-cover" />
+          <Image
+            src={imageSrc}
+            alt=""
+            fill
+            sizes="(max-width: 1024px) 33vw, 400px"
+            loading="eager"
+            className="object-cover"
+          />
         </div>
         <p className="mt-4 flex-1 text-[14px] leading-relaxed text-muted">{blog.excerpt}</p>
         <BlogCardFooter blog={blog} isSolid={false} />
@@ -122,6 +129,7 @@ function BlogCard({ blog }: { blog: RelatedBlogItem }) {
           alt=""
           fill
           sizes="(max-width: 1024px) 33vw, 400px"
+          loading="eager"
           className="object-cover"
         />
       </div>
@@ -153,11 +161,27 @@ function BlogMasonryGrid({ items }: { items: RelatedBlogItem[] }) {
 
 const PAGE_SIZE = 6;
 
+/** Off-screen carousel slides are lazy-loaded by default; warm the cache on mount. */
+function usePrefetchBlogImages(items: RelatedBlogItem[]) {
+  useEffect(() => {
+    const sources = new Set<string>([AUTHOR_AVATAR, DEFAULT_BLOG_IMAGE]);
+    for (const blog of items) {
+      if (blog.imageSrc) sources.add(blog.imageSrc);
+      if (blog.authorAvatar) sources.add(blog.authorAvatar);
+    }
+    for (const src of sources) {
+      const img = new window.Image();
+      img.src = src;
+    }
+  }, [items]);
+}
+
 export default function CategoryRelatedBlogsSection() {
   const { heading, subheading, items } = RELATED_BLOGS;
   const [page, setPage] = useState(0);
   const pages = useMemo(() => chunkPages(items, PAGE_SIZE), [items]);
   const totalPages = pages.length;
+  usePrefetchBlogImages(items);
 
   return (
     <section

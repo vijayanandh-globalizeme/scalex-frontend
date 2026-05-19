@@ -44,8 +44,6 @@ export interface HeroSectionProps {
   backgroundImage?: {
     src: string;
     className?: string;
-    /** Bump when replacing the file (same path) to bust browser/Next image cache */
-    version?: number | string;
   };
   badges: HeroBadge[];
 }
@@ -267,11 +265,7 @@ export default function HeroSection(props: HeroSectionProps) {
         {backgroundImage?.src ? (
           <div className={bgClassName}>
             <Image
-              src={
-                backgroundImage.version != null
-                  ? `${backgroundImage.src}?v=${backgroundImage.version}`
-                  : backgroundImage.src
-              }
+              src={backgroundImage.src}
               alt=""
               fill
               priority={false}

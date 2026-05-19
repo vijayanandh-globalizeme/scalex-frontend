@@ -93,8 +93,8 @@ export function CategoryCarouselTrack({
   return (
     <div className={`overflow-hidden ${className ?? ''}`}>
       <div
-        className="flex transition-transform duration-500 ease-in-out motion-reduce:transition-none"
-        style={{ transform: `translateX(-${page * 100}%)` }}
+        className="flex will-change-transform transition-transform duration-300 ease-in-out motion-reduce:transition-none"
+        style={{ transform: `translate3d(-${page * 100}%, 0, 0)` }}
       >
         {children.map((slide, index) => (
           <div key={index} className="w-full shrink-0">

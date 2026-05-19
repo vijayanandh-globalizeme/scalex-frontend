@@ -66,7 +66,6 @@ function createCategory(
     heroImage: {
       src: '/images/category/agile-scrum-hero.png',
       alt: `${breadcrumbLabel} training and certification programs`,
-      version: 3,
     },
     primaryCta: { href: '#courses', label: 'Explore Courses' },
     secondaryCta: { href: '/contact', label: 'Get Free Career Guidance' },

@@ -25,7 +25,7 @@ function buildCategoryCourses(categoryId: string, categoryLabel: string): Course
     originalPrice: 18999,
     savePercent: 40,
     slotsLeft: 4,
-    href: '#',
+    href: '#courses',
   }));
 }
 

@@ -21,7 +21,7 @@ export interface CategoryPageContent {
   titlePrefix: string;
   titleAccent: string;
   subheading: string;
-  heroImage: { src: string; alt: string; /** Bump when replacing the file at the same path */ version?: number | string };
+  heroImage: { src: string; alt: string };
   primaryCta: { href: string; label: string };
   secondaryCta: { href: string; label: string };
   reviews: CategoryReview[];
@@ -221,11 +221,7 @@ export default function CategoryHeroSection({
           <div className="relative mx-auto w-full max-w-[558px] lg:mx-0 lg:ml-auto">
             <div className="relative h-[610px] w-[558px] max-w-full overflow-hidden rounded-2xl shadow-[0_8px_30px_-12px_rgba(15,23,42,0.2)]">
               <Image
-                src={
-                  heroImage.version != null
-                    ? `${heroImage.src}?v=${heroImage.version}`
-                    : heroImage.src
-                }
+                src={heroImage.src}
                 alt={heroImage.alt}
                 width={558}
                 height={610}
