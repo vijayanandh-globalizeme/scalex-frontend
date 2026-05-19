@@ -297,7 +297,7 @@ export default function TestimonialsSection({
       aria-labelledby="stories-heading"
     >
       <StoriesDecorIcon className="pointer-events-none absolute bottom-0 right-0 z-0 h-auto w-[120px] md:w-[160px] lg:w-[188px]" />
-      <div className="site-container relative z-10 px-4 sm:px-6 lg:px-0">
+      <div className="site-container relative z-10">
         <div className="grid items-start gap-10 lg:grid-cols-[1fr_1.1fr_1fr]">
           {/* Left: heading & subheading */}
           <div className="text-white lg:self-center">

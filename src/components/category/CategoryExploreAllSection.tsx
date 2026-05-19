@@ -135,7 +135,7 @@ export default function CategoryExploreAllSection() {
       className="full-bleed bg-surface pb-14 pt-14 md:pb-20 md:pt-16"
       aria-labelledby="explore-categories-heading"
     >
-      <div className="site-container px-4 sm:px-6 lg:px-0">
+      <div className="site-container">
         <header className="mx-auto max-w-6xl text-center">
           <h2
             id="explore-categories-heading"
@@ -148,17 +148,17 @@ export default function CategoryExploreAllSection() {
           </p>
         </header>
 
-        <CategoryCarouselTrack page={0} className="mt-10 md:mt-12">
-          {[
+        <CategoryCarouselTrack page={page} className="mt-10 md:mt-12">
+          {pages.map((pageItems, pageIndex) => (
             <div
-              key={page}
+              key={pageIndex}
               className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4 lg:gap-6"
             >
-              {(pages[page] ?? []).map((item) => (
+              {pageItems.map((item) => (
                 <CategoryCard key={item.id} item={item} />
               ))}
-            </div>,
-          ]}
+            </div>
+          ))}
         </CategoryCarouselTrack>
 
         <div className="mt-10">

@@ -142,7 +142,7 @@ export default function MentorsSection({
       className="full-bleed relative z-10 bg-white pt-[200px] pb-[150px]"
       aria-labelledby="mentors-heading"
     >
-      <div className="site-container relative z-10 px-4 sm:px-6 lg:px-0">
+      <div className="site-container relative z-10">
         <header className="w-full text-center">
           <h2
             id="mentors-heading"

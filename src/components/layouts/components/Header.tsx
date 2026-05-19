@@ -1,6 +1,15 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import { getAllCategorySlugs, getCategoryBySlug } from '@/lib/categories';
 import NavDropdown from './NavDropdown';
+
+const ALL_COURSES_ITEMS = getAllCategorySlugs().map((slug) => {
+  const category = getCategoryBySlug(slug)!;
+  return {
+    label: category.breadcrumbLabel,
+    href: `/categories/${slug}`,
+  };
+});
 
 const INTERVIEW_PREP_ITEMS = [
   { label: 'DevOps With Placement', href: '#' },
@@ -21,25 +30,6 @@ const RESOURCES_ITEMS = [
   { label: 'Webinars & Events', href: '#' },
   { label: 'Career Resources', href: '#' },
 ] as const;
-
-function AllCoursesChevron({ className }: { className?: string }) {
-  return (
-    <svg
-      className={className}
-      xmlns="http://www.w3.org/2000/svg"
-      width="13"
-      height="7"
-      viewBox="0 0 13 7"
-      fill="none"
-      aria-hidden
-    >
-      <path
-        d="M6.50374 7C6.69084 7 6.87795 6.92839 7.00517 6.79244L12.7979 1.11657C12.9251 0.994886 13 0.837425 13 0.658489C13 0.286295 12.7081 0 12.3189 0C12.1318 0 11.9597 0.0715751 11.8325 0.186097L6.09959 5.79038H6.9004L1.16753 0.186097C1.04778 0.0715751 0.875649 0 0.681059 0C0.291882 0 0 0.286295 0 0.658489C0 0.837425 0.0748416 0.994886 0.202073 1.12372L5.99482 6.79244C6.13701 6.92839 6.30915 7 6.50374 7Z"
-        fill="currentColor"
-      />
-    </svg>
-  );
-}
 
 function SignInArrow({ className }: { className?: string }) {
   return (
@@ -87,7 +77,7 @@ function SearchIcon({ className }: { className?: string }) {
 }
 
 const navLinkClass =
-  'header-fluid-text flex items-center gap-1 font-normal not-italic text-ink tracking-[-0.16px] transition hover:opacity-90 whitespace-nowrap';
+  'header-fluid-text flex items-center gap-1 font-normal not-italic tracking-[-0.16px] whitespace-nowrap';
 
 const Header = () => {
   return (
@@ -107,13 +97,11 @@ const Header = () => {
               />
             </Link>
 
-            <button
-              type="button"
-              className="btn-brand-outline header-fluid-text flex h-[40px] w-[133px] shrink-0 items-center justify-center gap-1"
-            >
-              All Courses
-              <AllCoursesChevron className="shrink-0 text-brand" />
-            </button>
+            <NavDropdown
+              label="All Courses"
+              items={ALL_COURSES_ITEMS}
+              triggerVariant="outline-button"
+            />
           </div>
 
           <div className="flex min-h-[44px] w-full min-w-0 items-center gap-2 rounded-lg bg-zinc-100 px-4 py-2.5 md:mx-auto md:max-w-xl lg:mx-0 lg:mr-[30px] lg:h-10 lg:min-h-0 lg:w-[243px] lg:max-w-[243px] lg:flex-none lg:shrink-0 lg:py-0">
@@ -135,29 +123,29 @@ const Header = () => {
                 <NavDropdown
                   label="Interview Prep"
                   items={[...INTERVIEW_PREP_ITEMS]}
-                  triggerClassName={`${navLinkClass} cursor-pointer hover:opacity-100`}
+                  triggerClassName={navLinkClass}
                 />
                 <NavDropdown
                   label="Certification Prep"
                   items={[...CERTIFICATION_PREP_ITEMS]}
-                  triggerClassName={`${navLinkClass} cursor-pointer hover:opacity-100`}
+                  triggerClassName={navLinkClass}
                 />
                 <NavDropdown
                   label="Resources"
                   items={[...RESOURCES_ITEMS]}
-                  triggerClassName={`${navLinkClass} cursor-pointer hover:opacity-100`}
+                  triggerClassName={navLinkClass}
                 />
-                <Link href="#" className={`${navLinkClass} !gap-0`}>
+                <Link href="#" className={`${navLinkClass} header-nav-parent-hover !gap-0`}>
                   Contact Us
                 </Link>
               </nav>
 
               <Link
                 href="#"
-                className="btn-brand-outline header-fluid-text flex items-center gap-2 px-4 py-2 lg:h-10 lg:py-0"
+                className="btn-brand-outline btn-brand-outline-hover-fill header-fluid-text flex items-center gap-2 px-4 py-2 lg:h-10 lg:py-0"
               >
                 Sign In
-                <SignInArrow className="shrink-0 text-brand" />
+                <SignInArrow className="shrink-0 text-current" />
               </Link>
             </div>
           </div>

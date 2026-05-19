@@ -196,7 +196,7 @@ export default function SuccessStoriesSection({
       className="full-bleed relative bg-surface pt-20 pb-16 md:pt-28 md:pb-20 lg:pt-36 lg:pb-24"
       aria-labelledby="success-stories-heading"
     >
-      <div className="site-container relative z-10 px-4 sm:px-6 lg:px-0">
+      <div className="site-container relative z-10">
         <header className="relative mx-auto max-w-3xl text-center">
           <h2
             id="success-stories-heading"

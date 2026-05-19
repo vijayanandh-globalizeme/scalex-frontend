@@ -55,7 +55,7 @@ export default function WhyScaleXSection({
       className="full-bleed relative bg-surface py-16 md:py-20 lg:py-24"
       aria-labelledby="why-scalex-heading"
     >
-      <div className="site-container relative z-10 px-4 sm:px-6 lg:px-0">
+      <div className="site-container relative z-10">
         <header className="w-full text-center">
           <h2
             id="why-scalex-heading"

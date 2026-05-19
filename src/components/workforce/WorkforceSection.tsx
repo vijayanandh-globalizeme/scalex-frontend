@@ -199,7 +199,7 @@ export default function WorkforceSection({
     >
       <WorkforceDecorIcon className="pointer-events-none absolute bottom-0 left-0 z-0 h-auto w-[120px] md:w-[160px] lg:w-[190px]" />
 
-      <div className="site-container relative z-10 px-4 sm:px-6 lg:px-0">
+      <div className="site-container relative z-10">
         <div className="grid items-center gap-10 lg:grid-cols-[1.1fr_1fr] lg:gap-16">
           {/* Left: pyramid-stacked stat badges (3 / 2 / 1) */}
           <div className="flex flex-col gap-5">

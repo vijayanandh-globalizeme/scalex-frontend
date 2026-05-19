@@ -2,7 +2,7 @@ export default function CategoryLoading() {
   return (
     <div className="animate-pulse" aria-busy="true" aria-label="Loading category page">
       <div className="full-bleed bg-surface pb-12 pt-10">
-        <div className="site-container px-4 sm:px-6 lg:px-0">
+        <div className="site-container">
           <div className="mb-6 h-4 w-40 rounded bg-zinc-200" />
           <div className="grid gap-10 lg:grid-cols-2">
             <div className="space-y-4">
@@ -14,7 +14,7 @@ export default function CategoryLoading() {
           </div>
         </div>
       </div>
-      <div className="site-container px-4 py-16 sm:px-6 lg:px-0">
+      <div className="site-container py-16">
         <div className="mx-auto mb-10 h-10 w-80 max-w-full rounded bg-zinc-200" />
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
           {Array.from({ length: 6 }).map((_, i) => (

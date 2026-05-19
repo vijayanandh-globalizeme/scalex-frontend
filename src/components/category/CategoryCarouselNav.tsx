@@ -16,7 +16,8 @@ export function CarouselNavIcon({
   variant: 'outline' | 'filled';
   size?: number;
 }) {
-  const arrowTransform = direction === 'next' ? 'translate(36 0) scale(-1 1)' : undefined;
+  const arrowTransform =
+    direction === 'prev' ? 'translate(18 18) scale(-1 1) translate(-18 -18)' : undefined;
 
   return (
     <svg
@@ -57,6 +58,17 @@ export function CategoryCarouselControls({
   const canGoPrev = page > 0;
   const canGoNext = page < totalPages - 1;
 
+  const prevVariant = canGoPrev && !canGoNext ? 'filled' : 'outline';
+  const nextVariant = canGoNext ? 'filled' : 'outline';
+
+  const navButtonClass = (variant: 'outline' | 'filled') =>
+    [
+      'shrink-0 transition hover:opacity-90 disabled:cursor-not-allowed',
+      variant === 'filled' ? 'disabled:opacity-40' : '',
+    ]
+      .filter(Boolean)
+      .join(' ');
+
   return (
     <div className="flex justify-end gap-3">
       <button
@@ -64,24 +76,23 @@ export function CategoryCarouselControls({
         onClick={onPrev}
         disabled={!canGoPrev}
         aria-label={prevLabel}
-        className="shrink-0 transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-40"
+        className={navButtonClass(prevVariant)}
       >
-        <CarouselNavIcon direction="prev" variant="outline" />
+        <CarouselNavIcon direction="prev" variant={prevVariant} />
       </button>
       <button
         type="button"
         onClick={onNext}
         disabled={!canGoNext}
         aria-label={nextLabel}
-        className="shrink-0 transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-40"
+        className={navButtonClass(nextVariant)}
       >
-        <CarouselNavIcon direction="next" variant="filled" />
+        <CarouselNavIcon direction="next" variant={nextVariant} />
       </button>
     </div>
   );
 }
 
-/** Renders one slide at a time — avoids laying out every page in a wide horizontal track. */
 export function CategoryCarouselTrack({
   page,
   children,
@@ -91,10 +102,20 @@ export function CategoryCarouselTrack({
   children: ReactNode[];
   className?: string;
 }) {
-  const slide = children[page];
-  if (slide == null) return null;
-
-  return <div className={className}>{slide}</div>;
+  return (
+    <div className={`overflow-hidden ${className ?? ''}`}>
+      <div
+        className="flex will-change-transform transition-transform duration-500 ease-in-out motion-reduce:transition-none"
+        style={{ transform: `translate3d(-${page * 100}%, 0, 0)` }}
+      >
+        {children.map((slide, index) => (
+          <div key={index} className="w-full shrink-0">
+            {slide}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
 }
 
 export function chunkPages<T>(items: T[], pageSize: number): T[][] {

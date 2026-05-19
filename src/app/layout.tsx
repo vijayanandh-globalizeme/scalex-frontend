@@ -68,8 +68,8 @@ const rootJsonLd = getRootJsonLd();
 
 export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
   return (
-    <html lang="en" className={inter.variable}>
-      <body className="min-h-screen bg-white font-sans text-zinc-900 antialiased">
+    <html lang="en" className={`${inter.variable} overflow-x-clip`}>
+      <body className="min-h-screen overflow-x-hidden bg-white font-sans text-zinc-900 antialiased">
         <JsonLd data={rootJsonLd} />
         <MainLayout>{children}</MainLayout>
       </body>

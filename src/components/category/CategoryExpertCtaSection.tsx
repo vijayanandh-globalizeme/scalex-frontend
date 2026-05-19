@@ -58,7 +58,7 @@ export default function CategoryExpertCtaSection() {
       className="category-expert-heading full-bleed relative z-20 overflow-visible bg-[#0D0D0D] pb-0"
       aria-labelledby="category-expert-heading"
     >
-      <div className="site-container relative overflow-visible px-4 sm:px-6 lg:px-0">
+      <div className="site-container relative overflow-visible">
         <div className="grid items-center gap-[35px] overflow-visible lg:grid-cols-[minmax(0,3.5fr)_minmax(0,7fr)] lg:gap-12">
           <div className="relative mx-auto flex min-w-0 w-full items-center justify-center overflow-visible lg:mx-0 lg:justify-start">
             <ExpertDecorIcon className="pointer-events-none absolute bottom-0 right-[calc(var(--spacing)*6)] z-0 h-auto w-[290px]" />

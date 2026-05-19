@@ -51,7 +51,7 @@ export default function CategoryCoursesSection({
       className="full-bleed relative z-0 overflow-visible bg-white pb-10 pt-12 md:pb-12 md:pt-16 lg:pt-20"
       aria-labelledby="category-courses-heading"
     >
-      <div className="site-container px-4 sm:px-6 lg:px-0">
+      <div className="site-container">
         <header className="mx-auto max-w-4xl text-center">
           <h2
             id="category-courses-heading"

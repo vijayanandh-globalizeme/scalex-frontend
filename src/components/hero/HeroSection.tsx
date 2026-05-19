@@ -193,11 +193,11 @@ function HeroLogoRow({
 function FloatingBadge({ badge }: { badge: HeroBadge }) {
   const placement =
     badge.placement === 'top-left'
-      ? 'left-0 top-10 md:-left-6 md:top-25'
+      ? 'left-0 top-10 xl:-left-6 xl:top-25'
       : badge.placement === 'mid-left'
-        ? 'left-0 top-[60%] -translate-y-1/2 md:-left-10'
+        ? 'left-0 top-[60%] -translate-y-1/2 xl:-left-10'
         : badge.placement === 'bottom-right'
-          ? 'bottom-32 -right-2 md:-right-8 md:bottom-28'
+          ? 'bottom-32 right-0 md:bottom-28'
           : 'bottom-10 left-[42%] -translate-x-1/2 md:-bottom-2';
 
   const iconBg =
@@ -210,7 +210,7 @@ function FloatingBadge({ badge }: { badge: HeroBadge }) {
       ? 'h-[62px] w-[162px] px-3 py-2'
       : 'max-w-[200px] px-3 py-2.5 md:px-4 md:py-3';
 
-  const zClass = badge.variant === 'learners' ? 'z-[1]' : 'z-30';
+  const zClass = 'z-30';
 
   return (
     <div
@@ -278,22 +278,26 @@ export default function HeroSection(props: HeroSectionProps) {
       </div>
 
       <div className="site-container relative z-10">
-        <div className="grid items-start gap-10 lg:grid-cols-[2fr_1fr] lg:gap-6 xl:gap-8">
+        <div className="grid min-w-0 items-start gap-10 lg:grid-cols-[2fr_1fr] lg:gap-6 xl:gap-8">
           {/* Copy column */}
-          <div className="max-w-xl lg:max-w-none">
+          <div className="max-w-xl min-w-0 lg:max-w-none">
             <h1
               id="hero-heading"
-              className="pt-10 text-[40px] font-extrabold leading-[60px] tracking-tight text-heading"
+              className="pt-10 text-[32px] font-extrabold leading-tight tracking-tight text-heading sm:text-[36px] md:text-[40px] md:leading-[52px]"
             >
-              <span className="block whitespace-nowrap">{headingIntro}</span>
-              <span className="mt-1 block whitespace-nowrap">
-                <span className="text-[40px] font-extrabold leading-[60px] text-heading">{headingYour}</span>{' '}
-                <span className="text-career-growth-gradient text-[68px] font-extrabold leading-[80px]">
+              <span className="block">{headingIntro}</span>
+              <span className="mt-1 block">
+                <span className="text-[32px] font-extrabold leading-tight text-heading sm:text-[36px] md:text-[40px] md:leading-[52px]">
+                  {headingYour}
+                </span>{' '}
+                <span className="text-career-growth-gradient text-[40px] font-extrabold leading-tight sm:text-[52px] lg:text-[60px] xl:text-[68px] xl:leading-[80px]">
                   {headingAccent}
                 </span>
               </span>
             </h1>
-            <p className="mt-5 whitespace-nowrap text-[18px] font-semibold leading-normal text-muted">{subheading}</p>
+            <p className="mt-5 max-w-lg text-[16px] font-semibold leading-normal text-muted sm:text-[18px]">
+              {subheading}
+            </p>
 
             <div className="mt-8 flex flex-wrap gap-3 sm:gap-4">
               <Link href={primaryCta.href} className="btn-brand h-[54px] gap-2 px-6 md:px-7">
@@ -302,14 +306,14 @@ export default function HeroSection(props: HeroSectionProps) {
               </Link>
               <Link
                 href={secondaryCta.href}
-                className="btn-brand-outline inline-flex h-[54px] w-[275px] items-center justify-center gap-[18px] pl-[34px] pr-[26px] text-sm font-semibold shadow-[0_4px_4px_0_rgba(30,41,59,0.03),0_4px_4px_0_rgba(30,41,59,0.08),0_4px_4px_0_rgba(30,41,59,0.11),0_4px_4px_0_rgba(30,41,59,0.11)] transition hover:bg-brand/5 md:text-[15px]"
+                className="btn-brand-outline inline-flex h-[54px] w-full min-w-0 items-center justify-center gap-[18px] px-6 text-sm font-semibold shadow-[0_4px_4px_0_rgba(30,41,59,0.03),0_4px_4px_0_rgba(30,41,59,0.08),0_4px_4px_0_rgba(30,41,59,0.11),0_4px_4px_0_rgba(30,41,59,0.11)] transition hover:bg-brand/5 sm:w-auto sm:min-w-[275px] md:text-[15px]"
               >
                 {secondaryCta.label}
                 <PhoneIcon className="h-5 w-5" />
               </Link>
             </div>
 
-            <div className="mt-10 flex flex-nowrap items-center gap-x-3 border-t border-zinc-200/80 pt-5">
+            <div className="mt-10 flex flex-wrap items-center gap-x-3 gap-y-3 border-t border-zinc-200/80 pt-5">
               <p className="shrink-0 text-[18px] font-semibold leading-[18px] tracking-[-0.18px] text-heading">
                 {trustedBy.label}
               </p>
@@ -320,22 +324,22 @@ export default function HeroSection(props: HeroSectionProps) {
           </div>
 
           {/* Media column */}
-          <div className="relative mx-auto w-full max-w-md lg:mx-0 lg:max-w-none">
-            <div className="relative ml-auto mr-0 aspect-[4/5] w-full max-w-[420px] lg:max-w-[480px]">
+          <div className="relative mx-auto w-full min-w-0 max-w-md overflow-hidden lg:mx-0 lg:max-w-none">
+            <div className="relative ml-auto mr-0 aspect-[4/5] w-full max-w-[420px] overflow-hidden lg:max-w-[480px]">
               <div
-                className="absolute right-0 top-1/2 z-[1] h-[579px] w-[389px] -translate-y-1/2 rounded-[400px] shadow-inner shadow-black/5"
+                className="absolute right-0 top-1/2 z-[1] aspect-[389/579] w-[min(100%,389px)] -translate-y-1/2 rounded-[400px] shadow-inner shadow-black/5"
                 style={{
                   background: 'linear-gradient(180deg, #BB9255 -140.92%, #FADCBA 165.92%)',
                 }}
                 aria-hidden
               />
-              <div className="absolute right-6 -top-[60px] z-[2] h-[544px] w-[350px]">
+              <div className="absolute bottom-0 right-0 z-[2] aspect-[350/544] w-[min(90%,350px)]">
                 <Image
                   src={figure.src}
                   alt={figure.alt}
                   fill
                   priority
-                  sizes="350px"
+                  sizes="(max-width: 1024px) 90vw, 350px"
                   className="object-contain object-bottom drop-shadow-xl"
                 />
               </div>
@@ -349,7 +353,7 @@ export default function HeroSection(props: HeroSectionProps) {
         {/* Collaboration strip */}
         <div className="relative -mt-10 md:-mt-12">
 <div className="relative z-10 rounded-lg border border-zinc-100 bg-white px-6 py-8 shadow-[0_4px_4px_0_rgba(30,41,59,0.11),0_4px_4px_0_rgba(30,41,59,0.03)] md:px-10 md:py-10">
-            <p className="mb-6 text-center text-[28px] font-semibold leading-normal text-heading">
+            <p className="mb-6 text-center text-[22px] font-semibold leading-normal text-heading md:text-[28px]">
               {collaboration.lineBefore}
               <span className="font-semibold text-brand">
                 {collaboration.lineHighlight}

@@ -18,9 +18,9 @@ const SOLID_CARD_HEIGHT = 'h-[196px]';
 const SOLID_BG: Record<RelatedBlogItem['variant'], string | undefined> = {
   default: undefined,
   'image-middle': undefined,
-  'solid-red': '#FD022D',
-  'solid-tan': '#C4A574',
-  'solid-teal': '#0D9488',
+  'solid-red': '#CB3D4D',
+  'solid-tan': '#BB9255',
+  'solid-teal': '#4899C2',
 };
 
 function ArrowRightSmall({ className }: { className?: string }) {
@@ -87,8 +87,7 @@ function BlogCard({ blog }: { blog: RelatedBlogItem }) {
       <article
         className={`flex flex-col overflow-hidden rounded-2xl border border-zinc-100/80 bg-white p-6 shadow-[0_4px_14px_-4px_rgba(30,41,59,0.12)] ${BLOG_CARD_WIDTH}`}
       >
-        <h3 className="text-[17px] font-bold leading-snug text-heading">{blog.title}</h3>
-        <div className="relative mt-4 h-[150px] w-full overflow-hidden rounded-xl">
+        <div className="relative h-[170px] w-full overflow-hidden rounded-xl">
           <Image
             src={imageSrc}
             alt=""
@@ -98,7 +97,8 @@ function BlogCard({ blog }: { blog: RelatedBlogItem }) {
             className="object-cover"
           />
         </div>
-        <p className="mt-4 flex-1 text-[14px] leading-relaxed text-muted">{blog.excerpt}</p>
+        <h3 className="mt-5 text-[17px] font-bold leading-snug text-heading">{blog.title}</h3>
+        <p className="mt-3 flex-1 text-[14px] leading-relaxed text-muted">{blog.excerpt}</p>
         <BlogCardFooter blog={blog} isSolid={false} />
       </article>
     );
@@ -107,7 +107,7 @@ function BlogCard({ blog }: { blog: RelatedBlogItem }) {
   if (isSolid && bg) {
     return (
       <article
-        className={`flex ${SOLID_CARD_HEIGHT} ${BLOG_CARD_WIDTH} flex-col overflow-hidden rounded-2xl p-5 shadow-[0_4px_14px_-4px_rgba(30,41,59,0.12)]`}
+        className={`flex ${SOLID_CARD_HEIGHT} ${BLOG_CARD_WIDTH} flex-col overflow-hidden rounded-[16px] p-5 shadow-[0_4px_14px_-4px_rgba(30,41,59,0.12)]`}
         style={{ backgroundColor: bg }}
       >
         <div className="min-h-0 flex-1">
@@ -190,10 +190,10 @@ export default function CategoryRelatedBlogsSection() {
 
   return (
     <section
-      className="full-bleed bg-surface pb-16 pt-14 md:pb-24 md:pt-16"
+      className="full-bleed bg-surface"
       aria-labelledby="related-blogs-heading"
     >
-      <div className="site-container px-4 sm:px-6 lg:px-0">
+      <div className="site-container">
         <header className="mx-auto max-w-3xl text-center">
           <h2
             id="related-blogs-heading"
@@ -206,8 +206,10 @@ export default function CategoryRelatedBlogsSection() {
           </p>
         </header>
 
-        <CategoryCarouselTrack page={0} className="mt-10 md:mt-12">
-          {[<BlogMasonryGrid key={page} items={pages[page] ?? []} />]}
+        <CategoryCarouselTrack page={page} className="mt-10 md:mt-12">
+          {pages.map((pageItems, pageIndex) => (
+            <BlogMasonryGrid key={pageIndex} items={pageItems} />
+          ))}
         </CategoryCarouselTrack>
 
         <div className="mt-10">

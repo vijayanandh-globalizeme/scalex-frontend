@@ -113,7 +113,7 @@ export default function LiveSessionsSection({
       className="full-bleed relative bg-surface py-14 md:py-16 lg:py-20"
       aria-labelledby="live-sessions-heading"
     >
-      <div className="site-container relative z-10 px-4 sm:px-6 lg:px-0">
+      <div className="site-container relative z-10">
         <header className="mx-auto text-center">
           <h2
             id="live-sessions-heading"

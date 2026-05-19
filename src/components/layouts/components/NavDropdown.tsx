@@ -19,6 +19,25 @@ function ChevronDown({ className }: { className?: string }) {
   );
 }
 
+function OutlineButtonChevron({ className }: { className?: string }) {
+  return (
+    <svg
+      className={className}
+      xmlns="http://www.w3.org/2000/svg"
+      width="13"
+      height="7"
+      viewBox="0 0 13 7"
+      fill="none"
+      aria-hidden
+    >
+      <path
+        d="M6.50374 7C6.69084 7 6.87795 6.92839 7.00517 6.79244L12.7979 1.11657C12.9251 0.994886 13 0.837425 13 0.658489C13 0.286295 12.7081 0 12.3189 0C12.1318 0 11.9597 0.0715751 11.8325 0.186097L6.09959 5.79038H6.9004L1.16753 0.186097C1.04778 0.0715751 0.875649 0 0.681059 0C0.291882 0 0 0.286295 0 0.658489C0 0.837425 0.0748416 0.994886 0.202073 1.12372L5.99482 6.79244C6.13701 6.92839 6.30915 7 6.50374 7Z"
+        fill="currentColor"
+      />
+    </svg>
+  );
+}
+
 export type NavDropdownItem = {
   label: string;
   href: string;
@@ -28,22 +47,40 @@ type NavDropdownProps = {
   label: string;
   items: NavDropdownItem[];
   triggerClassName?: string;
+  /** `outline-button` matches the All Courses header button style */
+  triggerVariant?: 'nav' | 'outline-button';
 };
 
-const triggerBaseClass =
-  'rounded-lg px-2.5 py-1.5 transition-colors duration-200 ease-out group-hover/nav:bg-accent-soft group-focus-within/nav:bg-accent-soft';
+const triggerBaseClass = 'header-nav-parent-hover cursor-pointer';
 
-const NavDropdown = ({ label, items, triggerClassName }: NavDropdownProps) => {
+const outlineButtonTriggerClass =
+  'btn-brand-outline btn-brand-outline-hover-fill header-fluid-text flex h-[40px] w-[133px] shrink-0 items-center justify-center gap-1 cursor-pointer';
+
+const NavDropdown = ({
+  label,
+  items,
+  triggerClassName,
+  triggerVariant = 'nav',
+}: NavDropdownProps) => {
+  const isOutlineButton = triggerVariant === 'outline-button';
+  const triggerClasses = isOutlineButton
+    ? [outlineButtonTriggerClass, triggerClassName]
+    : [triggerBaseClass, triggerClassName];
+
   return (
     <div className="group/nav relative">
       <button
         type="button"
-        className={[triggerBaseClass, triggerClassName].filter(Boolean).join(' ')}
+        className={triggerClasses.filter(Boolean).join(' ')}
         aria-haspopup="true"
         aria-label={`${label} menu`}
       >
         {label}
-        <ChevronDown className="shrink-0 text-nav-chevron transition-transform duration-300 ease-out group-hover/nav:rotate-180" />
+        {isOutlineButton ? (
+          <OutlineButtonChevron className="shrink-0 text-current transition-transform duration-300 ease-out group-hover/nav:rotate-180" />
+        ) : (
+          <ChevronDown className="shrink-0 text-current transition-transform duration-300 ease-out group-hover/nav:rotate-180" />
+        )}
       </button>
 
       {/* Hover bridge + animated panel */}

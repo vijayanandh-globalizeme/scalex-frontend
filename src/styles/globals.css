@@ -44,17 +44,16 @@
   --color-success: #22c55e;
   --color-linkedin: #0a66c2;
 }
-/* .site-container {
-  border: 1px solid red;
-} */
-/* Content width: 1300px centered on wide */
+/* Below 1300px: full width with side padding. At 1300px+: 1300px content, flush edges. */
 @layer components {
   .site-container {
-    @apply mx-auto w-full max-w-[1300px] px-0;
+    @apply mx-auto w-full max-w-full px-5 sm:px-8 md:px-10 min-[1300px]:max-w-[1300px] min-[1300px]:px-0;
   }
 
+  /* Avoid 100vw scrollbar overflow (white strip on the right) */
   .full-bleed {
-    width: 100vw;
+    width: 100%;
+    max-width: 100vw;
     margin-left: calc(50% - 50vw);
     margin-right: calc(50% - 50vw);
   }
@@ -78,6 +77,32 @@
     border: 1px solid var(--color-brand);
     background: #fff;
     @apply font-medium text-brand;
+  }
+
+  /* Header outline buttons — filled brand red on hover (#ff0031) */
+  .btn-brand-outline-hover-fill {
+    @apply transition-colors duration-200;
+  }
+
+  .btn-brand-outline.btn-brand-outline-hover-fill:hover,
+  .group\/nav:hover .btn-brand-outline.btn-brand-outline-hover-fill {
+    background-color: #ff0031;
+    border-color: #ff0031;
+    color: #fff !important;
+  }
+
+  /* Header nav parents (Interview Prep, Contact Us, etc.) */
+  .header-nav-parent-hover {
+    @apply rounded-lg px-2.5 py-1.5 transition-colors duration-200 ease-out;
+    color: var(--color-ink);
+  }
+
+  .header-nav-parent-hover:hover,
+  .group\/nav:hover .header-nav-parent-hover,
+  .group\/nav:focus-within .header-nav-parent-hover,
+  .header-nav-parent-hover:focus-visible {
+    background-color: #ff0031;
+    color: #fff !important;
   }
 
   /* Accent outline button (course cards, live sessions) */

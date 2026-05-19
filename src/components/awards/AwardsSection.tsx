@@ -118,15 +118,15 @@ export default function AwardsSection({
       className="full-bleed relative bg-surface pt-0"
       aria-labelledby="awards-heading"
     >
-      <div className="site-container relative z-10 px-4 sm:px-6 lg:px-0">
+      <div className="site-container relative z-10">
         <header className="mx-auto text-center">
           <h2
             id="awards-heading"
-            className="whitespace-nowrap text-[28px] font-bold leading-[140%] text-heading md:text-[34px]"
+            className="text-[28px] font-bold leading-[140%] text-heading md:text-[34px]"
           >
             {heading}
           </h2>
-          <p className="mt-3 whitespace-nowrap text-[14px] font-medium leading-[140%] text-muted md:text-[15px]">
+          <p className="mt-3 text-[14px] font-medium leading-[140%] text-muted md:text-[15px]">
             {subheading}
           </p>
         </header>
