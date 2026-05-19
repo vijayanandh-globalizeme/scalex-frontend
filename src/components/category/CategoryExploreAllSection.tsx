@@ -1,7 +1,8 @@
 'use client';
 
 import Link from 'next/link';
-import { useMemo, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { useEffect, useMemo, useState, useTransition } from 'react';
 import {
   CategoryCarouselControls,
   CategoryCarouselTrack,
@@ -93,6 +94,7 @@ function CategoryCard({ item }: { item: ExploreCategoryItem }) {
   return (
     <Link
       href={item.href}
+      prefetch
       className="group flex items-center gap-4 rounded-xl border border-zinc-100/80 bg-white p-5 shadow-[0_4px_14px_-4px_rgba(30,41,59,0.12)] transition hover:-translate-y-0.5 hover:shadow-[0_8px_20px_-6px_rgba(30,41,59,0.16)]"
     >
       <CategoryIcon fill={item.iconBg} />
@@ -109,11 +111,24 @@ function CategoryCard({ item }: { item: ExploreCategoryItem }) {
 
 const PAGE_SIZE = 8;
 
+function usePrefetchCategoryRoutes(hrefs: string[]) {
+  const router = useRouter();
+  useEffect(() => {
+    const unique = [...new Set(hrefs)];
+    for (const href of unique) {
+      router.prefetch(href);
+    }
+  }, [hrefs, router]);
+}
+
 export default function CategoryExploreAllSection() {
   const { heading, subheading, items } = EXPLORE_ALL_CATEGORIES;
   const [page, setPage] = useState(0);
+  const [, startTransition] = useTransition();
   const pages = useMemo(() => chunkPages(items, PAGE_SIZE), [items]);
   const totalPages = pages.length;
+  const categoryHrefs = useMemo(() => items.map((item) => item.href), [items]);
+  usePrefetchCategoryRoutes(categoryHrefs);
 
   return (
     <section
@@ -133,25 +148,25 @@ export default function CategoryExploreAllSection() {
           </p>
         </header>
 
-        <CategoryCarouselTrack page={page} className="mt-10 md:mt-12">
-          {pages.map((pageItems, pageIndex) => (
+        <CategoryCarouselTrack page={0} className="mt-10 md:mt-12">
+          {[
             <div
-              key={pageIndex}
+              key={page}
               className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4 lg:gap-6"
             >
-              {pageItems.map((item) => (
+              {(pages[page] ?? []).map((item) => (
                 <CategoryCard key={item.id} item={item} />
               ))}
-            </div>
-          ))}
+            </div>,
+          ]}
         </CategoryCarouselTrack>
 
         <div className="mt-10">
           <CategoryCarouselControls
             page={page}
             totalPages={totalPages}
-            onPrev={() => setPage((p) => Math.max(0, p - 1))}
-            onNext={() => setPage((p) => Math.min(totalPages - 1, p + 1))}
+            onPrev={() => startTransition(() => setPage(Math.max(0, page - 1)))}
+            onNext={() => startTransition(() => setPage(Math.min(totalPages - 1, page + 1)))}
             prevLabel="Previous categories"
             nextLabel="Next categories"
           />

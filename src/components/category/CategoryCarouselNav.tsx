@@ -81,6 +81,7 @@ export function CategoryCarouselControls({
   );
 }
 
+/** Renders one slide at a time — avoids laying out every page in a wide horizontal track. */
 export function CategoryCarouselTrack({
   page,
   children,
@@ -90,20 +91,10 @@ export function CategoryCarouselTrack({
   children: ReactNode[];
   className?: string;
 }) {
-  return (
-    <div className={`overflow-hidden ${className ?? ''}`}>
-      <div
-        className="flex will-change-transform transition-transform duration-300 ease-in-out motion-reduce:transition-none"
-        style={{ transform: `translate3d(-${page * 100}%, 0, 0)` }}
-      >
-        {children.map((slide, index) => (
-          <div key={index} className="w-full shrink-0">
-            {slide}
-          </div>
-        ))}
-      </div>
-    </div>
-  );
+  const slide = children[page];
+  if (slide == null) return null;
+
+  return <div className={className}>{slide}</div>;
 }
 
 export function chunkPages<T>(items: T[], pageSize: number): T[][] {

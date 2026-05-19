@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState, useTransition } from 'react';
 import {
   CategoryCarouselControls,
   CategoryCarouselTrack,
@@ -179,9 +179,14 @@ function usePrefetchBlogImages(items: RelatedBlogItem[]) {
 export default function CategoryRelatedBlogsSection() {
   const { heading, subheading, items } = RELATED_BLOGS;
   const [page, setPage] = useState(0);
+  const [, startTransition] = useTransition();
   const pages = useMemo(() => chunkPages(items, PAGE_SIZE), [items]);
   const totalPages = pages.length;
   usePrefetchBlogImages(items);
+
+  const goToPage = (next: number) => {
+    startTransition(() => setPage(next));
+  };
 
   return (
     <section
@@ -201,18 +206,16 @@ export default function CategoryRelatedBlogsSection() {
           </p>
         </header>
 
-        <CategoryCarouselTrack page={page} className="mt-10 md:mt-12">
-          {pages.map((pageItems, pageIndex) => (
-            <BlogMasonryGrid key={pageIndex} items={pageItems} />
-          ))}
+        <CategoryCarouselTrack page={0} className="mt-10 md:mt-12">
+          {[<BlogMasonryGrid key={page} items={pages[page] ?? []} />]}
         </CategoryCarouselTrack>
 
         <div className="mt-10">
           <CategoryCarouselControls
             page={page}
             totalPages={totalPages}
-            onPrev={() => setPage((p) => Math.max(0, p - 1))}
-            onNext={() => setPage((p) => Math.min(totalPages - 1, p + 1))}
+            onPrev={() => goToPage(Math.max(0, page - 1))}
+            onNext={() => goToPage(Math.min(totalPages - 1, page + 1))}
             prevLabel="Previous blogs"
             nextLabel="Next blogs"
           />
