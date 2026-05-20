@@ -257,7 +257,7 @@ export default function HeroSection(props: HeroSectionProps) {
 
   return (
     <section
-      className="full-bleed relative overflow-hidden bg-surface pb-8 pt-14 md:pb-10 md:pt-16 lg:pb-12 lg:pt-20"
+      className="full-bleed relative overflow-x-clip overflow-y-visible bg-surface pb-8 pt-14 md:pb-10 md:pt-16 lg:pb-12 lg:pt-20"
       aria-labelledby="hero-heading"
     >
       {/* Decorative background (non-content) */}
@@ -324,8 +324,8 @@ export default function HeroSection(props: HeroSectionProps) {
           </div>
 
           {/* Media column */}
-          <div className="relative mx-auto w-full min-w-0 max-w-md overflow-hidden lg:mx-0 lg:max-w-none">
-            <div className="relative ml-auto mr-0 aspect-[4/5] w-full max-w-[420px] overflow-hidden lg:max-w-[480px]">
+          <div className="relative mx-auto w-full min-w-0 max-w-md overflow-visible lg:mx-0 lg:max-w-none">
+            <div className="relative ml-auto mr-0 aspect-[4/5] w-full max-w-[420px] overflow-visible pt-10 sm:pt-14 lg:max-w-[480px] lg:pt-0">
               <div
                 className="absolute right-0 top-1/2 z-[1] aspect-[389/579] w-[min(100%,389px)] -translate-y-1/2 rounded-[400px] shadow-inner shadow-black/5"
                 style={{
@@ -333,7 +333,7 @@ export default function HeroSection(props: HeroSectionProps) {
                 }}
                 aria-hidden
               />
-              <div className="absolute bottom-0 right-0 z-[2] aspect-[350/544] w-[min(90%,350px)]">
+              <div className="absolute -top-8 right-2 z-[5] aspect-[350/544] w-[min(90%,350px)] sm:-top-12 md:-top-14 lg:-top-[60px] lg:right-6">
                 <Image
                   src={figure.src}
                   alt={figure.alt}
