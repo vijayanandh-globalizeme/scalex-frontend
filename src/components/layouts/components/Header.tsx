@@ -1,6 +1,9 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { getAllCategorySlugs, getCategoryBySlug } from '@/lib/categories';
+import AllCoursesMegaMenu from './AllCoursesMegaMenu';
+import HeaderMobileMenu from './HeaderMobileMenu';
+import HeaderSearch from './HeaderSearch';
 import NavDropdown from './NavDropdown';
 
 const ALL_COURSES_ITEMS = getAllCategorySlugs().map((slug) => {
@@ -57,67 +60,64 @@ function SignInArrow({ className }: { className?: string }) {
   );
 }
 
-function SearchIcon({ className }: { className?: string }) {
-  return (
-    <svg
-      className={className}
-      xmlns="http://www.w3.org/2000/svg"
-      width="17"
-      height="17"
-      viewBox="0 0 17 17"
-      fill="none"
-      aria-hidden
-    >
-      <path
-        d="M0 6.87582C0 10.667 3.05675 13.7516 6.81365 13.7516C8.29933 13.7516 9.65692 13.2692 10.7755 12.4592L14.9764 16.707C15.1727 16.9052 15.4289 17 15.7021 17C16.2827 17 16.684 16.5605 16.684 15.9832C16.684 15.7075 16.5815 15.4576 16.4023 15.2768L12.227 11.0375C13.1064 9.88293 13.6273 8.44398 13.6273 6.87582C13.6273 3.08464 10.5705 0 6.81365 0C3.05675 0 0 3.08464 0 6.87582ZM1.46007 6.87582C1.46007 3.89457 3.85936 1.47339 6.81365 1.47339C9.76796 1.47339 12.1672 3.89457 12.1672 6.87582C12.1672 9.85708 9.76796 12.2782 6.81365 12.2782C3.85936 12.2782 1.46007 9.85708 1.46007 6.87582Z"
-        fill="currentColor"
-      />
-    </svg>
-  );
-}
-
 const navLinkClass =
-  'header-fluid-text flex items-center gap-1 font-normal not-italic tracking-[-0.16px] whitespace-nowrap';
+  'header-fluid-text flex h-10 items-center gap-1 px-1.5 py-0 font-normal not-italic tracking-[-0.16px] whitespace-nowrap max-[1399px]:px-1.5 min-[1400px]:px-2.5';
 
 const Header = () => {
   return (
     <header className="relative z-40 border-b border-zinc-100 bg-white">
-      <div className="site-container py-3 md:py-4 lg:flex lg:h-16 lg:items-center lg:py-0">
-        <div className="flex w-full flex-col gap-4 lg:flex-row lg:items-center lg:gap-0">
-          <div className="flex shrink-0 flex-wrap items-center gap-x-[48px] gap-y-3 lg:mr-[33px]">
-            <Link href="/" className="flex shrink-0 items-center" aria-label="ScaleX Learning home">
-              <Image
-                src="/images/logos.png"
-                alt="ScaleX Learning"
-                width={110}
-                height={42}
-                className="h-8 w-auto object-contain sm:h-9 md:h-10"
-                sizes="(max-width: 768px) 100px, 110px"
-                priority
-              />
-            </Link>
-
-            <NavDropdown
-              label="All Courses"
-              items={ALL_COURSES_ITEMS}
-              triggerVariant="outline-button"
+      <div className="site-container">
+        {/* Mobile: logo + hamburger (below 1200px) */}
+        <div className="flex h-16 w-full min-w-0 items-center justify-between min-[1200px]:hidden">
+          <Link href="/" className="flex shrink-0 items-center" aria-label="ScaleX Learning home">
+            <Image
+              src="/images/logos.png"
+              alt="ScaleX Learning"
+              width={110}
+              height={42}
+              className="h-8 w-auto object-contain sm:h-9"
+              sizes="(max-width: 768px) 100px, 110px"
+              priority
             />
-          </div>
+          </Link>
+          <HeaderMobileMenu
+            allCoursesItems={ALL_COURSES_ITEMS}
+            interviewPrepItems={INTERVIEW_PREP_ITEMS}
+            certificationPrepItems={CERTIFICATION_PREP_ITEMS}
+            resourcesItems={RESOURCES_ITEMS}
+          />
+        </div>
 
-          <div className="flex min-h-[44px] w-full min-w-0 items-center gap-2 rounded-lg bg-zinc-100 px-4 py-2.5 md:mx-auto md:max-w-xl lg:mx-0 lg:mr-[30px] lg:h-10 lg:min-h-0 lg:w-[243px] lg:max-w-[243px] lg:flex-none lg:shrink-0 lg:py-0">
-            <SearchIcon className="shrink-0 text-ink/40" />
-            <input
-              type="search"
-              placeholder="Find your next course"
-              className="header-fluid-text min-w-0 w-full flex-1 bg-transparent text-zinc-900 placeholder:text-zinc-400 outline-none"
-              aria-label="Search courses"
-            />
-          </div>
+        {/* Desktop: single row (1200px+) — gaps shrink between 1200–1399px */}
+        <div className="hidden min-[1200px]:flex min-[1200px]:h-16 min-[1200px]:w-full min-[1200px]:items-center">
+          <div className="header-desktop-bar flex w-full min-w-0 items-center justify-between">
+            <div className="header-desktop-bar__left flex min-w-0 flex-1 items-center">
+              <Link
+                href="/"
+                className="flex shrink-0 items-center"
+                aria-label="ScaleX Learning home"
+              >
+                <Image
+                  src="/images/logos.png"
+                  alt="ScaleX Learning"
+                  width={110}
+                  height={42}
+                  className="h-10 w-auto object-contain"
+                  sizes="110px"
+                  priority
+                />
+              </Link>
 
-          <div className="w-full min-w-0 lg:flex lg:flex-1 lg:justify-end">
-            <div className="flex flex-wrap items-center gap-x-5 gap-y-2 sm:gap-x-6 lg:shrink-0 xl:gap-x-7 min-[1920px]:gap-x-4 min-[1920px]:sm:gap-x-5 min-[1920px]:xl:gap-x-6">
+              <div className="shrink-0">
+                <AllCoursesMegaMenu />
+              </div>
+
+              <HeaderSearch className="header-desktop-bar__search min-w-0 shrink" />
+            </div>
+
+            <div className="header-desktop-bar__right flex shrink-0 items-center">
               <nav
-                className="flex flex-wrap items-center gap-x-5 gap-y-2 sm:gap-x-6 xl:gap-x-7 min-[1920px]:gap-x-4 min-[1920px]:sm:gap-x-5 min-[1920px]:xl:gap-x-6"
+                className="flex min-w-0 flex-nowrap items-center gap-x-1 min-[1400px]:gap-x-2"
                 aria-label="Primary"
               >
                 <NavDropdown
@@ -135,14 +135,14 @@ const Header = () => {
                   items={[...RESOURCES_ITEMS]}
                   triggerClassName={navLinkClass}
                 />
-                <Link href="#" className={`${navLinkClass} header-nav-parent-hover !gap-0`}>
+                <Link href="#" className={`${navLinkClass} header-nav-parent-hover`}>
                   Contact Us
                 </Link>
               </nav>
 
               <Link
                 href="#"
-                className="btn-brand-outline btn-brand-outline-hover-fill header-fluid-text flex items-center gap-2 px-4 py-2 lg:h-10 lg:py-0"
+                className="btn-brand-outline btn-brand-outline-hover-fill header-fluid-text flex h-10 shrink-0 items-center gap-1.5 px-3 py-0 min-[1400px]:gap-2 min-[1400px]:px-4"
               >
                 Sign In
                 <SignInArrow className="shrink-0 text-current" />

@@ -51,7 +51,8 @@ type NavDropdownProps = {
   triggerVariant?: 'nav' | 'outline-button';
 };
 
-const triggerBaseClass = 'header-nav-parent-hover cursor-pointer';
+const triggerBaseClass =
+  'header-nav-parent-hover flex h-10 cursor-pointer items-center gap-1 px-1.5 py-0 min-[1400px]:px-2.5';
 
 const outlineButtonTriggerClass =
   'btn-brand-outline btn-brand-outline-hover-fill header-fluid-text flex h-[40px] w-[133px] shrink-0 items-center justify-center gap-1 cursor-pointer';
@@ -77,25 +78,24 @@ const NavDropdown = ({
       >
         {label}
         {isOutlineButton ? (
-          <OutlineButtonChevron className="shrink-0 text-current transition-transform duration-300 ease-out group-hover/nav:rotate-180" />
+          <OutlineButtonChevron className="shrink-0 text-current transition-transform duration-200 ease-out group-hover/nav:rotate-180" />
         ) : (
-          <ChevronDown className="shrink-0 text-current transition-transform duration-300 ease-out group-hover/nav:rotate-180" />
+          <ChevronDown className="shrink-0 text-current transition-transform duration-200 ease-out group-hover/nav:rotate-180" />
         )}
       </button>
 
-      {/* Hover bridge + animated panel */}
       <div
-        className="pointer-events-none absolute left-0 top-full z-50 min-w-[260px] pt-3 opacity-0 invisible -translate-y-1 scale-[0.98] transition-[opacity,transform,visibility] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover/nav:pointer-events-auto group-hover/nav:visible group-hover/nav:opacity-100 group-hover/nav:translate-y-0 group-hover/nav:scale-100 group-focus-within/nav:pointer-events-auto group-focus-within/nav:visible group-focus-within/nav:opacity-100 group-focus-within/nav:translate-y-0 group-focus-within/nav:scale-100"
+        className="pointer-events-none invisible absolute left-0 top-full z-50 min-w-[260px] pt-3 group-hover/nav:pointer-events-auto group-hover/nav:visible group-focus-within/nav:pointer-events-auto group-focus-within/nav:visible"
         role="menu"
         aria-label={label}
       >
-        <ul className="overflow-hidden rounded-xl border border-zinc-100 bg-white py-1.5 shadow-[0_12px_40px_-8px_rgba(15,23,42,0.18)] ring-1 ring-zinc-900/5">
+        <ul className="overflow-hidden rounded-none border border-zinc-100 bg-white py-1.5 shadow-[0_12px_40px_-8px_rgba(15,23,42,0.18)] ring-1 ring-zinc-900/5">
           {items.map((item) => (
             <li key={item.label} role="none">
               <Link
                 href={item.href}
                 role="menuitem"
-                className="header-fluid-text block px-4 py-2.5 font-normal text-ink tracking-[-0.16px] transition-[background-color,color,padding-left] duration-200 ease-out hover:bg-accent-soft hover:pl-5 hover:text-brand focus-visible:bg-accent-soft focus-visible:pl-5 focus-visible:text-brand focus-visible:outline-none"
+                className="header-fluid-text block px-4 py-2.5 font-normal text-ink tracking-[-0.16px] hover:bg-accent-soft hover:text-brand focus-visible:bg-accent-soft focus-visible:text-brand focus-visible:outline-none"
               >
                 {item.label}
               </Link>

@@ -1,3 +1,4 @@
+export { default as CategoryCollaborationCard } from './CategoryCollaborationCard';
 export { default as CategoryHeroSection } from './CategoryHeroSection';
 export { default as CategoryCoursesSection } from './CategoryCoursesSection';
 export { default as CategoryExpertCtaSection } from './CategoryExpertCtaSection';

@@ -1,5 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import CategoryCollaborationCard from './CategoryCollaborationCard';
+import CategoryTitleUnderline from './CategoryTitleUnderline';
 
 export interface CategoryReview {
   id: string;
@@ -95,34 +97,6 @@ function StarIcon({ className }: { className?: string }) {
   );
 }
 
-function CategoryLogoRow({ logos }: { logos: CategoryLogo[] }) {
-  return (
-    <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-4 md:justify-around">
-      {logos.map((logo) => (
-        <div
-          key={`${logo.alt}-${logo.src ?? 'text'}`}
-          className="flex h-9 min-w-[80px] max-w-[120px] items-center justify-center px-2 md:min-w-[100px] md:max-w-[140px]"
-        >
-          {logo.src ? (
-            <Image
-              src={logo.src}
-              alt={logo.alt}
-              width={140}
-              height={36}
-              className="h-auto max-h-full w-auto max-w-full object-contain"
-              sizes="140px"
-            />
-          ) : (
-            <span className="text-center text-[11px] font-semibold uppercase tracking-wide text-zinc-500">
-              {logo.alt}
-            </span>
-          )}
-        </div>
-      ))}
-    </div>
-  );
-}
-
 function ReviewBlock({ review }: { review: CategoryReview }) {
   return (
     <div className="flex min-w-0 flex-col gap-1.5">
@@ -149,22 +123,12 @@ export default function CategoryHeroSection({
   reviews,
   collaboration,
 }: CategoryPageContent) {
-  const accentParts = (() => {
-    if (titleAccent === 'Agile and Scrum') {
-      return [
-        { text: 'Agile', className: 'text-brand' },
-        { text: ' and ', className: 'text-gold' },
-        { text: 'Scrum', className: 'text-success' },
-      ];
-    }
-    return [{ text: titleAccent, className: 'text-career-growth-gradient bg-clip-text text-transparent' }];
-  })();
-
   return (
     <section
-      className="full-bleed relative overflow-visible bg-surface pb-8 pt-8 md:pb-10 md:pt-10 lg:pb-12"
+      className="full-bleed relative overflow-visible pb-0 pt-8 md:pt-10"
       aria-labelledby="category-hero-heading"
     >
+      <div className="category-hero-bg pointer-events-none absolute inset-0" aria-hidden />
       <div className="site-container relative z-10">
         <nav aria-label="Breadcrumb" className="mb-6 flex items-center gap-2 text-[14px] font-medium">
           <Link href="/" className="text-brand transition hover:opacity-80" aria-label="Home">
@@ -182,13 +146,10 @@ export default function CategoryHeroSection({
               <span className="block text-[40px] font-extrabold leading-[60px] text-heading">
                 {titlePrefix}
               </span>
-              <span className="mt-1 block text-[40px] font-extrabold leading-[1.1] tracking-tight md:text-[52px] lg:text-[64px]">
-                {accentParts.map((part) => (
-                  <span key={part.text} className={part.className}>
-                    {part.text}
-                  </span>
-                ))}
+              <span className="block text-[50px] font-extrabold leading-[80px] text-heading">
+                {titleAccent}
               </span>
+              <CategoryTitleUnderline />
             </h1>
 
             <p className="mt-5 max-w-lg text-[16px] font-medium leading-[1.6] text-muted md:text-[17px]">
@@ -232,18 +193,11 @@ export default function CategoryHeroSection({
             </div>
           </div>
         </div>
+      </div>
 
-        <div className="relative -mt-15">
-          <div className="relative z-10 rounded-lg border border-zinc-100 bg-white px-6 py-8 shadow-[0_4px_4px_0_rgba(30,41,59,0.11),0_4px_4px_0_rgba(30,41,59,0.03)] md:px-10 md:py-10">
-            <p className="mb-6 text-center text-[22px] font-semibold leading-normal text-heading md:text-[28px]">
-              {collaboration.lineBefore}
-              <span className="font-semibold text-brand">
-                {collaboration.lineHighlight}
-              </span>
-              {collaboration.lineAfter}
-            </p>
-            <CategoryLogoRow logos={collaboration.logos} />
-          </div>
+      <div className="absolute inset-x-0 bottom-0 z-20 translate-y-[70%]">
+        <div className="site-container">
+          <CategoryCollaborationCard collaboration={collaboration} />
         </div>
       </div>
     </section>

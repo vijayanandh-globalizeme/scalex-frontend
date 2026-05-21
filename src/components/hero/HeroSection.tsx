@@ -197,7 +197,7 @@ function FloatingBadge({ badge }: { badge: HeroBadge }) {
       : badge.placement === 'mid-left'
         ? 'left-0 top-[60%] -translate-y-1/2 xl:-left-10'
         : badge.placement === 'bottom-right'
-          ? 'bottom-32 right-0 md:bottom-28'
+          ? 'bottom-32 -right-8 md:bottom-28 md:-right-10'
           : 'bottom-10 left-[42%] -translate-x-1/2 md:-bottom-2';
 
   const iconBg =
@@ -257,7 +257,7 @@ export default function HeroSection(props: HeroSectionProps) {
 
   return (
     <section
-      className="full-bleed relative overflow-x-clip overflow-y-visible bg-surface pb-8 pt-14 md:pb-10 md:pt-16 lg:pb-12 lg:pt-20"
+      className="full-bleed relative overflow-x-clip overflow-y-visible bg-surface pb-8 pt-28 md:pb-10 md:pt-36 lg:pb-12 lg:pt-44"
       aria-labelledby="hero-heading"
     >
       {/* Decorative background (non-content) */}
@@ -352,7 +352,7 @@ export default function HeroSection(props: HeroSectionProps) {
 
         {/* Collaboration strip */}
         <div className="relative -mt-10 md:-mt-12">
-<div className="relative z-10 rounded-lg border border-zinc-100 bg-white px-6 py-8 shadow-[0_4px_4px_0_rgba(30,41,59,0.11),0_4px_4px_0_rgba(30,41,59,0.03)] md:px-10 md:py-10">
+<div className="relative z-10 rounded-lg border border-zinc-100 bg-white px-6 py-5 shadow-[0_4px_4px_0_rgba(30,41,59,0.11),0_4px_4px_0_rgba(30,41,59,0.03)] md:px-10 md:py-6">
             <p className="mb-6 text-center text-[22px] font-semibold leading-normal text-heading md:text-[28px]">
               {collaboration.lineBefore}
               <span className="font-semibold text-brand">

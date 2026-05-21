@@ -48,14 +48,14 @@ export default function CategoryCoursesSection({
   return (
     <section
       id="courses"
-      className="full-bleed relative z-0 overflow-visible bg-white pb-10 pt-12 md:pb-12 md:pt-16 lg:pt-20"
+      className="full-bleed relative z-0 overflow-visible bg-white pb-10 pt-32 md:pb-12 md:pt-40"
       aria-labelledby="category-courses-heading"
     >
       <div className="site-container">
-        <header className="mx-auto max-w-4xl text-center">
+        <header className="mx-auto mt-6 max-w-4xl text-center md:mt-8 lg:mt-10">
           <h2
             id="category-courses-heading"
-            className="text-[40px] font-extrabold leading-[60px] text-heading"
+            className="text-center text-[34px] font-bold leading-[1.4] text-heading whitespace-nowrap"
           >
             {heading}
           </h2>
