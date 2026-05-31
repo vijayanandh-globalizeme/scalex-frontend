@@ -10,7 +10,7 @@ export default function CategoryLoading() {
               <div className="h-12 w-2/3 max-w-sm rounded bg-zinc-200" />
               <div className="h-20 w-full max-w-lg rounded bg-zinc-100" />
             </div>
-            <div className="mx-auto h-[400px] w-full max-w-[558px] rounded-2xl bg-zinc-200 lg:ml-auto" />
+            <div className="mx-auto h-[636px] w-full max-w-[521px] rounded-2xl bg-zinc-200 lg:ml-auto" />
           </div>
         </div>
       </div>

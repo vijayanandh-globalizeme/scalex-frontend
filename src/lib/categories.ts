@@ -1,6 +1,6 @@
 import type { CategoryPageContent } from '@/components/category/CategoryHeroSection';
 
-const DEFAULT_REVIEWS: CategoryPageContent['reviews'] = [
+const DEFAULT_HERO_REVIEWS: CategoryPageContent['reviews'] = [
   {
     id: 'google',
     name: 'Google',
@@ -10,29 +10,42 @@ const DEFAULT_REVIEWS: CategoryPageContent['reviews'] = [
     reviewsLabel: '9845 Reviews',
   },
   {
-    id: 'facebook',
-    name: 'Facebook',
-    logoSrc: '/images/Facebook.svg',
-    logoAlt: 'Facebook reviews',
-    rating: '4.8/5',
-    reviewsLabel: '9845 Reviews',
-  },
-  {
     id: 'trustpilot',
     name: 'Trustpilot',
-    logoSrc: '/images/hero/google.png',
+    logoSrc: '/images/hero/trustpilot.png',
     logoAlt: 'Trustpilot reviews',
     rating: '4.8/5',
     reviewsLabel: '9845 Reviews',
   },
-  {
-    id: 'switchup',
-    name: 'Switchup',
-    logoSrc: '/images/hero/google.png',
-    logoAlt: 'Switchup reviews',
-    rating: '4.8/5',
-    reviewsLabel: '9845 Reviews',
-  },
+];
+
+const DEFAULT_LEARNERS_STAT: CategoryPageContent['learnersStat'] = {
+  count: '700K+',
+  label: 'Learners',
+  avatarSrcs: [
+    '/images/hero/person-1.png',
+    '/images/hero/person.png',
+    '/images/category/person-3.png',
+    '/images/person-3.png',
+  ],
+};
+
+const DEFAULT_FEATURES = [
+  'Expert-Led Live Sessions',
+  'All-Inclusive Course Pricing',
+  'Industry-Recognized Certification',
+  '100% Exam Pass Guarantee',
+  'Hands-On Project Learning',
+  'Earn PDUs & Contact Hours',
+];
+
+const AGILE_SCRUM_FEATURES = [
+  'Authorized Scrum Alliance Training',
+  'All-Inclusive Course Pricing',
+  'Free 2-Year Membership',
+  '100% Exam Pass Guarantee',
+  'Live CST-Led Online Sessions',
+  'Earn 20 PDUs & 16 SEUs',
 ];
 
 const DEFAULT_COLLABORATION: CategoryPageContent['collaboration'] = {
@@ -56,6 +69,7 @@ function createCategory(
   breadcrumbLabel: string,
   titleAccent: string,
   subheading: string,
+  features: string[] = DEFAULT_FEATURES,
 ): CategoryPageContent {
   return {
     slug,
@@ -63,13 +77,15 @@ function createCategory(
     titlePrefix: 'Master',
     titleAccent,
     subheading,
+    features,
     heroImage: {
       src: '/images/category/agile-scrum-hero.png',
       alt: `${breadcrumbLabel} training and certification programs`,
     },
     primaryCta: { href: '#courses', label: 'Explore Courses' },
     secondaryCta: { href: '/contact', label: 'Get Free Career Guidance' },
-    reviews: DEFAULT_REVIEWS,
+    reviews: DEFAULT_HERO_REVIEWS,
+    learnersStat: DEFAULT_LEARNERS_STAT,
     collaboration: DEFAULT_COLLABORATION,
   };
 }
@@ -80,6 +96,7 @@ const CATEGORIES: Record<string, CategoryPageContent> = {
     'Agile and Scrum',
     'Agile and Scrum',
     'Join 50,000+ professionals who have transformed their project delivery with our expert-led Scrum certifications.',
+    AGILE_SCRUM_FEATURES,
   ),
   'product-management': createCategory(
     'product-management',

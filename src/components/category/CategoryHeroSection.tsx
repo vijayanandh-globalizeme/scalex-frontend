@@ -17,16 +17,24 @@ export interface CategoryLogo {
   src?: string;
 }
 
+export interface CategoryLearnersStat {
+  count: string;
+  label: string;
+  avatarSrcs: string[];
+}
+
 export interface CategoryPageContent {
   slug: string;
   breadcrumbLabel: string;
   titlePrefix: string;
   titleAccent: string;
   subheading: string;
+  features: string[];
   heroImage: { src: string; alt: string };
   primaryCta: { href: string; label: string };
   secondaryCta: { href: string; label: string };
   reviews: CategoryReview[];
+  learnersStat: CategoryLearnersStat;
   collaboration: {
     lineBefore: string;
     lineHighlight: string;
@@ -86,6 +94,25 @@ function PhoneIcon({ className }: { className?: string }) {
   );
 }
 
+function CheckIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      className={className}
+      xmlns="http://www.w3.org/2000/svg"
+      width="23"
+      height="23"
+      viewBox="0 0 23 23"
+      fill="none"
+      aria-hidden
+    >
+      <path
+        d="M13.1487 0.96013L14.6829 2.50848C14.8423 2.66027 14.9818 2.71087 15.191 2.71087H17.3427C19.1359 2.71087 19.9528 3.56094 19.9528 5.36229V7.55831C19.9528 7.76071 20.0126 7.91251 20.162 8.06431L21.6862 9.62277C22.9414 10.8979 22.9514 12.0819 21.6862 13.357L20.162 14.9155C20.0126 15.0774 19.9528 15.2191 19.9528 15.4316V17.6175C19.9528 19.439 19.126 20.2689 17.3427 20.2689H15.191C14.9818 20.2689 14.8423 20.3296 14.6829 20.4814L13.1487 22.0297C11.8935 23.3049 10.728 23.315 9.47271 22.0297L7.93855 20.4814C7.78912 20.3296 7.63969 20.2689 7.44044 20.2689H5.27867C3.49546 20.2689 2.6686 19.429 2.6686 17.6175V15.4316C2.6686 15.2191 2.61879 15.0774 2.46936 14.9155L0.945157 13.357C-0.310066 12.0819 -0.320029 10.8979 0.945157 9.62277L2.46936 8.06431C2.61879 7.91251 2.6686 7.76071 2.6686 7.55831V5.36229C2.6686 3.54071 3.49546 2.71087 5.27867 2.71087H7.44044C7.63969 2.71087 7.78912 2.66027 7.93855 2.50848L9.47271 0.96013C10.728 -0.314978 11.8935 -0.325098 13.1487 0.96013ZM14.4139 7.47735L10.1601 14.4196L8.13779 11.7682C7.88874 11.4342 7.66957 11.3331 7.39064 11.3331C6.93238 11.3331 6.5837 11.7075 6.5837 12.173C6.5837 12.3957 6.67336 12.6284 6.8228 12.8308L9.32328 15.9477C9.58229 16.3019 9.86123 16.4335 10.1999 16.4335C10.5386 16.4335 10.8275 16.2715 11.0368 15.9477L15.7189 8.44886C15.8385 8.24647 15.968 8.01371 15.968 7.78095C15.968 7.31543 15.5596 7.01184 15.1312 7.01184C14.8622 7.01184 14.6032 7.16364 14.4139 7.47735Z"
+        fill="#1E293B"
+      />
+    </svg>
+  );
+}
+
 function StarIcon({ className }: { className?: string }) {
   return (
     <svg className={className} width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden>
@@ -100,15 +127,55 @@ function StarIcon({ className }: { className?: string }) {
 function ReviewBlock({ review }: { review: CategoryReview }) {
   return (
     <div className="flex min-w-0 flex-col gap-1.5">
-      <div className="relative h-6 w-20">
-        <Image src={review.logoSrc} alt={review.logoAlt} fill sizes="80px" className="object-contain object-left" />
+      <div className="relative h-6 w-24">
+        <Image src={review.logoSrc} alt={review.logoAlt} fill sizes="96px" className="object-contain object-left" />
       </div>
-      <div className="flex flex-wrap items-center gap-1.5 text-[13px] font-semibold text-heading">
-        <StarIcon className="shrink-0 text-black" />
-        <span>{review.rating}</span>
-        <span className="font-medium text-subtle">{review.reviewsLabel}</span>
+      <div className="flex flex-wrap items-center gap-1.5">
+        <StarIcon className="shrink-0 text-[#F4AA1F]" />
+        <span className="text-[13px] font-semibold text-heading">{review.rating}</span>
+        <span className="text-[14px] font-normal leading-[140%] text-muted">{review.reviewsLabel}</span>
       </div>
     </div>
+  );
+}
+
+function LearnersBlock({ count, label, avatarSrcs }: CategoryLearnersStat) {
+  return (
+    <div className="flex min-w-0 items-center gap-2.5">
+      <div className="flex shrink-0 items-center">
+        {avatarSrcs.map((src, index) => (
+          <div
+            key={`${src}-${index}`}
+            className={`relative h-7 w-7 shrink-0 overflow-hidden rounded-full ring-2 ring-white ${index > 0 ? '-ml-2' : ''}`}
+          >
+            <Image
+              src={src}
+              alt=""
+              width={28}
+              height={28}
+              className="h-7 w-7 object-cover"
+            />
+          </div>
+        ))}
+      </div>
+      <p className="text-[14px] leading-[1.3]">
+        <span className="font-bold text-heading">{count}</span>{' '}
+        <span className="font-normal text-muted">{label}</span>
+      </p>
+    </div>
+  );
+}
+
+function FeatureList({ features }: { features: string[] }) {
+  return (
+    <ul className="mt-6 grid grid-cols-1 gap-x-8 gap-y-3 sm:grid-cols-2" role="list">
+      {features.map((feature) => (
+        <li key={feature} className="flex items-start gap-2.5">
+          <CheckIcon className="mt-0.5 shrink-0" />
+          <span className="text-[18px] font-medium leading-[152%] text-heading">{feature}</span>
+        </li>
+      ))}
+    </ul>
   );
 }
 
@@ -117,10 +184,12 @@ export default function CategoryHeroSection({
   titlePrefix,
   titleAccent,
   subheading,
+  features,
   heroImage,
   primaryCta,
   secondaryCta,
   reviews,
+  learnersStat,
   collaboration,
 }: CategoryPageContent) {
   return (
@@ -141,7 +210,7 @@ export default function CategoryHeroSection({
         </nav>
 
         <div className="grid items-start gap-10 lg:grid-cols-2 lg:gap-8 xl:gap-12">
-          <div className="max-w-xl">
+          <div className="max-w-2xl">
             <h1 id="category-hero-heading" className="text-heading">
               <span className="block text-[40px] font-extrabold leading-[60px] text-heading">
                 {titlePrefix}
@@ -152,17 +221,20 @@ export default function CategoryHeroSection({
               <CategoryTitleUnderline />
             </h1>
 
-            <p className="mt-5 max-w-lg text-[16px] font-medium leading-[1.6] text-muted md:text-[17px]">
+            <p className="mt-5 max-w-xl text-[18px] font-semibold leading-6 text-muted">
               {subheading}
             </p>
 
-            {reviews.length > 0 ? (
-              <div className="mt-8 grid max-w-md grid-cols-2 gap-x-8 gap-y-5">
+            {features.length > 0 ? <FeatureList features={features} /> : null}
+
+            {(reviews.length > 0 || learnersStat) && (
+              <div className="mt-8 flex flex-wrap items-center gap-x-10 gap-y-5">
                 {reviews.map((review) => (
                   <ReviewBlock key={review.id} review={review} />
                 ))}
+                <LearnersBlock {...learnersStat} />
               </div>
-            ) : null}
+            )}
 
             <div className="mt-8 flex flex-wrap gap-3 sm:gap-4">
               <Link href={primaryCta.href} className="btn-brand h-[54px] gap-2 px-6 md:px-7">
@@ -179,16 +251,16 @@ export default function CategoryHeroSection({
             </div>
           </div>
 
-          <div className="relative mx-auto w-full max-w-[558px] lg:mx-0 lg:ml-auto">
-            <div className="relative h-[610px] w-[558px] max-w-full overflow-hidden rounded-2xl shadow-[0_8px_30px_-12px_rgba(15,23,42,0.2)]">
+          <div className="relative mx-auto w-full max-w-[521px] lg:mx-0 lg:ml-auto">
+            <div className="relative h-[636px] w-[521px] max-w-full overflow-hidden rounded-2xl shadow-[0_8px_30px_-12px_rgba(15,23,42,0.2)]">
               <Image
                 src={heroImage.src}
                 alt={heroImage.alt}
-                width={558}
-                height={610}
+                width={521}
+                height={636}
                 priority
-                sizes="558px"
-                className="h-[610px] w-[558px] max-w-full object-cover object-center"
+                sizes="521px"
+                className="h-[636px] w-[521px] max-w-full object-cover object-center"
               />
             </div>
           </div>
