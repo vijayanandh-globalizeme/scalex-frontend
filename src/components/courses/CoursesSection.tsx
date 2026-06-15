@@ -2,7 +2,9 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { useMemo, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
+import { useGsapScrollRevealStagger } from '@/hooks/useGsapScrollReveal';
+import { useGridColumns } from '@/hooks/useGridColumns';
 
 export interface CourseTab {
   id: string;
@@ -147,7 +149,17 @@ function ArrowRightIcon({ className }: { className?: string }) {
   );
 }
 
-export function CourseCard({ course, currencySymbol }: { course: Course; currencySymbol: string }) {
+export function CourseCard({
+  course,
+  currencySymbol,
+  variant = 'default',
+}: {
+  course: Course;
+  currencySymbol: string;
+  variant?: 'default' | 'courseDetail';
+}) {
+  const isCourseDetail = variant === 'courseDetail';
+
   return (
     <article className="mx-auto flex w-full max-w-[405px] flex-col overflow-hidden rounded-2xl border border-zinc-100 bg-white shadow-[0_4px_4px_0_rgba(30,41,59,0.03),0_4px_4px_0_rgba(30,41,59,0.06)] transition hover:shadow-lg">
       <div className="relative h-[181px] w-full">
@@ -160,12 +172,16 @@ export function CourseCard({ course, currencySymbol }: { course: Course; currenc
         />
       </div>
       <div className="flex flex-1 flex-col gap-3 p-4">
-        <div className="flex items-center justify-between gap-3">
-          <h3 className="text-[16px] font-bold leading-tight text-heading">{course.title}</h3>
-          <span className="shrink-0 rounded-[26px] border-[0.5px] border-border-tag bg-[#FFDEE4] px-3 py-1 text-[11px] font-semibold text-heading">
-            {course.categoryLabel}
-          </span>
-        </div>
+        {isCourseDetail ? (
+          <h3 className="w-full text-[16px] font-bold leading-tight text-heading">{course.title}</h3>
+        ) : (
+          <div className="flex items-center justify-between gap-3">
+            <h3 className="text-[16px] font-bold leading-tight text-heading">{course.title}</h3>
+            <span className="shrink-0 rounded-[26px] border-[0.5px] border-border-tag bg-[#FFDEE4] px-3 py-1 text-[11px] font-semibold text-heading">
+              {course.categoryLabel}
+            </span>
+          </div>
+        )}
         <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-[12px] font-medium text-body">
           <span className="inline-flex items-center gap-1">
             <StarIcon className="h-4 w-4 text-black" />
@@ -175,12 +191,16 @@ export function CourseCard({ course, currencySymbol }: { course: Course; currenc
             <ClockIcon className="h-4 w-[23px]" />
             {course.hours} Hr
           </span>
-          <span className="inline-flex items-center gap-1">
-            <UsersIcon className="h-4 w-[23px]" />
-            {course.learners}
-          </span>
+          {!isCourseDetail ? (
+            <span className="inline-flex items-center gap-1">
+              <UsersIcon className="h-4 w-[23px]" />
+              {course.learners}
+            </span>
+          ) : null}
         </div>
-        <div className="mt-1 flex items-center justify-between gap-3">
+        <div
+          className={`mt-1 ${isCourseDetail ? 'flex flex-col gap-3' : 'flex items-center justify-between gap-3'}`}
+        >
           <div className="flex flex-col gap-2">
             <div className="flex items-baseline gap-2">
               <span className="text-[20px] font-bold text-heading">
@@ -211,10 +231,12 @@ export function CourseCard({ course, currencySymbol }: { course: Course; currenc
           </div>
           <Link
             href={course.href}
-            className="inline-flex w-[156px] shrink-0 items-center justify-center gap-2 rounded-lg border border-accent bg-white px-4 py-[11px] text-[14px] font-semibold text-accent shadow-[0_2px_4px_0_rgba(253,2,45,0.06)] transition hover:bg-accent-soft"
+            className={`btn-accent-outline inline-flex items-center justify-center gap-2 px-4 py-[11px] text-[14px] ${
+              isCourseDetail ? 'w-full' : 'w-[156px] shrink-0'
+            }`}
           >
             View Course
-            <ArrowRightIcon className="h-4 w-4" />
+            <ArrowRightIcon className="btn-arrow-icon h-4 w-4 shrink-0" />
           </Link>
         </div>
       </div>
@@ -236,6 +258,10 @@ export default function CoursesSection({
   const [activeTab, setActiveTab] = useState<string>(initialTabId);
   const [visibleCount, setVisibleCount] = useState<number>(initialVisibleCount);
 
+  const sectionRef = useRef<HTMLElement>(null);
+  const rowRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const cols = useGridColumns();
+
   const filteredCourses = useMemo(() => {
     if (activeTab === 'all') return courses;
     return courses.filter((c) => c.category === activeTab);
@@ -244,8 +270,32 @@ export default function CoursesSection({
   const visibleCourses = filteredCourses.slice(0, visibleCount);
   const hasMore = visibleCount < filteredCourses.length;
 
+  const courseRows = useMemo(() => {
+    const rows: Course[][] = [];
+    for (let i = 0; i < visibleCourses.length; i += cols) {
+      rows.push(visibleCourses.slice(i, i + cols));
+    }
+    return rows;
+  }, [visibleCourses, cols]);
+
+  rowRefs.current.length = courseRows.length;
+
+  useGsapScrollRevealStagger(
+    sectionRef,
+    rowRefs,
+    {
+      y: 48,
+      duration: 1.6,
+      delay: 0.55,
+      ease: 'power2.out',
+      start: 'top 88%',
+    },
+    [activeTab, courseRows.length, cols],
+  );
+
   return (
     <section
+      ref={sectionRef}
       className="full-bleed relative bg-surface pt-10 pb-16 md:pt-14 md:pb-20 lg:pt-16 lg:pb-24"
       aria-labelledby="courses-heading"
     >
@@ -279,10 +329,8 @@ export default function CoursesSection({
                   setActiveTab(tab.id);
                   setVisibleCount(initialVisibleCount);
                 }}
-                className={`rounded-lg px-4 py-2.5 text-center text-[16px] font-medium leading-[140%] transition ${
-                  isActive
-                    ? 'bg-brand text-white shadow-sm'
-                    : 'text-heading hover:bg-white'
+                className={`cursor-pointer rounded-lg px-4 py-2.5 text-center text-[16px] font-medium leading-[140%] ${
+                  isActive ? 'courses-tab-active' : 'btn-mui-brand-tint text-heading'
                 }`}
               >
                 {tab.label}
@@ -291,9 +339,19 @@ export default function CoursesSection({
           })}
         </div>
 
-        <div className="mt-8 grid grid-cols-1 gap-6 md:mt-10 md:grid-cols-2 lg:grid-cols-3">
-          {visibleCourses.map((course) => (
-            <CourseCard key={course.id} course={course} currencySymbol={currencySymbol} />
+        <div className="mt-8 flex flex-col gap-6 md:mt-10">
+          {courseRows.map((rowCourses, rowIndex) => (
+            <div
+              key={`${activeTab}-row-${rowIndex}`}
+              ref={(el) => {
+                rowRefs.current[rowIndex] = el;
+              }}
+              className="gsap-reveal-pending grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3"
+            >
+              {rowCourses.map((course) => (
+                <CourseCard key={`${activeTab}-${course.id}`} course={course} currencySymbol={currencySymbol} />
+              ))}
+            </div>
           ))}
         </div>
 

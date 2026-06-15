@@ -1,6 +1,9 @@
 'use client';
 
 import Image from 'next/image';
+import { useMemo, useRef } from 'react';
+import { useGsapScrollRevealStagger } from '@/hooks/useGsapScrollReveal';
+import { useGridColumns } from '@/hooks/useGridColumns';
 
 export interface LiveSession {
   id: string;
@@ -93,10 +96,10 @@ function SessionCard({ session }: { session: LiveSession }) {
         </ul>
         <a
           href={session.href}
-          className="mt-2 inline-flex w-full items-center justify-center gap-2 rounded-lg border border-accent bg-white py-3 text-[14px] font-semibold text-accent shadow-[0_4px_4px_0_rgba(253,2,45,0.11),0_4px_4px_0_rgba(253,2,45,0.08)] transition hover:bg-accent-soft"
+          className="btn-accent-outline mt-2 inline-flex w-full items-center justify-center gap-2 py-3 text-[14px]"
         >
           Register Now
-          <ArrowRightIcon className="h-4 w-4" />
+          <ArrowRightIcon className="btn-arrow-icon h-4 w-4" />
         </a>
       </div>
     </article>
@@ -108,8 +111,36 @@ export default function LiveSessionsSection({
   subheading,
   sessions,
 }: LiveSessionsSectionProps) {
+  const sectionRef = useRef<HTMLElement>(null);
+  const rowRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const cols = useGridColumns();
+
+  const sessionRows = useMemo(() => {
+    const rows: LiveSession[][] = [];
+    for (let i = 0; i < sessions.length; i += cols) {
+      rows.push(sessions.slice(i, i + cols));
+    }
+    return rows;
+  }, [sessions, cols]);
+
+  rowRefs.current.length = sessionRows.length;
+
+  useGsapScrollRevealStagger(
+    sectionRef,
+    rowRefs,
+    {
+      y: 48,
+      duration: 1.6,
+      delay: 0.55,
+      ease: 'power2.out',
+      start: 'top 88%',
+    },
+    [sessionRows.length, cols],
+  );
+
   return (
     <section
+      ref={sectionRef}
       className="full-bleed relative bg-surface py-14 md:py-16 lg:py-20"
       aria-labelledby="live-sessions-heading"
     >
@@ -126,9 +157,19 @@ export default function LiveSessionsSection({
           </p>
         </header>
 
-        <div className="mt-10 grid grid-cols-1 gap-6 md:mt-12 md:grid-cols-2 lg:grid-cols-3">
-          {sessions.map((s) => (
-            <SessionCard key={s.id} session={s} />
+        <div className="mt-10 flex flex-col gap-6 md:mt-12">
+          {sessionRows.map((rowSessions, rowIndex) => (
+            <div
+              key={`live-row-${rowIndex}`}
+              ref={(el) => {
+                rowRefs.current[rowIndex] = el;
+              }}
+              className="gsap-reveal-pending grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3"
+            >
+              {rowSessions.map((session) => (
+                <SessionCard key={session.id} session={session} />
+              ))}
+            </div>
           ))}
         </div>
       </div>

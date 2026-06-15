@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import { LogoMarquee } from '@/components/shared';
 
 
 export interface HeroLogo {
@@ -142,54 +143,6 @@ function AwardBadgeIcon({ className }: { className?: string }) {
   );
 }
 
-function HeroLogoRow({
-  logos,
-  size,
-  align = 'center',
-  wrap = true,
-}: {
-  logos: HeroLogo[];
-  size: 'sm' | 'md' | 'lg';
-  align?: 'start' | 'center';
-  wrap?: boolean;
-}) {
-  const box =
-    size === 'sm'
-      ? 'h-[30px] w-full min-w-[60px] max-w-[130px] px-2'
-      : size === 'md'
-        ? 'h-9 min-w-[100px] max-w-[160px] px-3'
-        : 'h-12 min-w-[200px] max-w-[500px] px-3';
-
-  const justify = align === 'start' ? 'justify-start' : 'justify-around';
-  const wrapClass = wrap ? 'flex-wrap' : 'flex-nowrap';
-
-  return (
-    <div className={`flex items-center gap-x-1 gap-y-4 ${wrapClass} ${justify}`}>
-      {logos.map((logo) => (
-        <div
-          key={`${logo.alt}-${logo.src ?? 'text'}`}
-          className={`flex items-center justify-center ${box}`}
-        >
-          {logo.src ? (
-            <Image
-              src={logo.src}
-              alt={logo.alt}
-              width={size === 'sm' ? 130 : size === 'md' ? 160 : 500}
-              height={size === 'sm' ? 30 : size === 'md' ? 36 : 48}
-              className="h-auto max-h-full w-auto max-w-full object-contain"
-              sizes={size === 'sm' ? '130px' : size === 'md' ? '160px' : '500px'}
-            />
-          ) : (
-            <span className="text-center text-[11px] font-semibold uppercase tracking-wide text-zinc-500 md:text-xs">
-              {logo.alt}
-            </span>
-          )}
-        </div>
-      ))}
-    </div>
-  );
-}
-
 function FloatingBadge({ badge }: { badge: HeroBadge }) {
   const placement =
     badge.placement === 'top-left'
@@ -302,11 +255,11 @@ export default function HeroSection(props: HeroSectionProps) {
             <div className="mt-8 flex flex-wrap gap-3 sm:gap-4">
               <Link href={primaryCta.href} className="btn-brand h-[54px] gap-2 px-6 md:px-7">
                 {primaryCta.label}
-                <ArrowRightIcon className="shrink-0" />
+                <ArrowRightIcon className="btn-arrow-icon shrink-0" />
               </Link>
               <Link
                 href={secondaryCta.href}
-                className="btn-brand-outline inline-flex h-[54px] w-full min-w-0 items-center justify-center gap-[18px] px-6 text-sm font-semibold shadow-[0_4px_4px_0_rgba(30,41,59,0.03),0_4px_4px_0_rgba(30,41,59,0.08),0_4px_4px_0_rgba(30,41,59,0.11),0_4px_4px_0_rgba(30,41,59,0.11)] transition hover:bg-brand/5 sm:w-auto sm:min-w-[275px] md:text-[15px]"
+                className="btn-brand-outline inline-flex h-[54px] w-full min-w-0 items-center justify-center gap-[18px] px-6 text-sm font-semibold sm:w-auto sm:min-w-[275px] md:text-[15px]"
               >
                 {secondaryCta.label}
                 <PhoneIcon className="h-5 w-5" />
@@ -318,7 +271,12 @@ export default function HeroSection(props: HeroSectionProps) {
                 {trustedBy.label}
               </p>
               <div className="min-w-0 flex-1 overflow-hidden">
-                <HeroLogoRow logos={trustedBy.logos} size="sm" align="start" wrap={false} />
+                <LogoMarquee
+                  logos={trustedBy.logos}
+                  size="sm"
+                  reverse
+                  ariaLabel="Trusted by partners"
+                />
               </div>
             </div>
           </div>
@@ -327,13 +285,13 @@ export default function HeroSection(props: HeroSectionProps) {
           <div className="relative mx-auto w-full min-w-0 max-w-md overflow-visible lg:mx-0 lg:max-w-none">
             <div className="relative ml-auto mr-0 aspect-[4/5] w-full max-w-[420px] overflow-visible pt-10 sm:pt-14 lg:max-w-[480px] lg:pt-0">
               <div
-                className="absolute right-0 top-1/2 z-[1] aspect-[389/579] w-[min(100%,389px)] -translate-y-1/2 rounded-[400px] shadow-inner shadow-black/5"
+                className="absolute right-5 bottom-0 z-[1] aspect-[389/579] w-[min(100%,389px)] rounded-t-[400px] shadow-inner shadow-black/5"
                 style={{
                   background: 'linear-gradient(180deg, #BB9255 -140.92%, #FADCBA 165.92%)',
                 }}
                 aria-hidden
               />
-              <div className="absolute -top-8 right-2 z-[5] aspect-[350/544] w-[min(90%,350px)] sm:-top-12 md:-top-14 lg:-top-[60px] lg:right-6">
+              <div className="absolute bottom-0 right-2 z-[5] aspect-[350/544] w-[min(90%,350px)] lg:right-6">
                 <Image
                   src={figure.src}
                   alt={figure.alt}
@@ -360,9 +318,11 @@ export default function HeroSection(props: HeroSectionProps) {
               </span>
               {collaboration.lineAfter}
             </p>
-            <div className="pb-5 pt-5">
-              <HeroLogoRow logos={collaboration.logos} size="md" />
-            </div>
+            <LogoMarquee
+              logos={collaboration.logos}
+              className="py-5"
+              ariaLabel="Certifying body partners"
+            />
           </div>
         </div>
       </div>

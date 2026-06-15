@@ -98,7 +98,7 @@ export default function HeaderSearch({ className }: HeaderSearchProps) {
                 href={item.href}
                 onMouseDown={(e) => e.preventDefault()}
                 onClick={handleSuggestionClick}
-                className="header-fluid-text block px-4 py-3 font-normal text-ink hover:bg-accent-soft hover:text-brand"
+                className="btn-mui-nav-link header-fluid-text block px-4 py-3 font-normal text-ink"
               >
                 {item.label}
               </Link>

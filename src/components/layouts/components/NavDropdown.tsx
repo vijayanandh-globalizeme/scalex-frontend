@@ -95,7 +95,7 @@ const NavDropdown = ({
               <Link
                 href={item.href}
                 role="menuitem"
-                className="header-fluid-text block px-4 py-2.5 font-normal text-ink tracking-[-0.16px] hover:bg-accent-soft hover:text-brand focus-visible:bg-accent-soft focus-visible:text-brand focus-visible:outline-none"
+                className="btn-mui-nav-link header-fluid-text block px-4 py-2.5 font-normal text-ink tracking-[-0.16px] focus-visible:outline-none"
               >
                 {item.label}
               </Link>

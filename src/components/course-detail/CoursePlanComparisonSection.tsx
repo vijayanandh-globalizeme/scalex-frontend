@@ -1,0 +1,204 @@
+'use client';
+
+import type { CoursePlanComparisonContent, CoursePlanFeature, CoursePlanTier } from '@/lib/courseBody';
+import CourseBrochureCta from './CourseBrochureCta';
+
+const SECTION_CARD =
+  'rounded-[20px] border border-[#EBEBEB] bg-white shadow-[0_4px_4px_0_rgba(30,41,59,0.08),0_4px_4px_0_rgba(30,41,59,0.03)]';
+
+const PLAN_GRID = 'grid grid-cols-[minmax(0,1fr)_260px_287px]';
+
+const ELITE_COLUMN_BG =
+  'bg-[linear-gradient(90deg,rgba(255,239,242,0.5)_0%,rgba(255,255,255,0)_100%)]';
+
+function formatPrice(amount: number) {
+  return `₹${amount.toLocaleString('en-IN')}`;
+}
+
+function ArrowRightIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} width="18" height="15" viewBox="0 0 18 15" fill="currentColor" aria-hidden>
+      <path d="M10.6333 15c.2326 0 .4361-.0891.63-.2771l6.4459-6.5599c.1938-.188.2908-.4156.2908-.663s-.097-.475-.2908-.663L11.2827.2968C11.0694.0792 10.8659 0 10.6333 0c-.475 0-.8434.3562-.8434.851 0 .2375.0775.465.2326.6234l2.1714 2.2559 4.0419 3.7698-4.0419 3.7697-2.1714 2.256c-.1551.1484-.2326.3859-.2326.6233 0 .495.3684.851.8434.851ZM.853 8.3806h12.2617l3.1211-.1979c.3974-.0297.6688-.277.6688-.6827 0-.4057-.2714-.6531-.6688-.6828l-3.1211-.1978H.853C.349 6.6194 0 6.9855 0 7.5c0 .5145.349.8806.853.8806Z" />
+    </svg>
+  );
+}
+
+function FeatureCheckIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      className={className}
+      xmlns="http://www.w3.org/2000/svg"
+      width="16"
+      height="16"
+      viewBox="0 0 16 16"
+      fill="none"
+      aria-hidden
+    >
+      <g clipPath="url(#course-plan-check-clip)">
+        <path
+          d="M15.715 7.9961C15.715 12.4018 12.1945 15.9922 7.85749 15.9922C3.52817 15.9922 0 12.4018 0 7.9961C0 3.58256 3.52817 0 7.85749 0C12.1945 0 15.715 3.58256 15.715 7.9961ZM10.2532 4.88389L6.96389 10.2617L5.40009 8.20775C5.20751 7.94906 5.03804 7.8785 4.81464 7.8785C4.46798 7.8785 4.19837 8.16858 4.19837 8.5213C4.19837 8.7016 4.2677 8.87411 4.38325 9.03088L6.3168 11.4454C6.51709 11.7198 6.73279 11.8295 6.99471 11.8295C7.25662 11.8295 7.48002 11.7041 7.64179 11.4454L11.2624 5.6443C11.3548 5.47968 11.455 5.29937 11.455 5.12691C11.455 4.75846 11.1391 4.52329 10.8002 4.52329C10.5999 4.52329 10.3996 4.64871 10.2532 4.88389Z"
+          fill="#43BE11"
+          fillOpacity="0.85"
+        />
+      </g>
+      <defs>
+        <clipPath id="course-plan-check-clip">
+          <rect width="16" height="16" fill="white" />
+        </clipPath>
+      </defs>
+    </svg>
+  );
+}
+
+function FeatureCrossIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      className={className}
+      xmlns="http://www.w3.org/2000/svg"
+      width="16"
+      height="16"
+      viewBox="0 0 16 16"
+      fill="none"
+      aria-hidden
+    >
+      <g clipPath="url(#course-plan-cross-clip)">
+        <path
+          d="M15.715 7.9961C15.715 12.4018 12.1945 15.9922 7.85749 15.9922C3.52817 15.9922 0 12.4018 0 7.9961C0 3.58256 3.52817 0 7.85749 0C12.1945 0 15.715 3.58256 15.715 7.9961ZM10.1377 4.79766L7.86583 7.09323L5.60039 4.79766C5.47713 4.67223 5.32307 4.60952 5.15359 4.60952C4.79923 4.60952 4.51421 4.89173 4.51421 5.2445C4.51421 5.4248 4.58354 5.58158 4.69909 5.70702L6.96035 8.00816L4.69909 10.293C4.58354 10.4263 4.51421 10.5752 4.51421 10.7555C4.51421 11.1162 4.79923 11.4141 5.15359 11.4141C5.33847 11.4141 5.49254 11.3356 5.61579 11.218L7.86359 8.92733L10.1146 11.218C10.2378 11.3356 10.3919 11.4141 10.5768 11.4141C10.9235 11.4141 11.2085 11.1162 11.2085 10.7555C11.2085 10.5752 11.1469 10.4263 11.0236 10.293L8.76714 8.00654L11.0236 5.70702C11.1469 5.58158 11.2085 5.4248 11.2085 5.2445C11.2085 4.89173 10.9235 4.60952 10.5768 4.60952C10.3996 4.60952 10.2532 4.67223 10.1377 4.79766Z"
+          fill="#D61534"
+          fillOpacity="0.85"
+        />
+      </g>
+      <defs>
+        <clipPath id="course-plan-cross-clip">
+          <rect width="16" height="16" fill="white" />
+        </clipPath>
+      </defs>
+    </svg>
+  );
+}
+
+function FeatureStatusIcon({ included }: { included: boolean }) {
+  return included ? <FeatureCheckIcon /> : <FeatureCrossIcon />;
+}
+
+function PlanCard({ plan }: { plan: CoursePlanTier }) {
+  const isElite = plan.highlighted;
+
+  return (
+    <div
+      className={`relative flex w-[232px] flex-col rounded-[20px] border bg-white p-4 shadow-[0_4px_4px_0_rgba(30,41,59,0.08),0_4px_4px_0_rgba(30,41,59,0.03)] ${
+        isElite ? 'border-[#FD022D]' : 'border-[#EBEBEB]'
+      }`}
+    >
+      <span className="absolute top-3 right-3 rounded-lg bg-[#FFF6F7] px-2 py-0.5 text-[10px] font-medium leading-normal text-[#FD022D]">
+        {plan.discountPercent}% Off
+      </span>
+      <p className="pr-12 text-[14px] font-medium leading-[140%] text-heading">{plan.name}</p>
+      <div className="mt-2 flex flex-wrap items-baseline gap-1.5">
+        <span className="text-[16px] font-semibold leading-[140%] text-heading">
+          {formatPrice(plan.price)}
+        </span>
+        <span className="text-[12px] leading-normal text-muted line-through">
+          {formatPrice(plan.originalPrice)}
+        </span>
+      </div>
+      <CourseBrochureCta
+        openModal
+        className={
+          isElite
+            ? 'btn-brand mt-3 inline-flex h-[40px] w-[139px] items-center justify-around gap-2 rounded-lg px-4 text-[12px] font-medium leading-[18px] text-white shadow-none'
+            : 'btn-brand-outline btn-brand-outline--flat mt-3 inline-flex h-[40px] w-[139px] items-center justify-around gap-2 rounded-lg bg-white px-4 text-[12px] font-medium leading-[18px]'
+        }
+      >
+        {plan.enrollLabel}
+        <ArrowRightIcon className={`btn-arrow-icon shrink-0 ${isElite ? 'text-white' : 'text-brand'}`} />
+      </CourseBrochureCta>
+    </div>
+  );
+}
+
+function FeatureRow({
+  feature,
+  isLast,
+}: {
+  feature: CoursePlanFeature;
+  isLast: boolean;
+}) {
+  return (
+    <>
+      <p className="border-t border-[#EBEBEB] bg-white px-5 py-4 text-[14px] font-normal leading-normal text-heading">
+        {feature.label}
+      </p>
+      <div className="flex items-center justify-center border-t border-[#EBEBEB] bg-white px-3 py-4">
+        <FeatureStatusIcon included={feature.standard} />
+      </div>
+      <div
+        className={`flex items-center justify-center border-t border-[#EBEBEB] px-3 py-4 ${ELITE_COLUMN_BG} ${
+          isLast ? 'rounded-br-[20px]' : ''
+        }`}
+      >
+        <FeatureStatusIcon included={feature.elite} />
+      </div>
+    </>
+  );
+}
+
+export default function CoursePlanComparisonSection({
+  planComparison,
+}: {
+  planComparison: CoursePlanComparisonContent;
+}) {
+  return (
+    <div className={`${SECTION_CARD} overflow-hidden`}>
+      <div className="overflow-x-auto">
+        <div className={`min-w-[895px] ${PLAN_GRID}`}>
+          <div className="self-start px-6 py-5 md:px-8 md:py-6">
+            <h2 className="max-w-[348px] text-[20px] font-semibold leading-[140%] text-heading">
+              <span className="block">{planComparison.titleLine1}</span>
+              <span className="block">
+                paying{' '}
+                <span className="text-[#FD022D]">
+                  ₹{planComparison.extraAmount.toLocaleString('en-IN')}
+                </span>{' '}
+                Extra
+              </span>
+            </h2>
+            <p className="mt-2 max-w-[348px] text-[14px] font-normal leading-[140%] text-muted">
+              {planComparison.subtitle}
+            </p>
+          </div>
+
+          <div className="flex items-end justify-center bg-white px-3 pb-0 pt-5 md:px-4 md:pt-6">
+            <PlanCard plan={planComparison.standardPlan} />
+          </div>
+
+          <div
+            className={`flex items-end justify-center px-3 pb-0 pt-5 md:px-4 md:pt-6 ${ELITE_COLUMN_BG}`}
+          >
+            <PlanCard plan={planComparison.elitePlan} />
+          </div>
+
+          <div className="bg-white px-5 pb-3 pt-10 text-[16px] font-semibold leading-normal text-heading uppercase">
+            {planComparison.featuresColumnLabel}
+          </div>
+          <div className="bg-white px-3 pb-3 pt-10 text-center text-[16px] font-semibold leading-normal text-heading uppercase">
+            {planComparison.standardPlan.name.toUpperCase()}
+          </div>
+          <div
+            className={`px-3 pb-3 pt-10 text-center text-[16px] font-semibold leading-normal text-heading uppercase ${ELITE_COLUMN_BG}`}
+          >
+            {planComparison.elitePlan.name.toUpperCase()}
+          </div>
+
+          {planComparison.features.map((feature, index) => (
+            <FeatureRow
+              key={feature.id}
+              feature={feature}
+              isLast={index === planComparison.features.length - 1}
+            />
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}

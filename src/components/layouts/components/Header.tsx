@@ -65,7 +65,7 @@ const navLinkClass =
 
 const Header = () => {
   return (
-    <header className="relative z-40 border-b border-zinc-100 bg-white">
+    <header className="sticky top-0 z-50 border-b border-zinc-100 bg-white">
       <div className="site-container">
         {/* Mobile: logo + hamburger (below 1200px) */}
         <div className="flex h-16 w-full min-w-0 items-center justify-between min-[1200px]:hidden">
@@ -145,7 +145,7 @@ const Header = () => {
                 className="btn-brand-outline btn-brand-outline-hover-fill header-fluid-text flex h-10 shrink-0 items-center gap-1.5 px-3 py-0 min-[1400px]:gap-2 min-[1400px]:px-4"
               >
                 Sign In
-                <SignInArrow className="shrink-0 text-current" />
+                <SignInArrow className="btn-arrow-icon shrink-0 text-current" />
               </Link>
             </div>
           </div>

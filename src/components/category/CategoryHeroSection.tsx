@@ -239,11 +239,11 @@ export default function CategoryHeroSection({
             <div className="mt-8 flex flex-wrap gap-3 sm:gap-4">
               <Link href={primaryCta.href} className="btn-brand h-[54px] gap-2 px-6 md:px-7">
                 {primaryCta.label}
-                <ArrowRightIcon className="shrink-0" />
+                <ArrowRightIcon className="btn-arrow-icon shrink-0" />
               </Link>
               <Link
                 href={secondaryCta.href}
-                className="btn-brand-outline inline-flex h-[54px] items-center justify-center gap-[18px] px-6 text-sm font-semibold shadow-[0_4px_4px_0_rgba(30,41,59,0.03),0_4px_4px_0_rgba(30,41,59,0.08),0_4px_4px_0_rgba(30,41,59,0.11)] transition hover:bg-brand/5 md:px-8 md:text-[15px]"
+                className="btn-brand-outline inline-flex h-[54px] items-center justify-center gap-[18px] px-6 text-sm font-semibold md:px-8 md:text-[15px]"
               >
                 {secondaryCta.label}
                 <PhoneIcon className="h-5 w-5 text-brand" />

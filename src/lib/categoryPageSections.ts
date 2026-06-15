@@ -25,7 +25,7 @@ export const EXPERT_CTA = {
   ],
   subheading: 'Our mission is to empower your growth and guide you toward a successful future.',
   cta: { href: '/contact', label: 'Generate An Expert Callback' },
-  image: { src: '/images/category/person-3.png', alt: 'Industry expert ready to mentor learners' },
+  image: { src: '/images/hero/person.png', alt: 'Industry expert ready to mentor learners' },
 };
 
 export const EXPLORE_ALL_CATEGORIES = {

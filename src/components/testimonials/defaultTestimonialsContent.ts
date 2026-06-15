@@ -7,7 +7,8 @@ import {
   TrendingUpIcon,
 } from './TestimonialsSection';
 
-const placeholderAvatar = '/images/hero/person.png';
+const johnAvatar = '/images/Alex.png';
+const priyaAvatar = '/images/Keerthi.png';
 const tcsLogo = '/images/hero/tcs.png';
 const googleLogo = '/images/hero/google.png';
 
@@ -20,7 +21,7 @@ export const defaultTestimonialsContent: TestimonialsSectionProps = {
       id: 'john-williams',
       name: 'JOHN WILLIAMS',
       role: 'CEO & Co-Founder, Innotech',
-      avatarSrc: placeholderAvatar,
+      avatarSrc: johnAvatar,
       quote:
         'ScaleX Learning transformed the way I approach Agile methodologies. The project-based learning wasn’t just theory — it gave me the practical tools to lead my team more effectively.',
       metricValue: '300%',
@@ -35,7 +36,7 @@ export const defaultTestimonialsContent: TestimonialsSectionProps = {
       id: 'priya-sharma',
       name: 'PRIYA SHARMA',
       role: 'Senior Product Manager, FinHub',
-      avatarSrc: placeholderAvatar,
+      avatarSrc: priyaAvatar,
       quote:
         'The mentorship and structured curriculum helped me transition into product management within six months. Worth every minute.',
       metricValue: '220%',

@@ -1,4 +1,5 @@
 import { getAllCategorySlugs, getCategoryBySlug } from '@/lib/categories';
+import { getCourseHref } from '@/lib/courses';
 
 export type MegaMenuCourse = {
   label: string;
@@ -78,7 +79,7 @@ export function getAllCoursesMegaMenuData(): MegaMenuCategory[] {
       href: `/categories/${slug}`,
       courses: courseNames.map((label) => ({
         label,
-        href: `/categories/${slug}#courses`,
+        href: getCourseHref(slug, label),
       })),
     };
   });

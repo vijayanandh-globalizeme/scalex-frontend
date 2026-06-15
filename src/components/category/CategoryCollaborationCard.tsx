@@ -1,4 +1,4 @@
-import Image from 'next/image';
+import { LogoMarquee } from '@/components/shared';
 import type { CategoryLogo } from './CategoryHeroSection';
 
 export type CategoryCollaboration = {
@@ -7,34 +7,6 @@ export type CategoryCollaboration = {
   lineAfter: string;
   logos: CategoryLogo[];
 };
-
-function CategoryLogoRow({ logos }: { logos: CategoryLogo[] }) {
-  return (
-    <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-4 md:justify-around">
-      {logos.map((logo) => (
-        <div
-          key={`${logo.alt}-${logo.src ?? 'text'}`}
-          className="flex h-9 min-w-[80px] max-w-[120px] items-center justify-center px-2 md:min-w-[100px] md:max-w-[140px]"
-        >
-          {logo.src ? (
-            <Image
-              src={logo.src}
-              alt={logo.alt}
-              width={140}
-              height={36}
-              className="h-auto max-h-full w-auto max-w-full object-contain"
-              sizes="140px"
-            />
-          ) : (
-            <span className="text-center text-[11px] font-semibold uppercase tracking-wide text-zinc-500">
-              {logo.alt}
-            </span>
-          )}
-        </div>
-      ))}
-    </div>
-  );
-}
 
 export default function CategoryCollaborationCard({
   collaboration,
@@ -52,7 +24,11 @@ export default function CategoryCollaborationCard({
           <span className="font-semibold text-brand">{collaboration.lineHighlight}</span>
           {collaboration.lineAfter}
         </p>
-        <CategoryLogoRow logos={collaboration.logos} />
+        <LogoMarquee
+          logos={collaboration.logos}
+          className="py-5"
+          ariaLabel="Certifying body partners"
+        />
     </div>
   );
 }

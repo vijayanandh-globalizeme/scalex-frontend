@@ -69,10 +69,10 @@ function MegaMenuPanel({ activeCategory, onCategoryHover }: MegaMenuPanelProps) 
                 <Link
                   href={category.href}
                   onMouseEnter={() => onCategoryHover(category.slug)}
-                  className={`header-fluid-text flex items-center justify-between gap-2 rounded-md px-3 py-2.5 font-medium transition-colors duration-150 ${
+                  className={`header-fluid-text flex items-center justify-between gap-2 rounded-md px-3 py-2.5 font-medium ${
                     isActive
-                      ? 'bg-brand text-white'
-                      : 'text-ink hover:bg-accent-soft hover:text-brand'
+                      ? 'btn-mui-filled-surface bg-brand text-white'
+                      : 'btn-mui-nav-link text-ink'
                   }`}
                 >
                   <span className="min-w-0 truncate">{category.label}</span>
@@ -93,7 +93,7 @@ function MegaMenuPanel({ activeCategory, onCategoryHover }: MegaMenuPanelProps) 
             <li key={course.label}>
               <Link
                 href={course.href}
-                className="header-fluid-text block rounded-md px-2 py-2 font-normal text-ink transition-colors duration-150 hover:bg-accent-soft hover:text-brand"
+                className="btn-mui-nav-link header-fluid-text block px-2 py-2 font-normal text-ink"
               >
                 {course.label}
               </Link>

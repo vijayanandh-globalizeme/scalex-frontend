@@ -102,7 +102,7 @@ function CategoryCard({ item }: { item: ExploreCategoryItem }) {
         <span className="block text-[15px] font-bold leading-snug text-heading">{item.label}</span>
         <span className="mt-1.5 inline-flex items-center gap-1 text-[13px] font-medium text-muted transition group-hover:text-subtle">
           Explore
-          <ExploreArrowIcon className="shrink-0" />
+          <ExploreArrowIcon className="btn-arrow-icon shrink-0" />
         </span>
       </span>
     </Link>

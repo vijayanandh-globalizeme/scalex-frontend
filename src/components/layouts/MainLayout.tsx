@@ -6,7 +6,7 @@ const MainLayout = ({ children }: { children: ReactNode }) => {
   return (
     <>
       <Header />
-      <main id="main-content" className="min-w-0">
+      <main id="main-content" className="min-w-0 overflow-visible">
         {children}
       </main>
       <Footer />

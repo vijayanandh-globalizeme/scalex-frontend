@@ -23,10 +23,10 @@ const DEFAULT_LEARNERS_STAT: CategoryPageContent['learnersStat'] = {
   count: '700K+',
   label: 'Learners',
   avatarSrcs: [
-    '/images/hero/person-1.png',
     '/images/hero/person.png',
-    '/images/category/person-3.png',
-    '/images/person-3.png',
+    '/images/hero/person.png',
+    '/images/hero/person.png',
+    '/images/hero/person.png',
   ],
 };
 

@@ -1,0 +1,37 @@
+.overlay {
+  opacity: 0;
+  transition: opacity 0.35s ease-out;
+}
+
+.overlay.isOpen {
+  opacity: 1;
+}
+
+.panel {
+  opacity: 0;
+  transform: translate3d(0, 20px, 0) scale(0.96);
+  transition:
+    opacity 0.35s ease-out,
+    transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+
+.panel.isOpen {
+  opacity: 1;
+  transform: translate3d(0, 0, 0) scale(1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .overlay,
+  .panel {
+    transition-duration: 0.01ms;
+  }
+
+  .panel {
+    transform: none;
+  }
+
+  .panel.isOpen {
+    transform: none;
+  }
+}

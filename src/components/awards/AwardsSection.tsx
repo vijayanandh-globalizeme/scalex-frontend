@@ -2,13 +2,19 @@
 
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
+import { CategoryCarouselControls } from '@/components/category/CategoryCarouselNav';
 
 export interface AwardCard {
   id: string;
   title: string;
   subtitle: string;
+  /** Optional two-line subtitle for embedded course cards. */
+  subtitleLine1?: string;
+  subtitleLine2?: string;
   /** Tailwind classes for card background gradient + accents. */
   variant: 'gold' | 'orange' | 'red';
+  /** Optional solid background override (e.g. course page embedded cards). */
+  backgroundColor?: string;
   /** Optional medal badge image (defaults to a built-in pseudo-medal). */
   medalSrc?: string;
   medalAlt?: string;
@@ -22,6 +28,10 @@ export interface AwardsSectionProps {
   visibleCount?: number;
   autoplay?: boolean;
   autoplayIntervalMs?: number;
+  id?: string;
+  headingId?: string;
+  className?: string;
+  variant?: 'fullBleed' | 'embedded';
 }
 
 const VARIANT_STYLES: Record<AwardCard['variant'], { bg: string }> = {
@@ -38,17 +48,26 @@ function ArrowRightIcon({ className }: { className?: string }) {
   );
 }
 
-function MedalBadge({ src, alt }: { src?: string; alt?: string }) {
+function MedalBadge({ src, alt, embedded = false }: { src?: string; alt?: string; embedded?: boolean }) {
+  const sizeClass = embedded ? 'h-[68px] w-[68px]' : 'h-[100px] w-[100px]';
+  const imageSize = embedded ? '68px' : '100px';
+
   if (src) {
     return (
-      <div className="relative h-[100px] w-[100px]">
-        <Image src={src} alt={alt ?? 'Award medal'} fill sizes="100px" className="object-contain" />
+      <div className={`relative ${sizeClass}`}>
+        <Image
+          src={src}
+          alt={alt ?? 'Award medal'}
+          fill
+          sizes={imageSize}
+          className="object-contain"
+        />
       </div>
     );
   }
   return (
     <div
-      className="flex h-[100px] w-[100px] items-center justify-center rounded-full border-4 border-heading/80 bg-heading text-white shadow-md"
+      className={`flex ${sizeClass} items-center justify-center rounded-full border-4 border-heading/80 bg-heading text-white shadow-md`}
       aria-hidden
     >
       <div className="flex flex-col items-center leading-none">
@@ -59,31 +78,85 @@ function MedalBadge({ src, alt }: { src?: string; alt?: string }) {
   );
 }
 
-function AwardCardItem({ card }: { card: AwardCard }) {
+function AwardCardItem({ card, embedded = false }: { card: AwardCard; embedded?: boolean }) {
   const styles = VARIANT_STYLES[card.variant];
   return (
     <article
-      className={`relative h-[169px] w-full max-w-[412px] rounded-2xl ${styles.bg} px-5 pb-5 pt-12 text-white shadow-[0_10px_24px_-10px_rgba(15,23,42,0.25)]`}
+      className={`relative h-[169px] w-full rounded-[16px] ${card.backgroundColor ? '' : styles.bg} px-5 pb-5 pt-12 text-white shadow-[0_10px_24px_-10px_rgba(15,23,42,0.25)] ${embedded ? '' : 'max-w-[412px]'}`}
+      style={card.backgroundColor ? { backgroundColor: card.backgroundColor } : undefined}
     >
-      <div className="absolute -top-[50px] left-1/2 z-20 -translate-x-1/2">
-        <MedalBadge src={card.medalSrc} alt={card.medalAlt} />
+      <div
+        className={`absolute left-1/2 z-20 -translate-x-1/2 ${embedded ? '-top-[34px]' : '-top-[50px]'}`}
+      >
+        <MedalBadge src={card.medalSrc} alt={card.medalAlt} embedded={embedded} />
       </div>
-      <div className="pointer-events-none absolute inset-0 overflow-hidden rounded-2xl">
-        <span className="absolute inset-y-0 right-0 w-1/2" aria-hidden>
+      <div className="pointer-events-none absolute inset-0 overflow-hidden rounded-[16px]">
+        <span
+          className={`absolute right-0 ${embedded ? 'bottom-0 h-[80px] w-[80px]' : 'inset-y-0 w-1/2'}`}
+          aria-hidden
+        >
           <Image
             src="/images/xaero.png"
             alt=""
             fill
-            sizes="50vw"
+            sizes={embedded ? '80px' : '50vw'}
             className="object-contain object-right"
           />
         </span>
       </div>
       <div className="relative z-10 mt-2">
-        <h3 className="text-[20px] font-semibold leading-[140%] text-white">{card.title}</h3>
-        <p className="mt-1 text-[14px] font-medium leading-[140%] text-white">{card.subtitle}</p>
+        <h3
+          className={
+            embedded
+              ? 'text-[16px] font-semibold leading-[140%] text-white'
+              : 'text-[20px] font-semibold leading-[140%] text-white'
+          }
+        >
+          {card.title}
+        </h3>
+        {embedded && card.subtitleLine1 && card.subtitleLine2 ? (
+          <div className="mt-5 text-[14px] font-normal leading-[140%] text-white">
+            <p>{card.subtitleLine1}</p>
+            <p>{card.subtitleLine2}</p>
+          </div>
+        ) : (
+          <p className="mt-1 text-[14px] font-medium leading-[140%] text-white">{card.subtitle}</p>
+        )}
       </div>
     </article>
+  );
+}
+
+function CarouselControls({
+  onPrev,
+  onNext,
+  prevLabel,
+  nextLabel,
+}: {
+  onPrev: () => void;
+  onNext: () => void;
+  prevLabel: string;
+  nextLabel: string;
+}) {
+  return (
+    <div className="flex justify-end gap-3">
+      <button
+        type="button"
+        onClick={onPrev}
+        aria-label={prevLabel}
+        className="btn-mui-brand-tint flex h-10 w-10 items-center justify-center rounded-full border border-accent bg-white text-accent"
+      >
+        <ArrowRightIcon className="btn-arrow-icon h-3.5 w-3.5 rotate-180" />
+      </button>
+      <button
+        type="button"
+        onClick={onNext}
+        aria-label={nextLabel}
+        className="btn-mui-icon-filled flex h-10 w-10 items-center justify-center rounded-full"
+      >
+        <ArrowRightIcon className="btn-arrow-icon h-3.5 w-3.5" />
+      </button>
+    </div>
   );
 }
 
@@ -94,87 +167,124 @@ export default function AwardsSection({
   visibleCount = 3,
   autoplay = true,
   autoplayIntervalMs = 6000,
+  id,
+  headingId = 'awards-heading',
+  className,
+  variant = 'fullBleed',
 }: AwardsSectionProps) {
   const [index, setIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const total = cards.length;
   const maxIndex = Math.max(0, total - visibleCount);
+  const isEmbedded = variant === 'embedded';
 
-  const goPrev = () => setIndex((i) => (i <= 0 ? maxIndex : i - 1));
-  const goNext = () => setIndex((i) => (i >= maxIndex ? 0 : i + 1));
+  const goPrev = () =>
+    setIndex((i) => (isEmbedded ? Math.max(0, i - 1) : i <= 0 ? maxIndex : i - 1));
+  const goNext = () =>
+    setIndex((i) => (isEmbedded ? Math.min(maxIndex, i + 1) : i >= maxIndex ? 0 : i + 1));
 
   useEffect(() => {
-    if (!autoplay || maxIndex === 0 || isPaused) return;
-    const id = window.setInterval(() => {
+    if (!autoplay || maxIndex === 0 || isPaused || isEmbedded) return;
+    const timerId = window.setInterval(() => {
       setIndex((i) => (i >= maxIndex ? 0 : i + 1));
     }, autoplayIntervalMs);
-    return () => window.clearInterval(id);
-  }, [autoplay, autoplayIntervalMs, maxIndex, isPaused]);
+    return () => window.clearInterval(timerId);
+  }, [autoplay, autoplayIntervalMs, isEmbedded, maxIndex, isPaused]);
 
   const slidePct = 100 / visibleCount;
+  const showControls = total > visibleCount;
+
+  const carousel = (
+    <div
+      className={`relative overflow-hidden pt-14 ${isEmbedded ? 'mt-6' : 'mt-10 md:mt-12'}`}
+      onMouseEnter={() => setIsPaused(true)}
+      onMouseLeave={() => setIsPaused(false)}
+    >
+      <div
+        className="flex transition-transform duration-500 ease-out will-change-transform"
+        style={{
+          transform: `translateX(-${index * slidePct}%)`,
+          gap: 24,
+        }}
+      >
+        {cards.map((card) => (
+          <div
+            key={card.id}
+            className="shrink-0"
+            style={{
+              width: `calc(${slidePct}% - ${(24 * (visibleCount - 1)) / visibleCount}px)`,
+            }}
+          >
+            <AwardCardItem card={card} embedded={isEmbedded} />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+
+  if (isEmbedded) {
+    return (
+      <section
+        id={id}
+        className={`scroll-mt-[116px] rounded-[20px] bg-transparent py-5 md:py-6 ${className ?? ''}`}
+        aria-labelledby={headingId}
+      >
+        <div className="flex items-center justify-between gap-4">
+          <h2 id={headingId} className="text-[34px] font-bold leading-tight text-heading">
+            {heading}
+          </h2>
+          {showControls ? (
+            <CategoryCarouselControls
+              page={index}
+              totalPages={maxIndex + 1}
+              onPrev={goPrev}
+              onNext={goNext}
+              prevLabel="Previous awards"
+              nextLabel="Next awards"
+            />
+          ) : null}
+        </div>
+        {subheading ? (
+          <p className="mt-3 max-w-3xl text-[14px] font-medium leading-[140%] text-muted md:text-[15px]">
+            {subheading}
+          </p>
+        ) : null}
+        {carousel}
+      </section>
+    );
+  }
 
   return (
     <section
-      className="full-bleed relative bg-surface pt-0"
-      aria-labelledby="awards-heading"
+      id={id}
+      className={`full-bleed relative bg-surface pt-0 ${className ?? ''}`}
+      aria-labelledby={headingId}
     >
       <div className="site-container relative z-10">
         <header className="mx-auto text-center">
           <h2
-            id="awards-heading"
+            id={headingId}
             className="text-[28px] font-bold leading-[140%] text-heading md:text-[34px]"
           >
             {heading}
           </h2>
-          <p className="mt-3 text-[14px] font-medium leading-[140%] text-muted md:text-[15px]">
-            {subheading}
-          </p>
+          {subheading ? (
+            <p className="mt-3 text-[14px] font-medium leading-[140%] text-muted md:text-[15px]">
+              {subheading}
+            </p>
+          ) : null}
         </header>
 
-        <div
-          className="relative mt-10 overflow-hidden pt-14 md:mt-12"
-          onMouseEnter={() => setIsPaused(true)}
-          onMouseLeave={() => setIsPaused(false)}
-        >
-          <div
-            className="flex transition-transform duration-500 ease-out will-change-transform"
-            style={{
-              transform: `translateX(-${index * slidePct}%)`,
-              gap: 24,
-            }}
-          >
-            {cards.map((card) => (
-              <div
-                key={card.id}
-                className="shrink-0"
-                style={{
-                  width: `calc(${slidePct}% - ${(24 * (visibleCount - 1)) / visibleCount}px)`,
-                }}
-              >
-                <AwardCardItem card={card} />
-              </div>
-            ))}
-          </div>
-        </div>
+        {carousel}
 
-        {total > visibleCount ? (
-          <div className="mt-6 flex justify-end gap-3">
-            <button
-              type="button"
-              onClick={goPrev}
-              aria-label="Previous awards"
-              className="flex h-10 w-10 items-center justify-center rounded-full border border-accent bg-white text-accent transition hover:bg-accent-soft"
-            >
-              <ArrowRightIcon className="h-3.5 w-3.5 rotate-180" />
-            </button>
-            <button
-              type="button"
-              onClick={goNext}
-              aria-label="Next awards"
-              className="flex h-10 w-10 items-center justify-center rounded-full bg-accent text-white transition hover:bg-accent-hover"
-            >
-              <ArrowRightIcon className="h-3.5 w-3.5" />
-            </button>
+        {showControls ? (
+          <div className="mt-6">
+            <CarouselControls
+              onPrev={goPrev}
+              onNext={goNext}
+              prevLabel="Previous awards"
+              nextLabel="Next awards"
+            />
           </div>
         ) : null}
       </div>

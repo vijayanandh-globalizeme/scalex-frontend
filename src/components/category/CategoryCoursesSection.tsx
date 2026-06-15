@@ -1,7 +1,9 @@
 'use client';
 
-import { useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import { CourseCard, type Course } from '@/components/courses/CoursesSection';
+import { useGsapScrollRevealStagger } from '@/hooks/useGsapScrollReveal';
+import { useGridColumns } from '@/hooks/useGridColumns';
 
 function ViewMoreChevronIcon({ className }: { className?: string }) {
   return (
@@ -42,11 +44,39 @@ export default function CategoryCoursesSection({
   currencySymbol = '₹',
 }: CategoryCoursesSectionProps) {
   const [visibleCount, setVisibleCount] = useState(initialVisibleCount);
+  const sectionRef = useRef<HTMLElement>(null);
+  const rowRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const cols = useGridColumns();
+
   const visibleCourses = courses.slice(0, visibleCount);
   const hasMore = visibleCount < courses.length;
 
+  const courseRows = useMemo(() => {
+    const rows: Course[][] = [];
+    for (let i = 0; i < visibleCourses.length; i += cols) {
+      rows.push(visibleCourses.slice(i, i + cols));
+    }
+    return rows;
+  }, [visibleCourses, cols]);
+
+  rowRefs.current.length = courseRows.length;
+
+  useGsapScrollRevealStagger(
+    sectionRef,
+    rowRefs,
+    {
+      y: 48,
+      duration: 1.6,
+      delay: 0.55,
+      ease: 'power2.out',
+      start: 'top 88%',
+    },
+    [courseRows.length, cols],
+  );
+
   return (
     <section
+      ref={sectionRef}
       id="courses"
       className="full-bleed relative z-0 overflow-visible bg-white pb-10 pt-32 md:pb-12 md:pt-40"
       aria-labelledby="category-courses-heading"
@@ -64,9 +94,19 @@ export default function CategoryCoursesSection({
           </p>
         </header>
 
-        <div className="mt-10 grid grid-cols-1 gap-6 md:mt-12 md:grid-cols-2 lg:grid-cols-3">
-          {visibleCourses.map((course) => (
-            <CourseCard key={course.id} course={course} currencySymbol={currencySymbol} />
+        <div className="mt-10 flex flex-col gap-6 md:mt-12">
+          {courseRows.map((rowCourses, rowIndex) => (
+            <div
+              key={`category-row-${rowIndex}`}
+              ref={(el) => {
+                rowRefs.current[rowIndex] = el;
+              }}
+              className="gsap-reveal-pending grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3"
+            >
+              {rowCourses.map((course) => (
+                <CourseCard key={course.id} course={course} currencySymbol={currencySymbol} />
+              ))}
+            </div>
           ))}
         </div>
 

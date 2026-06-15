@@ -1,0 +1,55 @@
+.marquee {
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent,
+    black 6%,
+    black 94%,
+    transparent
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    black 6%,
+    black 94%,
+    transparent
+  );
+}
+
+.track {
+  animation: logo-marquee-scroll 40s linear infinite;
+  will-change: transform;
+}
+
+.marquee:hover .track {
+  animation-play-state: paused;
+}
+
+.trackReverse {
+  animation-direction: reverse;
+}
+
+@keyframes logo-marquee-scroll {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee {
+    mask-image: none;
+    -webkit-mask-image: none;
+  }
+
+  .track {
+    animation: none;
+    transform: none;
+    width: 100%;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    gap: 1rem 1.5rem;
+  }
+}

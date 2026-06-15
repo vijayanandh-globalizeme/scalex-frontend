@@ -2,13 +2,14 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { useEffect, useMemo, useState, useTransition } from 'react';
+import { useEffect, useMemo, useRef, useState, useTransition } from 'react';
 import {
   CategoryCarouselControls,
   CategoryCarouselTrack,
   chunkPages,
 } from '@/components/category/CategoryCarouselNav';
 import { RELATED_BLOGS, type RelatedBlogItem } from '@/lib/categoryPageSections';
+import { useGsapScrollRevealStagger } from '@/hooks/useGsapScrollReveal';
 
 const AUTHOR_AVATAR = '/images/Alex.png';
 const DEFAULT_BLOG_IMAGE = '/images/course/course-1.png';
@@ -71,7 +72,7 @@ function BlogCardFooter({
         className={`inline-flex shrink-0 items-center gap-1 ${compact ? 'text-[12px]' : 'text-[13px]'} font-semibold ${isSolid ? 'text-white' : 'text-brand'}`}
       >
         Full Blog
-        <ArrowRightSmall />
+        <ArrowRightSmall className="btn-arrow-icon" />
       </Link>
     </div>
   );
@@ -141,7 +142,13 @@ function BlogCard({ blog }: { blog: RelatedBlogItem }) {
 }
 
 /** 3-column masonry: items ordered col1-top, col2-top, col3-top, col1-bottom, col2-bottom, col3-bottom */
-function BlogMasonryGrid({ items }: { items: RelatedBlogItem[] }) {
+function BlogMasonryGrid({
+  items,
+  onColumnRef,
+}: {
+  items: RelatedBlogItem[];
+  onColumnRef?: (colIndex: number, el: HTMLDivElement | null) => void;
+}) {
   const columns = [
     [items[0], items[3]],
     [items[1], items[4]],
@@ -151,7 +158,11 @@ function BlogMasonryGrid({ items }: { items: RelatedBlogItem[] }) {
   return (
     <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 lg:items-start">
       {columns.map((column, colIndex) => (
-        <div key={colIndex} className={`flex flex-col gap-6 ${BLOG_CARD_WIDTH} mx-auto lg:mx-0`}>
+        <div
+          key={colIndex}
+          ref={(el) => onColumnRef?.(colIndex, el)}
+          className={`gsap-reveal-pending flex flex-col gap-6 ${BLOG_CARD_WIDTH} mx-auto lg:mx-0`}
+        >
           {column.map((blog) => (blog ? <BlogCard key={blog.id} blog={blog} /> : null))}
         </div>
       ))}
@@ -160,6 +171,7 @@ function BlogMasonryGrid({ items }: { items: RelatedBlogItem[] }) {
 }
 
 const PAGE_SIZE = 6;
+const MASONRY_COLUMNS = 3;
 
 /** Off-screen carousel slides are lazy-loaded by default; warm the cache on mount. */
 function usePrefetchBlogImages(items: RelatedBlogItem[]) {
@@ -180,9 +192,26 @@ export default function CategoryRelatedBlogsSection() {
   const { heading, subheading, items } = RELATED_BLOGS;
   const [page, setPage] = useState(0);
   const [, startTransition] = useTransition();
+  const sectionRef = useRef<HTMLElement>(null);
+  const rowRefs = useRef<(HTMLDivElement | null)[]>([]);
   const pages = useMemo(() => chunkPages(items, PAGE_SIZE), [items]);
   const totalPages = pages.length;
   usePrefetchBlogImages(items);
+
+  rowRefs.current.length = pages.length * MASONRY_COLUMNS;
+
+  useGsapScrollRevealStagger(
+    sectionRef,
+    rowRefs,
+    {
+      y: 48,
+      duration: 1.6,
+      delay: 0.55,
+      ease: 'power2.out',
+      start: 'top 88%',
+    },
+    [pages.length, page],
+  );
 
   const goToPage = (next: number) => {
     startTransition(() => setPage(next));
@@ -190,7 +219,8 @@ export default function CategoryRelatedBlogsSection() {
 
   return (
     <section
-      className="full-bleed bg-surface"
+      ref={sectionRef}
+      className="full-bleed bg-surface pb-14 md:pb-20"
       aria-labelledby="related-blogs-heading"
     >
       <div className="site-container">
@@ -208,7 +238,13 @@ export default function CategoryRelatedBlogsSection() {
 
         <CategoryCarouselTrack page={page} className="mt-10 md:mt-12">
           {pages.map((pageItems, pageIndex) => (
-            <BlogMasonryGrid key={pageIndex} items={pageItems} />
+            <BlogMasonryGrid
+              key={pageIndex}
+              items={pageItems}
+              onColumnRef={(colIndex, el) => {
+                rowRefs.current[pageIndex * MASONRY_COLUMNS + colIndex] = el;
+              }}
+            />
           ))}
         </CategoryCarouselTrack>
 

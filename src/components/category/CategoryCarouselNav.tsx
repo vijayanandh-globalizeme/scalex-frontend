@@ -21,6 +21,7 @@ export function CarouselNavIcon({
 
   return (
     <svg
+      className="btn-arrow-icon"
       xmlns="http://www.w3.org/2000/svg"
       width={size}
       height={size}
@@ -103,7 +104,7 @@ export function CategoryCarouselTrack({
   className?: string;
 }) {
   return (
-    <div className={`overflow-hidden ${className ?? ''}`}>
+    <div className={`overflow-x-clip ${className ?? ''}`}>
       <div
         className="flex will-change-transform transition-transform duration-500 ease-in-out motion-reduce:transition-none"
         style={{ transform: `translate3d(-${page * 100}%, 0, 0)` }}

@@ -1,6 +1,7 @@
 import type { SuccessStoriesSectionProps } from './SuccessStoriesSection';
 
-const placeholderImage = '/images/hero/person.png';
+const keerthiImage = '/images/Keerthi.png';
+const alexImage = '/images/Alex.png';
 
 const sharedQuote =
   'ScaleX Learning transformed the way I approach Agile methodologies. The project-based learning wasn’t just theory—it gave me the practical tools to lead my team more effectively. My career growth has been exponential since I got certified here.';
@@ -23,7 +24,7 @@ export const defaultSuccessStoriesContent: SuccessStoriesSectionProps = {
       role: 'CEO & Co-Founder, Innotech',
       quote: sharedQuote,
       rating: 5,
-      mediaSrc: placeholderImage,
+      mediaSrc: alexImage,
       mediaAlt: 'John Williams sharing his ScaleX experience',
       videoUrl: 'https://example.com/testimonials/john',
     },
@@ -33,7 +34,7 @@ export const defaultSuccessStoriesContent: SuccessStoriesSectionProps = {
       role: 'Senior Product Manager, FinHub',
       quote: sharedQuote,
       rating: 5,
-      mediaSrc: placeholderImage,
+      mediaSrc: keerthiImage,
       mediaAlt: 'Priya Sharma sharing her ScaleX experience',
       videoUrl: 'https://example.com/testimonials/priya',
     },
@@ -53,7 +54,7 @@ export const defaultSuccessStoriesContent: SuccessStoriesSectionProps = {
       role: 'Director of Operations, Globex',
       quote: sharedQuote,
       rating: 5,
-      mediaSrc: placeholderImage,
+      mediaSrc: keerthiImage,
       mediaAlt: 'Maria Garcia sharing her ScaleX experience',
       videoUrl: 'https://example.com/testimonials/maria',
     },

@@ -2,6 +2,20 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { EXPERT_CTA } from '@/lib/categoryPageSections';
 
+export type ExpertCtaContent = {
+  headingLines: string[];
+  subheading?: string;
+  cta: { href: string; label: string };
+  image: { src: string; alt: string };
+};
+
+export type CategoryExpertCtaSectionProps = {
+  variant?: 'fullBleed' | 'card';
+  content?: ExpertCtaContent;
+  headingId?: string;
+  className?: string;
+};
+
 function ExpertDecorIcon({ className }: { className?: string }) {
   return (
     <svg
@@ -50,20 +64,74 @@ function PhoneIcon({ className }: { className?: string }) {
   );
 }
 
-export default function CategoryExpertCtaSection() {
-  const { headingLines, subheading, cta, image } = EXPERT_CTA;
+function ArrowRightIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} width="18" height="15" viewBox="0 0 18 15" fill="currentColor" aria-hidden>
+      <path d="M10.6333 15c.2326 0 .4361-.0891.63-.2771l6.4459-6.5599c.1938-.188.2908-.4156.2908-.663s-.097-.475-.2908-.663L11.2827.2968C11.0694.0792 10.8659 0 10.6333 0c-.475 0-.8434.3562-.8434.851 0 .2375.0775.465.2326.6234l2.1714 2.2559 4.0419 3.7698-4.0419 3.7697-2.1714 2.256c-.1551.1484-.2326.3859-.2326.6233 0 .495.3684.851.8434.851ZM.853 8.3806h12.2617l3.1211-.1979c.3974-.0297.6688-.277.6688-.6827 0-.4057-.2714-.6531-.6688-.6828l-3.1211-.1978H.853C.349 6.6194 0 6.9855 0 7.5c0 .5145.349.8806.853.8806Z" />
+    </svg>
+  );
+}
+
+function ExpertCtaCard({ content, headingId }: { content: ExpertCtaContent; headingId: string }) {
+  const { headingLines, cta, image } = content;
+
+  return (
+    <div className="category-expert-heading relative overflow-hidden rounded-lg bg-[#0D0D0D]">
+      <div
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_80%_120%_at_100%_50%,rgba(253,2,45,0.45),transparent_65%)]"
+        aria-hidden
+      />
+      <div className="relative flex flex-col items-center gap-4 px-5 py-6 sm:flex-row sm:gap-8 md:px-8 md:py-7">
+        <div className="relative mx-auto h-[150px] w-[130px] shrink-0 sm:mx-0 sm:h-[170px] sm:w-[150px]">
+          <ExpertDecorIcon className="pointer-events-none absolute bottom-0 right-0 z-0 h-auto w-[120px] sm:w-[140px]" />
+          <div className="relative z-10 h-full w-full">
+            <Image
+              src={image.src}
+              alt={image.alt}
+              fill
+              sizes="150px"
+              className="object-contain object-bottom"
+            />
+          </div>
+        </div>
+
+        <div className="flex min-w-0 flex-1 flex-col items-center text-center sm:items-start sm:text-left">
+          <h2
+            id={headingId}
+            className="max-w-lg text-[16px] font-medium leading-snug text-white md:text-[18px]"
+          >
+            {headingLines.map((line) => (
+              <span key={line} className="block">
+                {line}
+              </span>
+            ))}
+          </h2>
+          <Link
+            href={cta.href}
+            className="btn-brand mt-4 inline-flex h-10 items-center justify-center gap-2 px-5 text-[13px] font-semibold"
+          >
+            {cta.label}
+            <ArrowRightIcon className="btn-arrow-icon shrink-0 text-white" />
+          </Link>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function ExpertCtaFullBleed({ content, headingId }: { content: ExpertCtaContent; headingId: string }) {
+  const { headingLines, subheading, cta, image } = content;
 
   return (
     <section
       className="category-expert-heading full-bleed relative z-20 overflow-visible bg-[#0D0D0D] pb-0"
-      aria-labelledby="category-expert-heading"
+      aria-labelledby={headingId}
     >
       <div className="site-container relative overflow-visible">
         <div className="grid items-center gap-[35px] overflow-visible lg:grid-cols-[minmax(0,3.5fr)_minmax(0,7fr)] lg:gap-12">
           <div className="relative mx-auto flex min-w-0 w-full items-center justify-center overflow-visible lg:mx-0 lg:justify-start">
             <ExpertDecorIcon className="pointer-events-none absolute bottom-0 right-[calc(var(--spacing)*6)] z-0 h-auto w-[290px]" />
 
-            {/* Person overlaps into the courses section above */}
             <div className="relative z-10 -mt-10 overflow-visible">
               <div className="relative mx-auto h-[400px] w-[300px]">
                 <Image
@@ -80,7 +148,7 @@ export default function CategoryExpertCtaSection() {
 
           <div className="min-w-0 max-w-full self-center pb-0 text-center lg:justify-self-end lg:text-left">
             <h2
-              id="category-expert-heading"
+              id={headingId}
               className="max-w-full text-[28px] font-bold leading-[1.25] text-white md:text-[34px] lg:text-[36px]"
             >
               {headingLines.map((line) => (
@@ -89,9 +157,11 @@ export default function CategoryExpertCtaSection() {
                 </span>
               ))}
             </h2>
-            <p className="mt-4 text-[16px] font-medium leading-[1.6] text-white/80 md:text-[17px]">
-              {subheading}
-            </p>
+            {subheading ? (
+              <p className="mt-4 text-[16px] font-medium leading-[1.6] text-white/80 md:text-[17px]">
+                {subheading}
+              </p>
+            ) : null}
             <Link
               href={cta.href}
               className="btn-brand mt-8 inline-flex h-[54px] items-center justify-center gap-3 px-8"
@@ -104,4 +174,21 @@ export default function CategoryExpertCtaSection() {
       </div>
     </section>
   );
+}
+
+export default function CategoryExpertCtaSection({
+  variant = 'fullBleed',
+  content = EXPERT_CTA,
+  headingId = 'category-expert-heading',
+  className,
+}: CategoryExpertCtaSectionProps = {}) {
+  if (variant === 'card') {
+    return (
+      <div className={className}>
+        <ExpertCtaCard content={content} headingId={headingId} />
+      </div>
+    );
+  }
+
+  return <ExpertCtaFullBleed content={content} headingId={headingId} />;
 }

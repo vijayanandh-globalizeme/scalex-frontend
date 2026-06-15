@@ -108,7 +108,7 @@ function MobileNavSection({
                 <Link
                   href={item.href}
                   onClick={onNavigate}
-                  className="header-fluid-text block rounded-md px-3 py-2.5 font-normal text-ink hover:bg-accent-soft hover:text-brand"
+                  className="btn-mui-nav-link header-fluid-text block px-3 py-2.5 font-normal text-ink"
                 >
                   {item.label}
                 </Link>
@@ -168,7 +168,7 @@ export default function HeaderMobileMenu({
     <>
       <button
         type="button"
-        className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg text-ink transition hover:bg-zinc-100"
+        className="btn-mui-ink-tint flex h-10 w-10 shrink-0 items-center justify-center rounded-lg text-ink"
         aria-expanded={isOpen}
         aria-controls="header-mobile-menu"
         aria-label={isOpen ? 'Close menu' : 'Open menu'}
@@ -228,7 +228,7 @@ export default function HeaderMobileMenu({
                 className="btn-brand-outline btn-brand-outline-hover-fill header-fluid-text mt-4 flex w-full items-center justify-center gap-2 px-4 py-3"
               >
                 Sign In
-                <SignInArrow className="shrink-0 text-current" />
+                <SignInArrow className="btn-arrow-icon shrink-0 text-current" />
               </Link>
             </div>
           </div>

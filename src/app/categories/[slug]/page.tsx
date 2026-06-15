@@ -62,9 +62,9 @@ export default async function CategoryPage({ params }: PageProps) {
         courses={courses}
       />
       <CategoryExpertCtaSection />
+      <WhyScaleXSection {...defaultWhyScaleXContent} />
       <CategoryExploreAllSection />
       <CategoryRelatedBlogsSection />
-      <WhyScaleXSection {...defaultWhyScaleXContent} />
       <GuidanceSection {...defaultGuidanceContent} />
     </>
   );

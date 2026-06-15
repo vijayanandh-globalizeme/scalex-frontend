@@ -1,8 +1,8 @@
 'use client';
 
-import Image from 'next/image';
 import Link from 'next/link';
 import type { ReactNode } from 'react';
+import { LogoMarquee } from '@/components/shared';
 
 export interface WorkforceStat {
   id: string;
@@ -263,28 +263,21 @@ export default function WorkforceSection({
 
             <Link
               href={cta.href}
-              className="mt-7 inline-flex h-[48px] items-center justify-center gap-2 rounded-lg bg-heading px-6 text-[14px] font-semibold text-white shadow-[0_4px_4px_0_rgba(30,41,59,0.03),0_4px_4px_0_rgba(30,41,59,0.08),0_4px_4px_0_rgba(30,41,59,0.11),0_4px_4px_0_rgba(30,41,59,0.11)] transition hover:bg-link"
+              className="btn-mui-filled-dark mt-7 inline-flex h-[48px] items-center justify-center gap-2 rounded-lg px-6 text-[14px] font-semibold"
             >
               {cta.label}
-              <ArrowRightIcon className="h-3.5 w-3.5" />
+              <ArrowRightIcon className="btn-arrow-icon h-3.5 w-3.5" />
             </Link>
           </div>
         </div>
 
         {/* Bottom: hiring partners strip (overlaps next section by half) */}
         {partners.length > 0 ? (
-          <div className="relative z-50 mt-10 mb-[-72px] grid translate-y-1/2 grid-cols-3 items-center gap-6 rounded-2xl bg-white px-10 py-14 shadow-[0_10px_30px_-10px_rgba(15,23,42,0.25)] sm:grid-cols-4 md:mt-12 md:mb-[-130px] md:grid-cols-8 md:px-12 md:py-16">
-            {partners.map((p) => (
-              <div key={p.id} className="relative h-8 w-full md:h-9">
-                <Image
-                  src={p.logoSrc}
-                  alt={p.logoAlt}
-                  fill
-                  sizes="160px"
-                  className="object-contain"
-                />
-              </div>
-            ))}
+          <div className="relative z-50 mt-10 mb-[-72px] translate-y-1/2 rounded-2xl bg-white px-6 py-8 shadow-[0_10px_30px_-10px_rgba(15,23,42,0.25)] md:mt-12 md:mb-[-130px] md:px-10 md:py-10">
+            <LogoMarquee
+              logos={partners.map((p) => ({ id: p.id, src: p.logoSrc, alt: p.logoAlt }))}
+              ariaLabel="Hiring partners"
+            />
           </div>
         ) : null}
       </div>
