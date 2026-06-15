@@ -220,7 +220,7 @@ export default function CourseDetailHeroSection({
                 <button
                   type="button"
                   onClick={openBrochureModal}
-                  className="btn-brand h-[54px] gap-2 px-6 md:px-7"
+                  className="btn-brand h-[54px] cursor-pointer gap-2 px-6 md:px-7"
                 >
                   {primaryCta.label}
                   <ArrowRightIcon className="btn-arrow-icon shrink-0" />

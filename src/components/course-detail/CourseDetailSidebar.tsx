@@ -140,8 +140,8 @@ export default function CourseDetailSidebar({ sidebar }: { sidebar: CourseBodyCo
 
   return (
     <aside className="hidden w-[246px] shrink-0 overflow-visible lg:block" aria-label="Course assistance">
-      <div className="course-detail-sticky-sidebar">
-        <div className="course-detail-sticky-sidebar__scroll space-y-5">
+      <div className="sticky top-[calc(4rem+3.25rem)] z-30 flex max-h-[calc(100dvh-7.25rem)] flex-col overflow-visible">
+        <div className="min-h-0 flex-1 overflow-y-auto overflow-x-visible overscroll-contain space-y-5">
         <form
           onSubmit={handleSubmit}
           className={`${COURSE_SECTION_CARD} p-5`}

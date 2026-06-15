@@ -96,10 +96,10 @@ export default function CourseDetailStickyNav({
   }
 
   return (
-    <nav className="course-detail-sticky-nav" aria-label="Course sections">
-      <div className="course-detail-sticky-nav__bar full-bleed">
+    <nav className="sticky top-16 z-40 mb-12" aria-label="Course sections">
+      <div className="full-bleed bg-[#fcfcfc] shadow-[0_4px_4px_0_rgba(30,41,59,0.08),4px_-4px_4px_0_rgba(30,41,59,0.03)]">
         <div className="site-container">
-          <div className="course-detail-sticky-nav__items">
+          <div className="flex h-[52px] w-full items-stretch gap-6 overflow-x-auto [-ms-overflow-style:none] [scrollbar-width:none] lg:justify-between lg:gap-0 [&::-webkit-scrollbar]:hidden">
             {items.map((item) => {
               const isActive = activeId === item.id;
 
@@ -108,7 +108,7 @@ export default function CourseDetailStickyNav({
                   key={item.id}
                   type="button"
                   onClick={() => scrollToSection(item.id)}
-                  className={`flex shrink-0 items-center border-0 border-b-[3px] bg-transparent p-0 text-[14px] font-medium whitespace-nowrap transition-colors ${
+                  className={`flex shrink-0 cursor-pointer items-center border-0 border-b-[3px] bg-transparent p-0 text-[14px] font-medium whitespace-nowrap transition-colors ${
                     isActive
                       ? 'border-b-brand text-brand'
                       : 'border-b-transparent text-heading hover:text-brand'
@@ -120,7 +120,7 @@ export default function CourseDetailStickyNav({
             })}
             <a
               href={`tel:${phone.replace(/[^\d+]/g, '')}`}
-              className="btn-mui-brand-tint group flex h-9 w-9 shrink-0 self-center items-center justify-center rounded-full"
+              className="btn-mui-brand-tint group flex h-9 w-9 shrink-0 cursor-pointer self-center items-center justify-center rounded-full"
               aria-label={`Call ${phone}`}
             >
               <CallIcon className="h-6 w-[25px] transition-transform duration-300 ease-out group-hover:scale-110 group-hover:-translate-y-0.5 group-active:scale-95" />

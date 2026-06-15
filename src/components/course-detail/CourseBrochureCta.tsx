@@ -20,7 +20,7 @@ export default function CourseBrochureCta({
 
   if (openModal || isBrochureModalHref(href)) {
     return (
-      <button type="button" onClick={openBrochureModal} className={className}>
+      <button type="button" onClick={openBrochureModal} className={`cursor-pointer ${className ?? ''}`}>
         {children}
       </button>
     );
