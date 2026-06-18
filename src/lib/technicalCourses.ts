@@ -82,14 +82,14 @@ export const TECHNICAL_PRIMARY_NAV_ITEMS = [
 export const TECHNICAL_MEGA_MENU_COURSES = [
   {
     slug: PRIMARY_TECHNICAL_COURSE_SLUG,
-    label: 'Advanced Certification in Data Analytics & Gen AI',
+    label: 'Advanced Certified Scrum Master',
   },
 ] as const;
 
 export const TECHNICAL_COURSE_DEFINITIONS: TechnicalCourseDefinition[] = [
   {
     slug: PRIMARY_TECHNICAL_COURSE_SLUG,
-    menuLabel: 'Advanced Certification in Data Analytics & Gen AI',
+    menuLabel: 'Advanced Certified Scrum Master',
     titlePrefix: 'Advanced Certification in Data Analytics & Gen AI',
     titleAccent: 'Professional Program',
     breadcrumbLabel: 'Advanced Certification in Data Analytics & Gen AI',
@@ -97,7 +97,7 @@ export const TECHNICAL_COURSE_DEFINITIONS: TechnicalCourseDefinition[] = [
   },
   {
     slug: 'python-data-science',
-    menuLabel: 'Python for Data Science',
+    menuLabel: 'Advanced Certified Scrum Master',
     titlePrefix: 'Python for Data Science',
     titleAccent: 'Professional Program',
     breadcrumbLabel: 'Python for Data Science',
@@ -105,7 +105,7 @@ export const TECHNICAL_COURSE_DEFINITIONS: TechnicalCourseDefinition[] = [
   },
   {
     slug: 'cloud-devops-engineering',
-    menuLabel: 'Cloud & DevOps Engineering',
+    menuLabel: 'Advanced Certified Scrum Master',
     titlePrefix: 'Cloud & DevOps Engineering',
     titleAccent: 'Career Program',
     breadcrumbLabel: 'Cloud & DevOps Engineering',
@@ -113,7 +113,7 @@ export const TECHNICAL_COURSE_DEFINITIONS: TechnicalCourseDefinition[] = [
   },
   {
     slug: 'mern-stack-development',
-    menuLabel: 'MERN Stack Development',
+    menuLabel: 'Advanced Certified Scrum Master',
     titlePrefix: 'MERN Stack Development',
     titleAccent: 'Intensive Bootcamp',
     breadcrumbLabel: 'MERN Stack Development',
