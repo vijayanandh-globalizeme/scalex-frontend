@@ -1,6 +1,7 @@
 'use client';
 
 import type { ReactNode } from 'react';
+import { Children } from 'react';
 
 const ARROW_PATH =
   'M19.0888 23C19.244 23 19.3796 22.9347 19.5089 22.7968L23.8061 17.9861C23.9354 17.8483 24 17.6814 24 17.5C24 17.3186 23.9354 17.1517 23.8061 17.0139L19.5218 12.2177C19.3796 12.058 19.244 12 19.0888 12C18.7722 12 18.5266 12.2612 18.5266 12.624C18.5266 12.7982 18.5783 12.965 18.6818 13.0811L20.1293 14.7355L22.8239 17.5L20.1293 20.2645L18.6818 21.9188C18.5783 22.0277 18.5266 22.2019 18.5266 22.3759C18.5266 22.7388 18.7722 23 19.0888 23ZM12.5687 18.1458H20.7431L22.8239 18.0007C23.0888 17.9789 23.2697 17.7975 23.2697 17.5C23.2697 17.2025 23.0888 17.0211 22.8239 16.9993L20.7431 16.8542H12.5687C12.2326 16.8542 12 17.1227 12 17.5C12 17.8773 12.2326 18.1458 12.5687 18.1458Z';
@@ -98,19 +99,33 @@ export function CategoryCarouselTrack({
   page,
   children,
   className,
+  clipX = true,
 }: {
   page: number;
   children: ReactNode[];
   className?: string;
+  clipX?: boolean;
 }) {
+  const slides = Children.toArray(children);
+  const slideCount = slides.length;
+  const safePage = slideCount > 0 ? Math.min(Math.max(page, 0), slideCount - 1) : 0;
+  const slideWidthPercent = slideCount > 0 ? 100 / slideCount : 100;
+
   return (
-    <div className={`overflow-x-clip ${className ?? ''}`}>
+    <div className={`w-full min-w-0 ${clipX ? 'overflow-hidden' : 'overflow-visible'} ${className ?? ''}`}>
       <div
-        className="flex will-change-transform transition-transform duration-500 ease-in-out motion-reduce:transition-none"
-        style={{ transform: `translate3d(-${page * 100}%, 0, 0)` }}
+        className="flex overflow-visible will-change-transform transition-transform duration-500 ease-in-out motion-reduce:transition-none"
+        style={{
+          width: `${slideCount * 100}%`,
+          transform: `translate3d(-${safePage * slideWidthPercent}%, 0, 0)`,
+        }}
       >
-        {children.map((slide, index) => (
-          <div key={index} className="w-full shrink-0">
+        {slides.map((slide, index) => (
+          <div
+            key={index}
+            className="shrink-0 grow-0 overflow-visible"
+            style={{ width: `${slideWidthPercent}%` }}
+          >
             {slide}
           </div>
         ))}

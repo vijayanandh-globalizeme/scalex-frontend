@@ -1,3 +1,4 @@
+export { default as TechnicalCourseHeroSection } from './TechnicalCourseHeroSection';
 export { default as CourseBrochureCta } from './CourseBrochureCta';
 export { default as CourseBrochureModal } from './CourseBrochureModal';
 export {

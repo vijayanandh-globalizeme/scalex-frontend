@@ -32,10 +32,13 @@ function StandoutFeatureIcon({ className }: { className?: string }) {
 export default function CourseOverviewSection({
   overview,
   career,
+  variant = 'default',
 }: {
   overview: CourseBodyContent['overview'];
   career: CourseBodyContent['career'];
+  variant?: 'default' | 'technical';
 }) {
+  const isTechnical = variant === 'technical';
   const skillColumns = [
     overview.skills.slice(0, 3),
     overview.skills.slice(3, 6),
@@ -49,18 +52,44 @@ export default function CourseOverviewSection({
     >
       <div className="border-b border-zinc-100 px-6 py-5 md:px-8 md:py-6">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <h2 className="text-[34px] font-bold leading-[140%] text-heading">{overview.title}</h2>
+          <h2
+            className={
+              isTechnical
+                ? 'text-[32px] font-bold leading-normal text-[#1E293B]'
+                : 'text-[34px] font-bold leading-[140%] text-heading'
+            }
+          >
+            {overview.title}
+          </h2>
           <CourseBrochureCta
             href="#brochure"
-            className="btn-brand-outline inline-flex h-10 shrink-0 items-center justify-center gap-2 self-start px-5 text-[13px] font-semibold sm:self-auto"
+            className={
+              isTechnical
+                ? 'btn-brand-outline inline-flex h-10 shrink-0 items-center justify-center gap-2 self-start px-5 text-[14px] font-semibold sm:self-auto'
+                : 'btn-brand-outline inline-flex h-10 shrink-0 items-center justify-center gap-2 self-start px-5 text-[13px] font-semibold sm:self-auto'
+            }
           >
             {overview.downloadGuideLabel}
             <CourseDownloadIcon className="btn-download-icon shrink-0" />
           </CourseBrochureCta>
         </div>
-        <p className="mt-4 text-[18px] font-medium leading-[140%] text-muted">{overview.description}</p>
+        <p
+          className={
+            isTechnical
+              ? 'mt-4 text-[14px] font-normal leading-[150%] text-[#788593]'
+              : 'mt-4 text-[18px] font-medium leading-[140%] text-muted'
+          }
+        >
+          {overview.description}
+        </p>
 
-        <h3 className="mt-8 text-[20px] font-semibold leading-[140%] text-heading">
+        <h3
+          className={
+            isTechnical
+              ? 'mt-8 text-[20px] font-bold leading-normal text-[#1E293B]'
+              : 'mt-8 text-[20px] font-semibold leading-[140%] text-heading'
+          }
+        >
           {overview.standoutTitle}
         </h3>
         <ul className="mt-4 grid gap-5 md:grid-cols-3" role="list">
@@ -68,8 +97,22 @@ export default function CourseOverviewSection({
             <li key={feature.id} className="flex gap-3">
               <StandoutFeatureIcon className="mt-0.5 shrink-0" />
               <div className="min-w-0">
-                <p className="text-[16px] font-medium text-heading">{feature.title}</p>
-                <p className="mt-1 text-[14px] font-normal leading-[140%] text-muted">
+                <p
+                  className={
+                    isTechnical
+                      ? 'text-[14px] font-bold leading-normal text-[#1E293B]'
+                      : 'text-[16px] font-medium text-heading'
+                  }
+                >
+                  {feature.title}
+                </p>
+                <p
+                  className={
+                    isTechnical
+                      ? 'mt-1 text-[14px] font-normal leading-[140%] text-[#788593]'
+                      : 'mt-1 text-[14px] font-normal leading-[140%] text-muted'
+                  }
+                >
                   {feature.description}
                 </p>
               </div>
@@ -77,14 +120,27 @@ export default function CourseOverviewSection({
           ))}
         </ul>
 
-        <h3 className="mt-8 text-[20px] font-semibold leading-[140%] text-heading">
+        <h3
+          className={
+            isTechnical
+              ? 'mt-8 text-[20px] font-bold leading-normal text-[#1E293B]'
+              : 'mt-8 text-[20px] font-semibold leading-[140%] text-heading'
+          }
+        >
           {overview.skillsTitle}
         </h3>
         <div className="mt-4 grid gap-3 sm:grid-cols-3">
           {skillColumns.map((column, colIndex) => (
             <ul key={colIndex} className="space-y-2" role="list">
               {column.map((skill) => (
-                <li key={skill} className="flex items-start gap-2 text-[16px] font-normal text-heading">
+                <li
+                  key={skill}
+                  className={
+                    isTechnical
+                      ? 'flex items-start gap-2 text-[14px] font-normal leading-normal text-[#1E293B]'
+                      : 'flex items-start gap-2 text-[16px] font-normal text-heading'
+                  }
+                >
                   <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-muted" aria-hidden />
                   {skill}
                 </li>

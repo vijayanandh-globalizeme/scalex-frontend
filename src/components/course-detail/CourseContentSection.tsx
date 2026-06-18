@@ -111,7 +111,8 @@ export default function CourseContentSection({
             return (
               <div
                 key={module.id}
-                className={!isLastModule ? COURSE_ROW_DIVIDER : undefined}
+                id={module.id}
+                className={`scroll-mt-[168px]${!isLastModule ? ` ${COURSE_ROW_DIVIDER}` : ''}`}
               >
                 <button
                   type="button"

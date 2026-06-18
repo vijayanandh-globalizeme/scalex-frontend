@@ -1,10 +1,15 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import type { CourseNavItem } from '@/lib/courseBody';
 
 const HEADER_HEIGHT_PX = 64;
 const NAV_HEIGHT_PX = 52;
+const SCROLL_IDLE_MS = 150;
+
+function getNavTargetId(item: CourseNavItem) {
+  return item.href.replace(/^#/, '');
+}
 
 function CallIcon({ className }: { className?: string }) {
   return (
@@ -44,54 +49,101 @@ export default function CourseDetailStickyNav({
   phone: string;
 }) {
   const [activeId, setActiveId] = useState(items[0]?.id ?? 'overview');
+  const pendingScrollIdRef = useRef<string | null>(null);
+  const scrollIdleTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
-    const sectionIds = items.map((item) => item.id);
-    const elements = sectionIds
-      .map((id) => document.getElementById(id))
-      .filter((el): el is HTMLElement => el !== null);
-
-    if (elements.length === 0) return;
-
     const stickyOffset = HEADER_HEIGHT_PX + NAV_HEIGHT_PX;
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const visible = entries
-          .filter((entry) => entry.isIntersecting)
-          .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+    function clearScrollIdleTimer() {
+      if (scrollIdleTimerRef.current !== null) {
+        clearTimeout(scrollIdleTimerRef.current);
+        scrollIdleTimerRef.current = null;
+      }
+    }
 
-        if (visible[0]?.target.id) {
-          setActiveId(visible[0].target.id);
+    function releasePendingScroll() {
+      if (pendingScrollIdRef.current === null) return;
+      pendingScrollIdRef.current = null;
+      updateActiveFromScroll();
+    }
+
+    function schedulePendingScrollRelease() {
+      clearScrollIdleTimer();
+      scrollIdleTimerRef.current = setTimeout(releasePendingScroll, SCROLL_IDLE_MS);
+    }
+
+    function getSectionTop(item: CourseNavItem) {
+      const element = document.getElementById(getNavTargetId(item));
+      if (!element) return null;
+      return element.getBoundingClientRect().top + window.scrollY;
+    }
+
+    function updateActiveFromScroll() {
+      if (pendingScrollIdRef.current) {
+        setActiveId(pendingScrollIdRef.current);
+        schedulePendingScrollRelease();
+        return;
+      }
+
+      const scrollLine = window.scrollY + stickyOffset + 2;
+
+      const sections = items
+        .map((item) => ({ item, top: getSectionTop(item) }))
+        .filter((entry): entry is { item: CourseNavItem; top: number } => entry.top !== null)
+        .sort((a, b) => a.top - b.top);
+
+      if (sections.length === 0) return;
+
+      let active = sections[0].item;
+      for (const section of sections) {
+        if (section.top <= scrollLine) {
+          active = section.item;
         }
-      },
-      {
-        rootMargin: `-${stickyOffset}px 0px -55% 0px`,
-        threshold: [0, 0.15, 0.4],
-      },
-    );
+      }
 
-    elements.forEach((el) => observer.observe(el));
-    return () => observer.disconnect();
+      setActiveId(active.id);
+    }
+
+    updateActiveFromScroll();
+
+    let frame = 0;
+    const onScroll = () => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(updateActiveFromScroll);
+    };
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', updateActiveFromScroll);
+    window.addEventListener('scrollend', releasePendingScroll);
+
+    return () => {
+      cancelAnimationFrame(frame);
+      clearScrollIdleTimer();
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', updateActiveFromScroll);
+      window.removeEventListener('scrollend', releasePendingScroll);
+    };
   }, [items]);
 
-  function scrollToSection(id: string) {
-    const target = document.getElementById(id);
+  function scrollToSection(item: CourseNavItem) {
+    const targetId = getNavTargetId(item);
+    const target = document.getElementById(targetId);
     if (!target) return;
 
     const stickyOffset = HEADER_HEIGHT_PX + NAV_HEIGHT_PX;
-    const rect = target.getBoundingClientRect();
-    const absoluteTop = window.scrollY + rect.top;
+    const top = target.getBoundingClientRect().top + window.scrollY - stickyOffset;
+
+    pendingScrollIdRef.current = item.id;
+    setActiveId(item.id);
 
     window.scrollTo({
-      top: absoluteTop - stickyOffset + 8,
+      top: Math.max(0, top),
       behavior: 'smooth',
     });
 
-    setActiveId(id);
-
     const url = new URL(window.location.href);
-    url.hash = id;
+    url.hash = targetId;
     window.history.replaceState(null, '', url.toString());
   }
 
@@ -107,7 +159,7 @@ export default function CourseDetailStickyNav({
                 <button
                   key={item.id}
                   type="button"
-                  onClick={() => scrollToSection(item.id)}
+                  onClick={() => scrollToSection(item)}
                   className={`flex shrink-0 cursor-pointer items-center border-0 border-b-[3px] bg-transparent p-0 text-[14px] font-medium whitespace-nowrap transition-colors ${
                     isActive
                       ? 'border-b-brand text-brand'

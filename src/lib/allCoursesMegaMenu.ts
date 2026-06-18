@@ -1,5 +1,10 @@
 import { getAllCategorySlugs, getCategoryBySlug } from '@/lib/categories';
 import { getCourseHref } from '@/lib/courses';
+import {
+  getTechnicalCourseHref,
+  PRIMARY_TECHNICAL_COURSE_SLUG,
+  TECHNICAL_MEGA_MENU_COURSES,
+} from '@/lib/technicalCourses';
 
 export type MegaMenuCourse = {
   label: string;
@@ -69,7 +74,7 @@ const COURSE_NAMES_BY_SLUG: Record<string, string[]> = {
 };
 
 export function getAllCoursesMegaMenuData(): MegaMenuCategory[] {
-  return getAllCategorySlugs().map((slug) => {
+  const categories = getAllCategorySlugs().map((slug) => {
     const category = getCategoryBySlug(slug)!;
     const courseNames = COURSE_NAMES_BY_SLUG[slug] ?? [];
 
@@ -83,4 +88,17 @@ export function getAllCoursesMegaMenuData(): MegaMenuCategory[] {
       })),
     };
   });
+
+  return [
+    ...categories,
+    {
+      slug: 'technical-courses',
+      label: 'Technical Course',
+      href: getTechnicalCourseHref(PRIMARY_TECHNICAL_COURSE_SLUG),
+      courses: TECHNICAL_MEGA_MENU_COURSES.map((course) => ({
+        label: course.label,
+        href: getTechnicalCourseHref(course.slug),
+      })),
+    },
+  ];
 }

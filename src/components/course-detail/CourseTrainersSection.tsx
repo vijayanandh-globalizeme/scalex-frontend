@@ -169,7 +169,9 @@ export default function CourseTrainersSection({
         </CategoryCarouselTrack>
       </div>
 
-      <CourseBatchRequestBanner banner={trainers.cta} className="pb-6 md:pb-8" />
+      {trainers.cta ? (
+        <CourseBatchRequestBanner banner={trainers.cta} className="pb-6 md:pb-8" />
+      ) : null}
     </div>
   );
 }

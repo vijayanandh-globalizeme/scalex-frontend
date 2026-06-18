@@ -227,7 +227,7 @@ export interface CourseTrainer {
 export interface CourseTrainersContent {
   title: string;
   trainers: CourseTrainer[];
-  cta: {
+  cta?: {
     headingLines: string[];
     ctaLabel: string;
     ctaHref: string;
@@ -255,6 +255,148 @@ export interface CourseSchedulesContent {
   enrollLabel: string;
 }
 
+export interface CareerTransformationStory {
+  id: string;
+  name: string;
+  quote: string;
+  hikePercent: number;
+  imageSrc: string;
+  imageAlt: string;
+  before: {
+    role: string;
+    companyLogoSrc: string;
+    companyLogoAlt: string;
+  };
+  after: {
+    role: string;
+    companyLogoSrc: string;
+    companyLogoAlt: string;
+  };
+}
+
+export interface CourseCareerTransformationsContent {
+  title: string;
+  subtitle: string;
+  stories: CareerTransformationStory[];
+}
+
+export interface CourseSkillItem {
+  name: string;
+  category: string;
+}
+
+export interface CourseToolItem {
+  name: string;
+  logoSrc: string;
+  logoAlt: string;
+}
+
+export interface CourseSkillsToolsContent {
+  title: string;
+  subtitle: string;
+  skillsTitle: string;
+  toolsTitle: string;
+  skills: CourseSkillItem[];
+  tools: CourseToolItem[];
+  toolRows?: number;
+}
+
+export type ProgramRoadmapStageTheme = 'learning' | 'interview' | 'placement';
+
+export interface ProgramRoadmapProject {
+  company: string;
+  projectName: string;
+  logoSrc?: string;
+  logoAlt?: string;
+}
+
+export interface ProgramRoadmapPlacementFeature {
+  title: string;
+  description: string;
+}
+
+export interface ProgramRoadmapStage {
+  id: string;
+  stageNumber: string;
+  trackLabel: string;
+  description: string;
+  theme: ProgramRoadmapStageTheme;
+  contentHeading: string;
+  highlights?: string[];
+  projects?: ProgramRoadmapProject[];
+  topics?: string[];
+  showMoreLabel?: string;
+  placementFeatures?: ProgramRoadmapPlacementFeature[];
+  hiringPartnersTitle?: string;
+  hiringPartnerLogos?: { src: string; alt: string }[];
+  nextStageLabel?: string;
+  nextStageId?: string;
+}
+
+export interface CourseProgramRoadmapContent {
+  title: string;
+  subtitle: string;
+  stages: ProgramRoadmapStage[];
+}
+
+export interface CourseFeeFeature {
+  title: string;
+  description: string;
+}
+
+export interface CourseFeePartnerLogo {
+  name: string;
+  logoSrc?: string;
+  logoAlt?: string;
+}
+
+export interface CourseFeePricingOption {
+  id: string;
+  label: string;
+  price: string;
+  priceSuffix?: string;
+  description: string;
+  enrollLabel: string;
+  highlighted?: boolean;
+  badge?: string;
+}
+
+export interface CourseFeeContent {
+  title: string;
+  subtitle: string;
+  advisorCtaLabel: string;
+  advisorPhone: string;
+  infoHeading: string;
+  features: CourseFeeFeature[];
+  partnersLabel: string;
+  partnerLogos: CourseFeePartnerLogo[];
+  pricingOptions: CourseFeePricingOption[];
+}
+
+export interface CourseCareerAssuranceFeature {
+  id: string;
+  label: string;
+}
+
+export interface CourseCareerAssuranceContent {
+  brandTitle: string;
+  subheading: string;
+  features: CourseCareerAssuranceFeature[];
+  ctaLabel: string;
+  ctaHref?: string;
+  imageSrc: string;
+  imageAlt: string;
+}
+
+export interface CourseWebinarCtaContent {
+  headingLines: string[];
+  ctaLabel: string;
+  ctaHref: string;
+  countdownLabel: string;
+  imageSrc: string;
+  imageAlt: string;
+}
+
 export interface CourseBodyContent {
   navItems: CourseNavItem[];
   phone: string;
@@ -277,6 +419,12 @@ export interface CourseBodyContent {
     demandBadge: string;
     tabs: CourseCareerTab[];
   };
+  careerTransformations?: CourseCareerTransformationsContent;
+  skillsTools?: CourseSkillsToolsContent;
+  programRoadmap?: CourseProgramRoadmapContent;
+  courseFee?: CourseFeeContent;
+  careerAssurance?: CourseCareerAssuranceContent;
+  webinarCta?: CourseWebinarCtaContent;
   courseContent: {
     title: string;
     downloadSyllabusLabel: string;
@@ -354,8 +502,8 @@ const CSM_BODY: CourseBodyContent = {
     { id: 'overview', label: 'Overview', href: '#overview' },
     { id: 'course-content', label: 'Course Content', href: '#course-content' },
     { id: 'schedules', label: 'Schedules', href: '#schedules' },
-    { id: 'trainers', label: 'Trainers', href: '#trainers' },
     { id: 'eligibility', label: 'Eligibility', href: '#eligibility' },
+    { id: 'trainers', label: 'Trainers', href: '#trainers' },
     { id: 'reviews', label: 'Reviews', href: '#reviews' },
     { id: 'faqs', label: 'FAQs', href: '#faqs' },
     { id: 'why-scalex', label: 'Why ScaleX', href: '#why-scalex' },

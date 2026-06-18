@@ -75,10 +75,12 @@ export function CourseEnterpriseCard({
 }
 
 /** Spacer below hero — matches category courses section top padding for overlapping card. */
-export default function CourseEnterpriseSection() {
+export default function CourseEnterpriseSection({ compact = false }: { compact?: boolean }) {
   return (
     <section
-      className="full-bleed relative z-0 overflow-visible bg-white pb-10 pt-32 md:pb-12 md:pt-40"
+      className={`full-bleed relative z-0 overflow-visible bg-white pb-10 md:pb-12 ${
+        compact ? 'pt-12 md:pt-14' : 'pt-32 md:pt-40'
+      }`}
       aria-hidden
     />
   );

@@ -1,18 +1,28 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { getAllCategorySlugs, getCategoryBySlug } from '@/lib/categories';
+import {
+  getTechnicalCourseHref,
+  PRIMARY_TECHNICAL_COURSE_SLUG,
+} from '@/lib/technicalCourses';
 import AllCoursesMegaMenu from './AllCoursesMegaMenu';
 import HeaderMobileMenu from './HeaderMobileMenu';
 import HeaderSearch from './HeaderSearch';
 import NavDropdown from './NavDropdown';
 
-const ALL_COURSES_ITEMS = getAllCategorySlugs().map((slug) => {
-  const category = getCategoryBySlug(slug)!;
-  return {
-    label: category.breadcrumbLabel,
-    href: `/categories/${slug}`,
-  };
-});
+const ALL_COURSES_ITEMS = [
+  ...getAllCategorySlugs().map((slug) => {
+    const category = getCategoryBySlug(slug)!;
+    return {
+      label: category.breadcrumbLabel,
+      href: `/categories/${slug}`,
+    };
+  }),
+  {
+    label: 'Technical Course',
+    href: getTechnicalCourseHref(PRIMARY_TECHNICAL_COURSE_SLUG),
+  },
+];
 
 const INTERVIEW_PREP_ITEMS = [
   { label: 'DevOps With Placement', href: '#' },

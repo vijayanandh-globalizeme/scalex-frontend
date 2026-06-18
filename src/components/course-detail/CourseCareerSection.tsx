@@ -179,14 +179,23 @@ function DemandRing({ percent, label }: { percent: number; label: string }) {
   );
 }
 
-export default function CourseCareerSection({ career }: { career: CourseBodyContent['career'] }) {
+export default function CourseCareerSection({
+  career,
+  sectionId,
+}: {
+  career: CourseBodyContent['career'];
+  sectionId?: string;
+}) {
   const [activeTabId, setActiveTabId] = useState(career.tabs[0]?.id ?? '');
   const activeTab = career.tabs.find((tab) => tab.id === activeTabId) ?? career.tabs[0];
 
   if (!activeTab) return null;
 
   return (
-    <div className="px-6 py-5 md:px-8 md:py-6">
+    <div
+      id={sectionId}
+      className={`px-6 py-5 md:px-8 md:py-6${sectionId ? ' scroll-mt-[116px]' : ''}`}
+    >
       <h3 className="text-[20px] font-semibold leading-[140%] text-heading">{career.title}</h3>
 
       <div
