@@ -74,15 +74,16 @@ const INTERVIEW_TOPIC_ICON_STYLES: Record<string, { bg: string; color: string }>
 
 function RedCircleCheckIcon() {
   return (
-    <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#FD022D]">
-      <svg width="10" height="8" viewBox="0 0 10 8" fill="none" aria-hidden>
-        <path
-          d="M1 4.2L3.6 6.8L9 1.4"
-          stroke="#FFF"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
+    <span className="mt-0.5 shrink-0">
+      <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 15 15" fill="none" aria-hidden>
+        <g clipPath="url(#clip0_883_16683)">
+          <path d="M8.57525 0.626172L9.57579 1.63596C9.67977 1.73496 9.77072 1.76796 9.90717 1.76796H11.3105C12.4799 1.76796 13.0127 2.32235 13.0127 3.49714V4.92933C13.0127 5.06133 13.0517 5.16033 13.1492 5.25933L14.1432 6.27572C14.9618 7.10734 14.9683 7.87948 14.1432 8.71109L13.1492 9.72748C13.0517 9.83311 13.0127 9.9255 13.0127 10.0641V11.4897C13.0127 12.6776 12.4735 13.2188 11.3105 13.2188H9.90717C9.77072 13.2188 9.67977 13.2584 9.57579 13.3575L8.57525 14.3672C7.7566 15.1988 6.9965 15.2055 6.17785 14.3672L5.17732 13.3575C5.07986 13.2584 4.98241 13.2188 4.85246 13.2188H3.44261C2.27965 13.2188 1.74039 12.6711 1.74039 11.4897V10.0641C1.74039 9.9255 1.7079 9.83311 1.61045 9.72748L0.616407 8.71109C-0.202217 7.87948 -0.208714 7.10734 0.616407 6.27572L1.61045 5.25933C1.7079 5.16033 1.74039 5.06133 1.74039 4.92933V3.49714C1.74039 2.30916 2.27965 1.76796 3.44261 1.76796H4.85246C4.98241 1.76796 5.07986 1.73496 5.17732 1.63596L6.17785 0.626172C6.9965 -0.205421 7.7566 -0.212021 8.57525 0.626172ZM9.40035 4.87653L6.62615 9.40409L5.30726 7.67491C5.14483 7.45709 5.00189 7.39112 4.81998 7.39112C4.52112 7.39112 4.29372 7.6353 4.29372 7.93889C4.29372 8.08412 4.35219 8.23592 4.44965 8.36791L6.0804 10.4007C6.24932 10.6317 6.43124 10.7175 6.65214 10.7175C6.87303 10.7175 7.06144 10.6119 7.19789 10.4007L10.2515 5.51013C10.3294 5.37813 10.4139 5.22633 10.4139 5.07453C10.4139 4.77094 10.1475 4.57294 9.86818 4.57294C9.69275 4.57294 9.52383 4.67194 9.40035 4.87653Z" fill="#FD022D" />
+        </g>
+        <defs>
+          <clipPath id="clip0_883_16683">
+            <rect width="15" height="15" fill="white" />
+          </clipPath>
+        </defs>
       </svg>
     </span>
   );
@@ -193,19 +194,18 @@ function PlacementFeatureIcon() {
 function LearningStageIcon() {
   return (
     <div
-      className="flex h-[72px] w-[72px] items-center justify-center rounded-full"
+      className="flex h-[60px] w-[60px] items-center justify-center rounded-full"
       style={{ background: LEARNING_GRADIENT }}
     >
-      <svg width="32" height="32" viewBox="0 0 32 32" fill="none" aria-hidden>
-        <path
-          d="M16 8L4 14.5V17.5L16 24L28 17.5V14.5L16 8Z"
-          stroke="#FFF"
-          strokeWidth="1.8"
-          strokeLinejoin="round"
-        />
-        <path d="M4 14.5L16 21L28 14.5" stroke="#FFF" strokeWidth="1.8" strokeLinejoin="round" />
-        <path d="M16 21V26" stroke="#FFF" strokeWidth="1.8" strokeLinecap="round" />
-        <path d="M22 17V22.5" stroke="#FFF" strokeWidth="1.8" strokeLinecap="round" />
+      <svg xmlns="http://www.w3.org/2000/svg" width="29" height="30" viewBox="0 0 29 30" fill="none" aria-hidden>
+        <g clipPath="url(#clip0_883_16670)">
+          <path d="M14.3001 18.5562C15.205 18.5666 16.0994 18.3387 17.2148 17.8417L27.5794 13.1817C28.2634 12.8711 28.6106 12.2705 28.6106 11.6491C28.6106 11.0382 28.2634 10.4375 27.5794 10.1268L17.2148 5.46682C16.0994 4.96976 15.205 4.74194 14.3001 4.75229C13.4056 4.74194 12.5112 4.96976 11.3853 5.46682L1.0312 10.1268C0.347242 10.4375 0 11.0382 0 11.6491C0 12.2705 0.347242 12.8711 1.0312 13.1817L11.3853 17.8417C12.5112 18.3387 13.4056 18.5666 14.3001 18.5562ZM14.3001 16.92C13.6056 16.92 12.9216 16.744 12.0272 16.3402L2.33599 12.0012C2.14659 11.9183 2.0624 11.794 2.0624 11.6491C2.0624 11.5145 2.14659 11.3902 2.33599 11.3074L12.0272 6.96838C12.9216 6.56452 13.6056 6.38847 14.3001 6.38847C15.0051 6.38847 15.6785 6.56452 16.5834 6.96838L26.2747 11.3074C26.4535 11.3902 26.5483 11.5145 26.5483 11.6491C26.5483 11.794 26.4535 11.9183 26.2747 12.0012L16.5834 16.3402C15.6785 16.744 15.0051 16.92 14.3001 16.92ZM4.10376 19.4365C4.10376 22.5328 8.10231 25.1527 14.3001 25.1527C20.5083 25.1527 24.5068 22.5328 24.5068 19.4365V13.9687H22.8128V19.4365C22.8128 21.6008 19.4876 23.589 14.3001 23.589C9.12299 23.589 5.79789 21.6008 5.79789 19.4365V13.9687H4.10376V19.4365ZM14.3421 12.8296C15.4785 12.8296 16.573 12.3222 16.573 11.6491C16.573 10.9967 15.4785 10.4996 14.3421 10.4996C13.2162 10.4996 12.1009 10.9967 12.1009 11.6491C12.1009 12.3222 13.2162 12.8296 14.3421 12.8296ZM7.94448 15.5634L14.1843 12.3118L13.6056 11.2453L6.57656 14.8489L7.94448 15.5634ZM6.57656 25.7223H7.94448V15.5634L6.57656 14.9007V25.7223ZM5.74527 25.9294V28.6529C5.74527 29.471 6.28192 29.9991 7.11319 29.9991H7.3973C8.22858 29.9991 8.76523 29.471 8.76523 28.6529V25.9294C8.76523 25.1113 8.22858 24.5832 7.3973 24.5832H7.11319C6.28192 24.5832 5.74527 25.1113 5.74527 25.9294Z" fill="white" />
+        </g>
+        <defs>
+          <clipPath id="clip0_883_16670">
+            <rect width="29" height="30" fill="white" />
+          </clipPath>
+        </defs>
       </svg>
     </div>
   );
@@ -272,21 +272,39 @@ function LearningStageSidebar({ stage }: { stage: ProgramRoadmapStage }) {
   return (
     <div className="relative shrink-0 md:w-[250px]">
       <LearningStageIcon />
-      <p className="mt-6 text-[12px] font-medium uppercase tracking-[0.14em] text-[#788593]">Stage</p>
+      <p className="mt-6 pl-[7px] text-[16px] font-semibold uppercase leading-[140%] text-[#788593]" style={{ fontFamily: 'Inter' }}>Stage</p>
       <p
         className="mt-2 bg-clip-text text-[64px] font-bold leading-none text-transparent"
         style={{ backgroundImage: LEARNING_GRADIENT }}
       >
         {stage.stageNumber}
       </p>
-      <p className="mt-3 text-[20px] font-bold leading-normal text-[#1E293B]">{stage.trackLabel}</p>
+      <p className="mt-3 text-[34px] font-bold leading-[140%] text-[#1E293B]" style={{ fontFamily: 'Inter' }}>
+        {(() => { const [first, ...rest] = stage.trackLabel.split(' '); return <>{first}<br />{rest.join(' ')}</>; })()}
+      </p>
       <p className="mt-3 max-w-[220px] text-[14px] font-normal leading-[150%] text-[#788593]">
         {stage.description}
       </p>
       <div
-        className="absolute -right-4 top-1/2 hidden h-0 w-0 -translate-y-1/2 border-y-[7px] border-l-[9px] border-y-transparent border-l-[#FD022D] md:block"
+        className="absolute -right-4 top-1/2 hidden -translate-y-1/2 md:block"
         aria-hidden
-      />
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" width="35" height="39" viewBox="0 0 35 39" fill="none" aria-hidden>
+          <g clipPath="url(#clip0_883_16664)">
+            <path d="M5 30.3531V9.64705C5 7.37601 6.55271 6 8.56581 6C9.18425 6 9.82897 6.18713 10.4079 6.52105L28.1974 16.8874C29.3947 17.582 30 18.771 30 20C30 21.229 29.3947 22.4313 28.1974 23.1126L10.4079 33.479C9.81576 33.8397 9.18425 34 8.56581 34C6.55271 34 5 32.624 5 30.3531Z" fill="url(#paint0_linear_883_16664)" />
+          </g>
+          <defs>
+            <linearGradient id="paint0_linear_883_16664" x1="28.6607" y1="40.507" x2="16.6871" y2="-24.6815" gradientUnits="userSpaceOnUse">
+              <stop offset="0.269231" stopColor="#FD022D" />
+              <stop offset="0.515229" stopColor="#FFB700" />
+              <stop offset="0.914683" stopColor="#00C017" />
+            </linearGradient>
+            <clipPath id="clip0_883_16664">
+              <rect width="39" height="35" fill="white" transform="matrix(0 -1 -1 0 35 39)" />
+            </clipPath>
+          </defs>
+        </svg>
+      </div>
     </div>
   );
 }
@@ -295,21 +313,37 @@ function InterviewStageSidebar({ stage }: { stage: ProgramRoadmapStage }) {
   return (
     <div className="relative shrink-0 md:w-[250px]">
       <InterviewStageIcon />
-      <p className="mt-6 text-[12px] font-medium uppercase tracking-[0.14em] text-[#788593]">Stage</p>
+      <p className="mt-6 pl-[7px] text-[16px] font-semibold uppercase leading-[140%] text-[#788593]" style={{ fontFamily: 'Inter' }}>Stage</p>
       <p
         className="mt-2 bg-clip-text text-[64px] font-bold leading-none text-transparent"
         style={{ backgroundImage: INTERVIEW_NUMBER_GRADIENT }}
       >
         {stage.stageNumber}
       </p>
-      <p className="mt-3 text-[20px] font-bold leading-normal text-[#1E293B]">{stage.trackLabel}</p>
+      <p className="mt-3 text-[34px] font-bold leading-[140%] text-[#1E293B]" style={{ fontFamily: 'Inter' }}>{stage.trackLabel}</p>
       <p className="mt-3 max-w-[220px] text-[14px] font-normal leading-[150%] text-[#788593]">
         {stage.description}
       </p>
       <div
-        className="absolute -right-4 top-1/2 hidden h-0 w-0 -translate-y-1/2 border-y-[7px] border-l-[9px] border-y-transparent border-l-[#E6A100] md:block"
+        className="absolute -right-4 top-1/2 hidden -translate-y-1/2 md:block"
         aria-hidden
-      />
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" width="35" height="39" viewBox="0 0 35 39" fill="none" aria-hidden>
+          <g clipPath="url(#clip0_883_16664b)">
+            <path d="M5 30.3531V9.64705C5 7.37601 6.55271 6 8.56581 6C9.18425 6 9.82897 6.18713 10.4079 6.52105L28.1974 16.8874C29.3947 17.582 30 18.771 30 20C30 21.229 29.3947 22.4313 28.1974 23.1126L10.4079 33.479C9.81576 33.8397 9.18425 34 8.56581 34C6.55271 34 5 32.624 5 30.3531Z" fill="url(#paint0_linear_883_16664b)" />
+          </g>
+          <defs>
+            <linearGradient id="paint0_linear_883_16664b" x1="28.6607" y1="40.507" x2="16.6871" y2="-24.6815" gradientUnits="userSpaceOnUse">
+              <stop offset="0.269231" stopColor="#FD022D" />
+              <stop offset="0.515229" stopColor="#FFB700" />
+              <stop offset="0.914683" stopColor="#00C017" />
+            </linearGradient>
+            <clipPath id="clip0_883_16664b">
+              <rect width="39" height="35" fill="white" transform="matrix(0 -1 -1 0 35 39)" />
+            </clipPath>
+          </defs>
+        </svg>
+      </div>
     </div>
   );
 }
@@ -318,16 +352,32 @@ function PlacementStageSidebar({ stage }: { stage: ProgramRoadmapStage }) {
   return (
     <div className="relative shrink-0 md:w-[250px]">
       <PlacementStageIcon />
-      <p className="mt-6 text-[12px] font-medium uppercase tracking-[0.14em] text-[#788593]">Stage</p>
+      <p className="mt-6 pl-[7px] text-[16px] font-semibold uppercase leading-[140%] text-[#788593]" style={{ fontFamily: 'Inter' }}>Stage</p>
       <p className="mt-2 text-[64px] font-bold leading-none text-[#388E0E]">{stage.stageNumber}</p>
-      <p className="mt-3 text-[20px] font-bold leading-normal text-[#1E293B]">{stage.trackLabel}</p>
+      <p className="mt-3 text-[34px] font-bold leading-[140%] text-[#1E293B]" style={{ fontFamily: 'Inter' }}>{stage.trackLabel}</p>
       <p className="mt-3 max-w-[220px] text-[14px] font-normal leading-[150%] text-[#788593]">
         {stage.description}
       </p>
       <div
-        className="absolute -right-4 top-1/2 hidden h-0 w-0 -translate-y-1/2 border-y-[7px] border-l-[9px] border-y-transparent border-l-[#388E0E] md:block"
+        className="absolute -right-4 top-1/2 hidden -translate-y-1/2 md:block"
         aria-hidden
-      />
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" width="35" height="39" viewBox="0 0 35 39" fill="none" aria-hidden>
+          <g clipPath="url(#clip0_883_16664c)">
+            <path d="M5 30.3531V9.64705C5 7.37601 6.55271 6 8.56581 6C9.18425 6 9.82897 6.18713 10.4079 6.52105L28.1974 16.8874C29.3947 17.582 30 18.771 30 20C30 21.229 29.3947 22.4313 28.1974 23.1126L10.4079 33.479C9.81576 33.8397 9.18425 34 8.56581 34C6.55271 34 5 32.624 5 30.3531Z" fill="url(#paint0_linear_883_16664c)" />
+          </g>
+          <defs>
+            <linearGradient id="paint0_linear_883_16664c" x1="28.6607" y1="40.507" x2="16.6871" y2="-24.6815" gradientUnits="userSpaceOnUse">
+              <stop offset="0.269231" stopColor="#FD022D" />
+              <stop offset="0.515229" stopColor="#FFB700" />
+              <stop offset="0.914683" stopColor="#00C017" />
+            </linearGradient>
+            <clipPath id="clip0_883_16664c">
+              <rect width="39" height="35" fill="white" transform="matrix(0 -1 -1 0 35 39)" />
+            </clipPath>
+          </defs>
+        </svg>
+      </div>
     </div>
   );
 }
