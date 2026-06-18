@@ -399,9 +399,10 @@ function LearningStageContent({
         />
       ) : null}
       <h4
-        className={`text-[20px] font-bold leading-normal text-[#1E293B] ${
+        className={`text-[20px] font-semibold leading-[140%] text-[#1E293B] ${
           sectionTitle ? 'mt-8' : ''
         }`}
+        style={{ fontFamily: 'Inter' }}
       >
         {stage.contentHeading}
       </h4>
@@ -469,9 +470,10 @@ function InterviewStageContent({
         />
       ) : null}
       <h4
-        className={`text-[20px] font-bold leading-normal text-[#1E293B] ${
+        className={`text-[20px] font-semibold leading-[140%] text-[#1E293B] ${
           sectionTitle ? 'mt-8' : ''
         }`}
+        style={{ fontFamily: 'Inter' }}
       >
         {stage.contentHeading}
       </h4>
@@ -519,9 +521,10 @@ function PlacementStageContent({
         />
       ) : null}
       <h4
-        className={`text-[20px] font-bold leading-normal text-[#1E293B] ${
+        className={`text-[20px] font-semibold leading-[140%] text-[#1E293B] ${
           sectionTitle ? 'mt-8' : ''
         }`}
+        style={{ fontFamily: 'Inter' }}
       >
         {stage.contentHeading}
       </h4>
