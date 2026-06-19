@@ -90,6 +90,12 @@ export interface CoursePlanFeature {
   elite: boolean;
 }
 
+export interface CoursePrepComparisonContent {
+  heading: string;
+  columns: string[];
+  rows: { offering: string; values: boolean[] }[];
+}
+
 export interface CoursePlanComparisonContent {
   titleLine1: string;
   subtitle: string;
@@ -434,6 +440,7 @@ export interface CourseBodyContent {
   };
   schedules: CourseSchedulesContent;
   planComparison: CoursePlanComparisonContent;
+  prepComparison?: CoursePrepComparisonContent;
   trainers: CourseTrainersContent;
   eligibilityRequirements: CourseEligibilityRequirementsContent;
   reviews: CourseReviewsContent;

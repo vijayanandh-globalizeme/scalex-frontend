@@ -1,7 +1,7 @@
 import type { CourseDetailContent, CoursePartnerLogo } from '@/lib/courses';
 import type { HeroBadge } from '@/components/hero/HeroSection';
 
-export type TechnicalCourseDefinition = {
+export type BootcampCourseDefinition = {
   slug: string;
   menuLabel: string;
   titlePrefix: string;
@@ -10,7 +10,7 @@ export type TechnicalCourseDefinition = {
   heroTitle: string;
 };
 
-export type TechnicalCourseContent = CourseDetailContent & {
+export type BootcampCourseContent = CourseDetailContent & {
   heroTitle: string;
   featureRows: [string, string][];
   heroBadges: HeroBadge[];
@@ -18,13 +18,13 @@ export type TechnicalCourseContent = CourseDetailContent & {
   hiringPartners: CoursePartnerLogo[];
 };
 
-const TECHNICAL_FEATURE_ROWS: [string, string][] = [
+const BOOTCAMP_FEATURE_ROWS: [string, string][] = [
   ['100% Online Live Classes', '6 - 8 Months Duration'],
   ['Job Assurance Guaranteed', 'Unlimited Doubt Support'],
   ['30+ 1:1 Sessions', '20+ Projects'],
 ];
 
-const TECHNICAL_HERO_BADGES: HeroBadge[] = [
+const BOOTCAMP_HERO_BADGES: HeroBadge[] = [
   {
     id: 'package',
     variant: 'learners',
@@ -62,9 +62,9 @@ const HIRING_PARTNERS: CoursePartnerLogo[] = [
   { id: 'tcs', name: 'TCS', logoSrc: '/images/course/tcs.png', logoAlt: 'Tata Consultancy Services' },
 ];
 
-export const PRIMARY_TECHNICAL_COURSE_SLUG = 'advanced-certification-in-data-analytics-gen-ai';
+export const PRIMARY_BOOTCAMP_COURSE_SLUG = 'advanced-certification-in-data-analytics-gen-ai';
 
-export const TECHNICAL_PRIMARY_NAV_ITEMS = [
+export const BOOTCAMP_PRIMARY_NAV_ITEMS = [
   { id: 'overview', label: 'Overview', href: '#overview' },
   { id: 'course-content', label: 'Course Content', href: '#course-content' },
   { id: 'career-transformations', label: 'Career Transformations', href: '#career-transformations' },
@@ -76,16 +76,16 @@ export const TECHNICAL_PRIMARY_NAV_ITEMS = [
   { id: 'faqs', label: 'FAQs', href: '#faqs' },
 ] as const;
 
-export const TECHNICAL_MEGA_MENU_COURSES = [
+export const BOOTCAMP_MEGA_MENU_COURSES = [
   {
-    slug: PRIMARY_TECHNICAL_COURSE_SLUG,
+    slug: PRIMARY_BOOTCAMP_COURSE_SLUG,
     label: 'Advanced Certified Scrum Master',
   },
 ] as const;
 
-export const TECHNICAL_COURSE_DEFINITIONS: TechnicalCourseDefinition[] = [
+export const BOOTCAMP_COURSE_DEFINITIONS: BootcampCourseDefinition[] = [
   {
-    slug: PRIMARY_TECHNICAL_COURSE_SLUG,
+    slug: PRIMARY_BOOTCAMP_COURSE_SLUG,
     menuLabel: 'Advanced Certified Scrum Master',
     titlePrefix: 'Advanced Certification in Data Analytics & Gen AI',
     titleAccent: 'Professional Program',
@@ -131,21 +131,21 @@ const DEFAULT_FORM = {
   ctaLabel: 'Scale Your Career',
 };
 
-function buildTechnicalCourse(def: TechnicalCourseDefinition): TechnicalCourseContent {
-  const href = `/technical-courses/${def.slug}`;
+function buildTechnicalCourse(def: BootcampCourseDefinition): BootcampCourseContent {
+  const href = `/bootcamp-courses/${def.slug}`;
 
   return {
     slug: def.slug,
-    categorySlug: 'technical-courses',
+    categorySlug: 'bootcamp-courses',
     breadcrumbs: [
-      { label: 'Technical Course', href: getTechnicalCourseHref(PRIMARY_TECHNICAL_COURSE_SLUG) },
+      { label: 'Technical Course', href: getBootcampCourseHref(PRIMARY_BOOTCAMP_COURSE_SLUG) },
       { label: def.breadcrumbLabel, href },
     ],
     titlePrefix: def.titlePrefix,
     titleAccent: def.titleAccent,
     heroTitle: def.heroTitle,
-    featureRows: TECHNICAL_FEATURE_ROWS,
-    heroBadges: TECHNICAL_HERO_BADGES,
+    featureRows: BOOTCAMP_FEATURE_ROWS,
+    heroBadges: BOOTCAMP_HERO_BADGES,
     collaboration: COLLABORATION_LOGOS,
     hiringPartners: HIRING_PARTNERS,
     features: [],
@@ -190,23 +190,23 @@ function buildTechnicalCourse(def: TechnicalCourseDefinition): TechnicalCourseCo
   };
 }
 
-const TECHNICAL_COURSES: Record<string, TechnicalCourseContent> = Object.fromEntries(
-  TECHNICAL_COURSE_DEFINITIONS.map((def) => [def.slug, buildTechnicalCourse(def)]),
+const TECHNICAL_COURSES: Record<string, BootcampCourseContent> = Object.fromEntries(
+  BOOTCAMP_COURSE_DEFINITIONS.map((def) => [def.slug, buildTechnicalCourse(def)]),
 );
 
-export function getTechnicalCourseBySlug(slug: string): TechnicalCourseContent | undefined {
+export function getBootcampCourseBySlug(slug: string): BootcampCourseContent | undefined {
   return TECHNICAL_COURSES[slug];
 }
 
-export function getAllTechnicalCourseSlugs(): string[] {
-  return TECHNICAL_COURSE_DEFINITIONS.map((def) => def.slug);
+export function getAllBootcampCourseSlugs(): string[] {
+  return BOOTCAMP_COURSE_DEFINITIONS.map((def) => def.slug);
 }
 
-export function getTechnicalCourseHref(slug: string): string {
-  return `/technical-courses/${slug}`;
+export function getBootcampCourseHref(slug: string): string {
+  return `/bootcamp-courses/${slug}`;
 }
 
-export function technicalLabelToSlug(label: string): string {
+export function bootcampLabelToSlug(label: string): string {
   return label
     .toLowerCase()
     .replace(/\([^)]*\)/g, '')

@@ -43,7 +43,7 @@ function cloneCareerStory(
 }
 
 function buildTechnicalBody(def: TechnicalCourseDefinition): CourseBodyContent {
-  const courseHref = `/technical-courses/${def.slug}`;
+  const courseHref = `/bootcamp-courses/${def.slug}`;
   const isPrimary = def.slug === PRIMARY_TECHNICAL_COURSE_SLUG;
 
   return {
@@ -291,6 +291,23 @@ function buildTechnicalBody(def: TechnicalCourseDefinition): CourseBodyContent {
           imageAlt: 'Career advisor with arms crossed',
         }
       : undefined,
+    prepComparison: isPrimary
+      ? {
+          heading: 'A Better Way to Prep Scrum Master',
+          columns: ['CSM', 'Bootcamp'],
+          rows: [
+            { offering: '100+ Practice Questions', values: [true, true] },
+            { offering: 'Data Structures Content', values: [true, true] },
+            { offering: 'Guided Format', values: [true, true] },
+            { offering: 'High Quality Solutions', values: [true, true] },
+            { offering: 'Multiple Programming Languages', values: [false, true] },
+            { offering: 'Coding Workspace', values: [false, true] },
+            { offering: 'Video Explanations', values: [false, true] },
+            { offering: 'Mock Interviews', values: [false, true] },
+            { offering: 'All-In-One Platform', values: [false, true] },
+          ],
+        }
+      : undefined,
     trainers: isPrimary
       ? {
           title: BASE.trainers.title,
@@ -315,7 +332,7 @@ function buildTechnicalBody(def: TechnicalCourseDefinition): CourseBodyContent {
       title: isPrimary ? 'Course Content' : 'Program Curriculum',
       downloadSyllabusLabel: 'Download Syllabus',
       viewMoreLabel: 'View More Courses',
-      viewMoreHref: `/technical-courses/${PRIMARY_TECHNICAL_COURSE_SLUG}`,
+      viewMoreHref: `/bootcamp-courses/${PRIMARY_TECHNICAL_COURSE_SLUG}`,
       modules: isPrimary ? BASE.courseContent.modules : [
         {
           id: 'module-1',
@@ -481,7 +498,7 @@ function buildTechnicalBody(def: TechnicalCourseDefinition): CourseBodyContent {
         category: 'technical',
         categoryLabel: 'Technical Course',
         title: TECHNICAL_COURSE_DEFINITIONS[index % TECHNICAL_COURSE_DEFINITIONS.length].menuLabel,
-        href: `/technical-courses/${TECHNICAL_COURSE_DEFINITIONS[index % TECHNICAL_COURSE_DEFINITIONS.length].slug}`,
+        href: `/bootcamp-courses/${TECHNICAL_COURSE_DEFINITIONS[index % TECHNICAL_COURSE_DEFINITIONS.length].slug}`,
       })),
     },
     trainingCities: {
@@ -503,6 +520,6 @@ const TECHNICAL_BODIES: Record<string, CourseBodyContent> = Object.fromEntries(
   TECHNICAL_COURSE_DEFINITIONS.map((def) => [def.slug, buildTechnicalBody(def)]),
 );
 
-export function getTechnicalCourseBodyBySlug(slug: string): CourseBodyContent | undefined {
+export function getBootcampCourseBodyBySlug(slug: string): CourseBodyContent | undefined {
   return TECHNICAL_BODIES[slug];
 }

@@ -5,6 +5,11 @@ import {
   PRIMARY_TECHNICAL_COURSE_SLUG,
   TECHNICAL_MEGA_MENU_COURSES,
 } from '@/lib/technicalCourses';
+import {
+  getBootcampCourseHref,
+  PRIMARY_BOOTCAMP_COURSE_SLUG,
+  BOOTCAMP_MEGA_MENU_COURSES,
+} from '@/lib/bootcampCourses';
 
 export type MegaMenuCourse = {
   label: string;
@@ -98,6 +103,15 @@ export function getAllCoursesMegaMenuData(): MegaMenuCategory[] {
       courses: TECHNICAL_MEGA_MENU_COURSES.map((course) => ({
         label: course.label,
         href: getTechnicalCourseHref(course.slug),
+      })),
+    },
+    {
+      slug: 'bootcamp-courses',
+      label: 'Bootcamp Course',
+      href: getBootcampCourseHref(PRIMARY_BOOTCAMP_COURSE_SLUG),
+      courses: BOOTCAMP_MEGA_MENU_COURSES.map((course) => ({
+        label: course.label,
+        href: getBootcampCourseHref(course.slug),
       })),
     },
   ];

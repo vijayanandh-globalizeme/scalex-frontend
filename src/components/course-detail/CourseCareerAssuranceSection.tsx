@@ -143,37 +143,46 @@ export default function CourseCareerAssuranceSection({
   return (
     <section
       id="career-assurance"
-      className="relative scroll-mt-[116px] overflow-visible pt-[22px]"
+      className="relative scroll-mt-[116px] pt-[22px]"
       aria-labelledby="career-assurance-heading"
+      style={
+        {
+          '--assurance-person-left': 'max(0.75rem, 8%)',
+          '--assurance-content-left': 'max(calc(8% + 9.5rem), 42%)',
+        } as CSSProperties
+      }
     >
-      <div
-        className="relative min-h-[280px] overflow-visible sm:min-h-[260px]"
-        style={
-          {
-            '--assurance-person-left': 'max(0.75rem, 8%)',
-            '--assurance-content-left': 'max(calc(8% + 9.5rem), 42%)',
-          } as CSSProperties
-        }
-      >
-        <div className={ASSURANCE_BANNER_SURFACE} aria-hidden />
-
+      {/* Outer wrapper — overflow-visible so person head pokes above card */}
+      <div className="relative" style={{ paddingTop: '72px' }}>
+        {/* Dark card background — clipped to card bounds */}
         <div
-          className="absolute bottom-0 z-[1] h-[250px] w-[clamp(10rem,30%,14rem)]"
-          style={{ left: 'var(--assurance-person-left)' }}
+          className="absolute inset-x-0 bottom-0 overflow-hidden rounded-[20px] border border-[#EBEBEB] shadow-[0_4px_4px_0_rgba(30,41,59,0.11),0_4px_4px_0_rgba(30,41,59,0.03)]"
+          style={{ top: '72px' }}
+          aria-hidden
         >
-          <AssuranceDecorIcon className="pointer-events-none absolute bottom-6 left-[24%] z-0 h-auto w-[clamp(7rem,40%,9.5rem)]" />
-          <div className="relative z-10 -mt-5 h-[255px] w-[clamp(8rem,64%,11rem)] overflow-visible">
+          <div className="absolute inset-0 bg-[linear-gradient(88deg,#0D0D0D_88.67%,#FD022D_106.46%)]" />
+        </div>
+
+        {/* Person — absolute, bottom-0, extends above card by 43px */}
+        <div
+          className="absolute bottom-0 z-[5]"
+          style={{ left: 'var(--assurance-person-left)', width: '297px', height: '502px' }}
+        >
+          <ScaleXMark className="pointer-events-none absolute bottom-[80px] right-[-80px] z-[1] h-[280px] w-[260px] opacity-[0.18]" />
+          <div className="relative z-10 h-full w-full">
             <Image
               src={content.imageSrc}
               alt={content.imageAlt}
               fill
-              sizes="176px"
+              sizes="297px"
               className="object-contain object-bottom"
             />
           </div>
         </div>
 
-        <div className="relative z-10 flex min-h-[280px] flex-col justify-center px-6 pt-[210px] pb-8 sm:min-h-[260px] sm:py-8 sm:pr-8 sm:pl-[var(--assurance-content-left)] sm:pt-8">
+        {/* Content */}
+        <div className="relative z-10 flex min-h-[430px] flex-col justify-end px-6 pt-[210px] pb-8 sm:py-8 sm:pr-8 sm:pl-[var(--assurance-content-left)] sm:pt-8">
+          <div className="w-full sm:w-[350px]" style={{ marginLeft: '150px' }}>
           <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
             <span className="inline-flex items-center gap-0" aria-hidden>
               <ScaleWordmark className="h-[18px] w-[82px] shrink-0 sm:h-[23px] sm:w-[102px]" />
@@ -210,8 +219,10 @@ export default function CourseCareerAssuranceSection({
             {content.ctaLabel}
             <DownloadIcon className="shrink-0 text-white" />
           </CourseBrochureCta>
+          </div>
         </div>
       </div>
     </section>
   );
 }
+

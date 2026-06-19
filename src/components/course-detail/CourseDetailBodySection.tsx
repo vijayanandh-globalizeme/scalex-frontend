@@ -24,6 +24,7 @@ import CourseReviewsSection from './CourseReviewsSection';
 import CourseSkillsToolsSection from './CourseSkillsToolsSection';
 import CourseSchedulesSection from './CourseSchedulesSection';
 import CourseTrainersSection from './CourseTrainersSection';
+import CoursePrepComparisonSection from './CoursePrepComparisonSection';
 import CourseTrainingCitiesSection from './CourseTrainingCitiesSection';
 
 export default function CourseDetailBodySection({
@@ -62,6 +63,7 @@ export default function CourseDetailBodySection({
             <CourseEligibilityRequirementsSection
               eligibilityRequirements={body.eligibilityRequirements}
             />
+            {body.prepComparison ? <CoursePrepComparisonSection content={body.prepComparison} /> : null}
             <CourseTrainersSection trainers={body.trainers} />
             {body.webinarCta ? <CourseWebinarCtaSection content={body.webinarCta} /> : null}
             <CourseReviewsSection reviews={body.reviews} />

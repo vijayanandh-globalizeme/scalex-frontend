@@ -6,34 +6,29 @@ import type { CSSProperties } from 'react';
 import type { CourseWebinarCtaContent } from '@/lib/courseBody';
 import TechnicalCourseWebinarCountdown from './TechnicalCourseWebinarCountdown';
 
-const WEBINAR_BANNER_SURFACE =
-  'pointer-events-none absolute inset-0 rounded-[20px] border border-[#EBEBEB] bg-[linear-gradient(88deg,#0D0D0D_88.67%,#FD022D_106.46%)] shadow-[0_4px_4px_0_rgba(30,41,59,0.11),0_4px_4px_0_rgba(30,41,59,0.03)]';
-
-function WebinarDecorIcon({ className }: { className?: string }) {
+function ScaleXMark({ className }: { className?: string }) {
   return (
     <svg
       className={className}
       xmlns="http://www.w3.org/2000/svg"
-      width="190"
-      height="206"
-      viewBox="0 0 190 206"
+      width={47}
+      height={51}
+      viewBox="0 0 47 51"
       fill="none"
       aria-hidden
     >
-      <g opacity="0.14">
-        <path
-          fillRule="evenodd"
-          clipRule="evenodd"
-          d="M39.6735 60.9705L118.511 149.177L145.721 149.38L65.5219 61.1628L39.6735 60.9705Z"
-          fill="white"
-        />
-        <path
-          fillRule="evenodd"
-          clipRule="evenodd"
-          d="M129.542 32.3057L30.2113 170.576C27.5358 174.3 26.9742 175.072 26.4 175.881C25.8257 176.689 25.4571 177.23 24.9149 178.06C24.3727 178.89 23.8598 179.695 21.3727 183.548L10.5259 200.35C9.74522 201.559 10.093 203.172 11.3027 203.953C12.3557 204.632 13.7433 204.466 14.6064 203.558L28.6332 188.797C31.7127 185.556 32.3396 184.903 32.9798 184.225C33.6199 183.546 34.0219 183.107 34.6403 182.408C35.2588 181.71 35.8527 181.027 38.8047 177.67L149.897 51.3322C151.386 49.6386 152.754 47.8419 153.99 45.9556C155.82 43.165 156.826 43.7877 157.007 47.8247C157.134 50.6398 157.307 54.4921 157.527 59.3814C157.828 66.0793 163.504 71.265 170.204 70.9639C176.904 70.6629 182.091 64.9891 181.79 58.2912L179.934 17.0092C179.919 16.6743 179.907 16.3393 179.899 16.0042C179.744 9.47381 178.642 5.49945 176.594 4.08111C171.241 0.373226 159.749 2.43335 156.605 2.96502C152.21 3.70829 136.662 5.88828 109.962 9.50499C104.229 10.2816 100.211 15.5574 100.988 21.2889C101.032 21.6134 101.091 21.9357 101.165 22.2546L101.222 22.4966C102.656 28.6607 108.637 32.6473 114.881 31.5998L125.617 29.798C125.854 29.7583 126.09 29.7168 126.326 29.6735C128.534 29.2678 129.858 29.2244 130.298 29.5425C130.76 29.8765 130.508 30.7976 129.542 32.3057Z"
-          fill="white"
-        />
-      </g>
+      <path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M9.56738 15.0413L29.2686 36.7562H36.0124L15.9738 15.0413H9.56738Z"
+        fill="white"
+      />
+      <path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M31.787 7.77035L7.42468 42.2213C6.76847 43.1492 6.63072 43.3415 6.48989 43.543C6.34906 43.7444 6.25872 43.8791 6.12587 44.0859C5.99302 44.2926 5.8674 44.4931 5.25812 45.4525L2.60094 49.6365C2.40969 49.9377 2.49886 50.3368 2.8001 50.528C3.06232 50.6944 3.40589 50.6508 3.61813 50.4241L7.06718 46.7399C7.8244 45.931 7.97857 45.7681 8.13596 45.5988C8.29336 45.4294 8.39217 45.3197 8.54415 45.1455C8.69613 44.9713 8.84208 44.801 9.56748 43.9635L36.8667 12.4482C37.2326 12.0257 37.5683 11.5779 37.8711 11.1082C38.3196 10.4132 38.5699 10.5656 38.6223 11.5658C38.6588 12.2632 38.7089 13.2176 38.7724 14.429C38.8594 16.0883 40.2756 17.3631 41.9355 17.2761C43.5954 17.1891 44.8706 15.7734 44.7836 14.114L44.2474 3.88646C44.243 3.8035 44.2396 3.72049 44.237 3.63746C44.1863 2.01931 43.906 1.03637 43.3959 0.688639C42.0623 -0.220417 39.218 0.311341 38.4398 0.448905C37.3519 0.641217 33.5028 1.21016 26.8924 2.15574C25.473 2.35879 24.4869 3.67371 24.69 5.0927C24.7015 5.17305 24.7168 5.25281 24.7358 5.33173L24.7502 5.3916C25.1169 6.9166 26.6067 7.89358 28.1521 7.62246L30.8096 7.15612C30.8682 7.14584 30.9267 7.13511 30.9851 7.12394C31.5315 7.01933 31.8595 7.00614 31.9691 7.08416C32.0842 7.16608 32.0235 7.39481 31.787 7.77035Z"
+        fill="white"
+      />
     </svg>
   );
 }
@@ -50,37 +45,42 @@ export default function CourseWebinarCtaSection({ content }: { content: CourseWe
   return (
     <section
       id="webinar-cta"
-      className="relative scroll-mt-[116px] overflow-visible pt-[22px]"
+      className="relative scroll-mt-[116px] pt-[22px]"
       aria-labelledby="webinar-cta-heading"
+      style={
+        {
+          '--webinar-person-left': 'max(0.75rem, 8%)',
+          '--webinar-content-left': 'max(calc(8% + 9.5rem), 38%)',
+        } as CSSProperties
+      }
     >
-      <div
-        className="relative min-h-[240px] overflow-visible sm:min-h-[220px]"
-        style={
-          {
-            '--webinar-person-left': 'max(0.75rem, 8%)',
-            '--webinar-content-left': 'max(calc(8% + 9.5rem), 38%)',
-          } as CSSProperties
-        }
-      >
-        <div className={WEBINAR_BANNER_SURFACE} aria-hidden />
-
+      <div className="relative" style={{ paddingTop: '72px' }}>
+        {/* Dark card background */}
         <div
-          className="absolute bottom-0 z-[1] h-[250px] w-[clamp(10rem,30%,14rem)]"
-          style={{ left: 'var(--webinar-person-left)' }}
+          className="absolute inset-x-0 bottom-0 overflow-hidden rounded-[20px] border border-[#EBEBEB] bg-[linear-gradient(88deg,#0D0D0D_88.67%,#FD022D_106.46%)] shadow-[0_4px_4px_0_rgba(30,41,59,0.11),0_4px_4px_0_rgba(30,41,59,0.03)]"
+          style={{ top: '72px' }}
+          aria-hidden
+        />
+
+        {/* Person — head overflows 72px above card */}
+        <div
+          className="absolute bottom-0 z-[5]"
+          style={{ left: 'var(--webinar-person-left)', width: '241px', height: '422px' }}
         >
-          <WebinarDecorIcon className="pointer-events-none absolute bottom-6 left-[24%] z-0 h-auto w-[clamp(7rem,40%,9.5rem)]" />
-          <div className="relative z-10 -mt-5 h-[255px] w-[clamp(8rem,64%,11rem)] overflow-visible">
+          <ScaleXMark className="pointer-events-none absolute bottom-[50px] right-[-60px] z-[1] h-[220px] w-[200px] opacity-[0.18]" />
+          <div className="relative z-10 h-full w-full">
             <Image
               src={content.imageSrc}
               alt={content.imageAlt}
               fill
-              sizes="176px"
+              sizes="241px"
               className="object-contain object-bottom"
             />
           </div>
         </div>
 
-        <div className="relative z-10 flex min-h-[240px] flex-col justify-center px-6 pt-[210px] pb-8 sm:min-h-[220px] sm:py-8 sm:pr-8 sm:pl-[var(--webinar-content-left)] sm:pt-8">
+        <div className="relative z-10 flex min-h-[350px] flex-col justify-center px-6 pt-[210px] pb-8 sm:py-8 sm:pr-8 sm:pl-[var(--webinar-content-left)] sm:pt-8">
+          <div style={{ marginLeft: '150px' }}>
           <p
             id="webinar-cta-heading"
             className="max-w-md text-[16px] font-semibold leading-normal tracking-[-0.54px] text-[#E5E5E5] sm:text-[18px]"
@@ -108,8 +108,10 @@ export default function CourseWebinarCtaSection({ content }: { content: CourseWe
               <TechnicalCourseWebinarCountdown />
             </div>
           </div>
+          </div>
         </div>
       </div>
     </section>
   );
 }
+
