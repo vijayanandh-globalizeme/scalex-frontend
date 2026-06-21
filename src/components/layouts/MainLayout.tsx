@@ -6,14 +6,15 @@ import { fetchLayout } from '@/services/layoutApi';
 const MainLayout = async ({ children }: { children: ReactNode }) => {
   const layoutData = await fetchLayout();
   const megaMenuCategories = layoutData?.categories ?? [];
+  const settings = layoutData?.settings ?? {};
   return (
-    <>
+    <div className="flex min-h-screen flex-col overflow-x-hidden">
       <Header megaMenuCategories={megaMenuCategories} />
-      <main id="main-content" className="min-w-0 overflow-visible">
+      <main id="main-content" className="min-w-0 flex-1 overflow-visible">
         {children}
       </main>
-      <Footer />
-    </>
+      <Footer settings={settings} categories={megaMenuCategories} />
+    </div>
   );
 };
 

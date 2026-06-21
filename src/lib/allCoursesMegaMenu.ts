@@ -14,6 +14,7 @@ import {
 export type MegaMenuCourse = {
   label: string;
   href: string;
+  priority?: number;
 };
 
 export type MegaMenuCategory = {

@@ -1,6 +1,10 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { SITE_NAME } from '@/lib/site';
+import type { LayoutSettings } from '@/services/layoutApi';
+import type { MegaMenuCategory } from '@/lib/allCoursesMegaMenu';
+import FooterDisclaimer from './FooterDisclaimer';
+import MobileBottomBar from './MobileBottomBar';
 
 const footerLinkClass =
   'block text-sm font-normal leading-relaxed tracking-[-0.16px] text-heading transition hover:text-brand';
@@ -41,66 +45,6 @@ const COLUMN_GROUPS: { title: string; links: { label: string; href: string }[] }
   },
 ];
 
-/** 12 items each → 6 columns × 2 rows (from `md` up) */
-const TOP_CATEGORIES = [
-  'Agile Management Course',
-  'Project Management Courses',
-  'Cloud Computing Courses',
-  'Cloud Computing Courses',
-  'Agile Management Course',
-  'Project Management Courses',
-  'Agile Management Course',
-  'Project Management Courses',
-  'Cloud Computing Courses',
-  'Cloud Computing Courses',
-  'Agile Management Course',
-  'Project Management Courses',
-];
-
-const TOP_COURSES = [
-  'Agile Management Course',
-  'Project Management Courses',
-  'Cloud Computing Courses',
-  'Cloud Computing Courses',
-  'Agile Management Course',
-  'Project Management Courses',
-  'Agile Management Course',
-  'Project Management Courses',
-  'Cloud Computing Courses',
-  'Cloud Computing Courses',
-  'Agile Management Course',
-  'Project Management Courses',
-];
-
-const AGILE_SCRUM = [
-  'Agile Management Course',
-  'Project Management Courses',
-  'Cloud Computing Courses',
-  'Cloud Computing Courses',
-  'Agile Management Course',
-  'Project Management Courses',
-  'Agile Management Course',
-  'Project Management Courses',
-  'Cloud Computing Courses',
-  'Cloud Computing Courses',
-  'Agile Management Course',
-  'Project Management Courses',
-];
-
-const PROJECT_MGMT = [
-  'Agile Management Course',
-  'Project Management Courses',
-  'Cloud Computing Courses',
-  'Cloud Computing Courses',
-  'Agile Management Course',
-  'Project Management Courses',
-  'Agile Management Course',
-  'Project Management Courses',
-  'Cloud Computing Courses',
-  'Cloud Computing Courses',
-  'Agile Management Course',
-  'Project Management Courses',
-];
 
 function PhoneIcon({ className }: { className?: string }) {
   return (
@@ -147,18 +91,43 @@ function MailIcon({ className }: { className?: string }) {
   );
 }
 
-const FOOTER_SOCIAL_ICONS = [
-  { href: '#', src: '/images/LinkedIn.svg', label: 'LinkedIn' },
-  { href: '#', src: '/images/Twitter.svg', label: 'Twitter' },
-  { href: '#', src: '/images/Facebook.svg', label: 'Facebook' },
-  { href: '#', src: '/images/Instagram.svg', label: 'Instagram' },
-  { href: '#', src: '/images/youtube.svg', label: 'YouTube' },
-] as const;
+const SOCIAL_MAP: { key: keyof LayoutSettings; src: string; label: string }[] = [
+  { key: 'LINKEDIN',  src: '/images/LinkedIn.svg',  label: 'LinkedIn' },
+  { key: 'TWITTER',   src: '/images/Twitter.svg',   label: 'Twitter' },
+  { key: 'FACEBOOK',  src: '/images/Facebook.svg',  label: 'Facebook' },
+  { key: 'INSTAGRAM', src: '/images/Instagram.svg', label: 'Instagram' },
+  { key: 'YOUTUBE',   src: '/images/youtube.svg',   label: 'YouTube' },
+];
 
-function WhatsAppFab() {
+function getSocialIcons(settings: LayoutSettings) {
+  return SOCIAL_MAP.flatMap(({ key, src, label }) => {
+    const href = settings[key];
+    if (!href) return [];
+    return [{ href, src, label }];
+  });
+}
+
+function toWhatsAppHref(phone: string | undefined): string {
+  if (!phone) return 'https://wa.me/';
+  const digits = phone.replace(/\D/g, '');
+  return `https://wa.me/${digits}`;
+}
+
+function buildAddress(settings: LayoutSettings): string {
+  return [
+    settings.CONTACT_ADDRESS,
+    settings.CONTACT_ADDRESS_STATE,
+    settings.CONTACT_ADDRESS_COUNTRY,
+    settings.CONTACT_ADDRESS_PINCODE,
+  ]
+    .filter(Boolean)
+    .join(', ');
+}
+
+function WhatsAppFab({ href }: { href: string }) {
   return (
     <a
-      href="https://wa.me/919848032919"
+      href={href}
       target="_blank"
       rel="noopener noreferrer"
       className="fixed bottom-6 left-4 z-50 flex h-12 w-12 items-center justify-center rounded-full bg-transparent shadow-lg transition hover:scale-105 hover:shadow-xl md:left-6"
@@ -180,7 +149,7 @@ function ChatFab() {
   return (
     <button
       type="button"
-      className="fixed bottom-6 right-4 z-50 flex h-16 w-16 items-center justify-center rounded-full bg-transparent transition hover:scale-105 md:right-6"
+      className="fixed bottom-20 right-4 z-50 flex h-16 w-16 items-center justify-center rounded-full bg-transparent transition hover:scale-105 sm:bottom-6 md:right-6"
       aria-label="Open chat"
     >
       <svg
@@ -201,16 +170,25 @@ function ChatFab() {
   );
 }
 
-function CourseGridSection({ title, cells, showTopBorder }: { title: string; cells: string[]; showTopBorder?: boolean }) {
+type GridItem = { label: string; href: string };
+
+function CourseGridSection({ title, items, showTopBorder }: { title: string; items: GridItem[]; showTopBorder?: boolean }) {
+  if (items.length === 0) return null;
   return (
-    <section className={showTopBorder ? 'border-t border-zinc-200 pt-10 lg:pt-12' : ''}>
-      <h2 className="mb-5 text-base font-semibold leading-tight text-heading lg:mb-6">{title}</h2>
-      <ul className="grid grid-cols-2 gap-x-4 gap-y-2.5 sm:grid-cols-3 md:grid-cols-6 md:gap-x-6">
-        {cells.map((label, i) => (
-          <li key={`${title}-${i}`}>
-            <Link href="#" className={footerLinkClass}>
-              {label}
+    <section className={showTopBorder ? 'pt-2 lg:pt-3' : ''}>
+      <h2 className="mb-4 text-base font-semibold leading-tight text-heading lg:mb-5">{title}</h2>
+      <ul className="flex flex-wrap items-center gap-y-2">
+        {items.map((item, i) => (
+          <li key={item.href} className="flex items-center">
+            <Link
+              href={item.href}
+              className="text-sm font-normal tracking-[-0.16px] text-[#6b7fa3] transition hover:text-brand"
+            >
+              {item.label}
             </Link>
+            {i < items.length - 1 && (
+              <span className="mx-3 select-none text-zinc-300" aria-hidden>|</span>
+            )}
           </li>
         ))}
       </ul>
@@ -218,7 +196,38 @@ function CourseGridSection({ title, cells, showTopBorder }: { title: string; cel
   );
 }
 
-const Footer = () => {
+
+const Footer = ({
+  settings = {},
+  categories = [],
+}: {
+  settings?: LayoutSettings;
+  categories?: MegaMenuCategory[];
+}) => {
+  const socialIcons = getSocialIcons(settings);
+  const whatsAppHref = toWhatsAppHref(settings.CONTACT_WHATSAPP_NO);
+  const address = buildAddress(settings);
+  const phone = settings.CONTACT_PHONE_NO ?? '';
+  const email = settings.CONTACT_EMAIL ?? '';
+  const currentYear = new Date().getFullYear();
+
+  const topCategories: GridItem[] = categories.map((cat) => ({
+    label: cat.label,
+    href: cat.href,
+  }));
+
+  const topCourses: GridItem[] = categories
+    .flatMap((cat) =>
+      cat.courses.map((course) => ({
+        label: course.label,
+        href: course.href,
+        priority: course.priority ?? 999,
+      })),
+    )
+    .sort((a, b) => a.priority - b.priority)
+    .slice(0, 10)
+    .map(({ label, href }) => ({ label, href }));
+
   return (
     <>
       <footer className="bg-white text-heading">
@@ -254,22 +263,19 @@ const Footer = () => {
                 />
               </Link>
               <p className="footer-body-text mb-3">Connect with us</p>
-              <div className="mb-6 flex flex-wrap items-center gap-2.5">
-                {FOOTER_SOCIAL_ICONS.map(({ href, src, label }) => (
-                  <Link
-                    key={label}
-                    href={href}
-                    className="flex shrink-0"
-                    aria-label={label}
-                  >
-                    <Image src={src} alt="" width={40} height={40} className="h-10 w-10 object-contain" sizes="40px" />
-                  </Link>
-                ))}
-              </div>
-              <p className="footer-body-text mb-3">
-                Address: Building Number, Street Name, Area, District, State, Pincode
-              </p>
-              <p className="footer-body-text mb-3">© 2016-2026 - {SITE_NAME}. All Rights Reserved.</p>
+              {socialIcons.length > 0 && (
+                <div className="mb-6 flex flex-wrap items-center gap-2.5">
+                  {socialIcons.map(({ href, src, label }) => (
+                    <Link key={label} href={href} className="flex shrink-0" aria-label={label} target="_blank" rel="noopener noreferrer">
+                      <Image src={src} alt="" width={40} height={40} className="h-10 w-10 object-contain" sizes="40px" />
+                    </Link>
+                  ))}
+                </div>
+              )}
+              {address && (
+                <p className="footer-body-text mb-3">Address: {address}</p>
+              )}
+              <p className="footer-body-text mb-3">© 2016-{currentYear} - {SITE_NAME}. All Rights Reserved.</p>
               <p className="footer-body-text max-w-md">
                 The certification names are the trademarks of their respective owners.
               </p>
@@ -277,39 +283,45 @@ const Footer = () => {
           </div>
 
           {/* Course directory */}
-          <div className="mt-12 space-y-10 md:mt-14 md:space-y-12 lg:mt-16 lg:space-y-14">
-            <CourseGridSection title="Top Categories" cells={TOP_CATEGORIES} />
-            <CourseGridSection title="Top Courses" cells={TOP_COURSES} showTopBorder />
-            <CourseGridSection title="Agile and Scrum Courses" cells={AGILE_SCRUM} showTopBorder />
-            <CourseGridSection title="Project Management Courses" cells={PROJECT_MGMT} showTopBorder />
-          </div>
+          {(topCategories.length > 0 || topCourses.length > 0) && (
+            <div className="mt-12 space-y-10 md:mt-14 md:space-y-12 lg:mt-16 lg:space-y-14">
+              <CourseGridSection title="Top Categories" items={topCategories} />
+              <CourseGridSection title="Top Courses" items={topCourses} showTopBorder />
+              <FooterDisclaimer />
+            </div>
+          )}
         </div>
 
-        {/* Bottom contact strip */}
-        <div className="border-t border-white/5 bg-black">
+        {/* Bottom contact strip — desktop only */}
+        <div className="hidden border-t border-white/5 bg-black sm:block">
           <div className="site-container flex flex-col gap-2 py-2 text-sm leading-none text-zinc-300 sm:h-[37px] sm:flex-row sm:items-center sm:justify-between sm:gap-6 sm:py-0">
             <div className="flex items-center gap-2">
               <PhoneIcon className="shrink-0" />
               <span className="tracking-[-0.16px]">Talk to Us to Scale Up</span>
             </div>
-            <div className="flex items-center gap-2 sm:justify-center">
-              <PhoneIcon className="shrink-0" />
-              <a href="tel:+919848032919" className="tracking-[-0.16px] transition hover:text-white">
-                +91-9848032919
-              </a>
-            </div>
-            <div className="flex items-center gap-2 sm:justify-end">
-              <MailIcon className="shrink-0" />
-              <a href="mailto:support@scalexlearning.com" className="tracking-[-0.16px] transition hover:text-white">
-                support@scalexlearning.com
-              </a>
-            </div>
+            {phone && (
+              <div className="flex items-center gap-2 sm:justify-center">
+                <PhoneIcon className="shrink-0" />
+                <a href={`tel:${phone.replace(/\s/g, '')}`} className="tracking-[-0.16px] transition hover:text-white">
+                  {phone}
+                </a>
+              </div>
+            )}
+            {email && (
+              <div className="flex items-center gap-2 sm:justify-end">
+                <MailIcon className="shrink-0" />
+                <a href={`mailto:${email}`} className="tracking-[-0.16px] transition hover:text-white">
+                  {email}
+                </a>
+              </div>
+            )}
           </div>
         </div>
       </footer>
 
-      <WhatsAppFab />
+      <WhatsAppFab href={whatsAppHref} />
       <ChatFab />
+      <MobileBottomBar phone={phone} />
     </>
   );
 };
