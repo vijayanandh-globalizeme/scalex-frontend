@@ -1,28 +1,10 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { getAllCategorySlugs, getCategoryBySlug } from '@/lib/categories';
-import {
-  getTechnicalCourseHref,
-  PRIMARY_TECHNICAL_COURSE_SLUG,
-} from '@/lib/technicalCourses';
 import AllCoursesMegaMenu from './AllCoursesMegaMenu';
 import HeaderMobileMenu from './HeaderMobileMenu';
 import HeaderSearch from './HeaderSearch';
 import NavDropdown from './NavDropdown';
-
-const ALL_COURSES_ITEMS = [
-  ...getAllCategorySlugs().map((slug) => {
-    const category = getCategoryBySlug(slug)!;
-    return {
-      label: category.breadcrumbLabel,
-      href: `/categories/${slug}`,
-    };
-  }),
-  {
-    label: 'Technical Course',
-    href: getTechnicalCourseHref(PRIMARY_TECHNICAL_COURSE_SLUG),
-  },
-];
+import type { MegaMenuCategory } from '@/lib/allCoursesMegaMenu';
 
 const INTERVIEW_PREP_ITEMS = [
   { label: 'DevOps With Placement', href: '#' },
@@ -73,7 +55,7 @@ function SignInArrow({ className }: { className?: string }) {
 const navLinkClass =
   'header-fluid-text flex h-10 items-center gap-1 px-1.5 py-0 font-normal not-italic tracking-[-0.16px] whitespace-nowrap max-[1399px]:px-1.5 min-[1400px]:px-2.5';
 
-const Header = () => {
+const Header = ({ megaMenuCategories }: { megaMenuCategories: MegaMenuCategory[] }) => {
   return (
     <header className="sticky top-0 z-50 border-b border-zinc-100 bg-white">
       <div className="site-container">
@@ -91,7 +73,7 @@ const Header = () => {
             />
           </Link>
           <HeaderMobileMenu
-            allCoursesItems={ALL_COURSES_ITEMS}
+            categories={megaMenuCategories}
             interviewPrepItems={INTERVIEW_PREP_ITEMS}
             certificationPrepItems={CERTIFICATION_PREP_ITEMS}
             resourcesItems={RESOURCES_ITEMS}
@@ -119,10 +101,10 @@ const Header = () => {
               </Link>
 
               <div className="shrink-0">
-                <AllCoursesMegaMenu />
+                <AllCoursesMegaMenu categories={megaMenuCategories} />
               </div>
 
-              <HeaderSearch className="header-desktop-bar__search min-w-0 shrink" />
+              <HeaderSearch className="header-desktop-bar__search min-w-0 shrink" categories={megaMenuCategories} />
             </div>
 
             <div className="header-desktop-bar__right flex shrink-0 items-center">

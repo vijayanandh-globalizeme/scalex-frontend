@@ -1,11 +1,14 @@
 import { ReactNode } from 'react';
 import Footer from './components/Footer';
 import Header from './components/Header';
+import { fetchLayout } from '@/services/layoutApi';
 
-const MainLayout = ({ children }: { children: ReactNode }) => {
+const MainLayout = async ({ children }: { children: ReactNode }) => {
+  const layoutData = await fetchLayout();
+  const megaMenuCategories = layoutData?.categories ?? [];
   return (
     <>
-      <Header />
+      <Header megaMenuCategories={megaMenuCategories} />
       <main id="main-content" className="min-w-0 overflow-visible">
         {children}
       </main>

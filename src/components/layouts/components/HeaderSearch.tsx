@@ -6,6 +6,7 @@ import {
   filterSearchSuggestions,
   getAllSearchSuggestions,
 } from '@/lib/searchSuggestions';
+import type { MegaMenuCategory } from '@/lib/allCoursesMegaMenu';
 
 function SearchIcon({ className }: { className?: string }) {
   return (
@@ -28,10 +29,11 @@ function SearchIcon({ className }: { className?: string }) {
 
 type HeaderSearchProps = {
   className?: string;
+  categories: MegaMenuCategory[];
 };
 
-export default function HeaderSearch({ className }: HeaderSearchProps) {
-  const allSuggestions = useMemo(() => getAllSearchSuggestions(), []);
+export default function HeaderSearch({ className, categories }: HeaderSearchProps) {
+  const allSuggestions = useMemo(() => getAllSearchSuggestions(categories), [categories]);
   const [query, setQuery] = useState('');
   const [isOpen, setIsOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);

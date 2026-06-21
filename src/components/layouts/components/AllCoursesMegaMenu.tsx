@@ -3,7 +3,6 @@
 import Link from 'next/link';
 import { useRef, useState } from 'react';
 import type { MegaMenuCategory } from '@/lib/allCoursesMegaMenu';
-import { getAllCoursesMegaMenuData } from '@/lib/allCoursesMegaMenu';
 
 function OutlineButtonChevron({ className }: { className?: string }) {
   return (
@@ -46,17 +45,16 @@ function ChevronRight({ className }: { className?: string }) {
   );
 }
 
-const categories = getAllCoursesMegaMenuData();
-
 const triggerClass =
   'btn-brand-outline btn-brand-outline-hover-fill header-fluid-text flex h-[40px] w-[133px] shrink-0 items-center justify-center gap-1 cursor-pointer';
 
 type MegaMenuPanelProps = {
+  categories: MegaMenuCategory[];
   activeCategory: MegaMenuCategory;
   onCategoryHover: (slug: string) => void;
 };
 
-function MegaMenuPanel({ activeCategory, onCategoryHover }: MegaMenuPanelProps) {
+function MegaMenuPanel({ categories, activeCategory, onCategoryHover }: MegaMenuPanelProps) {
   return (
     <div className="mx-auto grid w-full max-w-[1300px] grid-cols-[minmax(240px,280px)_minmax(280px,1fr)_minmax(200px,1fr)] bg-white shadow-[0_16px_48px_-12px_rgba(15,23,42,0.18)]">
       <div className="border-r border-zinc-100 py-6 pl-6 pr-4">
@@ -88,25 +86,31 @@ function MegaMenuPanel({ activeCategory, onCategoryHover }: MegaMenuPanelProps) 
 
       <div className="flex min-h-[320px] flex-col border-r border-zinc-100 px-6 py-6">
         <p className="mb-4 text-[15px] font-bold text-heading">Course</p>
-        <ul className="flex-1 space-y-0.5" role="list">
-          {activeCategory.courses.map((course) => (
-            <li key={course.label}>
-              <Link
-                href={course.href}
-                className="btn-mui-nav-link header-fluid-text block px-2 py-2 font-normal text-ink"
-              >
-                {course.label}
-              </Link>
-            </li>
-          ))}
-        </ul>
-        <Link
-          href={activeCategory.href}
-          className="header-fluid-text mt-4 inline-flex items-center gap-1.5 font-semibold text-brand transition hover:underline"
-        >
-          View All Courses
-          <span aria-hidden>&raquo;</span>
-        </Link>
+        {activeCategory.courses.length === 0 ? (
+          <p className="header-fluid-text flex-1 px-2 py-2 text-ink/50">No courses available</p>
+        ) : (
+          <>
+            <ul className="flex-1 space-y-0.5" role="list">
+              {activeCategory.courses.map((course) => (
+                <li key={course.label}>
+                  <Link
+                    href={course.href}
+                    className="btn-mui-nav-link header-fluid-text block px-2 py-2 font-normal text-ink"
+                  >
+                    {course.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+            <Link
+              href={activeCategory.href}
+              className="header-fluid-text mt-4 inline-flex items-center gap-1.5 font-semibold text-brand transition hover:underline"
+            >
+              View All Courses
+              <span aria-hidden>&raquo;</span>
+            </Link>
+          </>
+        )}
       </div>
 
       <div className="py-6 pr-6" aria-hidden />
@@ -114,15 +118,16 @@ function MegaMenuPanel({ activeCategory, onCategoryHover }: MegaMenuPanelProps) 
   );
 }
 
-export default function AllCoursesMegaMenu() {
+export default function AllCoursesMegaMenu({ categories }: { categories: MegaMenuCategory[] }) {
   const [isOpen, setIsOpen] = useState(false);
   const [activeSlug, setActiveSlug] = useState(categories[0]?.slug ?? '');
   const closeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const activeCategory = categories.find((c) => c.slug === activeSlug) ?? categories[0];
 
-  if (!activeCategory) return null;
+  const hasCategories = categories.length > 0 && !!activeCategory;
 
   const handleOpen = () => {
+    if (!hasCategories) return;
     if (closeTimerRef.current) clearTimeout(closeTimerRef.current);
     setIsOpen(true);
   };
@@ -155,20 +160,22 @@ export default function AllCoursesMegaMenu() {
         />
       </button>
 
-      <div
-        className={`fixed inset-x-0 top-16 z-50 ${
-          isOpen ? 'visible' : 'invisible pointer-events-none'
-        }`}
-        role="menu"
-        aria-label="All Courses"
-        aria-hidden={!isOpen}
-        onMouseEnter={handleOpen}
-        onMouseLeave={scheduleClose}
-      >
-        {/* Invisible bridge only — keeps hover path, no visible gap */}
-        <div className="absolute -top-3 left-0 right-0 h-3" aria-hidden />
-        <MegaMenuPanel activeCategory={activeCategory} onCategoryHover={setActiveSlug} />
-      </div>
+      {hasCategories && (
+        <div
+          className={`fixed inset-x-0 top-16 z-50 ${
+            isOpen ? 'visible' : 'invisible pointer-events-none'
+          }`}
+          role="menu"
+          aria-label="All Courses"
+          aria-hidden={!isOpen}
+          onMouseEnter={handleOpen}
+          onMouseLeave={scheduleClose}
+        >
+          {/* Invisible bridge only — keeps hover path, no visible gap */}
+          <div className="absolute -top-3 left-0 right-0 h-3" aria-hidden />
+          <MegaMenuPanel categories={categories} activeCategory={activeCategory!} onCategoryHover={setActiveSlug} />
+        </div>
+      )}
     </div>
   );
 }

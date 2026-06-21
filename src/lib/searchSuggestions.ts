@@ -1,4 +1,4 @@
-import { getAllCoursesMegaMenuData } from '@/lib/allCoursesMegaMenu';
+import type { MegaMenuCategory } from '@/lib/allCoursesMegaMenu';
 
 export type SearchSuggestion = {
   label: string;
@@ -29,8 +29,8 @@ export const DEFAULT_SEARCH_SUGGESTIONS: SearchSuggestion[] = [
   },
 ];
 
-export function getAllSearchSuggestions(): SearchSuggestion[] {
-  const fromCourses = getAllCoursesMegaMenuData().flatMap((category) => category.courses);
+export function getAllSearchSuggestions(categories: MegaMenuCategory[] = []): SearchSuggestion[] {
+  const fromCourses = categories.flatMap((category) => category.courses);
   const seen = new Set<string>();
 
   return [...DEFAULT_SEARCH_SUGGESTIONS, ...fromCourses].filter((item) => {
