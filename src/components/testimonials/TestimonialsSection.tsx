@@ -196,7 +196,7 @@ export function PartnersIcon({ className }: { className?: string }) {
   );
 }
 
-function ReviewPlatformRow({ reviews }: { reviews: ReviewPlatform[] }) {
+export function ReviewPlatformRow({ reviews }: { reviews: ReviewPlatform[] }) {
   return (
     <div
       className="flex flex-wrap items-center justify-center gap-8 md:gap-10 lg:gap-14"

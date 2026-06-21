@@ -145,7 +145,10 @@ const Header = () => {
                   items={[...RESOURCES_ITEMS]}
                   triggerClassName={navLinkClass}
                 />
-                <Link href="#" className={`${navLinkClass} header-nav-parent-hover`}>
+                <Link href="/about" className={`${navLinkClass} header-nav-parent-hover`}>
+                  About Us
+                </Link>
+                <Link href="/contact" className={`${navLinkClass} header-nav-parent-hover`}>
                   Contact Us
                 </Link>
               </nav>

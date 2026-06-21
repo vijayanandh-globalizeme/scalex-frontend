@@ -569,6 +569,27 @@ html {
   }
 }
 
+@keyframes contact-map-ping {
+  0% { transform: scale(1); opacity: 0.8; }
+  70% { transform: scale(2.2); opacity: 0; }
+  100% { transform: scale(2.2); opacity: 0; }
+}
+
+@keyframes contact-map-ping-2 {
+  0% { transform: scale(1); opacity: 0.6; }
+  70% { transform: scale(1.7); opacity: 0; }
+  100% { transform: scale(1.7); opacity: 0; }
+}
+
+.contact-map-ping {
+  animation: contact-map-ping 2s ease-out infinite;
+}
+
+.contact-map-ping-2 {
+  animation: contact-map-ping-2 2s ease-out infinite;
+  animation-delay: 0.3s;
+}
+
 @keyframes category-title-underline {
   /* First repeat — show (L→R) */
   0% {

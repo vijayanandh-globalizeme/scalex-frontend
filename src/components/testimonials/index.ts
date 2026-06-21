@@ -1,4 +1,4 @@
-export { default as TestimonialsSection } from './TestimonialsSection';
+export { default as TestimonialsSection, ReviewPlatformRow } from './TestimonialsSection';
 export type {
   Testimonial,
   StatBadge,

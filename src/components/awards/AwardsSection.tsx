@@ -35,9 +35,9 @@ export interface AwardsSectionProps {
 }
 
 const VARIANT_STYLES: Record<AwardCard['variant'], { bg: string }> = {
-  gold: { bg: 'bg-[linear-gradient(150deg,#F5980F_-75.58%,#B9CA63_182.49%)]' },
-  orange: { bg: 'bg-[linear-gradient(180deg,#EF4C40_-16.69%,#F5A416_121.61%)]' },
-  red: { bg: 'bg-[#C24E48]' },
+  gold: { bg: 'bg-[#BB9255]' },
+  orange: { bg: 'bg-[#CB3D4D]' },
+  red: { bg: 'bg-[#4899C2]' },
 };
 
 function ArrowRightIcon({ className }: { className?: string }) {
