@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { useMemo, useRef, useState } from 'react';
-import { useGsapScrollRevealStagger } from '@/hooks/useGsapScrollReveal';
+import { useGsapScrollReveal, useGsapScrollRevealStagger } from '@/hooks/useGsapScrollReveal';
 import { useGridColumns } from '@/hooks/useGridColumns';
 
 export interface CourseTab {
@@ -260,6 +260,7 @@ export default function CoursesSection({
 
   const sectionRef = useRef<HTMLElement>(null);
   const rowRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const headerRef = useRef<HTMLElement>(null);
   const cols = useGridColumns();
 
   const filteredCourses = useMemo(() => {
@@ -284,14 +285,21 @@ export default function CoursesSection({
     sectionRef,
     rowRefs,
     {
-      y: 48,
-      duration: 1.6,
-      delay: 0.55,
+      y: 40,
+      duration: 0.8,
+      delay: 0.1,
       ease: 'power2.out',
       start: 'top 88%',
     },
     [activeTab, courseRows.length, cols],
   );
+
+  useGsapScrollReveal(sectionRef, headerRef, {
+    y: 40,
+    duration: 1.2,
+    delay: 0.1,
+    start: 'top 88%',
+  });
 
   return (
     <section
@@ -300,7 +308,7 @@ export default function CoursesSection({
       aria-labelledby="courses-heading"
     >
       <div className="site-container relative z-10">
-        <header className="mx-auto max-w-3xl text-center">
+        <header ref={headerRef} className="gsap-reveal-pending mx-auto max-w-3xl text-center">
           <h2
             id="courses-heading"
             className="text-[28px] font-bold leading-[140%] text-heading md:text-[34px]"

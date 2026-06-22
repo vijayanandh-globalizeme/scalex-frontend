@@ -287,13 +287,13 @@ export default function HeroSection(props: HeroSectionProps) {
           <div className="relative mx-auto w-full min-w-0 max-w-md overflow-visible lg:mx-0 lg:max-w-none">
             <div className="relative ml-auto mr-0 aspect-[4/5] w-full max-w-[420px] overflow-visible pt-10 sm:pt-14 lg:max-w-[480px] lg:pt-0">
               <div
-                className="absolute right-5 bottom-0 z-[1] aspect-[389/579] w-[min(100%,389px)] rounded-t-[400px] shadow-inner shadow-black/5"
+                className="absolute right-5 bottom-0 z-[1] aspect-[389/549] w-[min(100%,389px)] rounded-t-[400px] shadow-inner shadow-black/5"
                 style={{
                   background: 'linear-gradient(180deg, #BB9255 -140.92%, #FADCBA 165.92%)',
                 }}
                 aria-hidden
               />
-              <div className="absolute bottom-0 right-2 z-[5] aspect-[350/544] w-[min(90%,350px)] lg:right-6">
+              <div className="absolute right-6 bottom-0 z-[5] aspect-[350/554] w-[min(90%,350px)] lg:right-12" style={{ transform: 'translateY(-50px)' }}>
                 <Image
                   src={figure.src}
                   alt={figure.alt}
