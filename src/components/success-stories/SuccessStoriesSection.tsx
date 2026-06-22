@@ -2,23 +2,14 @@
 
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
+import type { Reviewer } from '@/services/peopleApi';
 
-export interface SuccessStory {
-  id: string;
-  name: string;
-  role: string;
-  quote: string;
-  rating: number;
-  mediaSrc: string;
-  mediaAlt: string;
-  avatarSrc?: string;
-  videoUrl?: string;
-}
+export type { Reviewer as SuccessStory };
 
 export interface SuccessStoriesSectionProps {
   heading: string;
   subheading: string;
-  stories: SuccessStory[];
+  stories: Reviewer[];
   autoplay?: boolean;
   autoplayIntervalMs?: number;
   featureMedia: {
@@ -130,25 +121,28 @@ function VideoThumbnail({
   );
 }
 
-function TestimonialCardOnly({ story }: { story: SuccessStory }) {
+function TestimonialCardOnly({ story }: { story: Reviewer }) {
+  const filledStars = Math.round(Math.min(story.rating, 5));
   return (
     <article
       className="flex flex-col justify-between gap-4 rounded-2xl bg-white p-5 shadow-[0_10px_30px_-10px_rgba(15,23,42,0.18)] md:p-6"
       style={{ width: SLIDE_W, height: SLIDE_H, minWidth: SLIDE_W, maxWidth: SLIDE_W }}
     >
       <p className="text-[13px] leading-[20px] text-body md:text-[14px] md:leading-[22px]">
-        {story.quote}
+        {story.review}
       </p>
       <footer className="flex items-center gap-3 border-t border-zinc-100 pt-3">
-        <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-full bg-zinc-100">
-          <Image
-            src={story.avatarSrc ?? story.mediaSrc}
-            alt={`${story.name} avatar`}
-            fill
-            sizes="40px"
-            className="object-cover"
-          />
-        </div>
+        {story.avatarUrl ? (
+          <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-full bg-zinc-100">
+            <Image
+              src={story.avatarUrl}
+              alt={`${story.name} avatar`}
+              fill
+              sizes="40px"
+              className="object-cover"
+            />
+          </div>
+        ) : null}
         <div className="min-w-0 flex-1">
           <p className="text-[13px] font-bold uppercase tracking-wide text-heading">{story.name}</p>
           <p className="text-[11px] font-medium text-subtle">{story.role}</p>
@@ -156,7 +150,7 @@ function TestimonialCardOnly({ story }: { story: SuccessStory }) {
             {Array.from({ length: 5 }).map((_, i) => (
               <StarIcon
                 key={i}
-                className={i < story.rating ? 'h-3.5 w-3.5 text-black' : 'h-3.5 w-3.5 text-black opacity-30'}
+                className={i < filledStars ? 'h-3.5 w-3.5 text-black' : 'h-3.5 w-3.5 text-black opacity-30'}
               />
             ))}
           </div>

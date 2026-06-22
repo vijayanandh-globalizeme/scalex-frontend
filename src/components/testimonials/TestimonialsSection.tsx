@@ -3,21 +3,9 @@
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import type { LayoutSettings } from '@/services/layoutApi';
+import type { Learner } from '@/services/peopleApi';
 
-export interface Testimonial {
-  id: string;
-  name: string;
-  role: string;
-  avatarSrc: string;
-  quote: string;
-  metricValue: string;
-  metricLabel: string;
-  fromLogoSrc: string;
-  fromLogoAlt: string;
-  toLogoSrc: string;
-  toLogoAlt: string;
-  linkedinUrl?: string;
-}
+export type { Learner as Testimonial };
 
 export interface StatBadge {
   id: string;
@@ -39,7 +27,7 @@ export interface ReviewPlatform {
 export interface TestimonialsSectionProps {
   heading: string;
   subheading: string;
-  testimonials: Testimonial[];
+  testimonials: Learner[];
   stats: StatBadge[];
   reviews: ReviewPlatform[];
   settings?: LayoutSettings;
@@ -258,7 +246,7 @@ function TestimonialCard({
   testimonial,
   direction,
 }: {
-  testimonial: Testimonial;
+  testimonial: Learner;
   direction: 'next' | 'prev';
 }) {
   const animationClass =
@@ -269,51 +257,48 @@ function TestimonialCard({
     >
       <header className="flex items-start justify-between gap-4">
         <div className="flex items-center gap-3">
-          <div className="relative h-12 w-12 overflow-hidden rounded-full bg-zinc-100">
-            <Image
-              src={testimonial.avatarSrc}
-              alt={`${testimonial.name} avatar`}
-              fill
-              sizes="48px"
-              className="object-cover object-top"
-            />
-          </div>
+          {testimonial.avatarUrl ? (
+            <div className="relative h-12 w-12 overflow-hidden rounded-full bg-zinc-100">
+              <Image
+                src={testimonial.avatarUrl}
+                alt={`${testimonial.name} avatar`}
+                fill
+                sizes="48px"
+                className="object-cover object-top"
+              />
+            </div>
+          ) : null}
           <div>
-            <p className="flex items-center gap-1.5 text-[15px] font-bold text-heading">
-              {testimonial.name}
-              {testimonial.linkedinUrl ? (
-                <a
-                  href={testimonial.linkedinUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={`${testimonial.name} on LinkedIn`}
-                  className="text-linkedin"
-                >
-                  <LinkedInIcon className="h-3.5 w-3.5" />
-                </a>
-              ) : null}
-            </p>
-            <p className="text-[12px] font-medium text-subtle">{testimonial.role}</p>
+            <p className="text-[15px] font-bold text-heading">{testimonial.name}</p>
+            <p className="text-[12px] font-medium text-subtle">{testimonial.currentRole}</p>
           </div>
         </div>
         <div className="text-right">
           <p className="inline-flex items-center gap-1 text-[20px] font-extrabold text-brand">
-            {testimonial.metricValue}
+            {testimonial.hike}
             <ArrowUpRightIcon className="h-4 w-4 text-brand" />
           </p>
-          <p className="text-[12px] font-semibold text-brand">{testimonial.metricLabel}</p>
+          <p className="text-[12px] font-semibold text-brand">Salary Hike</p>
         </div>
       </header>
-      <p className="mt-4 text-[14px] leading-[22px] text-body">{testimonial.quote}</p>
-      <footer className="mt-5 flex items-center gap-4">
-        <div className="relative h-7 w-16">
-          <Image src={testimonial.fromLogoSrc} alt={testimonial.fromLogoAlt} fill sizes="64px" className="object-contain object-left" />
-        </div>
-        <span className="text-brand">→</span>
-        <div className="relative h-7 w-20">
-          <Image src={testimonial.toLogoSrc} alt={testimonial.toLogoAlt} fill sizes="80px" className="object-contain object-left" />
-        </div>
-      </footer>
+      <p className="mt-4 text-[14px] leading-[22px] text-body">{testimonial.review}</p>
+      {(testimonial.prevCompanyUrl || testimonial.currentCompanyUrl) ? (
+        <footer className="mt-5 flex items-center gap-4">
+          {testimonial.prevCompanyUrl ? (
+            <div className="relative h-7 w-16">
+              <Image src={testimonial.prevCompanyUrl} alt="Previous company" fill sizes="64px" className="object-contain object-left" />
+            </div>
+          ) : null}
+          {testimonial.prevCompanyUrl && testimonial.currentCompanyUrl ? (
+            <span className="text-brand">→</span>
+          ) : null}
+          {testimonial.currentCompanyUrl ? (
+            <div className="relative h-7 w-20">
+              <Image src={testimonial.currentCompanyUrl} alt="Current company" fill sizes="80px" className="object-contain object-left" />
+            </div>
+          ) : null}
+        </footer>
+      ) : null}
     </article>
   );
 }

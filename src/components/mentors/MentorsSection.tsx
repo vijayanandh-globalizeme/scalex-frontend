@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import type { ReactNode } from 'react';
+import type { Trainer } from '@/services/peopleApi';
 
 export interface MentorStat {
   id: string;
@@ -10,27 +11,13 @@ export interface MentorStat {
   variant?: 'mentors' | 'learners';
 }
 
-export interface MentorWorkedWithLogo {
-  id: string;
-  src: string;
-  alt: string;
-}
-
-export interface Mentor {
-  id: string;
-  name: string;
-  role: string;
-  portraitSrc: string;
-  portraitAlt: string;
-  linkedinUrl?: string;
-  workedWith: MentorWorkedWithLogo[];
-}
+export type { Trainer as Mentor };
 
 export interface MentorsSectionProps {
   heading: string;
   subheading: string;
   stats: MentorStat[];
-  mentors: Mentor[];
+  mentors: Trainer[];
 }
 
 function LinkedInBadge({ href, name }: { href?: string; name: string }) {
@@ -94,21 +81,23 @@ function StatPillInline({ stat }: { stat: MentorStat }) {
   );
 }
 
-function MentorCard({ mentor }: { mentor: Mentor }) {
+function MentorCard({ mentor }: { mentor: Trainer }) {
   return (
     <article className="flex flex-col items-center text-center">
       <div className="relative h-[150px] w-[150px]">
         <div className="relative h-full w-full overflow-hidden rounded-full bg-zinc-100 shadow-sm">
-          <Image
-            src={mentor.portraitSrc}
-            alt={mentor.portraitAlt}
-            fill
-            sizes="150px"
-            className="object-cover"
-          />
+          {mentor.profileImageUrl ? (
+            <Image
+              src={mentor.profileImageUrl}
+              alt={mentor.name}
+              fill
+              sizes="150px"
+              className="object-cover"
+            />
+          ) : null}
         </div>
         <div className="absolute right-1 bottom-1">
-          <LinkedInBadge href={mentor.linkedinUrl} name={mentor.name} />
+          <LinkedInBadge href={mentor.linkedInProfile} name={mentor.name} />
         </div>
       </div>
       <h3 className="mt-3 text-center text-[18px] font-medium leading-[140%] text-heading">
@@ -117,14 +106,12 @@ function MentorCard({ mentor }: { mentor: Mentor }) {
       <p className="mt-1 text-center text-[14px] font-medium leading-[140%] text-muted">
         {mentor.role}
       </p>
-      {mentor.workedWith.length > 0 ? (
-        <div className="mt-4 flex flex-nowrap items-center justify-center gap-2 whitespace-nowrap text-[12px] font-medium text-subtle">
+      {mentor.workedWithUrl ? (
+        <div className="mt-4 flex w-full flex-nowrap items-center justify-end gap-2 whitespace-nowrap text-[12px] font-medium text-subtle">
           <span>Worked with</span>
-          {mentor.workedWith.map((logo) => (
-            <div key={logo.id} className="relative h-[16px] w-[68px] shrink-0">
-              <Image src={logo.src} alt={logo.alt} fill sizes="68px" className="object-contain" />
-            </div>
-          ))}
+          <div className="relative h-[16px] w-[68px] shrink-0">
+            <Image src={mentor.workedWithUrl} alt="Company" fill sizes="68px" className="object-contain object-right" />
+          </div>
         </div>
       ) : null}
     </article>
@@ -167,7 +154,7 @@ export default function MentorsSection({
         ) : null}
 
         {/* Mentors row */}
-        <div className="mt-10 grid grid-cols-2 gap-x-6 gap-y-10 md:mt-12 md:grid-cols-3 lg:grid-cols-5">
+        <div className="mt-10 grid grid-cols-2 justify-items-center gap-x-6 gap-y-10 md:mt-12 md:grid-cols-3 lg:grid-cols-5">
           {mentors.map((m) => (
             <MentorCard key={m.id} mentor={m} />
           ))}

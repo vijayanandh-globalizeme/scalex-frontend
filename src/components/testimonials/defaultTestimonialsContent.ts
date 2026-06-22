@@ -7,47 +7,10 @@ import {
   TrendingUpIcon,
 } from './TestimonialsSection';
 
-const johnAvatar = '/images/Alex.png';
-const priyaAvatar = '/images/Keerthi.png';
-const tcsLogo = '/images/hero/tcs.png';
-const googleLogo = '/images/hero/google.png';
-
-export const defaultTestimonialsContent: TestimonialsSectionProps = {
+export const defaultTestimonialsContent: Omit<TestimonialsSectionProps, 'testimonials' | 'reviews'> = {
   heading: 'Real Stories, Real Transformations',
   subheading:
     'See how our learners are scaling their careers and making successful transitions into high-growth roles',
-  testimonials: [
-    {
-      id: 'john-williams',
-      name: 'JOHN WILLIAMS',
-      role: 'CEO & Co-Founder, Innotech',
-      avatarSrc: johnAvatar,
-      quote:
-        'ScaleX Learning transformed the way I approach Agile methodologies. The project-based learning wasn’t just theory — it gave me the practical tools to lead my team more effectively.',
-      metricValue: '300%',
-      metricLabel: 'Salary Hike',
-      fromLogoSrc: tcsLogo,
-      fromLogoAlt: 'TCS',
-      toLogoSrc: googleLogo,
-      toLogoAlt: 'Google',
-      linkedinUrl: 'https://linkedin.com',
-    },
-    {
-      id: 'priya-sharma',
-      name: 'PRIYA SHARMA',
-      role: 'Senior Product Manager, FinHub',
-      avatarSrc: priyaAvatar,
-      quote:
-        'The mentorship and structured curriculum helped me transition into product management within six months. Worth every minute.',
-      metricValue: '220%',
-      metricLabel: 'Salary Hike',
-      fromLogoSrc: tcsLogo,
-      fromLogoAlt: 'TCS',
-      toLogoSrc: googleLogo,
-      toLogoAlt: 'Google',
-      linkedinUrl: 'https://linkedin.com',
-    },
-  ],
   stats: [
     {
       id: 'hike',
@@ -72,40 +35,6 @@ export const defaultTestimonialsContent: TestimonialsSectionProps = {
       label: 'Hiring Partners',
       value: '5000+',
       icon: createElement(PartnersIcon, { className: 'h-[18px] w-[18px]' }),
-    },
-  ],
-  reviews: [
-    {
-      id: 'google',
-      name: 'Google',
-      logoSrc: '/images/hero/google.png',
-      logoAlt: 'Google reviews',
-      rating: '4.8/5',
-      reviewsLabel: '9845 Reviews',
-    },
-    {
-      id: 'facebook',
-      name: 'Facebook',
-      logoSrc: '/images/Facebook.svg',
-      logoAlt: 'Facebook reviews',
-      rating: '4.8/5',
-      reviewsLabel: '9845 Reviews',
-    },
-    {
-      id: 'trustpilot',
-      name: 'Trustpilot',
-      logoSrc: '/images/hero/google.png',
-      logoAlt: 'Trustpilot reviews',
-      rating: '4.8/5',
-      reviewsLabel: '9845 Reviews',
-    },
-    {
-      id: 'switchup',
-      name: 'Switchup',
-      logoSrc: '/images/hero/google.png',
-      logoAlt: 'Switchup reviews',
-      rating: '4.8/5',
-      reviewsLabel: '9845 Reviews',
     },
   ],
 };

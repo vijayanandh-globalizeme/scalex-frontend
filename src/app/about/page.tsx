@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useRef } from 'react';
 import { GuidanceSection, defaultGuidanceContent } from '@/components/guidance';
 import { LogoMarquee } from '@/components/shared';
-import { SuccessStoriesSection, defaultSuccessStoriesContent } from '@/components/success-stories';
+import { SuccessStoriesSectionServer } from '@/components/success-stories';
 import { ReviewPlatformRowServer } from '@/components/testimonials';
 import { AwardsSection, defaultAwardsContent } from '@/components/awards';
 import { useGsapScrollReveal } from '@/hooks/useGsapScrollReveal';
@@ -399,7 +399,7 @@ export default function AboutPage() {
       </section>
 
       <div className="[&>section]:bg-white">
-        <SuccessStoriesSection {...defaultSuccessStoriesContent} />
+        <SuccessStoriesSectionServer />
       </div>
 
       {/* Rating platforms bar */}

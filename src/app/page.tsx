@@ -17,6 +17,7 @@ import { WhyScaleXSection, defaultWhyScaleXContent } from '@/components/why-scal
 import { GuidanceSection, defaultGuidanceContent } from '@/components/guidance';
 import { SITE_DESCRIPTION, SITE_NAME } from '@/lib/site';
 import { fetchLayout } from '@/services/layoutApi';
+import { fetchLearners, fetchReviewers, fetchTrainers } from '@/services/peopleApi';
 
 export const metadata: Metadata = {
   title: 'Professional Training & Certification Courses',
@@ -28,18 +29,28 @@ export const metadata: Metadata = {
 };
 
 export default async function HomePage() {
-  const layoutData = await fetchLayout();
+  const [layoutData, learners, reviewers, trainers] = await Promise.all([
+    fetchLayout(),
+    fetchLearners(10),
+    fetchReviewers(10),
+    fetchTrainers(10),
+  ]);
   const settings = layoutData?.settings;
   return (
     <>
       <HeroSection {...defaultHeroContent} />
       <CoursesSection {...defaultCoursesContent} />
-      <TestimonialsSection {...defaultTestimonialsContent} settings={settings} />
-      <SuccessStoriesSection {...defaultSuccessStoriesContent} />
+      <TestimonialsSection
+        {...defaultTestimonialsContent}
+        testimonials={learners}
+        reviews={[]}
+        settings={settings}
+      />
+      <SuccessStoriesSection {...defaultSuccessStoriesContent} stories={reviewers} />
       <AwardsSection {...defaultAwardsContent} />
       {/* <LiveSessionsSection {...defaultLiveSessionsContent} /> */}
       <WorkforceSection {...defaultWorkforceContent} />
-      <MentorsSection {...defaultMentorsContent} />
+      <MentorsSection {...defaultMentorsContent} mentors={trainers} />
       <WhyScaleXSection {...defaultWhyScaleXContent} />
       <GuidanceSection {...defaultGuidanceContent} />
     </>
