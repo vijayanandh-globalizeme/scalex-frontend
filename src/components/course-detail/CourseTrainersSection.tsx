@@ -139,7 +139,7 @@ export default function CourseTrainersSection({
   }, [totalPages]);
 
   return (
-    <div id="trainers" className="scroll-mt-[116px]">
+    <div id="trainers" className="scroll-mt-[116px] mb-0">
       <div className="py-5 md:py-6">
         <div className="flex items-center justify-between gap-4">
           <h2 className="text-[34px] font-bold leading-[140%] text-heading">{trainers.title}</h2>

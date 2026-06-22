@@ -65,9 +65,9 @@ export default function CategoryCoursesSection({
     sectionRef,
     rowRefs,
     {
-      y: 48,
-      duration: 1.6,
-      delay: 0.55,
+      y: 40,
+      duration: 0.8,
+      delay: 0.1,
       ease: 'power2.out',
       start: 'top 88%',
     },
@@ -85,7 +85,7 @@ export default function CategoryCoursesSection({
         <header className="mx-auto mt-6 max-w-4xl text-center md:mt-8 lg:mt-10">
           <h2
             id="category-courses-heading"
-            className="text-center text-[34px] font-bold leading-[1.4] text-heading whitespace-nowrap"
+            className="text-center text-[24px] font-bold leading-[1.4] text-heading md:text-[34px]"
           >
             {heading}
           </h2>

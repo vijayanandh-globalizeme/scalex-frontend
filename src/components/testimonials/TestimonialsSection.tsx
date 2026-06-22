@@ -109,7 +109,7 @@ function StatPill({
       : 'bg-[#DBEAFE] text-[#155DFC]';
 
   return (
-    <div className="inline-flex h-[62px] min-w-[162px] items-center rounded-xl border border-zinc-100 bg-white px-3 py-2 shadow-lg shadow-zinc-900/10">
+    <div className="inline-flex h-[62px] w-full min-w-[162px] items-center rounded-xl border border-zinc-100 bg-white px-3 py-2 shadow-lg shadow-zinc-900/10 sm:w-auto">
       <div className="flex w-full items-start gap-2.5">
         <div
           className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full ${iconBg}`}
@@ -394,7 +394,7 @@ export default function TestimonialsSection({
                       : 'sm:ml-8 xl:ml-25';
               const variant: 'learners' | 'mentors' = i % 2 === 0 ? 'mentors' : 'learners';
               return (
-                <div key={s.id} className={offset}>
+                <div key={s.id} className={`w-full sm:w-auto ${offset}`}>
                   <StatPill badge={s} iconVariant={variant} />
                 </div>
               );

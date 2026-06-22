@@ -441,7 +441,9 @@ export default function CourseSchedulesSection({
               }
             />
             {index === schedules.bannerAfterIndex - 1 ? (
-              <CourseBatchRequestBanner banner={schedules.batchBanner} />
+              <div className="py-[15px] md:py-0">
+                <CourseBatchRequestBanner banner={schedules.batchBanner} />
+              </div>
             ) : null}
           </Fragment>
         ))}

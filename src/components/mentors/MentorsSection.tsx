@@ -82,7 +82,7 @@ function StatPillInline({ stat }: { stat: MentorStat }) {
       : 'bg-[#DBEAFE] text-[#155DFC]';
 
   return (
-    <div className="inline-flex items-center gap-2.5">
+    <div className="flex w-full items-center gap-2.5 rounded-xl border border-zinc-100 bg-white px-3 py-2 shadow-lg shadow-zinc-900/10 md:inline-flex md:w-auto md:rounded-none md:border-0 md:bg-transparent md:px-0 md:py-0 md:shadow-none">
       <div className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full ${iconBg}`} aria-hidden>
         {stat.icon ?? <DefaultStatIcon className="h-[18px] w-[18px]" />}
       </div>
@@ -139,7 +139,7 @@ export default function MentorsSection({
 }: MentorsSectionProps) {
   return (
     <section
-      className="full-bleed relative z-10 bg-white pt-[200px] pb-[150px]"
+      className="full-bleed relative z-10 bg-white pt-[100px] md:pt-[200px] pb-[50px] md:pb-[150px]"
       aria-labelledby="mentors-heading"
     >
       <div className="site-container relative z-10">
@@ -157,7 +157,7 @@ export default function MentorsSection({
 
         {/* Inline stat row */}
         {stats.length > 0 ? (
-          <div className="mt-8 flex flex-wrap items-center justify-center gap-x-10 gap-y-4 md:mt-10">
+          <div className="mt-8 flex flex-col items-stretch gap-4 md:mt-10 md:flex-row md:flex-wrap md:items-center md:justify-center md:gap-x-10 md:gap-y-4">
             {stats.map((s, i) => {
               const variant: 'learners' | 'mentors' =
                 s.variant ?? (i % 2 === 0 ? 'mentors' : 'learners');

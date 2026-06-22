@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import {
   CategoryCarouselControls,
   CategoryCarouselTrack,
@@ -128,7 +128,7 @@ function ReviewCard({ review }: { review: CourseLearnerReview }) {
 
 function VideoCard({ video }: { video: CourseReviewsContent['video'] }) {
   return (
-    <div className="relative h-[282px] w-full max-w-[295px] overflow-hidden rounded-[20px] shadow-[0_4px_4px_0_rgba(30,41,59,0.08),0_4px_4px_0_rgba(30,41,59,0.03)]">
+    <div className="relative h-[282px] w-full max-w-full md:max-w-[295px] overflow-hidden rounded-[20px] shadow-[0_4px_4px_0_rgba(30,41,59,0.08),0_4px_4px_0_rgba(30,41,59,0.03)]">
       <Image
         src={video.thumbnailSrc}
         alt={video.thumbnailAlt}
@@ -158,6 +158,15 @@ function VideoCard({ video }: { video: CourseReviewsContent['video'] }) {
 export default function CourseReviewsSection({ reviews }: { reviews: CourseReviewsContent }) {
   const [activeTabId, setActiveTabId] = useState(reviews.tabs[0]?.id ?? 'all');
   const [page, setPage] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 767px)');
+    setIsMobile(mq.matches);
+    const handler = (e: MediaQueryListEvent) => { setIsMobile(e.matches); setPage(0); };
+    mq.addEventListener('change', handler);
+    return () => mq.removeEventListener('change', handler);
+  }, []);
 
   const filteredReviews = useMemo(() => {
     if (activeTabId === 'all') return reviews.reviews;
@@ -169,14 +178,15 @@ export default function CourseReviewsSection({ reviews }: { reviews: CourseRevie
     [filteredReviews],
   );
 
-  const pages = useMemo(() => chunkPages(carouselItems, 3), [carouselItems]);
+  const pageSize = isMobile ? 1 : 3;
+  const pages = useMemo(() => chunkPages(carouselItems, pageSize), [carouselItems, pageSize]);
   const totalPages = Math.max(1, pages.length);
 
   return (
     <div id="reviews" className={`scroll-mt-[116px] py-5 md:py-6 ${SECTION_CARD}`}>
       <h2 className="text-[34px] font-bold leading-[140%] text-heading">{reviews.title}</h2>
 
-      <div className="mt-7 flex items-center justify-between gap-4">
+      <div className="mt-7 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="min-w-0" role="tablist" aria-label="Review platforms">
           <div className={TAB_BAR_SCROLL}>
             {reviews.tabs.map((tab) => {
@@ -225,7 +235,7 @@ export default function CourseReviewsSection({ reviews }: { reviews: CourseRevie
         />
       </div>
 
-      <CategoryCarouselTrack page={page} className="mt-5 overflow-visible pt-4">
+      <CategoryCarouselTrack page={page} className="mt-5 pt-4">
         {pages.map((pageItems, pageIndex) => (
           <div key={pageIndex} className="grid grid-cols-1 gap-4 overflow-visible md:grid-cols-3 md:gap-5">
             {pageItems.map((item, itemIndex) =>

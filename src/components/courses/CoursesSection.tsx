@@ -203,12 +203,12 @@ export function CourseCard({
         >
           <div className="flex flex-col gap-2">
             <div className="flex items-baseline gap-2">
-              <span className="text-[20px] font-bold text-heading">
+              <span className="text-[16px] font-bold text-heading lg:text-[18px]">
                 {currencySymbol}
                 {course.price.toLocaleString('en-IN')}
               </span>
               {course.originalPrice ? (
-                <span className="text-[13px] font-medium text-zinc-400 line-through">
+                <span className="text-[12px] font-medium text-zinc-400 line-through">
                   {currencySymbol}
                   {course.originalPrice.toLocaleString('en-IN')}
                 </span>
@@ -231,12 +231,12 @@ export function CourseCard({
           </div>
           <Link
             href={course.href}
-            className={`btn-accent-outline inline-flex items-center justify-center gap-2 px-4 py-[11px] text-[14px] ${
-              isCourseDetail ? 'w-full' : 'w-[156px] shrink-0'
+            className={`btn-accent-outline inline-flex items-center justify-center gap-1.5 px-3 py-2 text-[12px] lg:px-4 lg:py-[11px] lg:text-[13px] ${
+              isCourseDetail ? 'w-full' : 'shrink-0'
             }`}
           >
             View Course
-            <ArrowRightIcon className="btn-arrow-icon h-4 w-4 shrink-0" />
+            <ArrowRightIcon className="btn-arrow-icon h-3.5 w-3.5 shrink-0" />
           </Link>
         </div>
       </div>
@@ -323,7 +323,7 @@ export default function CoursesSection({
         <div
           role="tablist"
           aria-label="Course categories"
-          className="mt-8 flex flex-wrap items-center justify-center gap-2 rounded-lg bg-surface-raised p-2 shadow-[0_4px_4px_0_rgba(30,41,59,0.08),4px_-4px_4px_0_rgba(30,41,59,0.03)] md:mt-10 lg:justify-between"
+          className="mt-8 flex items-center gap-2 overflow-x-auto rounded-lg bg-surface-raised p-2 shadow-[0_4px_4px_0_rgba(30,41,59,0.08),4px_-4px_4px_0_rgba(30,41,59,0.03)] [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:mt-10 md:flex-wrap md:justify-center lg:justify-between"
         >
           {tabs.map((tab) => {
             const isActive = tab.id === activeTab;
@@ -337,7 +337,7 @@ export default function CoursesSection({
                   setActiveTab(tab.id);
                   setVisibleCount(initialVisibleCount);
                 }}
-                className={`cursor-pointer rounded-lg px-4 py-2.5 text-center text-[16px] font-medium leading-[140%] ${
+                className={`cursor-pointer whitespace-nowrap rounded-lg px-4 py-2.5 text-center text-[16px] font-medium leading-[140%] ${
                   isActive ? 'courses-tab-active' : 'btn-mui-brand-tint text-heading'
                 }`}
               >

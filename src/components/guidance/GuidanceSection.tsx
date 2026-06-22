@@ -87,7 +87,7 @@ function GuidanceForm({
     <form
       onSubmit={onSubmit}
       className={`w-full rounded-lg bg-white p-6 ${FORM_SHADOW} ${
-        embedded ? '' : 'mx-auto max-w-[696px] md:h-[578px] md:p-8 lg:w-[695.792px]'
+        embedded ? '' : 'mx-auto max-w-[696px] md:p-8 lg:w-[695.792px]'
       }`}
     >
       <h3 className="text-[20px] font-medium leading-normal text-heading">{formTitle}</h3>
@@ -306,7 +306,7 @@ export default function GuidanceSection({
 
   return (
     <section
-      className={`full-bleed relative z-10 overflow-visible bg-[#0D0D0D] pt-10 pb-0 ${className ?? ''}`}
+      className={`full-bleed relative z-10 overflow-visible bg-[#0D0D0D] pt-10 pb-12 ${className ?? ''}`}
       aria-labelledby="guidance-heading"
     >
       {content}

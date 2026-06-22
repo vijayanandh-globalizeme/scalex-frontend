@@ -172,7 +172,7 @@ function FeatureList({ features }: { features: string[] }) {
       {features.map((feature) => (
         <li key={feature} className="flex items-start gap-2.5">
           <CheckIcon className="mt-0.5 shrink-0" />
-          <span className="text-[18px] font-medium leading-[152%] text-heading">{feature}</span>
+          <span className="text-[15px] font-medium leading-[152%] text-heading md:text-[18px]">{feature}</span>
         </li>
       ))}
     </ul>
@@ -194,7 +194,7 @@ export default function CategoryHeroSection({
 }: CategoryPageContent) {
   return (
     <section
-      className="full-bleed relative overflow-visible pb-0 pt-8 md:pt-10"
+      className="full-bleed relative overflow-visible pb-24 pt-6 md:pt-8"
       aria-labelledby="category-hero-heading"
     >
       <div className="category-hero-bg pointer-events-none absolute inset-0" aria-hidden />
@@ -212,23 +212,23 @@ export default function CategoryHeroSection({
         <div className="grid items-start gap-10 lg:grid-cols-2 lg:gap-8 xl:gap-12">
           <div className="max-w-2xl">
             <h1 id="category-hero-heading" className="text-heading">
-              <span className="block text-[40px] font-extrabold leading-[60px] text-heading">
+              <span className="block text-[26px] font-extrabold leading-tight md:text-[36px] md:leading-[52px] xl:text-[40px] xl:leading-[60px] text-heading">
                 {titlePrefix}
               </span>
-              <span className="block text-[50px] font-extrabold leading-[80px] text-heading">
+              <span className="block text-[32px] font-extrabold leading-tight md:text-[44px] md:leading-[64px] xl:text-[50px] xl:leading-[80px] text-heading">
                 {titleAccent}
               </span>
               <CategoryTitleUnderline />
             </h1>
 
-            <p className="mt-5 max-w-xl text-[18px] font-semibold leading-6 text-muted">
+            <p className="mt-5 max-w-xl text-[15px] font-semibold leading-6 text-muted md:text-[18px]">
               {subheading}
             </p>
 
             {features.length > 0 ? <FeatureList features={features} /> : null}
 
             {(reviews.length > 0 || learnersStat) && (
-              <div className="mt-8 flex flex-wrap items-center gap-x-10 gap-y-5">
+              <div className="mt-5 flex flex-wrap items-center gap-x-10 gap-y-5 lg:mt-6">
                 {reviews.map((review) => (
                   <ReviewBlock key={review.id} review={review} />
                 ))}
@@ -236,14 +236,14 @@ export default function CategoryHeroSection({
               </div>
             )}
 
-            <div className="mt-8 flex flex-wrap gap-3 sm:gap-4">
-              <Link href={primaryCta.href} className="btn-brand h-[54px] gap-2 px-6 md:px-7">
+            <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:gap-4 lg:mt-6">
+              <Link href={primaryCta.href} className="btn-brand h-[54px] w-full gap-2 px-6 sm:w-auto md:px-7">
                 {primaryCta.label}
                 <ArrowRightIcon className="btn-arrow-icon shrink-0" />
               </Link>
               <Link
                 href={secondaryCta.href}
-                className="btn-brand-outline inline-flex h-[54px] items-center justify-center gap-[18px] px-6 text-sm font-semibold md:px-8 md:text-[15px]"
+                className="btn-brand-outline inline-flex h-[54px] w-full items-center justify-center gap-[18px] px-6 text-sm font-semibold sm:w-auto md:px-8 md:text-[15px]"
               >
                 {secondaryCta.label}
                 <PhoneIcon className="h-5 w-5 text-brand" />
@@ -252,15 +252,14 @@ export default function CategoryHeroSection({
           </div>
 
           <div className="relative mx-auto w-full max-w-[521px] lg:mx-0 lg:ml-auto">
-            <div className="relative h-[636px] w-[521px] max-w-full overflow-hidden rounded-2xl shadow-[0_8px_30px_-12px_rgba(15,23,42,0.2)]">
+            <div className="relative w-full overflow-hidden rounded-2xl shadow-[0_8px_30px_-12px_rgba(15,23,42,0.2)]" style={{aspectRatio: '521/636'}}>
               <Image
                 src={heroImage.src}
                 alt={heroImage.alt}
-                width={521}
-                height={636}
+                fill
                 priority
-                sizes="521px"
-                className="h-[636px] w-[521px] max-w-full object-cover object-center"
+                sizes="(max-width: 1024px) 90vw, 521px"
+                className="object-cover object-center"
               />
             </div>
           </div>

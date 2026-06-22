@@ -45,7 +45,7 @@ export default function CourseWebinarCtaSection({ content }: { content: CourseWe
   return (
     <section
       id="webinar-cta"
-      className="relative scroll-mt-[116px] pt-[22px]"
+      className="relative scroll-mt-[116px] pt-0 md:pt-[22px]"
       aria-labelledby="webinar-cta-heading"
       style={
         {
@@ -54,15 +54,54 @@ export default function CourseWebinarCtaSection({ content }: { content: CourseWe
         } as CSSProperties
       }
     >
-      <div className="relative" style={{ paddingTop: '72px' }}>
-        {/* Dark card background */}
+      {/* Mobile: two-row stacked layout */}
+      <div className="block sm:hidden rounded-[20px] overflow-hidden border border-[#EBEBEB] bg-[linear-gradient(88deg,#0D0D0D_88.67%,#FD022D_106.46%)] shadow-[0_4px_4px_0_rgba(30,41,59,0.11),0_4px_4px_0_rgba(30,41,59,0.03)]">
+        <div className="relative mx-auto h-[220px] w-[180px]">
+          <ScaleXMark className="pointer-events-none absolute bottom-[30px] right-[-40px] z-[1] h-[160px] w-[150px] opacity-[0.18]" />
+          <div className="relative z-10 h-full w-full">
+            <Image
+              src={content.imageSrc}
+              alt={content.imageAlt}
+              fill
+              sizes="180px"
+              className="object-contain object-bottom"
+            />
+          </div>
+        </div>
+        <div className="px-6 pb-6">
+          <p
+            id="webinar-cta-heading"
+            className="text-[16px] font-semibold leading-normal tracking-[-0.54px] text-[#E5E5E5]"
+          >
+            {content.headingLines.map((line) => (
+              <span key={line} className="block">{line}</span>
+            ))}
+          </p>
+          <Link
+            href={content.ctaHref}
+            className="btn-brand mt-4 inline-flex h-10 w-full items-center justify-center gap-2 rounded-lg px-5 text-[14px] font-medium leading-[18px] text-white"
+          >
+            {content.ctaLabel}
+            <ArrowRightIcon className="btn-arrow-icon shrink-0 text-white" />
+          </Link>
+          <div className="mt-5">
+            <p className="text-[14px] font-medium leading-normal text-[#E5E5E5]">
+              {content.countdownLabel}
+            </p>
+            <div className="mt-3">
+              <TechnicalCourseWebinarCountdown />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Desktop: side-by-side absolute layout */}
+      <div className="relative hidden sm:block pt-[72px]">
         <div
           className="absolute inset-x-0 bottom-0 overflow-hidden rounded-[20px] border border-[#EBEBEB] bg-[linear-gradient(88deg,#0D0D0D_88.67%,#FD022D_106.46%)] shadow-[0_4px_4px_0_rgba(30,41,59,0.11),0_4px_4px_0_rgba(30,41,59,0.03)]"
           style={{ top: '72px' }}
           aria-hidden
         />
-
-        {/* Person — head overflows 72px above card */}
         <div
           className="absolute bottom-0 z-[5]"
           style={{ left: 'var(--webinar-person-left)', width: '241px', height: '422px' }}
@@ -78,36 +117,30 @@ export default function CourseWebinarCtaSection({ content }: { content: CourseWe
             />
           </div>
         </div>
-
-        <div className="relative z-10 flex min-h-[350px] flex-col justify-center px-6 pt-[210px] pb-8 sm:py-8 sm:pr-8 sm:pl-[var(--webinar-content-left)] sm:pt-8">
-          <div style={{ marginLeft: '150px' }}>
-          <p
-            id="webinar-cta-heading"
-            className="max-w-md text-[16px] font-semibold leading-normal tracking-[-0.54px] text-[#E5E5E5] sm:text-[18px]"
-          >
-            {content.headingLines.map((line) => (
-              <span key={line} className="block">
-                {line}
-              </span>
-            ))}
-          </p>
-
-          <Link
-            href={content.ctaHref}
-            className="btn-brand mt-4 inline-flex h-10 w-fit items-center justify-center gap-2 rounded-lg px-5 text-[14px] font-medium leading-[18px] text-white"
-          >
-            {content.ctaLabel}
-            <ArrowRightIcon className="btn-arrow-icon shrink-0 text-white" />
-          </Link>
-
-          <div className="mt-5">
-            <p className="text-[14px] font-medium leading-normal text-[#E5E5E5] sm:text-[16px]">
-              {content.countdownLabel}
+        <div className="relative z-10 flex min-h-[350px] flex-col justify-center py-8 pr-8 pl-[var(--webinar-content-left)]">
+          <div className="ml-[150px]">
+            <p
+              className="max-w-md text-[18px] font-semibold leading-normal tracking-[-0.54px] text-[#E5E5E5]"
+            >
+              {content.headingLines.map((line) => (
+                <span key={line} className="block">{line}</span>
+              ))}
             </p>
-            <div className="mt-3">
-              <TechnicalCourseWebinarCountdown />
+            <Link
+              href={content.ctaHref}
+              className="btn-brand mt-4 inline-flex h-10 w-fit items-center justify-center gap-2 rounded-lg px-5 text-[14px] font-medium leading-[18px] text-white"
+            >
+              {content.ctaLabel}
+              <ArrowRightIcon className="btn-arrow-icon shrink-0 text-white" />
+            </Link>
+            <div className="mt-5">
+              <p className="text-[16px] font-medium leading-normal text-[#E5E5E5]">
+                {content.countdownLabel}
+              </p>
+              <div className="mt-3">
+                <TechnicalCourseWebinarCountdown />
+              </div>
             </div>
-          </div>
           </div>
         </div>
       </div>

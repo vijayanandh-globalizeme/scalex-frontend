@@ -90,7 +90,7 @@ export default function CourseCredentialsSection({
       </p>
 
       <div className="relative mx-auto mt-[100px] flex max-w-[650px] justify-center">
-        <CertificateBendDecoration className="pointer-events-none absolute top-[calc(var(--spacing)*-20)] right-[calc(var(--spacing)*-18)] z-0 h-[232px] w-[213px] max-w-none" />
+        <CertificateBendDecoration className="pointer-events-none absolute top-[calc(var(--spacing)*-20)] right-[calc(var(--spacing)*-18)] z-0 h-[232px] w-[213px] max-w-none hidden md:block" />
         <div className="relative z-10 w-full max-w-[650px]">
           <Image
             src={credentials.certificateImageSrc}
