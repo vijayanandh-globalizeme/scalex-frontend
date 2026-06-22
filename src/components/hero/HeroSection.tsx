@@ -165,11 +165,13 @@ function FloatingBadge({ badge }: { badge: HeroBadge }) {
 
   const zClass = 'z-30';
 
+  const alignClass = badge.variant === 'mentors' ? 'h-full items-center' : 'items-start';
+
   return (
     <div
       className={`absolute rounded-xl border border-zinc-100 bg-white shadow-lg shadow-zinc-900/8 ${zClass} ${sizeClass} ${placement}`}
     >
-      <div className="flex items-start gap-2.5">
+      <div className={`flex gap-2.5 ${alignClass}`}>
         <div
           className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full ${iconBg}`}
           aria-hidden

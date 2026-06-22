@@ -214,13 +214,6 @@ export default function HeaderMobileMenu({
                   onNavigate={closeMenu}
                 />
                 <Link
-                  href="/about"
-                  onClick={closeMenu}
-                  className="header-fluid-text block border-b border-zinc-100 py-3.5 font-normal text-ink hover:text-brand"
-                >
-                  About Us
-                </Link>
-                <Link
                   href="/contact"
                   onClick={closeMenu}
                   className="header-fluid-text block border-b border-zinc-100 py-3.5 font-normal text-ink hover:text-brand"
