@@ -1,6 +1,10 @@
+'use client';
+
+import { useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { LogoMarquee } from '@/components/shared';
+import { useGsapScrollReveal } from '@/hooks/useGsapScrollReveal';
 
 
 export interface HeroLogo {
@@ -210,8 +214,15 @@ export default function HeroSection(props: HeroSectionProps) {
     backgroundImage?.className ??
     'absolute right-[6%] top-[10%] h-[54%] w-[46%] md:w-[33%] lg:w-[24%]';
 
+  const sectionRef = useRef<HTMLElement>(null);
+  const copyRef = useRef<HTMLDivElement>(null);
+  const mediaRef = useRef<HTMLDivElement>(null);
+  useGsapScrollReveal(sectionRef, copyRef, { y: 40, duration: 0.7, delay: 0, start: 'top 95%' });
+  useGsapScrollReveal(sectionRef, mediaRef, { y: 50, duration: 0.8, delay: 0.08, start: 'top 95%' });
+
   return (
     <section
+      ref={sectionRef}
       className="full-bleed relative overflow-x-clip overflow-y-visible bg-surface pb-8 pt-28 md:pb-10 md:pt-36 lg:pb-12 lg:pt-44"
       aria-labelledby="hero-heading"
     >
@@ -235,7 +246,7 @@ export default function HeroSection(props: HeroSectionProps) {
       <div className="site-container relative z-10">
         <div className="grid min-w-0 items-start gap-10 lg:grid-cols-[2fr_1fr] lg:gap-6 xl:gap-8">
           {/* Copy column */}
-          <div className="max-w-xl min-w-0 lg:max-w-none">
+          <div ref={copyRef} className="gsap-reveal-pending max-w-xl min-w-0 lg:max-w-none">
             <h1
               id="hero-heading"
               className="pt-10 text-[32px] font-extrabold leading-tight tracking-tight text-heading sm:text-[36px] md:text-[40px] md:leading-[52px]"
@@ -284,7 +295,7 @@ export default function HeroSection(props: HeroSectionProps) {
           </div>
 
           {/* Media column */}
-          <div className="relative mx-auto w-full min-w-0 max-w-md overflow-visible lg:mx-0 lg:max-w-none">
+          <div ref={mediaRef} className="gsap-reveal-pending relative mx-auto w-full min-w-0 max-w-md overflow-visible lg:mx-0 lg:max-w-none">
             <div className="relative ml-auto mr-0 aspect-[4/5] w-full max-w-[420px] overflow-visible pt-10 sm:pt-14 lg:max-w-[480px] lg:pt-0">
               <div
                 className="absolute right-5 bottom-0 z-[1] aspect-[389/549] w-[min(100%,389px)] rounded-t-[400px] shadow-inner shadow-black/5"
