@@ -382,16 +382,16 @@ export default function TestimonialsSection({
           </div>
 
           {/* Right: stat badges in a staggered / zig-zag layout */}
-          <div className="flex flex-col items-start gap-7">
+          <div className="flex flex-col items-center gap-7 sm:items-start">
             {stats.map((s, i) => {
               const offset =
                 i === 0
-                  ? 'ml-10 xl:ml-28'
+                  ? 'sm:ml-10 xl:ml-28'
                   : i === 1
-                    ? 'ml-auto'
+                    ? 'sm:ml-auto'
                     : i === 2
-                      ? 'ml-12 xl:ml-40'
-                      : 'ml-8 xl:ml-25';
+                      ? 'sm:ml-12 xl:ml-40'
+                      : 'sm:ml-8 xl:ml-25';
               const variant: 'learners' | 'mentors' = i % 2 === 0 ? 'mentors' : 'learners';
               return (
                 <div key={s.id} className={offset}>
@@ -404,7 +404,7 @@ export default function TestimonialsSection({
 
         {/* Bottom: review platforms — overlaps the next section by ~50% */}
         {reviews.length > 0 ? (
-          <div className="relative z-50 mt-10 mb-[-60px] translate-y-1/2 rounded-2xl bg-white px-6 py-5 shadow-[0_10px_30px_-10px_rgba(15,23,42,0.25)] md:mt-12 md:mb-[-112px] md:px-10 md:py-6">
+          <div className="relative z-50 mt-10 mb-[-30px] translate-y-[20%] rounded-2xl bg-white px-6 py-5 shadow-[0_10px_30px_-10px_rgba(15,23,42,0.25)] md:mt-12 md:mb-[-112px] md:translate-y-1/2 md:px-10 md:py-6">
             <ReviewPlatformRow reviews={reviews} />
           </div>
         ) : null}

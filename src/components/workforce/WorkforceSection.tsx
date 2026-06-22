@@ -204,7 +204,7 @@ export default function WorkforceSection({
           {/* Left: pyramid-stacked stat badges (3 / 2 / 1); centered below 1100px */}
           <div className="flex flex-col items-center gap-5 min-[1100px]:items-start">
             {/* Row 1: first 3 stats, left-aligned */}
-            <div className="flex w-fit flex-nowrap items-center gap-2 min-[1305px]:gap-4">
+            <div className="flex w-full flex-wrap justify-center gap-2 sm:w-fit sm:flex-nowrap sm:items-center min-[1305px]:gap-4">
               {stats.slice(0, 3).map((s, i) => {
                 const variant: 'learners' | 'mentors' =
                   s.variant ?? (i % 2 === 0 ? 'mentors' : 'learners');
@@ -212,7 +212,7 @@ export default function WorkforceSection({
               })}
             </div>
             {/* Row 2: next 2 stats, indented */}
-            <div className="flex w-fit flex-nowrap items-center gap-2 min-[1100px]:pl-10 min-[1305px]:gap-4 min-[1305px]:pl-20">
+            <div className="flex w-full flex-wrap justify-center gap-2 sm:w-fit sm:flex-nowrap sm:items-center min-[1100px]:pl-10 min-[1305px]:gap-4 min-[1305px]:pl-20">
               {stats.slice(3, 5).map((s, i) => {
                 const variant: 'learners' | 'mentors' =
                   s.variant ?? ((i + 3) % 2 === 0 ? 'mentors' : 'learners');
