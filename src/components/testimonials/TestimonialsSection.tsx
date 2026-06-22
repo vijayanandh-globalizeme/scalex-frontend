@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
+import type { LayoutSettings } from '@/services/layoutApi';
 
 export interface Testimonial {
   id: string;
@@ -41,6 +42,7 @@ export interface TestimonialsSectionProps {
   testimonials: Testimonial[];
   stats: StatBadge[];
   reviews: ReviewPlatform[];
+  settings?: LayoutSettings;
 }
 
 function LinkedInIcon({ className }: { className?: string }) {
@@ -196,13 +198,39 @@ export function PartnersIcon({ className }: { className?: string }) {
   );
 }
 
-export function ReviewPlatformRow({ reviews }: { reviews: ReviewPlatform[] }) {
+const REVIEW_PLATFORM_CONFIG: {
+  key: keyof Pick<LayoutSettings, 'GOOGLE_REVIEW' | 'FACEBOOK_REVIEW' | 'TRUST_PILOT_REVIEW' | 'SWTICH_UP_REVIEW'>;
+  name: string;
+  logoSrc: string;
+  logoAlt: string;
+}[] = [
+  { key: 'GOOGLE_REVIEW', name: 'Google', logoSrc: '/images/hero/google.png', logoAlt: 'Google reviews' },
+  { key: 'FACEBOOK_REVIEW', name: 'Facebook', logoSrc: '/images/hero/facebook.png', logoAlt: 'Facebook reviews' },
+  { key: 'TRUST_PILOT_REVIEW', name: 'Trust Pilot', logoSrc: '/images/hero/trust_pilot.png', logoAlt: 'Trustpilot reviews' },
+  { key: 'SWTICH_UP_REVIEW', name: 'Switch Up', logoSrc: '/images/hero/switchup.png', logoAlt: 'SwitchUp reviews' },
+];
+
+export function ReviewPlatformRow({ reviews, settings }: { reviews?: ReviewPlatform[]; settings?: LayoutSettings }) {
+  const items = settings
+    ? REVIEW_PLATFORM_CONFIG.flatMap((cfg) => {
+        const entry = settings[cfg.key];
+        if (!entry) return [];
+        return [{
+          id: cfg.key,
+          logoSrc: cfg.logoSrc,
+          logoAlt: cfg.logoAlt,
+          rating: `${entry.rating}/5`,
+          reviewsLabel: `${entry.count.toLocaleString()} Reviews`,
+        }];
+      })
+    : (reviews ?? []);
+
   return (
     <div
       className="flex flex-wrap items-center justify-center gap-8 md:gap-10 lg:gap-14"
       aria-label="Review platforms"
     >
-      {reviews.map((review) => (
+      {items.map((review) => (
         <div
           key={review.id}
           className="flex shrink-0 flex-col items-center gap-2 min-w-[140px] px-2"
@@ -296,6 +324,7 @@ export default function TestimonialsSection({
   testimonials,
   stats,
   reviews,
+  settings,
 }: TestimonialsSectionProps) {
   const [index, setIndex] = useState(0);
   const [direction, setDirection] = useState<'next' | 'prev'>('next');
@@ -403,9 +432,9 @@ export default function TestimonialsSection({
         </div>
 
         {/* Bottom: review platforms — overlaps the next section by ~50% */}
-        {reviews.length > 0 ? (
+        {(settings || reviews.length > 0) ? (
           <div className="relative z-50 mt-10 mb-[-60px] translate-y-1/2 rounded-2xl bg-white px-6 py-5 shadow-[0_10px_30px_-10px_rgba(15,23,42,0.25)] md:mt-12 md:mb-[-112px] md:px-10 md:py-6">
-            <ReviewPlatformRow reviews={reviews} />
+            <ReviewPlatformRow settings={settings} reviews={reviews} />
           </div>
         ) : null}
       </div>

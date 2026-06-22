@@ -1,4 +1,5 @@
 export { default as TestimonialsSection, ReviewPlatformRow } from './TestimonialsSection';
+export { default as ReviewPlatformRowServer } from './ReviewPlatformRowServer';
 export type {
   Testimonial,
   StatBadge,

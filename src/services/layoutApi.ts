@@ -1,6 +1,11 @@
 import { get } from '@/services/http';
 import type { MegaMenuCategory } from '@/lib/allCoursesMegaMenu';
 
+export type ReviewEntry = {
+  rating: string;
+  count: number;
+};
+
 export type LayoutSettings = {
   YOUTUBE?: string;
   CONTACT_EMAIL?: string;
@@ -15,6 +20,10 @@ export type LayoutSettings = {
   CONTACT_ADDRESS_COUNTRY?: string;
   CONTACT_ADDRESS_PINCODE?: string;
   TOTAL_LEARNERS?: string;
+  GOOGLE_REVIEW?: ReviewEntry;
+  FACEBOOK_REVIEW?: ReviewEntry;
+  TRUST_PILOT_REVIEW?: ReviewEntry;
+  SWTICH_UP_REVIEW?: ReviewEntry;
 };
 
 export type LayoutData = {

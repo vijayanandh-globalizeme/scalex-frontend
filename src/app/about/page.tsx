@@ -6,7 +6,7 @@ import { useRef } from 'react';
 import { GuidanceSection, defaultGuidanceContent } from '@/components/guidance';
 import { LogoMarquee } from '@/components/shared';
 import { SuccessStoriesSection, defaultSuccessStoriesContent } from '@/components/success-stories';
-import { ReviewPlatformRow, defaultTestimonialsContent } from '@/components/testimonials';
+import { ReviewPlatformRowServer } from '@/components/testimonials';
 import { AwardsSection, defaultAwardsContent } from '@/components/awards';
 import { useGsapScrollReveal } from '@/hooks/useGsapScrollReveal';
 
@@ -405,7 +405,7 @@ export default function AboutPage() {
       {/* Rating platforms bar */}
       <div className="site-container py-6">
         <div className="rounded-2xl border border-zinc-100 bg-white px-6 py-6 shadow-sm md:px-10">
-          <ReviewPlatformRow reviews={defaultTestimonialsContent.reviews} />
+          <ReviewPlatformRowServer />
         </div>
       </div>
 

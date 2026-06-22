@@ -16,6 +16,7 @@ import { MentorsSection, defaultMentorsContent } from '@/components/mentors';
 import { WhyScaleXSection, defaultWhyScaleXContent } from '@/components/why-scalex';
 import { GuidanceSection, defaultGuidanceContent } from '@/components/guidance';
 import { SITE_DESCRIPTION, SITE_NAME } from '@/lib/site';
+import { fetchLayout } from '@/services/layoutApi';
 
 export const metadata: Metadata = {
   title: 'Professional Training & Certification Courses',
@@ -26,15 +27,17 @@ export const metadata: Metadata = {
   },
 };
 
-export default function HomePage() {
+export default async function HomePage() {
+  const layoutData = await fetchLayout();
+  const settings = layoutData?.settings;
   return (
     <>
       <HeroSection {...defaultHeroContent} />
       <CoursesSection {...defaultCoursesContent} />
-      <TestimonialsSection {...defaultTestimonialsContent} />
+      <TestimonialsSection {...defaultTestimonialsContent} settings={settings} />
       <SuccessStoriesSection {...defaultSuccessStoriesContent} />
       <AwardsSection {...defaultAwardsContent} />
-      <LiveSessionsSection {...defaultLiveSessionsContent} />
+      {/* <LiveSessionsSection {...defaultLiveSessionsContent} /> */}
       <WorkforceSection {...defaultWorkforceContent} />
       <MentorsSection {...defaultMentorsContent} />
       <WhyScaleXSection {...defaultWhyScaleXContent} />

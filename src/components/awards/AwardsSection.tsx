@@ -278,7 +278,7 @@ export default function AwardsSection({
         {carousel}
 
         {showControls ? (
-          <div className="mt-6">
+          <div className="mt-6 pb-20">
             <CarouselControls
               onPrev={goPrev}
               onNext={goNext}
