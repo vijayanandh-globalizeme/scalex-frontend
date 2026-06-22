@@ -386,12 +386,12 @@ export default function TestimonialsSection({
             {stats.map((s, i) => {
               const offset =
                 i === 0
-                  ? 'ml-28'
+                  ? 'ml-10 xl:ml-28'
                   : i === 1
                     ? 'ml-auto'
                     : i === 2
-                      ? 'ml-40'
-                      : 'ml-25';
+                      ? 'ml-12 xl:ml-40'
+                      : 'ml-8 xl:ml-25';
               const variant: 'learners' | 'mentors' = i % 2 === 0 ? 'mentors' : 'learners';
               return (
                 <div key={s.id} className={offset}>

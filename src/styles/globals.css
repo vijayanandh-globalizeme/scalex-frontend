@@ -4,6 +4,11 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Guard against horizontal scroll from full-bleed/100vw tricks and fixed FABs */
+body {
+  overflow-x: hidden;
+}
+
 /*
  * Design tokens — change values here to update the whole site.
  * Use Tailwind utilities: text-brand, bg-surface, border-accent, etc.

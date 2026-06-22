@@ -118,7 +118,7 @@ function MentorCard({ mentor }: { mentor: Mentor }) {
         {mentor.role}
       </p>
       {mentor.workedWith.length > 0 ? (
-        <div className="mt-4 flex flex-nowrap items-center justify-center gap-2 whitespace-nowrap text-[12px] font-medium text-subtle">
+        <div className="mt-4 flex flex-wrap items-center justify-center gap-2 text-[12px] font-medium text-subtle">
           <span>Worked with</span>
           {mentor.workedWith.map((logo) => (
             <div key={logo.id} className="relative h-[16px] w-[68px] shrink-0">

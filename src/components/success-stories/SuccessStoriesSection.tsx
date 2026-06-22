@@ -178,6 +178,30 @@ export default function SuccessStoriesSection({
   const [isPaused, setIsPaused] = useState(false);
   const total = stories.length;
 
+  // Natural size of the side-by-side block (video + 2-card slider)
+  const blockWidth =
+    VIDEO_W +
+    (VISIBLE_SLIDES * SLIDE_W + (VISIBLE_SLIDES - 1) * SLIDE_GAP + SLIDE_GAP + SLIDE_PEEK) -
+    SLIDE_OVERLAP;
+  const blockHeight = 56 + VIDEO_H; // pt-14 (56px) + video height
+
+  // Fluid scale so the block always fills the container width from 1024px up
+  const [scale, setScale] = useState(1);
+  useEffect(() => {
+    const compute = () => {
+      const vw = document.documentElement.clientWidth;
+      if (vw < 1024) {
+        setScale(1);
+        return;
+      }
+      const container = vw >= 1400 ? 1300 : vw * 0.9;
+      setScale(Math.min(1, container / blockWidth));
+    };
+    compute();
+    window.addEventListener('resize', compute);
+    return () => window.removeEventListener('resize', compute);
+  }, [blockWidth]);
+
   const stepPx = SLIDE_W + SLIDE_GAP;
 
   const goPrev = () => setIndex((i) => (i - 1 + total) % total);
@@ -209,8 +233,12 @@ export default function SuccessStoriesSection({
           </p>
         </header>
 
-        {/* lg+: fixed 432×404 video left + 422px testimonial slider right */}
-        <div className="relative mt-10 hidden w-fit max-w-full md:mt-12 lg:block">
+        {/* lg+: video left + testimonial slider right, scaled to fit the container */}
+        <div
+          className="relative mt-10 hidden w-full overflow-hidden md:mt-12 lg:block"
+          style={{ height: blockHeight * scale }}
+        >
+         <div className="w-fit origin-top-left" style={{ transform: `scale(${scale})` }}>
           {total > 1 ? (
             <div className="absolute right-0 top-4 z-30 flex items-center gap-3">
               <button
@@ -276,6 +304,7 @@ export default function SuccessStoriesSection({
               </div>
             </div>
           </div>
+         </div>
         </div>
 
         {/* Below lg: stacked video + 422px testimonial slider (no horizontal overflow) */}
