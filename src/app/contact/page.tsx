@@ -125,8 +125,8 @@ export default function ContactPage() {
 
             {/* Right: India Map */}
             <div ref={heroRightRef} className="gsap-reveal-pending relative flex items-center justify-center">
-              <div className="relative w-full rounded-2xl border border-zinc-100 bg-white p-6 shadow-[0_4px_24px_0_rgba(30,41,59,0.08)]" style={{ width: '700px', maxWidth: '100%', height: '652px', marginTop: '-35px' }}>
-                <div className="relative rounded-xl mt-5" style={{ width: '547px', maxWidth: '100%', height: '700px', margin: '-50px auto 0', paddingLeft: '76px', paddingRight: '76px' }}>
+              <div className="relative w-full rounded-2xl border border-zinc-100 bg-white p-6 shadow-[0_4px_24px_0_rgba(30,41,59,0.08)]" style={{ maxWidth: '700px', height: '652px', marginTop: '-35px' }}>
+                <div className="relative rounded-xl mt-5" style={{ maxWidth: '547px', height: '700px', margin: '-50px auto 0', paddingLeft: '20px', paddingRight: '20px' }}>
                   <Image
                     src="/images/map.png"
                     alt="India map showing ScaleX Learning presence"

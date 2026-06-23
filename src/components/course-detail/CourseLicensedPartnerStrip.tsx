@@ -16,7 +16,7 @@ export default function CourseLicensedPartnerStrip({
 }: CourseLicensedPartnerStripProps) {
   const content = (
     <div
-      className={`flex flex-row items-center gap-x-4 ${embedded ? 'w-full justify-center' : 'flex-wrap justify-center gap-y-2'}`}
+      className={`flex flex-wrap items-center gap-x-4 gap-y-2 ${embedded ? 'w-full justify-center' : 'justify-center'}`}
     >
       <p className="shrink-0 text-[18px] font-medium leading-[18px] tracking-[-0.18px] text-black">
         {label}

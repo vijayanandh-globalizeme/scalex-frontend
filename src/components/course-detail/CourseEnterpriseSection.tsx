@@ -38,7 +38,7 @@ export function CourseEnterpriseCard({
 
   return (
     <div
-      className={`relative z-10 flex h-[285px] w-full flex-col justify-between ${COURSE_SECTION_CARD} px-[68px] py-8`}
+      className={`relative z-10 flex w-full flex-col justify-between ${COURSE_SECTION_CARD} px-5 py-6 md:h-[285px] md:px-[68px] md:py-8`}
       aria-labelledby="course-enterprise-heading"
     >
       <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between md:gap-6">
@@ -79,7 +79,7 @@ export default function CourseEnterpriseSection({ compact = false }: { compact?:
   return (
     <section
       className={`full-bleed relative z-0 overflow-visible bg-white pb-10 md:pb-12 ${
-        compact ? 'pt-12 md:pt-14' : 'pt-32 md:pt-40'
+        compact ? 'pt-12 md:pt-14' : 'pt-10 md:pt-40'
       }`}
       aria-hidden
     />
