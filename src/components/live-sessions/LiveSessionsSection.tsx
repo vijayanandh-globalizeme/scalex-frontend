@@ -129,9 +129,9 @@ export default function LiveSessionsSection({
     sectionRef,
     rowRefs,
     {
-      y: 48,
-      duration: 1.6,
-      delay: 0.55,
+      y: 40,
+      duration: 0.8,
+      delay: 0.1,
       ease: 'power2.out',
       start: 'top 88%',
     },

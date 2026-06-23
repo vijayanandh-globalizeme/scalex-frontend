@@ -113,7 +113,7 @@ export default function CourseDetailHeroSection({
   return (
     <section
       ref={sectionRef}
-      className="full-bleed relative overflow-visible pb-0 pt-8 md:pt-10 lg:min-h-[782px]"
+      className="full-bleed relative overflow-x-hidden pb-0 pt-8 md:pt-10 lg:min-h-[782px] lg:overflow-visible"
       aria-labelledby="course-hero-heading"
     >
       <div className="category-hero-bg pointer-events-none absolute inset-0" aria-hidden />
@@ -138,18 +138,18 @@ export default function CourseDetailHeroSection({
           ))}
         </nav>
 
-        <div className="grid items-start gap-y-[50px] lg:grid-cols-[minmax(0,690px)_minmax(0,1fr)] lg:gap-x-8 xl:gap-x-12">
+        <div className="grid grid-cols-1 items-start gap-y-[50px] lg:grid-cols-[minmax(0,690px)_minmax(0,1fr)] lg:gap-x-8 xl:gap-x-12">
           <div
             ref={(el) => {
               rowRefs.current[0] = el;
             }}
-            className="gsap-reveal-pending w-full min-w-0 max-w-[690px] lg:col-start-1 lg:row-start-1"
+            className="gsap-reveal-pending w-full min-w-0 lg:max-w-[690px] lg:col-start-1 lg:row-start-1"
           >
             <h1 id="course-hero-heading" className="text-heading">
-              <span className="block text-[40px] font-extrabold leading-[60px] text-heading">
+              <span className="block text-[26px] font-extrabold leading-[1.4] text-heading sm:text-[34px] md:text-[40px] md:leading-[60px]">
                 {titlePrefix}
               </span>
-              <span className="block text-[50px] font-extrabold leading-[80px] text-heading">
+              <span className="block text-[32px] font-extrabold leading-[1.3] text-heading sm:text-[42px] md:text-[50px] md:leading-[80px]">
                 {titleAccent}
               </span>
               <CategoryTitleUnderline />
@@ -163,7 +163,7 @@ export default function CourseDetailHeroSection({
                 {features.map((feature) => (
                   <li key={feature} className="flex min-w-0 items-start gap-2.5">
                     <CheckIcon className="mt-0.5 shrink-0" />
-                    <span className="min-w-0 text-[18px] font-medium leading-[152%] text-heading sm:whitespace-nowrap">
+                    <span className="min-w-0 text-[16px] font-medium leading-[152%] text-heading md:text-[18px]">
                       {feature}
                     </span>
                   </li>
@@ -215,25 +215,25 @@ export default function CourseDetailHeroSection({
               </div>
             </div>
 
-            <div className="mt-8 flex flex-wrap gap-[30px]">
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:gap-[30px]">
               {isBrochureCta ? (
                 <button
                   type="button"
                   onClick={openBrochureModal}
-                  className="btn-brand h-[54px] cursor-pointer gap-2 px-6 md:px-7"
+                  className="btn-brand h-[54px] w-full cursor-pointer gap-2 px-6 sm:w-auto md:px-7"
                 >
                   {primaryCta.label}
                   <ArrowRightIcon className="btn-arrow-icon shrink-0" />
                 </button>
               ) : (
-                <Link href={primaryCta.href} className="btn-brand h-[54px] gap-2 px-6 md:px-7">
+                <Link href={primaryCta.href} className="btn-brand h-[54px] w-full gap-2 px-6 sm:w-auto md:px-7">
                   {primaryCta.label}
                   <ArrowRightIcon className="btn-arrow-icon shrink-0" />
                 </Link>
               )}
               <Link
                 href={secondaryCta.href}
-                className="btn-brand-outline inline-flex h-[54px] items-center justify-center gap-[18px] px-6 text-sm font-semibold md:px-8 md:text-[15px]"
+                className="btn-brand-outline inline-flex h-[54px] w-full items-center justify-center gap-[18px] px-6 text-sm font-semibold sm:w-auto md:px-8 md:text-[15px]"
               >
                 {secondaryCta.label}
                 <EyeIcon className="h-5 w-5 text-brand" />

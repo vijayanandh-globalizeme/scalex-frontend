@@ -182,7 +182,7 @@ export default function CourseCareerAssuranceSection({
 
         {/* Content */}
         <div className="relative z-10 flex min-h-[430px] flex-col justify-end px-6 pt-[210px] pb-8 sm:py-8 sm:pr-8 sm:pl-[var(--assurance-content-left)] sm:pt-8">
-          <div className="w-full sm:w-[350px]" style={{ marginLeft: '150px' }}>
+          <div className="w-full sm:w-[350px] sm:ml-[150px]">
           <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
             <span className="inline-flex items-center gap-0" aria-hidden>
               <ScaleWordmark className="h-[18px] w-[82px] shrink-0 sm:h-[23px] sm:w-[102px]" />

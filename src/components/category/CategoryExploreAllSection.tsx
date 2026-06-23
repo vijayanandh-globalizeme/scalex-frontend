@@ -139,11 +139,11 @@ export default function CategoryExploreAllSection() {
         <header className="mx-auto max-w-6xl text-center">
           <h2
             id="explore-categories-heading"
-            className="text-[40px] font-extrabold leading-[60px] text-heading"
+            className="text-[26px] font-extrabold leading-tight text-heading md:text-[40px] md:leading-[60px]"
           >
             {heading}
           </h2>
-          <p className="mt-3 text-[16px] font-medium leading-[140%] text-muted md:text-[18px] lg:whitespace-nowrap">
+          <p className="mt-3 text-[15px] font-medium leading-[140%] text-muted md:text-[18px]">
             {subheading}
           </p>
         </header>

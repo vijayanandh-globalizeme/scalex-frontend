@@ -1,6 +1,10 @@
+'use client';
+
+import { useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { LogoMarquee } from '@/components/shared';
+import { useGsapScrollReveal } from '@/hooks/useGsapScrollReveal';
 
 
 export interface HeroLogo {
@@ -150,7 +154,7 @@ function FloatingBadge({ badge }: { badge: HeroBadge }) {
       : badge.placement === 'mid-left'
         ? 'left-0 top-[60%] -translate-y-1/2 xl:-left-10'
         : badge.placement === 'bottom-right'
-          ? 'bottom-32 -right-8 md:bottom-28 md:-right-10'
+          ? 'bottom-32 right-2 md:bottom-28 md:-right-10'
           : 'bottom-10 left-[42%] -translate-x-1/2 md:-bottom-2';
 
   const iconBg =
@@ -165,11 +169,13 @@ function FloatingBadge({ badge }: { badge: HeroBadge }) {
 
   const zClass = 'z-30';
 
+  const alignClass = badge.variant === 'mentors' ? 'h-full items-center' : 'items-start';
+
   return (
     <div
       className={`absolute rounded-xl border border-zinc-100 bg-white shadow-lg shadow-zinc-900/8 ${zClass} ${sizeClass} ${placement}`}
     >
-      <div className="flex items-start gap-2.5">
+      <div className={`flex gap-2.5 ${alignClass}`}>
         <div
           className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full ${iconBg}`}
           aria-hidden
@@ -208,15 +214,22 @@ export default function HeroSection(props: HeroSectionProps) {
     backgroundImage?.className ??
     'absolute right-[6%] top-[10%] h-[54%] w-[46%] md:w-[33%] lg:w-[24%]';
 
+  const sectionRef = useRef<HTMLElement>(null);
+  const copyRef = useRef<HTMLDivElement>(null);
+  const mediaRef = useRef<HTMLDivElement>(null);
+  useGsapScrollReveal(sectionRef, copyRef, { y: 40, duration: 0.7, delay: 0, start: 'top 95%' });
+  useGsapScrollReveal(sectionRef, mediaRef, { y: 50, duration: 0.8, delay: 0.08, start: 'top 95%' });
+
   return (
     <section
-      className="full-bleed relative overflow-x-clip overflow-y-visible bg-surface pb-8 pt-28 md:pb-10 md:pt-36 lg:pb-12 lg:pt-44"
+      ref={sectionRef}
+      className="full-bleed relative overflow-x-clip overflow-y-visible bg-surface pb-8 pt-[30px] md:pb-10 md:pt-36 lg:pb-12 lg:pt-44"
       aria-labelledby="hero-heading"
     >
       {/* Decorative background (non-content) */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden>
         {backgroundImage?.src ? (
-          <div className={bgClassName}>
+          <div className={`${bgClassName} hidden md:block`}>
             <Image
               src={backgroundImage.src}
               alt=""
@@ -231,19 +244,19 @@ export default function HeroSection(props: HeroSectionProps) {
       </div>
 
       <div className="site-container relative z-10">
-        <div className="grid min-w-0 items-start gap-10 lg:grid-cols-[2fr_1fr] lg:gap-6 xl:gap-8">
+        <div className="grid min-w-0 items-start gap-2 sm:gap-10 lg:grid-cols-[2fr_1fr] lg:gap-6 xl:gap-8">
           {/* Copy column */}
-          <div className="max-w-xl min-w-0 lg:max-w-none">
+          <div ref={copyRef} className="gsap-reveal-pending max-w-xl min-w-0 lg:max-w-none">
             <h1
               id="hero-heading"
-              className="pt-10 text-[32px] font-extrabold leading-tight tracking-tight text-heading sm:text-[36px] md:text-[40px] md:leading-[52px]"
+              className="pt-10 text-[26px] font-extrabold leading-tight tracking-tight text-heading sm:text-[36px] md:text-[40px] md:leading-[52px]"
             >
-              <span className="block">{headingIntro}</span>
-              <span className="mt-1 block">
-                <span className="text-[32px] font-extrabold leading-tight text-heading sm:text-[36px] md:text-[40px] md:leading-[52px]">
+              <span className="inline sm:block">{headingIntro}</span>{' '}
+              <span className="inline sm:mt-1 sm:block">
+                <span className="text-[26px] font-extrabold leading-tight text-heading sm:text-[36px] md:text-[40px] md:leading-[52px]">
                   {headingYour}
                 </span>{' '}
-                <span className="text-career-growth-gradient text-[40px] font-extrabold leading-tight sm:text-[52px] lg:text-[60px] xl:text-[68px] xl:leading-[80px]">
+                <span className="text-career-growth-gradient text-[32px] font-extrabold leading-tight sm:text-[52px] lg:text-[60px] xl:text-[68px] xl:leading-[80px]">
                   {headingAccent}
                 </span>
               </span>
@@ -253,7 +266,7 @@ export default function HeroSection(props: HeroSectionProps) {
             </p>
 
             <div className="mt-8 flex flex-wrap gap-3 sm:gap-4">
-              <Link href={primaryCta.href} className="btn-brand h-[54px] gap-2 px-6 md:px-7">
+              <Link href={primaryCta.href} className="btn-brand h-[54px] w-full justify-center gap-2 px-6 sm:w-auto md:px-7">
                 {primaryCta.label}
                 <ArrowRightIcon className="btn-arrow-icon shrink-0" />
               </Link>
@@ -266,11 +279,11 @@ export default function HeroSection(props: HeroSectionProps) {
               </Link>
             </div>
 
-            <div className="mt-10 flex flex-wrap items-center gap-x-3 gap-y-3 border-t border-zinc-200/80 pt-5">
+            <div className="mt-10 flex flex-col items-start gap-3 border-t border-zinc-200/80 pt-5 sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-3 sm:gap-y-3">
               <p className="shrink-0 text-[18px] font-semibold leading-[18px] tracking-[-0.18px] text-heading">
                 {trustedBy.label}
               </p>
-              <div className="min-w-0 flex-1 overflow-hidden">
+              <div className="w-full min-w-0 overflow-hidden sm:flex-1">
                 <LogoMarquee
                   logos={trustedBy.logos}
                   size="sm"
@@ -282,16 +295,16 @@ export default function HeroSection(props: HeroSectionProps) {
           </div>
 
           {/* Media column */}
-          <div className="relative mx-auto w-full min-w-0 max-w-md overflow-visible lg:mx-0 lg:max-w-none">
-            <div className="relative ml-auto mr-0 aspect-[4/5] w-full max-w-[420px] overflow-visible pt-10 sm:pt-14 lg:max-w-[480px] lg:pt-0">
+          <div ref={mediaRef} className="gsap-reveal-pending relative mx-auto w-full min-w-0 max-w-md overflow-visible lg:mx-0 lg:max-w-none">
+            <div className="relative mx-auto aspect-[300/420] w-full max-w-[360px] overflow-visible pt-0 sm:ml-auto sm:mr-0 sm:aspect-[4/5] sm:max-w-[420px] sm:pt-14 lg:max-w-[480px] lg:pt-0">
               <div
-                className="absolute right-5 bottom-0 z-[1] aspect-[389/579] w-[min(100%,389px)] rounded-t-[400px] shadow-inner shadow-black/5"
+                className="absolute right-5 bottom-0 z-[1] aspect-[389/549] w-[min(90%,310px)] rounded-t-[400px] shadow-inner shadow-black/5 sm:w-[min(100%,389px)]"
                 style={{
                   background: 'linear-gradient(180deg, #BB9255 -140.92%, #FADCBA 165.92%)',
                 }}
                 aria-hidden
               />
-              <div className="absolute bottom-0 right-2 z-[5] aspect-[350/544] w-[min(90%,350px)] lg:right-6">
+              <div className="absolute right-4 bottom-0 z-[5] aspect-[350/554] w-[min(82%,290px)] translate-y-0 sm:right-6 sm:w-[min(90%,350px)] sm:-translate-y-[50px] lg:right-12">
                 <Image
                   src={figure.src}
                   alt={figure.alt}

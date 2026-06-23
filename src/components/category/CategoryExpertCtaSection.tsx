@@ -124,7 +124,7 @@ function ExpertCtaFullBleed({ content, headingId }: { content: ExpertCtaContent;
 
   return (
     <section
-      className="category-expert-heading full-bleed relative z-20 overflow-visible bg-[#0D0D0D] pb-0"
+      className="category-expert-heading full-bleed relative z-20 overflow-visible bg-[#0D0D0D] pb-[100px] md:pb-0"
       aria-labelledby={headingId}
     >
       <div className="site-container relative overflow-visible">
@@ -132,7 +132,7 @@ function ExpertCtaFullBleed({ content, headingId }: { content: ExpertCtaContent;
           <div className="relative mx-auto flex min-w-0 w-full items-center justify-center overflow-visible lg:mx-0 lg:justify-start">
             <ExpertDecorIcon className="pointer-events-none absolute bottom-0 right-[calc(var(--spacing)*6)] z-0 h-auto w-[290px]" />
 
-            <div className="relative z-10 -mt-10 overflow-visible">
+            <div className="relative z-10 lg:-mt-10 overflow-visible">
               <div className="relative mx-auto h-[400px] w-[300px]">
                 <Image
                   src={image.src}

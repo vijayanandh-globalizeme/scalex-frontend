@@ -36,7 +36,7 @@ export default function ContactPage() {
 
           <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-12">
             {/* Left: Contact Info */}
-            <div className="max-w-xl">
+            <div ref={heroLeftRef} className="gsap-reveal-pending max-w-xl">
               <h1 style={{ color: '#1E293B', fontFamily: 'Inter', fontSize: '40px', fontWeight: 800, lineHeight: '60px' }}>
                 Get In Touch With
                 <br />
@@ -124,9 +124,9 @@ export default function ContactPage() {
             </div>
 
             {/* Right: India Map */}
-            <div className="relative flex items-center justify-center">
-              <div className="relative w-full rounded-2xl border border-zinc-100 bg-white p-6 shadow-[0_4px_24px_0_rgba(30,41,59,0.08)]" style={{ width: '700px', maxWidth: '100%', height: '652px', marginTop: '-35px' }}>
-                <div className="relative rounded-xl mt-5" style={{ width: '547px', maxWidth: '100%', height: '700px', margin: '-50px auto 0', paddingLeft: '76px', paddingRight: '76px' }}>
+            <div ref={heroRightRef} className="gsap-reveal-pending relative flex items-center justify-center">
+              <div className="relative w-full rounded-2xl border border-zinc-100 bg-white p-6 shadow-[0_4px_24px_0_rgba(30,41,59,0.08)]" style={{ maxWidth: '700px', height: '652px', marginTop: '-35px' }}>
+                <div className="relative rounded-xl mt-5" style={{ maxWidth: '547px', height: '700px', margin: '-50px auto 0', paddingLeft: '20px', paddingRight: '20px' }}>
                   <Image
                     src="/images/map.png"
                     alt="India map showing ScaleX Learning presence"

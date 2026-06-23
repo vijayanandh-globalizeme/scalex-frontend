@@ -204,9 +204,9 @@ export default function CategoryRelatedBlogsSection() {
     sectionRef,
     rowRefs,
     {
-      y: 48,
-      duration: 1.6,
-      delay: 0.55,
+      y: 40,
+      duration: 0.8,
+      delay: 0.1,
       ease: 'power2.out',
       start: 'top 88%',
     },
@@ -227,7 +227,7 @@ export default function CategoryRelatedBlogsSection() {
         <header className="mx-auto max-w-3xl text-center">
           <h2
             id="related-blogs-heading"
-            className="text-[40px] font-extrabold leading-[60px] text-heading"
+            className="text-[26px] font-extrabold leading-tight text-heading md:text-[40px] md:leading-[60px]"
           >
             {heading}
           </h2>

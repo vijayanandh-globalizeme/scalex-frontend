@@ -175,8 +175,18 @@ export default function AwardsSection({
   const [index, setIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const total = cards.length;
-  const maxIndex = Math.max(0, total - visibleCount);
   const isEmbedded = variant === 'embedded';
+
+  // Show 1 card per slide on mobile, the configured count on md+
+  const [perView, setPerView] = useState(visibleCount);
+  useEffect(() => {
+    const compute = () => setPerView(window.innerWidth < 768 ? 1 : visibleCount);
+    compute();
+    window.addEventListener('resize', compute);
+    return () => window.removeEventListener('resize', compute);
+  }, [visibleCount]);
+
+  const maxIndex = Math.max(0, total - perView);
 
   const goPrev = () =>
     setIndex((i) => (isEmbedded ? Math.max(0, i - 1) : i <= 0 ? maxIndex : i - 1));
@@ -191,8 +201,8 @@ export default function AwardsSection({
     return () => window.clearInterval(timerId);
   }, [autoplay, autoplayIntervalMs, isEmbedded, maxIndex, isPaused]);
 
-  const slidePct = 100 / visibleCount;
-  const showControls = total > visibleCount;
+  const slidePct = 100 / perView;
+  const showControls = total > perView;
 
   const carousel = (
     <div
@@ -204,7 +214,7 @@ export default function AwardsSection({
         className="flex transition-transform duration-500 ease-out will-change-transform"
         style={{
           transform: `translateX(-${index * slidePct}%)`,
-          gap: 24,
+          gap: perView === 1 ? 0 : 24,
         }}
       >
         {cards.map((card) => (
@@ -212,7 +222,7 @@ export default function AwardsSection({
             key={card.id}
             className="shrink-0"
             style={{
-              width: `calc(${slidePct}% - ${(24 * (visibleCount - 1)) / visibleCount}px)`,
+              width: `calc(${slidePct}% - ${(24 * (perView - 1)) / perView}px)`,
             }}
           >
             <AwardCardItem card={card} embedded={isEmbedded} />

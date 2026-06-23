@@ -168,9 +168,9 @@ function StatPill({ stat }: { stat: WorkforceStat }) {
       : 'bg-[#DBEAFE] text-[#155DFC]';
 
   return (
-    <div className="inline-flex h-[62px] min-w-[180px] items-center rounded-xl border border-zinc-100 bg-white px-3 py-2 shadow-lg shadow-zinc-900/10">
-      <div className="flex w-full items-start gap-2.5">
-        <div className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full ${iconBg}`} aria-hidden>
+    <div className="inline-flex h-[62px] min-w-[150px] items-center rounded-xl border border-zinc-100 bg-white px-2.5 py-2 shadow-lg shadow-zinc-900/10 min-[1305px]:min-w-[180px] min-[1305px]:px-3">
+      <div className="flex w-full items-start gap-2 min-[1305px]:gap-2.5">
+        <div className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full min-[1305px]:h-9 min-[1305px]:w-9 ${iconBg}`} aria-hidden>
           {stat.icon ?? <DefaultStatIcon className="h-[18px] w-[18px]" />}
         </div>
         <div className="min-w-0">
@@ -200,11 +200,11 @@ export default function WorkforceSection({
       <WorkforceDecorIcon className="pointer-events-none absolute bottom-0 left-0 z-0 h-auto w-[120px] md:w-[160px] lg:w-[190px]" />
 
       <div className="site-container relative z-10">
-        <div className="grid items-center gap-10 lg:grid-cols-[1.1fr_1fr] lg:gap-16">
-          {/* Left: pyramid-stacked stat badges (3 / 2 / 1) */}
-          <div className="flex flex-col gap-5">
+        <div className="grid items-center gap-10 min-[1100px]:grid-cols-[1.15fr_1fr] min-[1100px]:gap-8 min-[1305px]:grid-cols-[1.1fr_1fr] min-[1305px]:gap-16">
+          {/* Left: pyramid-stacked stat badges (3 / 2 / 1); centered below 1100px */}
+          <div className="flex flex-col items-center gap-2 md:gap-5 min-[1100px]:items-start ">
             {/* Row 1: first 3 stats, left-aligned */}
-            <div className="flex flex-wrap items-center gap-4">
+            <div className="flex w-full flex-wrap justify-center gap-2 sm:w-fit sm:flex-nowrap sm:items-center min-[1305px]:gap-4 max-sm:flex-col max-sm:w-[100%]">
               {stats.slice(0, 3).map((s, i) => {
                 const variant: 'learners' | 'mentors' =
                   s.variant ?? (i % 2 === 0 ? 'mentors' : 'learners');
@@ -212,7 +212,7 @@ export default function WorkforceSection({
               })}
             </div>
             {/* Row 2: next 2 stats, indented */}
-            <div className="flex flex-wrap items-center gap-4 pl-12 md:pl-16 lg:pl-20">
+            <div className="flex w-full flex-wrap justify-center gap-2 sm:w-fit sm:flex-nowrap sm:items-center min-[1100px]:pl-10 min-[1305px]:gap-4 min-[1305px]:pl-20 max-sm:flex-col max-sm:w-[100%]">
               {stats.slice(3, 5).map((s, i) => {
                 const variant: 'learners' | 'mentors' =
                   s.variant ?? ((i + 3) % 2 === 0 ? 'mentors' : 'learners');
@@ -221,7 +221,7 @@ export default function WorkforceSection({
             </div>
             {/* Row 3: final stat, more indented */}
             {stats[5] ? (
-              <div className="flex pl-20 md:pl-32 lg:pl-40">
+              <div className="flex w-fit min-[1100px]:pl-20 min-[1305px]:pl-40 max-sm:flex-col max-sm:w-[100%]">
                 <StatPill
                   stat={{
                     ...stats[5],
@@ -233,7 +233,7 @@ export default function WorkforceSection({
           </div>
 
           {/* Right: headline, subheading, features, CTA */}
-          <div className="text-white lg:ml-auto lg:w-full lg:max-w-[560px] lg:justify-self-end">
+          <div className="text-white min-[1100px]:ml-auto min-[1100px]:w-full min-[1100px]:max-w-[560px] min-[1100px]:justify-self-end">
             <h2
               id="workforce-heading"
               className="text-[28px] font-extrabold leading-tight md:text-[34px] lg:text-[36px]"
@@ -273,7 +273,7 @@ export default function WorkforceSection({
 
         {/* Bottom: hiring partners strip (overlaps next section by half) */}
         {partners.length > 0 ? (
-          <div className="relative z-50 mt-10 mb-[-72px] translate-y-1/2 rounded-2xl bg-white px-6 py-8 shadow-[0_10px_30px_-10px_rgba(15,23,42,0.25)] md:mt-12 md:mb-[-130px] md:px-10 md:py-10">
+          <div className="relative z-50 mt-1 md:mt-10 mb-[-72px] translate-y-1/2 rounded-2xl bg-white px-6 py-8 shadow-[0_10px_30px_-10px_rgba(15,23,42,0.25)] md:mt-12 md:mb-[-130px] md:px-10 md:py-10">
             <LogoMarquee
               logos={partners.map((p) => ({ id: p.id, src: p.logoSrc, alt: p.logoAlt }))}
               ariaLabel="Hiring partners"

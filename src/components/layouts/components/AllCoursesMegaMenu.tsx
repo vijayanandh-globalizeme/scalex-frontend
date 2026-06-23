@@ -1,8 +1,17 @@
 'use client';
 
+import Image from 'next/image';
 import Link from 'next/link';
 import { useRef, useState } from 'react';
 import type { MegaMenuCategory } from '@/lib/allCoursesMegaMenu';
+
+const TRUSTED_BY_LOGOS = [
+  { alt: 'Google', src: '/images/hero/google.png' },
+  { alt: 'IBM', src: '/images/hero/ibm.png' },
+  { alt: 'Infosys', src: '/images/hero/infosys.png' },
+  { alt: 'Stanford', src: '/images/hero/stanford.png' },
+  { alt: 'TCS', src: '/images/hero/tcs.png' },
+];
 
 function OutlineButtonChevron({ className }: { className?: string }) {
   return (
@@ -46,7 +55,7 @@ function ChevronRight({ className }: { className?: string }) {
 }
 
 const triggerClass =
-  'btn-brand-outline btn-brand-outline-hover-fill header-fluid-text flex h-[40px] w-[133px] shrink-0 items-center justify-center gap-1 cursor-pointer';
+  'btn-brand-outline btn-brand-outline-hover-fill header-fluid-text flex h-[40px] w-[133px] shrink-0 items-center justify-center gap-1 cursor-pointer shadow-none';
 
 type MegaMenuPanelProps = {
   categories: MegaMenuCategory[];
@@ -113,7 +122,25 @@ function MegaMenuPanel({ categories, activeCategory, onCategoryHover }: MegaMenu
         )}
       </div>
 
-      <div className="py-6 pr-6" aria-hidden />
+      <div className="py-6 pr-6 pl-6">
+        <p className="mb-4 text-[15px] font-bold text-heading">Trusted By</p>
+        <ul className="grid grid-cols-2 gap-3" role="list">
+          {TRUSTED_BY_LOGOS.map((logo) => (
+            <li
+              key={logo.alt}
+              className="flex h-16 items-center justify-center px-3"
+            >
+              <Image
+                src={logo.src}
+                alt={logo.alt}
+                width={96}
+                height={32}
+                className="h-7 w-auto object-contain opacity-80"
+              />
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 }

@@ -367,7 +367,7 @@ export default function AboutPage() {
             </p>
           </div>
 
-          <div className="grid grid-cols-2 gap-5 sm:grid-cols-3 lg:grid-cols-5">
+          <div className="grid grid-cols-1 gap-5 sm:grid-cols-3 lg:grid-cols-5">
             {[
               { img: '/images/pranee.png', name: 'Praneeth Kuridi', role: 'Founder & CEO', bio: '12+ years in tech education and enterprise training leadership across India.' },
               { img: '/images/naray.png', name: 'Narayana Ajay', role: 'Co-Founder & CTO', bio: 'Technology architect driving ScaleX platform innovation and AI-powered learning.' },

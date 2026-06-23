@@ -187,7 +187,7 @@ export default function CourseEligibilityRequirementsSection({
       </p>
 
       <div className="mt-6 flex flex-col gap-8 lg:flex-row lg:items-center lg:gap-10">
-        <ul className="w-full max-w-[490px] shrink-0 ml-[42px]" role="list">
+        <ul className="w-full max-w-[490px] shrink-0 sm:ml-[42px]" role="list">
           {eligibilityRequirements.items.map((item, index) => (
             <li
               key={item.id}

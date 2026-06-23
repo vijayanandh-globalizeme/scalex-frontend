@@ -2,6 +2,13 @@
 
 html {
   scroll-behavior: smooth;
+  /* clip (not hidden) prevents horizontal scroll without breaking position: sticky */
+  overflow-x: clip;
+}
+
+/* Guard against horizontal scroll from full-bleed/100vw tricks and fixed FABs */
+body {
+  overflow-x: clip;
 }
 
 /*
