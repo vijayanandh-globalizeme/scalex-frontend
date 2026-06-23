@@ -91,7 +91,9 @@ function MailIcon({ className }: { className?: string }) {
   );
 }
 
-const SOCIAL_MAP: { key: keyof LayoutSettings; src: string; label: string }[] = [
+type StringKeys<T> = { [K in keyof T]: T[K] extends string | undefined ? K : never }[keyof T];
+
+const SOCIAL_MAP: { key: StringKeys<LayoutSettings>; src: string; label: string }[] = [
   { key: 'LINKEDIN',  src: '/images/LinkedIn.svg',  label: 'LinkedIn' },
   { key: 'TWITTER',   src: '/images/Twitter.svg',   label: 'Twitter' },
   { key: 'FACEBOOK',  src: '/images/Facebook.svg',  label: 'Facebook' },
