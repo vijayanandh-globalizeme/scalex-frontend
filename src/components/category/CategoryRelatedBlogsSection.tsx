@@ -171,7 +171,7 @@ function SkeletonCard() {
   );
 }
 
-export default function CategoryRelatedBlogsSection() {
+export default function CategoryRelatedBlogsSection({ categoryId }: { categoryId?: string }) {
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
@@ -187,7 +187,7 @@ export default function CategoryRelatedBlogsSection() {
       return;
     }
     setLoading(true);
-    const { items, total } = await getBlogs({ limit: FETCH_LIMIT, offset: pageIndex * FETCH_LIMIT });
+    const { items, total } = await getBlogs({ limit: FETCH_LIMIT, offset: pageIndex * FETCH_LIMIT, categoryId });
     const mapped = items.map((b, i) => apiBlogToItem(b, i));
     cache.current.set(pageIndex, mapped);
     setCurrentItems(mapped);
@@ -233,7 +233,7 @@ export default function CategoryRelatedBlogsSection() {
             <p className="py-16 text-center text-[15px] text-muted">No blogs found.</p>
           ) : (
             <CategoryCarouselTrack page={page}>
-              <BlogMasonryGrid items={currentItems} />
+              {[<BlogMasonryGrid key="blogs" items={currentItems} />]}
             </CategoryCarouselTrack>
           )}
         </div>

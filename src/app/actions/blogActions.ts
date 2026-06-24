@@ -22,11 +22,12 @@ type BlogsApiResponse = {
   };
 };
 
-export async function getBlogs(options: { limit?: number; offset?: number } = {}): Promise<{ items: ApiBlog[]; total: number }> {
-  const { limit = 6, offset = 0 } = options;
+export async function getBlogs(options: { limit?: number; offset?: number; categoryId?: string } = {}): Promise<{ items: ApiBlog[]; total: number }> {
+  const { limit = 6, offset = 0, categoryId } = options;
   const params = new URLSearchParams();
   params.set('limit', String(limit));
   params.set('offset', String(offset));
+  if (categoryId) params.set('courseCategoryId', categoryId);
 
   const json = await get<BlogsApiResponse>(`blogs?${params.toString()}`, { revalidate: 0 });
   if (!json?.success) return { items: [], total: 0 };

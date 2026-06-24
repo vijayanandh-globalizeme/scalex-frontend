@@ -124,7 +124,7 @@ function usePrefetchCategoryRoutes(hrefs: string[]) {
   }, [hrefs, router]);
 }
 
-export default function CategoryExploreAllSection() {
+export default function CategoryExploreAllSection({ excludeId }: { excludeId?: string } = {}) {
   const [items, setItems] = useState<ExploreCategoryItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(0);
@@ -132,7 +132,8 @@ export default function CategoryExploreAllSection() {
 
   useEffect(() => {
     getAllCategories().then((cats) => {
-      setItems(cats.map((cat, i) => ({
+      const filtered = excludeId ? cats.filter((cat) => cat.id !== excludeId) : cats;
+      setItems(filtered.map((cat, i) => ({
         id:     cat.id,
         label:  cat.name,
         href:   `/${cat.uri}`,

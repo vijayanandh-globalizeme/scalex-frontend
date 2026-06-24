@@ -189,8 +189,8 @@ function LearnersBlock({ count, label, avatarSrcs }: CategoryLearnersStat) {
 function FeatureList({ features }: { features: string[] }) {
   return (
     <ul className="mt-6 grid grid-cols-1 gap-x-8 gap-y-3 sm:grid-cols-2" role="list">
-      {features.map((feature) => (
-        <li key={feature} className="flex items-start gap-2.5">
+      {features.map((feature, i) => (
+        <li key={i} className="flex items-start gap-2.5">
           <CheckIcon className="mt-0.5 shrink-0" />
           <span className="text-[15px] font-medium leading-[152%] text-heading md:text-[18px]">{feature}</span>
         </li>
