@@ -2,13 +2,17 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useGsapScrollReveal, useGsapScrollRevealStagger } from '@/hooks/useGsapScrollReveal';
 import { useGridColumns } from '@/hooks/useGridColumns';
+import type { MegaMenuCategory } from '@/lib/allCoursesMegaMenu';
+import type { ApiCourse } from '@/services/courseApi';
+import { getCourses } from '@/app/actions/courseActions';
 
 export interface CourseTab {
   id: string;
   label: string;
+  categoryId?: string;
 }
 
 export interface Course {
@@ -19,25 +23,59 @@ export interface Course {
   imageSrc: string;
   imageAlt: string;
   rating: number;
-  hours: number;
+  duration: string;
   learners: string;
   price: number;
   originalPrice?: number;
   savePercent?: number;
-  slotsLeft?: number;
+  slotsLeft?: string;
   href: string;
 }
 
 export interface CoursesSectionProps {
   heading: string;
   subheading: string;
-  tabs: CourseTab[];
-  initialTabId: string;
-  courses: Course[];
+  layoutCategories?: MegaMenuCategory[];
   initialVisibleCount?: number;
   loadMoreStep?: number;
   viewMoreLabel?: string;
   currencySymbol?: string;
+}
+
+const FETCH_LIMIT = 12;
+
+function formatLearners(raw: string | null): string {
+  if (!raw) return '';
+  const n = parseInt(raw, 10);
+  if (isNaN(n)) return raw;
+  if (n >= 1000) return `${Math.floor(n / 1000)}K+ Learners`;
+  return `${n}+ Learners`;
+}
+
+
+function apiCourseToCard(c: ApiCourse): Course {
+  const price         = parseInt(c.batch?.plan1SellingPrice ?? '0', 10) || 0;
+  const originalPrice = parseInt(c.batch?.plan1RetailPrice  ?? '0', 10) || 0;
+  const savePercent   = originalPrice > price && originalPrice > 0
+    ? Math.round(((originalPrice - price) / originalPrice) * 100)
+    : undefined;
+
+  return {
+    id:            c.id,
+    category:      c.category.uri,
+    categoryLabel: c.category.name,
+    title:         c.name,
+    imageSrc:      c.featureImage?.url ?? '/images/course/course-1.png',
+    imageAlt:      c.name,
+    rating:    parseFloat(c.schemaRating ?? '0') || 0,
+    duration:  c.duration ?? '',
+    slotsLeft: c.batch?.noOfSessions ?? undefined,
+    learners:  formatLearners(c.totalEnroll),
+    price,
+    originalPrice: originalPrice > price ? originalPrice : undefined,
+    savePercent,
+    href:          `/courses/${c.uri}`,
+  };
 }
 
 function StarIcon({ className }: { className?: string }) {
@@ -189,7 +227,7 @@ export function CourseCard({
           </span>
           <span className="inline-flex items-center gap-1">
             <ClockIcon className="h-4 w-[23px]" />
-            {course.hours} Hr
+            {course.duration}
           </span>
           {!isCourseDetail ? (
             <span className="inline-flex items-center gap-1">
@@ -247,29 +285,64 @@ export function CourseCard({
 export default function CoursesSection({
   heading,
   subheading,
-  tabs,
-  initialTabId,
-  courses,
+  layoutCategories = [],
   initialVisibleCount = 6,
   loadMoreStep = 6,
   viewMoreLabel = 'View More Courses',
   currencySymbol = '₹',
 }: CoursesSectionProps) {
-  const [activeTab, setActiveTab] = useState<string>(initialTabId);
+  const tabs: CourseTab[] = useMemo(() => [
+    { id: 'all', label: 'All Courses' },
+    ...layoutCategories.slice(0, 6).map((cat) => ({
+      id:         cat.slug,
+      label:      cat.label,
+      categoryId: cat.id,
+    })),
+  ], [layoutCategories]);
+
+  const [activeTabId, setActiveTabId]   = useState<string>('all');
+  const [courses, setCourses]           = useState<Course[]>([]);
   const [visibleCount, setVisibleCount] = useState<number>(initialVisibleCount);
+  const [isLoading, setIsLoading]       = useState<boolean>(true);
 
-  const sectionRef = useRef<HTMLElement>(null);
-  const rowRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const headerRef = useRef<HTMLElement>(null);
-  const cols = useGridColumns();
+  const sectionRef     = useRef<HTMLElement>(null);
+  const rowRefs        = useRef<(HTMLDivElement | null)[]>([]);
+  const headerRef      = useRef<HTMLElement>(null);
+  const sectionSeenRef = useRef<boolean>(false);
+  const courseCache    = useRef<Map<string, Course[]>>(new Map());
+  const cols           = useGridColumns();
 
-  const filteredCourses = useMemo(() => {
-    if (activeTab === 'all') return courses;
-    return courses.filter((c) => c.category === activeTab);
-  }, [courses, activeTab]);
+  const loadCourses = useCallback(async (categoryId?: string) => {
+    const cacheKey = categoryId ?? 'all';
+    const cached = courseCache.current.get(cacheKey);
+    if (cached) {
+      setCourses(cached);
+      return;
+    }
+    setIsLoading(true);
+    const items = await getCourses({ categoryId, limit: FETCH_LIMIT, offset: 0 });
+    const cards = items.map(apiCourseToCard);
+    courseCache.current.set(cacheKey, cards);
+    setCourses(cards);
+    setIsLoading(false);
+  }, []);
 
-  const visibleCourses = filteredCourses.slice(0, visibleCount);
-  const hasMore = visibleCount < filteredCourses.length;
+  // Initial load — reset on every page mount
+  useEffect(() => {
+    setActiveTabId('all');
+    setVisibleCount(initialVisibleCount);
+    loadCourses();
+  }, [loadCourses, initialVisibleCount]);
+
+  function handleTabClick(tab: CourseTab) {
+    console.log('[CoursesSection] tab click', { id: tab.id, categoryId: tab.categoryId });
+    setActiveTabId(tab.id);
+    setVisibleCount(initialVisibleCount);
+    loadCourses(tab.categoryId);
+  }
+
+  const visibleCourses = courses.slice(0, visibleCount);
+  const hasMore        = visibleCount < courses.length;
 
   const courseRows = useMemo(() => {
     const rows: Course[][] = [];
@@ -281,24 +354,29 @@ export default function CoursesSection({
 
   rowRefs.current.length = courseRows.length;
 
+  // Mark section as seen once it scrolls into view so tab-switch rows skip GSAP
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        sectionSeenRef.current = true;
+        obs.disconnect();
+      }
+    }, { threshold: 0.1 });
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
+
   useGsapScrollRevealStagger(
     sectionRef,
     rowRefs,
-    {
-      y: 40,
-      duration: 0.8,
-      delay: 0.1,
-      ease: 'power2.out',
-      start: 'top 88%',
-    },
-    [activeTab, courseRows.length, cols],
+    { y: 40, duration: 0.8, delay: 0.1, ease: 'power2.out', start: 'top 88%' },
+    [activeTabId, courseRows.length, cols],
   );
 
   useGsapScrollReveal(sectionRef, headerRef, {
-    y: 40,
-    duration: 1.2,
-    delay: 0.1,
-    start: 'top 88%',
+    y: 40, duration: 1.2, delay: 0.1, start: 'top 88%',
   });
 
   return (
@@ -326,17 +404,14 @@ export default function CoursesSection({
           className="mt-8 flex items-center gap-2 overflow-x-auto rounded-lg bg-surface-raised p-2 shadow-[0_4px_4px_0_rgba(30,41,59,0.08),4px_-4px_4px_0_rgba(30,41,59,0.03)] [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:mt-10 md:flex-wrap md:justify-center lg:justify-between"
         >
           {tabs.map((tab) => {
-            const isActive = tab.id === activeTab;
+            const isActive = tab.id === activeTabId;
             return (
               <button
                 key={tab.id}
                 type="button"
                 role="tab"
                 aria-selected={isActive}
-                onClick={() => {
-                  setActiveTab(tab.id);
-                  setVisibleCount(initialVisibleCount);
-                }}
+                onClick={() => handleTabClick(tab)}
                 className={`cursor-pointer whitespace-nowrap rounded-lg px-4 py-2.5 text-center text-[16px] font-medium leading-[140%] ${
                   isActive ? 'courses-tab-active' : 'btn-mui-brand-tint text-heading'
                 }`}
@@ -347,27 +422,48 @@ export default function CoursesSection({
           })}
         </div>
 
-        <div className="mt-8 flex flex-col gap-6 md:mt-10">
-          {courseRows.map((rowCourses, rowIndex) => (
-            <div
-              key={`${activeTab}-row-${rowIndex}`}
-              ref={(el) => {
-                rowRefs.current[rowIndex] = el;
-              }}
-              className="gsap-reveal-pending grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3"
-            >
-              {rowCourses.map((course) => (
-                <CourseCard key={`${activeTab}-${course.id}`} course={course} currencySymbol={currencySymbol} />
+        <div className="mt-8 md:mt-10">
+          {isLoading ? (
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+              {Array.from({ length: initialVisibleCount }).map((_, i) => (
+                <div key={i} className="animate-pulse rounded-2xl bg-surface-raised">
+                  <div className="h-[200px] rounded-t-2xl bg-muted/20" />
+                  <div className="space-y-3 p-5">
+                    <div className="h-4 w-1/3 rounded bg-muted/20" />
+                    <div className="h-5 w-4/5 rounded bg-muted/20" />
+                    <div className="h-4 w-1/2 rounded bg-muted/20" />
+                    <div className="flex gap-4 pt-2">
+                      <div className="h-4 w-16 rounded bg-muted/20" />
+                      <div className="h-4 w-16 rounded bg-muted/20" />
+                    </div>
+                    <div className="flex items-center justify-between pt-2">
+                      <div className="h-6 w-24 rounded bg-muted/20" />
+                      <div className="h-8 w-20 rounded-lg bg-muted/20" />
+                    </div>
+                  </div>
+                </div>
               ))}
             </div>
-          ))}
+          ) : (
+            courseRows.map((rowCourses, rowIndex) => (
+              <div
+                key={`${activeTabId}-row-${rowIndex}`}
+                ref={(el) => { rowRefs.current[rowIndex] = el; }}
+                className={`grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 [&+&]:mt-6${sectionSeenRef.current ? '' : ' gsap-reveal-pending'}`}
+              >
+                {rowCourses.map((course) => (
+                  <CourseCard key={`${activeTabId}-${course.id}`} course={course} currencySymbol={currencySymbol} />
+                ))}
+              </div>
+            ))
+          )}
         </div>
 
-        {filteredCourses.length === 0 ? (
+        {!isLoading && courses.length === 0 && (
           <p className="mt-10 text-center text-[14px] text-muted">No courses available in this category yet.</p>
-        ) : null}
+        )}
 
-        {hasMore ? (
+        {!isLoading && hasMore && (
           <div className="mt-10 flex justify-center">
             <button
               type="button"
@@ -378,7 +474,7 @@ export default function CoursesSection({
               <ViewMoreChevronIcon className="shrink-0 text-brand" />
             </button>
           </div>
-        ) : null}
+        )}
       </div>
     </section>
   );

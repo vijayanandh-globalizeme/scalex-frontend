@@ -18,6 +18,7 @@ export type MegaMenuCourse = {
 };
 
 export type MegaMenuCategory = {
+  id: string;
   slug: string;
   label: string;
   href: string;

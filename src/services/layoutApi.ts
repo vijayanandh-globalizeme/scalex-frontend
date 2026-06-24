@@ -38,6 +38,7 @@ type ApiCategory = {
   courses: { id: string; name: string; uri: string; priority?: number }[];
 };
 
+
 type LayoutApiResponse = {
   success: boolean;
   data: {
@@ -48,12 +49,13 @@ type LayoutApiResponse = {
 
 function toMegaMenuCategories(apiCategories: ApiCategory[]): MegaMenuCategory[] {
   return apiCategories.map((cat) => ({
-    slug: cat.uri,
+    id:    cat.id,
+    slug:  cat.uri,
     label: cat.name,
-    href: `/${cat.uri}`,
+    href:  `/${cat.uri}`,
     courses: cat.courses.map((course) => ({
-      label: course.name,
-      href: `/${cat.uri}/${course.uri}`,
+      label:    course.name,
+      href:     `/${cat.uri}/${course.uri}`,
       priority: course.priority,
     })),
   }));
