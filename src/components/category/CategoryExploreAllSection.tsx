@@ -8,7 +8,8 @@ import {
   CategoryCarouselTrack,
   chunkPages,
 } from '@/components/category/CategoryCarouselNav';
-import { EXPLORE_ALL_CATEGORIES, type ExploreCategoryItem } from '@/lib/categoryPageSections';
+import type { ExploreCategoryItem } from '@/lib/categoryPageSections';
+import { getAllCategories } from '@/app/actions/categoryActions';
 
 function CategoryCircleIcon({ fill, className }: { fill: string; className?: string }) {
   return (
@@ -111,6 +112,8 @@ function CategoryCard({ item }: { item: ExploreCategoryItem }) {
 
 const PAGE_SIZE = 8;
 
+const ICON_COLORS = ['#E95A58', '#7C3AED', '#2563EB', '#0D9488', '#1E293B', '#16A34A', '#F97316', '#0891B2'];
+
 function usePrefetchCategoryRoutes(hrefs: string[]) {
   const router = useRouter();
   useEffect(() => {
@@ -122,9 +125,23 @@ function usePrefetchCategoryRoutes(hrefs: string[]) {
 }
 
 export default function CategoryExploreAllSection() {
-  const { heading, subheading, items } = EXPLORE_ALL_CATEGORIES;
+  const [items, setItems] = useState<ExploreCategoryItem[]>([]);
+  const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(0);
   const [, startTransition] = useTransition();
+
+  useEffect(() => {
+    getAllCategories().then((cats) => {
+      setItems(cats.map((cat, i) => ({
+        id:     cat.id,
+        label:  cat.name,
+        href:   `/${cat.uri}`,
+        iconBg: ICON_COLORS[i % ICON_COLORS.length],
+      })));
+      setLoading(false);
+    });
+  }, []);
+
   const pages = useMemo(() => chunkPages(items, PAGE_SIZE), [items]);
   const totalPages = pages.length;
   const categoryHrefs = useMemo(() => items.map((item) => item.href), [items]);
@@ -141,27 +158,35 @@ export default function CategoryExploreAllSection() {
             id="explore-categories-heading"
             className="text-[26px] font-extrabold leading-tight text-heading md:text-[40px] md:leading-[60px]"
           >
-            {heading}
+            Explore All Course Categories
           </h2>
           <p className="mt-3 text-[15px] font-medium leading-[140%] text-muted md:text-[18px]">
-            {subheading}
+            Dive into specialized categories and find the specific guidance you need to master your field.
           </p>
         </header>
 
-        <CategoryCarouselTrack page={page} className="mt-10 md:mt-12">
-          {pages.map((pageItems, pageIndex) => (
-            <div
-              key={pageIndex}
-              className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4 lg:gap-6"
-            >
-              {pageItems.map((item) => (
-                <CategoryCard key={item.id} item={item} />
-              ))}
-            </div>
-          ))}
-        </CategoryCarouselTrack>
+        {loading ? (
+          <div className="mt-10 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4 lg:gap-6 md:mt-12">
+            {Array.from({ length: 8 }).map((_, i) => (
+              <div key={i} className="animate-pulse h-[72px] rounded-xl bg-muted/20" />
+            ))}
+          </div>
+        ) : (
+          <CategoryCarouselTrack page={page} className="mt-10 md:mt-12">
+            {pages.map((pageItems, pageIndex) => (
+              <div
+                key={pageIndex}
+                className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4 lg:gap-6"
+              >
+                {pageItems.map((item) => (
+                  <CategoryCard key={item.id} item={item} />
+                ))}
+              </div>
+            ))}
+          </CategoryCarouselTrack>
+        )}
 
-        <div className="mt-10">
+        {!loading && <div className="mt-10">
           <CategoryCarouselControls
             page={page}
             totalPages={totalPages}
@@ -170,7 +195,7 @@ export default function CategoryExploreAllSection() {
             prevLabel="Previous categories"
             nextLabel="Next categories"
           />
-        </div>
+        </div>}
       </div>
     </section>
   );

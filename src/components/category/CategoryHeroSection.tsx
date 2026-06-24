@@ -2,6 +2,10 @@ import Image from 'next/image';
 import Link from 'next/link';
 import CategoryCollaborationCard from './CategoryCollaborationCard';
 import CategoryTitleUnderline from './CategoryTitleUnderline';
+import { HeroMediaColumn } from '@/components/shared';
+import type { HeroBadge } from '@/components/shared';
+import type { ApiCategoryDetail } from '@/services/categoryApi';
+import type { LayoutSettings } from '@/services/layoutApi';
 
 export interface CategoryReview {
   id: string;
@@ -42,6 +46,28 @@ export interface CategoryPageContent {
     logos: CategoryLogo[];
   };
 }
+
+const DEFAULT_COLLABORATION: CategoryPageContent['collaboration'] = {
+  lineBefore: 'In Collaboration with ',
+  lineHighlight: 'World-Class',
+  lineAfter: ' Certifying Bodies',
+  logos: [
+    { alt: 'Google', src: '/images/hero/google.png' },
+    { alt: 'Stanford', src: '/images/hero/stanford.png' },
+    { alt: 'IBM', src: '/images/hero/ibm.png' },
+    { alt: 'Infosys', src: '/images/hero/infosys.png' },
+    { alt: 'Capgemini', src: '/images/hero/google.png' },
+    { alt: 'Deloitte', src: '/images/hero/google.png' },
+    { alt: 'TCS', src: '/images/hero/tcs.png' },
+  ],
+};
+
+const DEFAULT_AVATAR_SRCS = [
+  '/images/hero/person.png',
+  '/images/hero/person.png',
+  '/images/hero/person.png',
+  '/images/hero/person.png',
+];
 
 function HomeIcon({ className }: { className?: string }) {
   return (
@@ -148,13 +174,7 @@ function LearnersBlock({ count, label, avatarSrcs }: CategoryLearnersStat) {
             key={`${src}-${index}`}
             className={`relative h-7 w-7 shrink-0 overflow-hidden rounded-full ring-2 ring-white ${index > 0 ? '-ml-2' : ''}`}
           >
-            <Image
-              src={src}
-              alt=""
-              width={28}
-              height={28}
-              className="h-7 w-7 object-cover"
-            />
+            <Image src={src} alt="" width={28} height={28} className="h-7 w-7 object-cover" />
           </div>
         ))}
       </div>
@@ -179,53 +199,103 @@ function FeatureList({ features }: { features: string[] }) {
   );
 }
 
-export default function CategoryHeroSection({
-  breadcrumbLabel,
-  titlePrefix,
-  titleAccent,
-  subheading,
-  features,
-  heroImage,
-  primaryCta,
-  secondaryCta,
-  reviews,
-  learnersStat,
-  collaboration,
-}: CategoryPageContent) {
+interface CategoryHeroSectionProps {
+  category: ApiCategoryDetail;
+  settings: LayoutSettings;
+  heroBadges?: HeroBadge[];
+  heroFigureSrc?: string;
+  backgroundImage?: {
+    src: string;
+    className?: string;
+  };
+}
+
+export default function CategoryHeroSection({ category, settings, heroBadges = [], heroFigureSrc, backgroundImage }: CategoryHeroSectionProps) {
+  const features = category.highlights
+    ? category.highlights.split('\n').map((s) => s.trim()).filter(Boolean)
+    : [];
+
+  const reviews: CategoryReview[] = [];
+  if (settings.GOOGLE_REVIEW) {
+    reviews.push({
+      id: 'google',
+      name: 'Google',
+      logoSrc: '/images/hero/google.png',
+      logoAlt: 'Google reviews',
+      rating: `${settings.GOOGLE_REVIEW.rating}/5`,
+      reviewsLabel: `${settings.GOOGLE_REVIEW.count} Reviews`,
+    });
+  }
+  if (settings.TRUST_PILOT_REVIEW) {
+    reviews.push({
+      id: 'trustpilot',
+      name: 'Trustpilot',
+      logoSrc: '/images/hero/trustpilot.png',
+      logoAlt: 'Trustpilot reviews',
+      rating: `${settings.TRUST_PILOT_REVIEW.rating}/5`,
+      reviewsLabel: `${settings.TRUST_PILOT_REVIEW.count} Reviews`,
+    });
+  }
+
+  const learnersStat: CategoryLearnersStat = {
+    count: settings.TOTAL_LEARNERS ? `${settings.TOTAL_LEARNERS}+` : category.learnerCount ? `${category.learnerCount}+` : '700K+',
+    label: 'Learners',
+    avatarSrcs: DEFAULT_AVATAR_SRCS,
+  };
+
+  const heroImage = {
+    src: '/images/hero/person.png',
+    alt: category.name,
+  };
+
+  const bgClassName =
+    backgroundImage?.className ??
+    'absolute right-[6%] top-[10%] h-[54%] w-[46%] md:w-[33%] lg:w-[24%]';
+
   return (
     <section
-      className="full-bleed relative overflow-visible pb-24 pt-6 md:pt-8"
+      className="full-bleed relative overflow-visible pb-2 pt-6 md:pt-8"
       aria-labelledby="category-hero-heading"
     >
-      <div className="category-hero-bg pointer-events-none absolute inset-0" aria-hidden />
+      {/* Decorative background (non-content) */}
+      <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden>
+        {backgroundImage?.src ? (
+          <div className={`${bgClassName} hidden md:block`}>
+            <Image
+              src={backgroundImage.src}
+              alt=""
+              fill
+              priority={false}
+              sizes="(max-width: 768px) 46vw, (max-width: 1024px) 33vw, 400px"
+              className="object-contain object-center"
+            />
+          </div>
+        ) : null}
+        <div className="absolute bottom-0 right-[15%] h-48 w-48 rounded-full bg-orange-200/30 blur-3xl" aria-hidden />
+      </div>
       <div className="site-container relative z-10">
         <nav aria-label="Breadcrumb" className="mb-6 flex items-center gap-2 text-[14px] font-medium">
           <Link href="/" className="text-brand transition hover:opacity-80" aria-label="Home">
             <HomeIcon className="h-4 w-4" />
           </Link>
-          <span className="text-brand/60" aria-hidden>
-            &gt;
-          </span>
-          <span className="text-brand">{breadcrumbLabel}</span>
+          <span className="text-brand/60" aria-hidden>&gt;</span>
+          <span className="text-brand">{category.name}</span>
         </nav>
 
         <div className="grid items-start gap-10 lg:grid-cols-2 lg:gap-8 xl:gap-12">
           <div className="max-w-2xl">
             <h1 id="category-hero-heading" className="text-heading">
-              <span className="block text-[26px] font-extrabold leading-tight md:text-[36px] md:leading-[52px] xl:text-[40px] xl:leading-[60px] text-heading">
-                {titlePrefix}
-              </span>
               <span className="block text-[32px] font-extrabold leading-tight md:text-[44px] md:leading-[64px] xl:text-[50px] xl:leading-[80px] text-heading">
-                {titleAccent}
+                {category.name}
               </span>
               <CategoryTitleUnderline />
             </h1>
 
             <p className="mt-5 max-w-xl text-[15px] font-semibold leading-6 text-muted md:text-[18px]">
-              {subheading}
+              {category.description}
             </p>
 
-            {features.length > 0 ? <FeatureList features={features} /> : null}
+            {features.length > 0 && <FeatureList features={features} />}
 
             {(reviews.length > 0 || learnersStat) && (
               <div className="mt-5 flex flex-wrap items-center gap-x-10 gap-y-5 lg:mt-6">
@@ -237,38 +307,33 @@ export default function CategoryHeroSection({
             )}
 
             <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:gap-4 lg:mt-6">
-              <Link href={primaryCta.href} className="btn-brand h-[54px] w-full gap-2 px-6 sm:w-auto md:px-7">
-                {primaryCta.label}
+              <Link href="#courses" className="btn-brand h-[54px] w-full gap-2 px-6 sm:w-auto md:px-7">
+                Explore Courses
                 <ArrowRightIcon className="btn-arrow-icon shrink-0" />
               </Link>
               <Link
-                href={secondaryCta.href}
+                href="/contact"
                 className="btn-brand-outline inline-flex h-[54px] w-full items-center justify-center gap-[18px] px-6 text-sm font-semibold sm:w-auto md:px-8 md:text-[15px]"
               >
-                {secondaryCta.label}
+                Get Free Career Guidance
                 <PhoneIcon className="h-5 w-5 text-brand" />
               </Link>
             </div>
           </div>
 
-          <div className="relative mx-auto w-full max-w-[521px] lg:mx-0 lg:ml-auto">
-            <div className="relative w-full overflow-hidden rounded-2xl shadow-[0_8px_30px_-12px_rgba(15,23,42,0.2)]" style={{aspectRatio: '521/636'}}>
-              <Image
-                src={heroImage.src}
-                alt={heroImage.alt}
-                fill
-                priority
-                sizes="(max-width: 1024px) 90vw, 521px"
-                className="object-cover object-center"
-              />
-            </div>
-          </div>
+          {/* Media column */}
+          <HeroMediaColumn
+            imageSrc={heroImage.src}
+            imageAlt={heroImage.alt}
+            badges={heroBadges}
+            disableGsap
+          />
         </div>
       </div>
 
       <div className="absolute inset-x-0 bottom-0 z-20 translate-y-[70%]">
         <div className="site-container">
-          <CategoryCollaborationCard collaboration={collaboration} />
+          <CategoryCollaborationCard collaboration={DEFAULT_COLLABORATION} />
         </div>
       </div>
     </section>

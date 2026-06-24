@@ -53,7 +53,7 @@ function formatLearners(raw: string | null): string {
 }
 
 
-function apiCourseToCard(c: ApiCourse): Course {
+export function apiCourseToCard(c: ApiCourse): Course {
   const price         = parseInt(c.batch?.plan1SellingPrice ?? '0', 10) || 0;
   const originalPrice = parseInt(c.batch?.plan1RetailPrice  ?? '0', 10) || 0;
   const savePercent   = originalPrice > price && originalPrice > 0

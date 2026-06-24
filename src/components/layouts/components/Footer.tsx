@@ -236,7 +236,7 @@ const Footer = ({
         <div className="site-container pb-8 pt-14 md:pb-12 md:pt-16 lg:pt-[4.5rem]">
           {/* Top: 4 tight link columns + logo column with larger inset */}
           <div className="flex flex-col gap-10 md:flex-row md:items-start md:gap-0">
-            <div className="grid min-w-0 flex-1 grid-cols-1 gap-y-8 sm:grid-cols-2 sm:gap-x-4 sm:gap-y-8 md:grid-cols-4 md:gap-x-2 md:gap-y-0 lg:gap-x-3">
+            <div className="grid min-w-0 flex-1 grid-cols-2 gap-x-4 gap-y-8 sm:gap-x-6 md:grid-cols-4 md:gap-x-2 md:gap-y-0 lg:gap-x-3">
               {COLUMN_GROUPS.map((col) => (
                 <div key={col.title} className="min-w-0">
                   <h3 className="mb-4 text-sm font-semibold tracking-wide text-heading">{col.title}</h3>

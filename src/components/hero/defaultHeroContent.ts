@@ -1,4 +1,29 @@
 import type { HeroSectionProps } from './HeroSection';
+import type { HeroBadge } from '@/components/shared';
+
+export const defaultHeroBadges: HeroBadge[] = [
+  {
+    id: 'learners-1',
+    variant: 'learners',
+    placement: 'top-left',
+    title: 'Active Learners',
+    subtitle: '100K+',
+  },
+  {
+    id: 'learners-2',
+    variant: 'learners',
+    placement: 'mid-left',
+    title: 'Active Learners',
+    subtitle: '100K+',
+  },
+  {
+    id: 'mentors',
+    variant: 'mentors',
+    placement: 'bottom-right',
+    title: 'Expert Mentors',
+    subtitle: '1,000+',
+  },
+];
 
 export const defaultHeroContent: HeroSectionProps = {
   headingIntro: 'The Ultimate Launchpad for',
@@ -37,27 +62,5 @@ export const defaultHeroContent: HeroSectionProps = {
   backgroundImage: {
     src: '/images/hero/aero-bg-v2.png',
   },
-  badges: [
-    {
-      id: 'learners-1',
-      variant: 'learners',
-      placement: 'top-left',
-      title: 'Active Learners',
-      subtitle: '100K+',
-    },
-    {
-      id: 'learners-2',
-      variant: 'learners',
-      placement: 'mid-left',
-      title: 'Active Learners',
-      subtitle: '100K+',
-    },
-    {
-      id: 'mentors',
-      variant: 'mentors',
-      placement: 'bottom-right',
-      title: 'Expert Mentors',
-      subtitle: '1,000+',
-    },
-  ],
+  badges: defaultHeroBadges,
 };

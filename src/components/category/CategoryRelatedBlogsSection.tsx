@@ -2,27 +2,61 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { useEffect, useMemo, useRef, useState, useTransition } from 'react';
+import { useEffect, useRef, useState, useTransition } from 'react';
 import {
   CategoryCarouselControls,
   CategoryCarouselTrack,
-  chunkPages,
 } from '@/components/category/CategoryCarouselNav';
-import { RELATED_BLOGS, type RelatedBlogItem } from '@/lib/categoryPageSections';
-import { useGsapScrollRevealStagger } from '@/hooks/useGsapScrollReveal';
+import { getBlogs, type ApiBlog } from '@/app/actions/blogActions';
 
+const FETCH_LIMIT = 6;
 const AUTHOR_AVATAR = '/images/Alex.png';
 const DEFAULT_BLOG_IMAGE = '/images/course/course-1.png';
 const BLOG_CARD_WIDTH = 'max-w-[412px] w-full';
 const SOLID_CARD_HEIGHT = 'h-[196px]';
 
-const SOLID_BG: Record<RelatedBlogItem['variant'], string | undefined> = {
+type BlogVariant = 'default' | 'solid-red' | 'solid-tan' | 'solid-teal' | 'image-middle';
+
+const VARIANT_CYCLE: BlogVariant[] = [
+  'image-middle', 'solid-red', 'default',
+  'solid-tan', 'image-middle', 'solid-teal',
+];
+
+const SOLID_BG: Record<BlogVariant, string | undefined> = {
   default: undefined,
   'image-middle': undefined,
   'solid-red': '#CB3D4D',
   'solid-tan': '#BB9255',
   'solid-teal': '#4899C2',
 };
+
+type BlogItem = {
+  id: string;
+  title: string;
+  excerpt: string;
+  author: string;
+  date: string;
+  href: string;
+  variant: BlogVariant;
+  imageSrc: string;
+  authorAvatar: string;
+};
+
+function apiBlogToItem(blog: ApiBlog, index: number): BlogItem {
+  return {
+    id: blog.id,
+    title: blog.title,
+    excerpt: blog.shortDescription ?? '',
+    author: blog.trainer?.name ?? 'ScaleX Team',
+    date: blog.createdAt
+      ? new Date(blog.createdAt).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })
+      : '',
+    href: `/blog/${blog.uri}`,
+    variant: VARIANT_CYCLE[index % VARIANT_CYCLE.length],
+    imageSrc: blog.featureImage?.url ?? DEFAULT_BLOG_IMAGE,
+    authorAvatar: AUTHOR_AVATAR,
+  };
+}
 
 function ArrowRightSmall({ className }: { className?: string }) {
   return (
@@ -35,31 +69,15 @@ function ArrowRightSmall({ className }: { className?: string }) {
   );
 }
 
-function BlogCardFooter({
-  blog,
-  isSolid,
-  compact = false,
-}: {
-  blog: RelatedBlogItem;
-  isSolid: boolean;
-  compact?: boolean;
-}) {
-  const avatarSrc = blog.authorAvatar ?? AUTHOR_AVATAR;
-
+function BlogCardFooter({ blog, isSolid, compact = false }: { blog: BlogItem; isSolid: boolean; compact?: boolean }) {
   return (
-    <div
-      className={`mt-auto flex items-center justify-between gap-2 border-t ${compact ? 'pt-3' : 'pt-4'} ${isSolid ? 'border-white/25' : 'border-zinc-100'}`}
-    >
+    <div className={`mt-auto flex items-center justify-between gap-2 border-t ${compact ? 'pt-3' : 'pt-4'} ${isSolid ? 'border-white/25' : 'border-zinc-100'}`}>
       <div className="flex min-w-0 items-center gap-2">
-        <span
-          className={`relative shrink-0 overflow-hidden rounded-full ${compact ? 'h-8 w-8' : 'h-9 w-9'} ${isSolid ? 'ring-2 ring-white/30' : 'ring-1 ring-zinc-200'}`}
-        >
-          <Image src={avatarSrc} alt="" fill sizes="36px" loading="eager" className="object-cover" />
+        <span className={`relative shrink-0 overflow-hidden rounded-full ${compact ? 'h-8 w-8' : 'h-9 w-9'} ${isSolid ? 'ring-2 ring-white/30' : 'ring-1 ring-zinc-200'}`}>
+          <Image src={blog.authorAvatar} alt="" fill sizes="36px" loading="eager" className="object-cover" />
         </span>
         <span className="min-w-0">
-          <span
-            className={`block truncate text-[11px] font-bold tracking-wide ${isSolid ? 'text-white' : 'text-heading'}`}
-          >
+          <span className={`block truncate text-[11px] font-bold tracking-wide ${isSolid ? 'text-white' : 'text-heading'}`}>
             {blog.author}
           </span>
           <span className={`text-[11px] font-medium ${isSolid ? 'text-white/75' : 'text-muted'}`}>
@@ -78,28 +96,18 @@ function BlogCardFooter({
   );
 }
 
-function BlogCard({ blog }: { blog: RelatedBlogItem }) {
+function BlogCard({ blog }: { blog: BlogItem }) {
   const isSolid = blog.variant.startsWith('solid-');
   const bg = SOLID_BG[blog.variant];
-  const imageSrc = blog.imageSrc ?? DEFAULT_BLOG_IMAGE;
 
   if (blog.variant === 'image-middle') {
     return (
-      <article
-        className={`flex flex-col overflow-hidden rounded-2xl border border-zinc-100/80 bg-white p-6 shadow-[0_4px_14px_-4px_rgba(30,41,59,0.12)] ${BLOG_CARD_WIDTH}`}
-      >
+      <article className={`flex flex-col overflow-hidden rounded-2xl border border-zinc-100/80 bg-white p-6 shadow-[0_4px_14px_-4px_rgba(30,41,59,0.12)] ${BLOG_CARD_WIDTH}`}>
         <div className="relative h-[170px] w-full overflow-hidden rounded-xl">
-          <Image
-            src={imageSrc}
-            alt=""
-            fill
-            sizes="(max-width: 1024px) 33vw, 400px"
-            loading="eager"
-            className="object-cover"
-          />
+          <Image src={blog.imageSrc} alt="" fill sizes="(max-width: 1024px) 33vw, 400px" loading="eager" className="object-cover" />
         </div>
         <h3 className="mt-5 text-[17px] font-bold leading-snug text-heading">{blog.title}</h3>
-        <p className="mt-3 flex-1 text-[14px] leading-relaxed text-muted">{blog.excerpt}</p>
+        <p className="mt-3 flex-1 line-clamp-4 text-[14px] leading-relaxed text-muted">{blog.excerpt}</p>
         <BlogCardFooter blog={blog} isSolid={false} />
       </article>
     );
@@ -121,18 +129,9 @@ function BlogCard({ blog }: { blog: RelatedBlogItem }) {
   }
 
   return (
-    <article
-      className={`flex flex-col overflow-hidden rounded-2xl border border-zinc-100/80 bg-white p-6 shadow-[0_4px_14px_-4px_rgba(30,41,59,0.12)] ${BLOG_CARD_WIDTH}`}
-    >
+    <article className={`flex flex-col overflow-hidden rounded-2xl border border-zinc-100/80 bg-white p-6 shadow-[0_4px_14px_-4px_rgba(30,41,59,0.12)] ${BLOG_CARD_WIDTH}`}>
       <div className="relative h-[170px] w-full overflow-hidden rounded-xl">
-        <Image
-          src={imageSrc}
-          alt=""
-          fill
-          sizes="(max-width: 1024px) 33vw, 400px"
-          loading="eager"
-          className="object-cover"
-        />
+        <Image src={blog.imageSrc} alt="" fill sizes="(max-width: 1024px) 33vw, 400px" loading="eager" className="object-cover" />
       </div>
       <h3 className="mt-5 text-[17px] font-bold leading-snug text-heading">{blog.title}</h3>
       <p className="mt-3 flex-1 text-[14px] leading-relaxed text-muted">{blog.excerpt}</p>
@@ -141,14 +140,7 @@ function BlogCard({ blog }: { blog: RelatedBlogItem }) {
   );
 }
 
-/** 3-column masonry: items ordered col1-top, col2-top, col3-top, col1-bottom, col2-bottom, col3-bottom */
-function BlogMasonryGrid({
-  items,
-  onColumnRef,
-}: {
-  items: RelatedBlogItem[];
-  onColumnRef?: (colIndex: number, el: HTMLDivElement | null) => void;
-}) {
+function BlogMasonryGrid({ items }: { items: BlogItem[] }) {
   const columns = [
     [items[0], items[3]],
     [items[1], items[4]],
@@ -158,11 +150,7 @@ function BlogMasonryGrid({
   return (
     <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 lg:items-start">
       {columns.map((column, colIndex) => (
-        <div
-          key={colIndex}
-          ref={(el) => onColumnRef?.(colIndex, el)}
-          className={`gsap-reveal-pending flex flex-col gap-6 ${BLOG_CARD_WIDTH} mx-auto lg:mx-0`}
-        >
+        <div key={colIndex} className={`flex flex-col gap-6 ${BLOG_CARD_WIDTH} mx-auto lg:mx-0`}>
           {column.map((blog) => (blog ? <BlogCard key={blog.id} blog={blog} /> : null))}
         </div>
       ))}
@@ -170,94 +158,98 @@ function BlogMasonryGrid({
   );
 }
 
-const PAGE_SIZE = 6;
-const MASONRY_COLUMNS = 3;
-
-/** Off-screen carousel slides are lazy-loaded by default; warm the cache on mount. */
-function usePrefetchBlogImages(items: RelatedBlogItem[]) {
-  useEffect(() => {
-    const sources = new Set<string>([AUTHOR_AVATAR, DEFAULT_BLOG_IMAGE]);
-    for (const blog of items) {
-      if (blog.imageSrc) sources.add(blog.imageSrc);
-      if (blog.authorAvatar) sources.add(blog.authorAvatar);
-    }
-    for (const src of sources) {
-      const img = new window.Image();
-      img.src = src;
-    }
-  }, [items]);
+function SkeletonCard() {
+  return (
+    <div className="animate-pulse rounded-2xl bg-surface-raised">
+      <div className="h-[170px] rounded-t-2xl bg-muted/20" />
+      <div className="space-y-3 p-6">
+        <div className="h-4 w-4/5 rounded bg-muted/20" />
+        <div className="h-4 w-2/3 rounded bg-muted/20" />
+        <div className="h-4 w-1/2 rounded bg-muted/20" />
+      </div>
+    </div>
+  );
 }
 
 export default function CategoryRelatedBlogsSection() {
-  const { heading, subheading, items } = RELATED_BLOGS;
+  const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
+  const [currentItems, setCurrentItems] = useState<BlogItem[]>([]);
   const [, startTransition] = useTransition();
-  const sectionRef = useRef<HTMLElement>(null);
-  const rowRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const pages = useMemo(() => chunkPages(items, PAGE_SIZE), [items]);
-  const totalPages = pages.length;
-  usePrefetchBlogImages(items);
 
-  rowRefs.current.length = pages.length * MASONRY_COLUMNS;
+  // page index → items; persists until page refresh
+  const cache = useRef<Map<number, BlogItem[]>>(new Map());
 
-  useGsapScrollRevealStagger(
-    sectionRef,
-    rowRefs,
-    {
-      y: 40,
-      duration: 0.8,
-      delay: 0.1,
-      ease: 'power2.out',
-      start: 'top 88%',
-    },
-    [pages.length, page],
-  );
+  async function loadPage(pageIndex: number) {
+    if (cache.current.has(pageIndex)) {
+      setCurrentItems(cache.current.get(pageIndex)!);
+      return;
+    }
+    setLoading(true);
+    const { items, total } = await getBlogs({ limit: FETCH_LIMIT, offset: pageIndex * FETCH_LIMIT });
+    const mapped = items.map((b, i) => apiBlogToItem(b, i));
+    cache.current.set(pageIndex, mapped);
+    setCurrentItems(mapped);
+    setTotalPages(Math.ceil(total / FETCH_LIMIT));
+    setLoading(false);
+  }
 
-  const goToPage = (next: number) => {
-    startTransition(() => setPage(next));
-  };
+  useEffect(() => {
+    loadPage(0);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  function goToPage(next: number) {
+    startTransition(() => {
+      setPage(next);
+      loadPage(next);
+    });
+  }
+
+  const isEmpty = !loading && currentItems.length === 0;
 
   return (
-    <section
-      ref={sectionRef}
-      className="full-bleed bg-surface pb-14 md:pb-20"
-      aria-labelledby="related-blogs-heading"
-    >
+    <section className="full-bleed bg-surface pb-14 md:pb-20" aria-labelledby="related-blogs-heading">
       <div className="site-container">
         <header className="mx-auto max-w-3xl text-center">
           <h2
             id="related-blogs-heading"
             className="text-[26px] font-extrabold leading-tight text-heading md:text-[40px] md:leading-[60px]"
           >
-            {heading}
+            Related Blogs
           </h2>
           <p className="mt-3 text-[16px] font-medium leading-[140%] text-muted md:text-[18px]">
-            {subheading}
+            Go deeper into specialized topics with our latest blog posts, designed to help you navigate your career path with confidence.
           </p>
         </header>
 
-        <CategoryCarouselTrack page={page} className="mt-10 md:mt-12">
-          {pages.map((pageItems, pageIndex) => (
-            <BlogMasonryGrid
-              key={pageIndex}
-              items={pageItems}
-              onColumnRef={(colIndex, el) => {
-                rowRefs.current[pageIndex * MASONRY_COLUMNS + colIndex] = el;
-              }}
-            />
-          ))}
-        </CategoryCarouselTrack>
-
-        <div className="mt-10">
-          <CategoryCarouselControls
-            page={page}
-            totalPages={totalPages}
-            onPrev={() => goToPage(Math.max(0, page - 1))}
-            onNext={() => goToPage(Math.min(totalPages - 1, page + 1))}
-            prevLabel="Previous blogs"
-            nextLabel="Next blogs"
-          />
+        <div className="mt-10 md:mt-12">
+          {loading ? (
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+              {Array.from({ length: FETCH_LIMIT }).map((_, i) => <SkeletonCard key={i} />)}
+            </div>
+          ) : isEmpty ? (
+            <p className="py-16 text-center text-[15px] text-muted">No blogs found.</p>
+          ) : (
+            <CategoryCarouselTrack page={page}>
+              <BlogMasonryGrid items={currentItems} />
+            </CategoryCarouselTrack>
+          )}
         </div>
+
+        {!loading && !isEmpty && totalPages > 1 && (
+          <div className="mt-10">
+            <CategoryCarouselControls
+              page={page}
+              totalPages={totalPages}
+              onPrev={() => goToPage(Math.max(0, page - 1))}
+              onNext={() => goToPage(Math.min(totalPages - 1, page + 1))}
+              prevLabel="Previous blogs"
+              nextLabel="Next blogs"
+            />
+          </div>
+        )}
       </div>
     </section>
   );

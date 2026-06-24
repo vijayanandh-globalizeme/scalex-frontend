@@ -1,9 +1,12 @@
 'use client';
 
-import { useMemo, useRef, useState } from 'react';
-import { CourseCard, type Course } from '@/components/courses/CoursesSection';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { CourseCard, apiCourseToCard, type Course } from '@/components/courses/CoursesSection';
 import { useGsapScrollRevealStagger } from '@/hooks/useGsapScrollReveal';
 import { useGridColumns } from '@/hooks/useGridColumns';
+import { getCourses } from '@/app/actions/courseActions';
+
+const FETCH_LIMIT = 6;
 
 function ViewMoreChevronIcon({ className }: { className?: string }) {
   return (
@@ -24,53 +27,91 @@ function ViewMoreChevronIcon({ className }: { className?: string }) {
   );
 }
 
-export interface CategoryCoursesSectionProps {
-  heading: string;
-  subheading: string;
-  courses: Course[];
-  initialVisibleCount?: number;
-  loadMoreStep?: number;
-  viewMoreLabel?: string;
+interface CategoryCoursesSectionProps {
+  categoryId: string;
+  categoryName: string;
   currencySymbol?: string;
 }
 
+function SkeletonCard() {
+  return (
+    <div className="animate-pulse rounded-2xl bg-surface-raised">
+      <div className="h-[200px] rounded-t-2xl bg-muted/20" />
+      <div className="space-y-3 p-5">
+        <div className="h-4 w-1/3 rounded bg-muted/20" />
+        <div className="h-5 w-4/5 rounded bg-muted/20" />
+        <div className="h-4 w-1/2 rounded bg-muted/20" />
+        <div className="flex gap-4 pt-2">
+          <div className="h-4 w-16 rounded bg-muted/20" />
+          <div className="h-4 w-16 rounded bg-muted/20" />
+        </div>
+        <div className="flex items-center justify-between pt-2">
+          <div className="h-6 w-24 rounded bg-muted/20" />
+          <div className="h-8 w-20 rounded-lg bg-muted/20" />
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function CategoryCoursesSection({
-  heading,
-  subheading,
-  courses,
-  initialVisibleCount = 6,
-  loadMoreStep = 6,
-  viewMoreLabel = 'View More Courses',
+  categoryId,
+  categoryName,
   currencySymbol = '₹',
 }: CategoryCoursesSectionProps) {
-  const [visibleCount, setVisibleCount] = useState(initialVisibleCount);
+  const [courses, setCourses] = useState<Course[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [hasMore, setHasMore] = useState(false);
+  const offsetRef = useRef(0);
+
   const sectionRef = useRef<HTMLElement>(null);
   const rowRefs = useRef<(HTMLDivElement | null)[]>([]);
   const cols = useGridColumns();
 
-  const visibleCourses = courses.slice(0, visibleCount);
-  const hasMore = visibleCount < courses.length;
+  useEffect(() => {
+    let cancelled = false;
+    setLoading(true);
+    setCourses([]);
+    offsetRef.current = 0;
+
+    getCourses({ categoryId, limit: FETCH_LIMIT, offset: 0 }).then((items) => {
+      if (cancelled) return;
+      const cards = items.map(apiCourseToCard);
+      setCourses(cards);
+      offsetRef.current = items.length;
+      setHasMore(items.length >= FETCH_LIMIT);
+      setLoading(false);
+    });
+
+    return () => { cancelled = true; };
+  }, [categoryId]);
+
+  async function handleViewMore() {
+    if (loadingMore) return;
+    setLoadingMore(true);
+    const items = await getCourses({ categoryId, limit: FETCH_LIMIT, offset: offsetRef.current });
+    const cards = items.map(apiCourseToCard);
+    setCourses((prev) => [...prev, ...cards]);
+    offsetRef.current += items.length;
+    setHasMore(items.length >= FETCH_LIMIT);
+    setLoadingMore(false);
+  }
 
   const courseRows = useMemo(() => {
     const rows: Course[][] = [];
-    for (let i = 0; i < visibleCourses.length; i += cols) {
-      rows.push(visibleCourses.slice(i, i + cols));
+    for (let i = 0; i < courses.length; i += cols) {
+      rows.push(courses.slice(i, i + cols));
     }
     return rows;
-  }, [visibleCourses, cols]);
+  }, [courses, cols]);
 
   rowRefs.current.length = courseRows.length;
 
   useGsapScrollRevealStagger(
     sectionRef,
     rowRefs,
-    {
-      y: 40,
-      duration: 0.8,
-      delay: 0.1,
-      ease: 'power2.out',
-      start: 'top 88%',
-    },
+    { y: 40, duration: 0.8, delay: 0.1, ease: 'power2.out', start: 'top 88%' },
     [courseRows.length, cols],
   );
 
@@ -87,46 +128,50 @@ export default function CategoryCoursesSection({
             id="category-courses-heading"
             className="text-center text-[24px] font-bold leading-[1.4] text-heading md:text-[34px]"
           >
-            {heading}
+            Explore all {categoryName} courses
           </h2>
           <p className="mt-3 text-[16px] font-medium leading-[140%] text-muted md:text-[18px]">
-            {subheading}
+            Find the right course that leaps your career
           </p>
         </header>
 
-        <div className="mt-10 flex flex-col gap-6 md:mt-12">
-          {courseRows.map((rowCourses, rowIndex) => (
-            <div
-              key={`category-row-${rowIndex}`}
-              ref={(el) => {
-                rowRefs.current[rowIndex] = el;
-              }}
-              className="gsap-reveal-pending grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3"
-            >
-              {rowCourses.map((course) => (
-                <CourseCard key={course.id} course={course} currencySymbol={currencySymbol} />
+        <div className="mt-10 pb-4 md:mt-12 md:pb-6">
+          {loading ? (
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+              {Array.from({ length: FETCH_LIMIT }).map((_, i) => (
+                <SkeletonCard key={i} />
               ))}
             </div>
-          ))}
-        </div>
-
-        <div className="mt-10 flex justify-center md:mt-12">
-          {hasMore ? (
-            <button
-              type="button"
-              onClick={() => setVisibleCount((c) => c + loadMoreStep)}
-              className="inline-flex items-center gap-2 text-[14px] font-semibold text-brand underline-offset-4 transition hover:underline"
-            >
-              {viewMoreLabel}
-              <ViewMoreChevronIcon className="shrink-0 text-brand" />
-            </button>
+          ) : courses.length === 0 ? (
+            <p className="py-16 text-center text-[15px] text-muted">No courses available yet.</p>
           ) : (
-            <span className="inline-flex items-center gap-2 text-[14px] font-semibold text-brand">
-              {viewMoreLabel}
-              <ViewMoreChevronIcon className="shrink-0 text-brand" />
-            </span>
+            courseRows.map((rowCourses, rowIndex) => (
+              <div
+                key={`category-row-${rowIndex}`}
+                ref={(el) => { rowRefs.current[rowIndex] = el; }}
+                className="gsap-reveal-pending grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 [&+&]:mt-6"
+              >
+                {rowCourses.map((course) => (
+                  <CourseCard key={course.id} course={course} currencySymbol={currencySymbol} />
+                ))}
+              </div>
+            ))
           )}
         </div>
+
+        {!loading && hasMore && (
+          <div className="mt-10 flex justify-center md:mt-12">
+            <button
+              type="button"
+              onClick={handleViewMore}
+              disabled={loadingMore}
+              className="inline-flex items-center gap-2 text-[14px] font-semibold text-brand underline-offset-4 transition hover:underline disabled:opacity-60"
+            >
+              {loadingMore ? 'Loading...' : 'View More Courses'}
+              {!loadingMore && <ViewMoreChevronIcon className="shrink-0 text-brand" />}
+            </button>
+          </div>
+        )}
       </div>
     </section>
   );
