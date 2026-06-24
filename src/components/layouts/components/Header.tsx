@@ -63,8 +63,8 @@ const Header = ({ megaMenuCategories }: { megaMenuCategories: MegaMenuCategory[]
         <div className="flex h-16 w-full min-w-0 items-center justify-between min-[1200px]:hidden">
           <Link href="/" className="flex shrink-0 items-center" aria-label="ScaleX Learning home">
             <Image
-              src="/images/logos.png"
-              alt="ScaleX Learning"
+              src="/images/logo.png"
+              alt="EdgeX Learning"
               width={110}
               height={42}
               className="h-8 w-auto object-contain sm:h-9"
@@ -90,8 +90,8 @@ const Header = ({ megaMenuCategories }: { megaMenuCategories: MegaMenuCategory[]
                 aria-label="ScaleX Learning home"
               >
                 <Image
-                  src="/images/logos.png"
-                  alt="ScaleX Learning"
+                  src="/images/logo.png"
+                  alt="EdgeX Learning"
                   width={110}
                   height={42}
                   className="h-10 w-auto object-contain"

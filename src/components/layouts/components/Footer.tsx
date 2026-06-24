@@ -254,10 +254,10 @@ const Footer = ({
             </div>
 
             <div className="min-w-0 md:max-w-md md:flex-none md:basis-[32%] lg:basis-[34%] md:pl-10 lg:pl-14 xl:pl-20">
-              <Link href="/" className="mb-5 inline-block" aria-label="ScaleX Learning home">
+              <Link href="/" className="mb-5 inline-block" aria-label="EdgeX Learning home">
                 <Image
-                  src="/images/footer-logo.png"
-                  alt="ScaleX Learning"
+                  src="/images/logo.png"
+                  alt="EdgeX   Learning"
                   width={170}
                   height={52}
                   className="h-11 w-auto max-w-[170px] object-contain object-left"
