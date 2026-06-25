@@ -2,8 +2,8 @@ export type ExploreCategoryItem = {
   id: string;
   label: string;
   href: string;
-  /** Solid circle fill behind the white briefcase icon */
   iconBg: string;
+  icon: string;
 };
 
 export const EXPERT_CTA = {

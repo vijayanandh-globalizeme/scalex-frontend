@@ -11,55 +11,14 @@ import {
 import type { ExploreCategoryItem } from '@/lib/categoryPageSections';
 import { getAllCategories } from '@/app/actions/categoryActions';
 
-function CategoryCircleIcon({ fill, className }: { fill: string; className?: string }) {
+function CategoryIcon({ fill, icon }: { fill: string; icon: string }) {
   return (
-    <svg
-      className={className}
-      xmlns="http://www.w3.org/2000/svg"
-      width="46"
-      height="46"
-      viewBox="0 0 46 46"
-      fill="none"
+    <span
+      className="inline-flex h-[46px] w-[46px] shrink-0 items-center justify-center rounded-full text-white"
+      style={{ backgroundColor: fill }}
       aria-hidden
     >
-      <circle cx="23" cy="23" r="23" fill={fill} />
-    </svg>
-  );
-}
-
-function BriefcaseIcon() {
-  return (
-    <svg
-      className="relative z-10"
-      width="22"
-      height="22"
-      viewBox="0 0 24 24"
-      fill="none"
-      aria-hidden
-    >
-      <path
-        d="M8 7.5V6a2 2 0 012-2h4a2 2 0 012 2v1.5"
-        stroke="white"
-        strokeWidth="1.75"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M5 7.5h14a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2v-9a2 2 0 012-2z"
-        stroke="white"
-        strokeWidth="1.75"
-        strokeLinejoin="round"
-      />
-      <path d="M5 11.5h14" stroke="white" strokeWidth="1.75" strokeLinecap="round" />
-    </svg>
-  );
-}
-
-function CategoryIcon({ fill }: { fill: string }) {
-  return (
-    <span className="relative inline-flex h-[46px] w-[46px] shrink-0 items-center justify-center">
-      <CategoryCircleIcon fill={fill} className="absolute inset-0 h-full w-full" />
-      <BriefcaseIcon />
+      <i className={`fa fa-${icon} text-[18px]`} />
     </span>
   );
 }
@@ -98,7 +57,7 @@ function CategoryCard({ item }: { item: ExploreCategoryItem }) {
       prefetch
       className="group flex items-center gap-4 rounded-xl border border-zinc-100/80 bg-white p-5 shadow-[0_4px_14px_-4px_rgba(30,41,59,0.12)] transition hover:-translate-y-0.5 hover:shadow-[0_8px_20px_-6px_rgba(30,41,59,0.16)]"
     >
-      <CategoryIcon fill={item.iconBg} />
+      <CategoryIcon fill={item.iconBg} icon={item.icon} />
       <span className="min-w-0 flex-1">
         <span className="block text-[15px] font-bold leading-snug text-heading">{item.label}</span>
         <span className="mt-1.5 inline-flex items-center gap-1 text-[13px] font-medium text-muted transition group-hover:text-subtle">
@@ -138,6 +97,7 @@ export default function CategoryExploreAllSection({ excludeId }: { excludeId?: s
         label:  cat.name,
         href:   `/${cat.uri}`,
         iconBg: ICON_COLORS[i % ICON_COLORS.length],
+        icon:   cat.icon || 'fa-solid fa-briefcase',
       })));
       setLoading(false);
     });

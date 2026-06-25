@@ -9,7 +9,7 @@ export type ApiBlog = {
   uri: string;
   createdAt: string;
   featureImage: { id: string; url: string; extension: string } | null;
-  trainer: { id: string; name: string } | null;
+  trainer: { id: string; name: string; profileImage: { id: string; url: string; extension: string } | null } | null;
 };
 
 type BlogsApiResponse = {

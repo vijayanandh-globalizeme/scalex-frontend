@@ -54,7 +54,7 @@ function apiBlogToItem(blog: ApiBlog, index: number): BlogItem {
     href: `/blog/${blog.uri}`,
     variant: VARIANT_CYCLE[index % VARIANT_CYCLE.length],
     imageSrc: blog.featureImage?.url ?? DEFAULT_BLOG_IMAGE,
-    authorAvatar: AUTHOR_AVATAR,
+    authorAvatar: blog.trainer?.profileImage?.url ?? AUTHOR_AVATAR,
   };
 }
 

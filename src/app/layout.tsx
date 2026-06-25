@@ -69,6 +69,14 @@ const rootJsonLd = getRootJsonLd();
 export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
   return (
     <html lang="en" className={inter.variable}>
+      <head>
+        <link
+          rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+          crossOrigin="anonymous"
+          referrerPolicy="no-referrer"
+        />
+      </head>
       <body className="min-h-screen bg-white font-sans text-zinc-900 antialiased">
         <JsonLd data={rootJsonLd} />
         <MainLayout>{children}</MainLayout>

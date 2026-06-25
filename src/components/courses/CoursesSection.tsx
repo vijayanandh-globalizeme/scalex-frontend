@@ -240,32 +240,38 @@ export function CourseCard({
           className={`mt-1 ${isCourseDetail ? 'flex flex-col gap-3' : 'flex items-center justify-between gap-3'}`}
         >
           <div className="flex flex-col gap-2">
-            <div className="flex items-baseline gap-2">
-              <span className="text-[16px] font-bold text-heading lg:text-[18px]">
-                {currencySymbol}
-                {course.price.toLocaleString('en-IN')}
-              </span>
-              {course.originalPrice ? (
-                <span className="text-[12px] font-medium text-zinc-400 line-through">
-                  {currencySymbol}
-                  {course.originalPrice.toLocaleString('en-IN')}
-                </span>
-              ) : null}
-            </div>
-            <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-[11px] font-semibold text-body">
-              {course.savePercent ? (
-                <span className="inline-flex items-center gap-1">
-                  <FireIcon className="h-3.5 w-3.5" />
-                  Save {course.savePercent}%
-                </span>
-              ) : null}
-              {course.slotsLeft ? (
-                <span className="inline-flex items-center gap-1">
-                  <SlotsIcon className="h-3.5 w-3.5" />
-                  Last {course.slotsLeft} slots left
-                </span>
-              ) : null}
-            </div>
+            {course.price ? (
+              <>
+                <div className="flex items-baseline gap-2">
+                  <span className="text-[16px] font-bold text-heading lg:text-[18px]">
+                    {currencySymbol}
+                    {course.price.toLocaleString('en-IN')}
+                  </span>
+                  {course.originalPrice ? (
+                    <span className="text-[12px] font-medium text-zinc-400 line-through">
+                      {currencySymbol}
+                      {course.originalPrice.toLocaleString('en-IN')}
+                    </span>
+                  ) : null}
+                </div>
+                <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-[11px] font-semibold text-body">
+                  {course.savePercent ? (
+                    <span className="inline-flex items-center gap-1">
+                      <FireIcon className="h-3.5 w-3.5" />
+                      Save {course.savePercent}%
+                    </span>
+                  ) : null}
+                  {course.slotsLeft ? (
+                    <span className="inline-flex items-center gap-1">
+                      <SlotsIcon className="h-3.5 w-3.5" />
+                      Last {course.slotsLeft} slots left
+                    </span>
+                  ) : null}
+                </div>
+              </>
+            ) : (
+              <span className="text-[13px] font-medium text-zinc-400">No batches available currently</span>
+            )}
           </div>
           <Link
             href={course.href}
