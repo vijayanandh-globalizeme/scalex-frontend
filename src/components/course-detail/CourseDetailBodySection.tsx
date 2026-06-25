@@ -14,6 +14,7 @@ import { courseWhyScaleXContent } from '@/lib/courseWhyScaleXContent';
 import {courseAwardsCards} from "@/lib/courseAwardsContent";
 import CourseAboutCertificationSection from './CourseAboutCertificationSection';
 import CourseBatchRequestBanner from './CourseBatchRequestBanner';
+import type { ApiCourseOverview } from '@/services/courseApi';
 import type { LayoutSettings } from '@/services/layoutApi';
 import CourseCredentialsSection from './CourseCredentialsSection';
 import CourseTrainersSection from './CourseTrainersSection';
@@ -25,28 +26,27 @@ export default async function CourseDetailBodySection({
   categoryUri,
   isTechnical = false,
   phone,
-  syllabusUrl,
-  courseContentTitle,
-  faqTitle,
-  aboutTitle,
-  aboutContent,
-  trainerTitle,
-  reviewsTitle,
+  courseDetails,
   settings,
 }: {
   courseUri: string;
   categoryUri: string;
   isTechnical?: boolean;
   phone?: string;
-  syllabusUrl?: string | null;
-  courseContentTitle?: string | null;
-  faqTitle?: string | null;
-  aboutTitle?: string | null;
-  aboutContent?: string | null;
-  trainerTitle?: string | null;
-  reviewsTitle?: string | null;
+  courseDetails?: ApiCourseOverview | null;
   settings?: LayoutSettings;
 }) {
+  const d = courseDetails?.details;
+
+  const syllabusUrl       = d?.syllabus?.url       ?? null;
+  const courseContentTitle = d?.courseContentTitle  ?? null;
+  const faqTitle          = d?.faqTitle             ?? null;
+  const aboutTitle        = d?.aboutTitle           ?? null;
+  const aboutContent      = d?.aboutContent         ?? null;
+  const trainerTitle      = d?.trainerTitle         ?? null;
+  const reviewsTitle      = d?.reviewsTitle         ?? null;
+  const reviewVideoUrl    = d?.courseVideoUrl        ?? null;
+
   const navItems = isTechnical ? BOOTCAMP_NAV_ITEMS : COURSE_NAV_ITEMS;
   const details = await getCourseDetails(courseUri, categoryUri);
 
@@ -93,6 +93,7 @@ export default async function CourseDetailBodySection({
               categoryUri={categoryUri}
               title={reviewsTitle ?? 'Learner Reviews'}
               settings={settings ?? {}}
+              videoUrl={reviewVideoUrl}
             />
             {details ? (
               <>

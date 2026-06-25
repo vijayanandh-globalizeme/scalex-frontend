@@ -68,7 +68,7 @@ export default async function CourseDetailPage({ params }: PageProps) {
       <CourseDetailPageShell form={DEFAULT_FORM}>
         <TechnicalCourseHeroSection {...props} />
         <CourseEnterpriseSection compact />
-        <CourseDetailBodySection courseUri={courseUri} categoryUri={categoryUri} isTechnical phone={settings.CONTACT_WHATSAPP_NO} syllabusUrl={course.details?.syllabus?.url ?? null} courseContentTitle={course.details?.courseContentTitle} faqTitle={course.details?.faqTitle} aboutTitle={course.details?.aboutTitle} aboutContent={course.details?.aboutContent} trainerTitle={course.details?.trainerTitle} reviewsTitle={course.details?.reviewsTitle} reviewVideoUrl={course.details?.courseVideoUrl} settings={settings} />
+        <CourseDetailBodySection courseUri={courseUri} categoryUri={categoryUri} isTechnical phone={settings.CONTACT_WHATSAPP_NO} courseDetails={course} settings={settings} />
       </CourseDetailPageShell>
     );
   }
@@ -78,7 +78,7 @@ export default async function CourseDetailPage({ params }: PageProps) {
     <CourseDetailPageShell form={DEFAULT_FORM}>
       <CourseDetailHeroSection {...props} />
       <CourseEnterpriseSection />
-      <CourseDetailBodySection courseUri={courseUri} categoryUri={categoryUri} phone={settings.CONTACT_WHATSAPP_NO} syllabusUrl={course.details?.syllabus?.url ?? null} courseContentTitle={course.details?.courseContentTitle} faqTitle={course.details?.faqTitle} aboutTitle={course.details?.aboutTitle} aboutContent={course.details?.aboutContent} trainerTitle={course.details?.trainerTitle} reviewsTitle={course.details?.reviewsTitle} reviewVideoUrl={course.details?.courseVideoUrl} settings={settings} /> 
+      <CourseDetailBodySection courseUri={courseUri} categoryUri={categoryUri} phone={settings.CONTACT_WHATSAPP_NO} courseDetails={course} settings={settings} /> 
     </CourseDetailPageShell>
   );
 }
