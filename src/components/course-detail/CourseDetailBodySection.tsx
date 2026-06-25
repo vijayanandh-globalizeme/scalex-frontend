@@ -1,14 +1,20 @@
 import { BOOTCAMP_NAV_ITEMS, COURSE_NAV_ITEMS } from '@/lib/courseNavItems';
+import { EXPERTS_COURSE_BANNER } from '@/lib/courseDetailStatics';
 import { sidebar } from '@/lib/courseSideBar';
 import { GuidanceSection, defaultGuidanceContent } from '@/components/guidance';
 import CourseDetailSidebar from './CourseDetailSidebar';
 import CourseDetailStickyNav from './CourseDetailStickyNav';
 import CourseContentSection from './CourseContentSection';
+import {AwardsSection} from "@/components/awards";
 import CourseFaqsSection from './CourseFaqsSection';
 import CourseOverviewSection from './CourseOverviewSection';
 import WhyScaleXSection from '../why-scalex/WhyScaleXSection';
 import { getCourseDetails } from '@/app/actions/courseActions';
 import { courseWhyScaleXContent } from '@/lib/courseWhyScaleXContent';
+import {courseAwardsCards} from "@/lib/courseAwardsContent";
+import CourseAboutCertificationSection from './CourseAboutCertificationSection';
+import CourseBatchRequestBanner from './CourseBatchRequestBanner';
+import CourseCredentialsSection from './CourseCredentialsSection';
 
 export default async function CourseDetailBodySection({
   courseUri,
@@ -18,6 +24,8 @@ export default async function CourseDetailBodySection({
   syllabusUrl,
   courseContentTitle,
   faqTitle,
+  aboutTitle,
+  aboutContent,
 }: {
   courseUri: string;
   categoryUri: string;
@@ -26,6 +34,8 @@ export default async function CourseDetailBodySection({
   syllabusUrl?: string | null;
   courseContentTitle?: string | null;
   faqTitle?: string | null;
+  aboutTitle?: string | null;
+  aboutContent?: string | null;
 }) {
   const navItems = isTechnical ? BOOTCAMP_NAV_ITEMS : COURSE_NAV_ITEMS;
   const details = await getCourseDetails(courseUri, categoryUri);
@@ -50,9 +60,25 @@ export default async function CourseDetailBodySection({
                   title={courseContentTitle}
                 />
                 <CourseFaqsSection faqs={details.courseFaq} title={faqTitle} />
+
+                <CourseCredentialsSection 
+                  credentials={details.credentials}
+                  careerTabs={details.otherDetails.filter((d) => d.type === 'CREDENTIALS')}
+                />
               </>
             ) : null}
+            <CourseBatchRequestBanner banner={EXPERTS_COURSE_BANNER} className="pb-6 md:pb-8" />
             <WhyScaleXSection {...courseWhyScaleXContent} id="why-scalex" variant="embedded" />
+            <AwardsSection
+              heading="Awards and Recognitions"
+              subheading=""
+              cards={courseAwardsCards}
+              visibleCount={3}
+              autoplay={false}
+              id="awards"
+              variant="embedded"
+            />
+            <CourseAboutCertificationSection title={aboutTitle} content={aboutContent} />
           </div>
           <CourseDetailSidebar sidebar={sidebar} />
         </div>
