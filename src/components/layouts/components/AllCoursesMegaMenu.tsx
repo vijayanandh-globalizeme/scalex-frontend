@@ -61,9 +61,10 @@ type MegaMenuPanelProps = {
   categories: MegaMenuCategory[];
   activeCategory: MegaMenuCategory;
   onCategoryHover: (slug: string) => void;
+  onClose: () => void;
 };
 
-function MegaMenuPanel({ categories, activeCategory, onCategoryHover }: MegaMenuPanelProps) {
+function MegaMenuPanel({ categories, activeCategory, onCategoryHover, onClose }: MegaMenuPanelProps) {
   return (
     <div className="mx-auto grid w-full max-w-[1300px] grid-cols-[minmax(240px,280px)_minmax(280px,1fr)_minmax(200px,1fr)] bg-white shadow-[0_16px_48px_-12px_rgba(15,23,42,0.18)]">
       <div className="border-r border-zinc-100 py-6 pl-6 pr-4">
@@ -76,6 +77,7 @@ function MegaMenuPanel({ categories, activeCategory, onCategoryHover }: MegaMenu
                 <Link
                   href={category.href}
                   onMouseEnter={() => onCategoryHover(category.slug)}
+                  onClick={onClose}
                   className={`header-fluid-text flex items-center justify-between gap-2 rounded-md px-3 py-2.5 font-medium ${
                     isActive
                       ? 'btn-mui-filled-surface bg-brand text-white'
@@ -104,6 +106,7 @@ function MegaMenuPanel({ categories, activeCategory, onCategoryHover }: MegaMenu
                 <li key={course.label}>
                   <Link
                     href={course.href}
+                    onClick={onClose}
                     className="btn-mui-nav-link header-fluid-text block px-2 py-2 font-normal text-ink"
                   >
                     {course.label}
@@ -113,6 +116,7 @@ function MegaMenuPanel({ categories, activeCategory, onCategoryHover }: MegaMenu
             </ul>
             <Link
               href={activeCategory.href}
+              onClick={onClose}
               className="header-fluid-text mt-4 inline-flex items-center gap-1.5 font-semibold text-brand transition hover:underline"
             >
               View All Courses
@@ -198,9 +202,14 @@ export default function AllCoursesMegaMenu({ categories }: { categories: MegaMen
           onMouseEnter={handleOpen}
           onMouseLeave={scheduleClose}
         >
-          {/* Invisible bridge only — keeps hover path, no visible gap */}
+          {/* Invisible bridge — keeps hover path intact, no visible gap */}
           <div className="absolute -top-3 left-0 right-0 h-3" aria-hidden />
-          <MegaMenuPanel categories={categories} activeCategory={activeCategory!} onCategoryHover={setActiveSlug} />
+          <MegaMenuPanel
+            categories={categories}
+            activeCategory={activeCategory!}
+            onCategoryHover={setActiveSlug}
+            onClose={handleClose}
+          />
         </div>
       )}
     </div>

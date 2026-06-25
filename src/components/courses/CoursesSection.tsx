@@ -74,7 +74,7 @@ export function apiCourseToCard(c: ApiCourse): Course {
     price,
     originalPrice: originalPrice > price ? originalPrice : undefined,
     savePercent,
-    href:          `/courses/${c.uri}`,
+    href:          `/${c.category.uri}/${c.uri}`,
   };
 }
 
@@ -388,6 +388,7 @@ export default function CoursesSection({
   return (
     <section
       ref={sectionRef}
+      id="all-courses"
       className="full-bleed relative bg-surface pt-10 pb-16 md:pt-14 md:pb-20 lg:pt-16 lg:pb-24"
       aria-labelledby="courses-heading"
     >
