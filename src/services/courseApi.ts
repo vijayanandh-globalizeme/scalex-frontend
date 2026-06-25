@@ -63,6 +63,59 @@ export async function fetchCourseOverview(
   return json?.success ? (json.data ?? null) : null;
 }
 
+// ── Course Details (full body) ────────────────────────────────────────────────
+
+export type ApiCourseOverviewSection = {
+  title: string;
+  description: string;
+  skillRequirements: string | null;
+  features: { title: string; content: string }[];
+  guide: ApiCourseFile | null;
+};
+
+export type ApiOtherDetail = {
+  id: string;
+  title: string;
+  type: string;
+  percentage: number;
+  file: ApiCourseFile | null;
+};
+
+export type ApiCourseDetails = {
+  overview: ApiCourseOverviewSection;
+  courseContent: { id: string; title: string; content: string; priority: number; category: null | { id: string; name: string } }[];
+  courseFaq: { categoryId: string; categoryName: string; items: { id: string; title: string; content: string; priority: number }[] }[];
+  credentials: { title: string; description: string } | null;
+  eligibility: {
+    title: string;
+    description: string;
+    requirements: { icon: string; title: string; content: string }[];
+    subTitle: string;
+    subContent: string;
+    certificationImage: ApiCourseFile | null;
+  } | null;
+  skillsTools: unknown | null;
+  roadmaps: unknown[];
+  otherDetails: ApiOtherDetail[];
+};
+
+type CourseDetailsApiResponse = {
+  success: boolean;
+  data: ApiCourseDetails;
+};
+
+export async function fetchCourseDetails(
+  courseUri: string,
+  categoryUri: string,
+): Promise<ApiCourseDetails | null> {
+  const params = new URLSearchParams({ categoryUri });
+  const json = await get<CourseDetailsApiResponse>(
+    `course/${courseUri}/details?${params.toString()}`,
+    { revalidate: 300, tags: [`course-${courseUri}-details`] },
+  );
+  return json?.success ? (json.data ?? null) : null;
+}
+
 // Shared types for the courses API — used by both server actions and client components
 
 export type ApiBatch = {

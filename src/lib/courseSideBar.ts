@@ -1,0 +1,34 @@
+export const sidebar: {
+  assistTitle: string;
+  purposes: { id: string; label: string }[];
+  termsHref: string;
+  privacyHref: string;
+  ctaLabel: string;
+  brochureText: string;
+  brochureCtaLabel: string;
+  mentorship: {
+    title: string;
+    phone: string;
+    imageSrc: string;
+    imageAlt: string;
+  };
+} = {
+  assistTitle: 'Let us assist you',
+  purposes: [
+    { id: 'career-growth', label: 'Career Growth' },
+    { id: 'certification', label: 'Get Certified' },
+    { id: 'upskill-team', label: 'Upskill My Team' },
+    { id: 'other',        label: 'Other' },
+  ],
+  termsHref:        '/terms',
+  privacyHref:      '/privacy',
+  ctaLabel:         'Talk To Us',
+  brochureText:     'Explore the world class Brochure here',
+  brochureCtaLabel: 'Download Brochure',
+  mentorship: {
+    title:    'Free 1-on-1 Mentorship',
+    phone:    '+91 - 93245 67345',
+    imageSrc: '/images/hero/person.png',
+    imageAlt: 'Mentor',
+  },
+};

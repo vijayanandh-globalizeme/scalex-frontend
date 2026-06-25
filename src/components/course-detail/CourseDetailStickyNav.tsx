@@ -45,7 +45,7 @@ export default function CourseDetailStickyNav({
   items,
   phone,
 }: {
-  items: CourseNavItem[];
+  items: readonly CourseNavItem[];
   phone: string;
 }) {
   const [activeId, setActiveId] = useState(items[0]?.id ?? 'overview');

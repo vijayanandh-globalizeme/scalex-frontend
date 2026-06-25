@@ -1,7 +1,8 @@
-import type { CourseBodyContent } from '@/lib/courseBody';
+import type { ApiCourseOverviewSection, ApiOtherDetail } from '@/services/courseApi';
+import { COURSE_OVERVIEW_STANDOUT_TITLE, COURSE_OVERVIEW_SKILLS_TITLE } from '@/lib/courseDetailStatics';
 import CourseBrochureCta from './CourseBrochureCta';
-import CourseCareerSection from './CourseCareerSection';
 import CourseDownloadIcon from './CourseDownloadIcon';
+import CourseCareerSection from './CourseCareerSection';
 
 function StandoutFeatureIcon({ className }: { className?: string }) {
   return (
@@ -31,18 +32,25 @@ function StandoutFeatureIcon({ className }: { className?: string }) {
 
 export default function CourseOverviewSection({
   overview,
-  career,
+  careerTabs = [],
   variant = 'default',
 }: {
-  overview: CourseBodyContent['overview'];
-  career: CourseBodyContent['career'];
+  overview: ApiCourseOverviewSection;
+  careerTabs?: ApiOtherDetail[];
   variant?: 'default' | 'technical';
 }) {
   const isTechnical = variant === 'technical';
+
+  // 7. skillRequirements → split by \n into array, distribute across 3 columns
+  const skills = (overview.skillRequirements ?? '')
+    .split(/\r?\n/)
+    .map((s) => s.trim())
+    .filter(Boolean);
+  const colSize = Math.ceil(skills.length / 3);
   const skillColumns = [
-    overview.skills.slice(0, 3),
-    overview.skills.slice(3, 6),
-    overview.skills.slice(6, 9),
+    skills.slice(0, colSize),
+    skills.slice(colSize, colSize * 2),
+    skills.slice(colSize * 2),
   ];
 
   return (
@@ -61,17 +69,19 @@ export default function CourseOverviewSection({
           >
             {overview.title}
           </h2>
-          <CourseBrochureCta
-            href="#brochure"
-            className={
-              isTechnical
-                ? 'btn-brand-outline inline-flex h-10 shrink-0 items-center justify-center gap-2 self-start px-5 text-[14px] font-semibold sm:self-auto'
-                : 'btn-brand-outline inline-flex h-10 shrink-0 items-center justify-center gap-2 self-start px-5 text-[13px] font-semibold sm:self-auto'
-            }
-          >
-            {overview.downloadGuideLabel}
-            <CourseDownloadIcon className="btn-download-icon shrink-0" />
-          </CourseBrochureCta>
+          {overview.guide ? (
+            <CourseBrochureCta
+              href={overview.guide.url}
+              className={
+                isTechnical
+                  ? 'btn-brand-outline inline-flex h-10 shrink-0 items-center justify-center gap-2 self-start px-5 text-[14px] font-semibold sm:self-auto'
+                  : 'btn-brand-outline inline-flex h-10 shrink-0 items-center justify-center gap-2 self-start px-5 text-[13px] font-semibold sm:self-auto'
+              }
+            >
+              Download Free Guide
+              <CourseDownloadIcon className="btn-download-icon shrink-0" />
+            </CourseBrochureCta>
+          ) : null}
         </div>
         <p
           className={
@@ -90,11 +100,11 @@ export default function CourseOverviewSection({
               : 'mt-8 text-[20px] font-semibold leading-[140%] text-heading'
           }
         >
-          {overview.standoutTitle}
+          {COURSE_OVERVIEW_STANDOUT_TITLE}
         </h3>
         <ul className="mt-4 grid gap-5 md:grid-cols-3" role="list">
-          {overview.features.map((feature) => (
-            <li key={feature.id} className="flex gap-3">
+          {overview.features.map((feature, i) => (
+            <li key={i} className="flex gap-3">
               <StandoutFeatureIcon className="mt-0.5 shrink-0" />
               <div className="min-w-0">
                 <p
@@ -113,7 +123,7 @@ export default function CourseOverviewSection({
                       : 'mt-1 text-[14px] font-normal leading-[140%] text-muted'
                   }
                 >
-                  {feature.description}
+                  {feature.content}
                 </p>
               </div>
             </li>
@@ -127,7 +137,7 @@ export default function CourseOverviewSection({
               : 'mt-8 text-[20px] font-semibold leading-[140%] text-heading'
           }
         >
-          {overview.skillsTitle}
+          {COURSE_OVERVIEW_SKILLS_TITLE}
         </h3>
         <div className="mt-4 grid gap-3 sm:grid-cols-3">
           {skillColumns.map((column, colIndex) => (
@@ -149,8 +159,7 @@ export default function CourseOverviewSection({
           ))}
         </div>
       </div>
-
-      <CourseCareerSection career={career} />
+      {careerTabs.length > 0 ? <CourseCareerSection careerTabs={careerTabs} /> : null}
     </div>
   );
 }
