@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import type { CourseNavItem } from '@/lib/courseBody';
+import type { CourseNavItem } from '@/lib/courseNavItems';
 
 const HEADER_HEIGHT_PX = 64;
 const NAV_HEIGHT_PX = 52;

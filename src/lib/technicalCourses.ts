@@ -87,7 +87,7 @@ export const TECHNICAL_MEGA_MENU_COURSES = [
 
 export const TECHNICAL_COURSE_DEFINITIONS: TechnicalCourseDefinition[] = [
   {
-    slug: PRIMARY_TECHNICAL_COURSE_SLUG,
+    slug: "devops-certification-training",
     menuLabel: 'Advanced Certified Scrum Master',
     titlePrefix: 'Advanced Certification in Data Analytics & Gen AI',
     titleAccent: 'Professional Program',

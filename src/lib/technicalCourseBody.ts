@@ -50,9 +50,7 @@ function buildTechnicalBody(def: TechnicalCourseDefinition): CourseBodyContent {
     ...BASE,
     navItems: isPrimary
       ? [...TECHNICAL_PRIMARY_NAV_ITEMS]
-      : BASE.navItems.map((item) =>
-          item.id === 'eligibility' ? { ...item, label: 'Eligibility Requirements' } : item,
-        ),
+      : [],
     overview: {
       ...BASE.overview,
       title: def.heroTitle.includes('Gen AI') ? 'Gen AI Course Overview' : `${def.heroTitle} Overview`,

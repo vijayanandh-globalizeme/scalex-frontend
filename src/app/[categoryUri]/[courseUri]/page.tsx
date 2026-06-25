@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import {
+  CourseDetailBodySection,
   CourseDetailHeroSection,
   CourseDetailPageShell,
   CourseEnterpriseSection,
@@ -59,14 +60,15 @@ export default async function CourseDetailPage({ params }: PageProps) {
   if (!course) notFound();
 
   const settings   = layoutData?.settings ?? {};
-  const isBootcamp = course.startedAt !== null;
+  const isTechnical = course.startedAt !== null;
 
-  if (isBootcamp) {
+  if (isTechnical) {
     const props = buildTechnicalCourseProps(course, categoryUri, courseUri, settings);
     return (
       <CourseDetailPageShell form={DEFAULT_FORM}>
         <TechnicalCourseHeroSection {...props} />
-        <CourseEnterpriseSection />
+        <CourseEnterpriseSection compact />
+        <CourseDetailBodySection isTechnical phone={settings.CONTACT_WHATSAPP_NO} />
       </CourseDetailPageShell>
     );
   }
@@ -76,6 +78,7 @@ export default async function CourseDetailPage({ params }: PageProps) {
     <CourseDetailPageShell form={DEFAULT_FORM}>
       <CourseDetailHeroSection {...props} />
       <CourseEnterpriseSection />
+      <CourseDetailBodySection  phone={settings.CONTACT_WHATSAPP_NO} /> 
     </CourseDetailPageShell>
   );
 }

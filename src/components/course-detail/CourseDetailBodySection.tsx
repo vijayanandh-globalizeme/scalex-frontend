@@ -1,4 +1,5 @@
 import type { CourseBodyContent } from '@/lib/courseBody';
+import { BOOTCAMP_NAV_ITEMS, COURSE_NAV_ITEMS } from '@/lib/courseNavItems';
 import { AwardsSection } from '@/components/awards';
 import { courseAwardsCards } from './courseAwardsContent';
 import { GuidanceSection, defaultGuidanceContent } from '@/components/guidance';
@@ -28,17 +29,19 @@ import CoursePrepComparisonSection from './CoursePrepComparisonSection';
 import CourseTrainingCitiesSection from './CourseTrainingCitiesSection';
 
 export default function CourseDetailBodySection({
-  body,
   isTechnical = false,
+  phone,
 }: {
-  body: CourseBodyContent;
   isTechnical?: boolean;
+  phone?: string;
 }) {
+  const navItems = isTechnical ? BOOTCAMP_NAV_ITEMS : COURSE_NAV_ITEMS;
+
   return (
     <section className="full-bleed overflow-visible bg-[#F5F6F8] pb-16 pt-1" aria-label="Course details">
-      <CourseDetailStickyNav items={body.navItems} phone={body.phone} />
+      <CourseDetailStickyNav items={navItems} phone={phone ?? body.phone} />
 
-      <div className="site-container pb-15 pt-4">
+      {/* <div className="site-container pb-15 pt-4">
         <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_246px] lg:gap-[80px]">
           <div className="min-w-0 space-y-8 overflow-visible">
             <CourseOverviewSection
@@ -89,7 +92,7 @@ export default function CourseDetailBodySection({
         </div>
       </div>
 
-      <GuidanceSection {...defaultGuidanceContent} />
+      <GuidanceSection {...defaultGuidanceContent} /> */}
     </section>
   );
 }
