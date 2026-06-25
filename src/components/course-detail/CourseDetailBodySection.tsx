@@ -1,5 +1,5 @@
 import { BOOTCAMP_NAV_ITEMS, COURSE_NAV_ITEMS } from '@/lib/courseNavItems';
-import { EXPERTS_COURSE_BANNER } from '@/lib/courseDetailStatics';
+import { EXPERTS_COURSE_BANNER, UNLOCK_COURSE_BANNER } from '@/lib/courseDetailStatics';
 import { sidebar } from '@/lib/courseSideBar';
 import { GuidanceSection, defaultGuidanceContent } from '@/components/guidance';
 import CourseDetailSidebar from './CourseDetailSidebar';
@@ -9,7 +9,7 @@ import {AwardsSection} from "@/components/awards";
 import CourseFaqsSection from './CourseFaqsSection';
 import CourseOverviewSection from './CourseOverviewSection';
 import WhyScaleXSection from '../why-scalex/WhyScaleXSection';
-import { getCourseDetails, getCourseTrainers, getCourseReviews } from '@/app/actions/courseActions';
+import { getCourseDetails } from '@/app/actions/courseActions';
 import { courseWhyScaleXContent } from '@/lib/courseWhyScaleXContent';
 import {courseAwardsCards} from "@/lib/courseAwardsContent";
 import CourseAboutCertificationSection from './CourseAboutCertificationSection';
@@ -18,6 +18,7 @@ import type { LayoutSettings } from '@/services/layoutApi';
 import CourseCredentialsSection from './CourseCredentialsSection';
 import CourseTrainersSection from './CourseTrainersSection';
 import CourseReviewsSection from './CourseReviewsSection';
+import CourseEligibilityRequirementsSection from './CourseEligibilityRequirementsSection';
 
 export default async function CourseDetailBodySection({
   courseUri,
@@ -47,11 +48,7 @@ export default async function CourseDetailBodySection({
   settings?: LayoutSettings;
 }) {
   const navItems = isTechnical ? BOOTCAMP_NAV_ITEMS : COURSE_NAV_ITEMS;
-  const [details, trainers, reviews] = await Promise.all([
-    getCourseDetails(courseUri, categoryUri),
-    getCourseTrainers(courseUri, categoryUri),
-    getCourseReviews(courseUri, categoryUri),
-  ]);
+  const details = await getCourseDetails(courseUri, categoryUri);
 
   return (
     <section className="full-bleed overflow-visible bg-[#F5F6F8] pb-16 pt-1" aria-label="Course details">
@@ -72,27 +69,42 @@ export default async function CourseDetailBodySection({
                   syllabusUrl={syllabusUrl}
                   title={courseContentTitle}
                 />
-                <CourseFaqsSection faqs={details.courseFaq} title={faqTitle} />
+              </>
+            ) : null}
 
+            {isTechnical && details ? (
+              <CourseEligibilityRequirementsSection eligibilityRequirements={details.eligibility} />
+            ) : null}
+
+            <CourseTrainersSection
+              courseUri={courseUri}
+              categoryUri={categoryUri}
+              title={trainerTitle ?? 'Our Trainers'}
+            />
+
+            <CourseBatchRequestBanner banner={UNLOCK_COURSE_BANNER} className="pb-6 md:pb-8" />
+
+            {!isTechnical && details ? (
+              <CourseEligibilityRequirementsSection eligibilityRequirements={details.eligibility} />
+            ) : null}
+
+            <CourseReviewsSection
+              courseUri={courseUri}
+              categoryUri={categoryUri}
+              title={reviewsTitle ?? 'Learner Reviews'}
+              settings={settings ?? {}}
+            />
+            {details ? (
+              <>
                 <CourseCredentialsSection
                   credentials={details.credentials}
                   careerTabs={details.otherDetails.filter((d) => d.type === 'CREDENTIALS')}
                 />
+
+                <CourseFaqsSection faqs={details.courseFaq} title={faqTitle} />
               </>
             ) : null}
-            {trainers.length > 0 ? (
-              <CourseTrainersSection
-                title={trainerTitle ?? 'Our Trainers'}
-                trainers={trainers}
-              />
-            ) : null}
-            {reviews.length > 0 ? (
-              <CourseReviewsSection
-                title={reviewsTitle ?? 'Learner Reviews'}
-                reviews={reviews}
-                settings={settings ?? {}}
-              />
-            ) : null}
+
             <CourseBatchRequestBanner banner={EXPERTS_COURSE_BANNER} className="pb-6 md:pb-8" />
             <WhyScaleXSection {...courseWhyScaleXContent} id="why-scalex" variant="embedded" />
             <AwardsSection

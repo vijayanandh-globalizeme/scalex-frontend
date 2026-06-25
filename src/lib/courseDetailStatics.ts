@@ -65,12 +65,26 @@ export const HIRING_COMPANIES: {
   },
 ];
 
+export const UNLOCK_COURSE_BANNER = {
+  headingLines: ["Ready to unlock your full potential", "on your Job?"],
+  ctaLabel: "Contact with us",
+  ctaHref: "#contact",
+  imageSrc: "/images/hero/person.png",
+  imageAlt: "Learning advisor ready to help",
+};
+
 export const EXPERTS_COURSE_BANNER = {
   headingLines: ["Have more questions or need", "personal guidance?"],
   ctaLabel: "Contact Learning Advisor",
   ctaHref: "#contact",
   imageSrc: "/images/hero/person.png",
   imageAlt: "Learning advisor ready to help",
+};
+
+export const REVIEW_VIDEO_SECTION = {
+  thumbnailSrc: "/images/Alex.png",
+  thumbnailAlt: "Alex video testimonial",
+  videoUrl: "#",
 };
 
 export const CREDENTIALS_FEATURES: {
