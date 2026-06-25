@@ -1,3 +1,4 @@
+export const COURSE_FAQ_TITLE              = 'Frequently Asked Questions';
 export const COURSE_CONTENT_TITLE          = 'Course Content';
 export const COURSE_CONTENT_SYLLABUS_LABEL = 'Download Syllabus';
 export const COURSE_OVERVIEW_STANDOUT_TITLE = 'Most Standout Features';

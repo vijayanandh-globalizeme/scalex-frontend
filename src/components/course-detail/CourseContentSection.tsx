@@ -48,9 +48,11 @@ type ApiModule = ApiCourseDetails['courseContent'][number];
 export default function CourseContentSection({
   courseContent,
   syllabusUrl,
+  title,
 }: {
   courseContent: ApiModule[];
   syllabusUrl?: string | null;
+  title?: string | null;
 }) {
   const [openModuleId, setOpenModuleId] = useState(courseContent[0]?.id ?? '');
   const [showAll, setShowAll] = useState(false);
@@ -61,7 +63,7 @@ export default function CourseContentSection({
   return (
     <div id="course-content" className={`scroll-mt-[116px] ${COURSE_SECTION_CARD} px-6 py-5 md:px-8 md:py-6`}>
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <h2 className="text-[34px] font-bold leading-[140%] text-heading">{COURSE_CONTENT_TITLE}</h2>
+        <h2 className="text-[34px] font-bold leading-[140%] text-heading">{title ?? COURSE_CONTENT_TITLE}</h2>
         {syllabusUrl ? (
           <a
             href={syllabusUrl}

@@ -1,8 +1,8 @@
 'use client';
 
-import Link from 'next/link';
 import { useState } from 'react';
-import type { CourseFaqsContent } from '@/lib/courseBody';
+import type { ApiCourseDetails } from '@/services/courseApi';
+import { COURSE_FAQ_TITLE } from '@/lib/courseDetailStatics';
 import {
   COURSE_INNER_CARD,
   COURSE_ROW_DIVIDER_FULL,
@@ -10,26 +10,18 @@ import {
   COURSE_TOP_DIVIDER_FULL,
 } from './courseSectionCard';
 
+const DEFAULT_VISIBLE = 5;
+
 const TAB_BAR_SCROLL =
   'flex h-[48px] items-stretch gap-6 overflow-x-auto rounded-lg bg-[#FCFCFC] px-5 shadow-[0_4px_4px_0_rgba(30,41,59,0.08),4px_-4px_4px_0_rgba(30,41,59,0.03)] [-ms-overflow-style:none] [scrollbar-width:none] md:gap-10 md:px-6 [&::-webkit-scrollbar]:hidden';
 
 function FaqChevron({ open }: { open: boolean }) {
   return (
     <svg
-      className={`h-4 w-4 shrink-0 text-brand transition-transform duration-200 ${
-        open ? 'rotate-180' : 'rotate-0'
-      }`}
-      viewBox="0 0 16 16"
-      fill="none"
-      aria-hidden
+      className={`h-4 w-4 shrink-0 text-brand transition-transform duration-200 ${open ? 'rotate-180' : 'rotate-0'}`}
+      viewBox="0 0 16 16" fill="none" aria-hidden
     >
-      <path
-        d="M4 6l4 4 4-4"
-        stroke="currentColor"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
+      <path d="M4 6l4 4 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   );
 }
@@ -37,107 +29,112 @@ function FaqChevron({ open }: { open: boolean }) {
 function ViewMoreChevronIcon({ className }: { className?: string }) {
   return (
     <svg className={className} width="18" height="11" viewBox="0 0 18 11" fill="none" aria-hidden>
-      <path
-        d="M7.50374 9C7.69084 9 7.87795 8.92839 8.00517 8.79244L13.7979 3.11657C13.9251 2.99489 14 2.83742 14 2.65849C14 2.2863 13.7081 2 13.3189 2C13.1318 2 12.9597 2.07158 12.8325 2.1861L7.09959 7.79038H7.9004L2.16753 2.1861C2.04778 2.07158 1.87565 2 1.68106 2C1.29188 2 1 2.2863 1 2.65849C1 2.83742 1.07484 2.99489 1.20207 3.12372L6.99482 8.79244C7.13701 8.92839 7.30915 9 7.50374 9Z"
-        fill="currentColor"
-      />
+      <path d="M7.50374 9C7.69084 9 7.87795 8.92839 8.00517 8.79244L13.7979 3.11657C13.9251 2.99489 14 2.83742 14 2.65849C14 2.2863 13.7081 2 13.3189 2C13.1318 2 12.9597 2.07158 12.8325 2.1861L7.09959 7.79038H7.9004L2.16753 2.1861C2.04778 2.07158 1.87565 2 1.68106 2C1.29188 2 1 2.2863 1 2.65849C1 2.83742 1.07484 2.99489 1.20207 3.12372L6.99482 8.79244C7.13701 8.92839 7.30915 9 7.50374 9Z" fill="currentColor" />
     </svg>
   );
 }
 
-export default function CourseFaqsSection({ faqs }: { faqs: CourseFaqsContent }) {
-  const [activeTabId, setActiveTabId] = useState(faqs.tabs[0]?.id ?? '');
-  const [openItemId, setOpenItemId] = useState(faqs.tabs[0]?.items[0]?.id ?? '');
+type FaqGroup = ApiCourseDetails['courseFaq'][number];
 
-  const activeTab = faqs.tabs.find((tab) => tab.id === activeTabId) ?? faqs.tabs[0];
+export default function CourseFaqsSection({ faqs, title }: { faqs: FaqGroup[]; title?: string | null }) {
+  const [activeCategoryId, setActiveCategoryId] = useState(faqs[0]?.categoryId ?? '');
+  const [openItemId, setOpenItemId]             = useState(faqs[0]?.items[0]?.id ?? '');
+  const [showAll, setShowAll]                   = useState(false);
 
-  if (!activeTab) return null;
+  const activeGroup = faqs.find((g) => g.categoryId === activeCategoryId) ?? faqs[0];
+
+  if (!activeGroup) return null;
+
+  const visible = showAll ? activeGroup.items : activeGroup.items.slice(0, DEFAULT_VISIBLE);
+  const hasMore  = activeGroup.items.length > DEFAULT_VISIBLE;
+
+  function handleTabChange(categoryId: string) {
+    const group = faqs.find((g) => g.categoryId === categoryId);
+    setActiveCategoryId(categoryId);
+    setOpenItemId(group?.items[0]?.id ?? '');
+    setShowAll(false);
+  }
 
   return (
-    <div
-      id="faqs"
-      className={`scroll-mt-[116px] ${COURSE_SECTION_CARD} px-6 py-5 md:px-8 md:py-6`}
-    >
-      <h2 className="text-[34px] font-bold leading-[140%] text-heading">{faqs.title}</h2>
+    <div id="faqs" className={`scroll-mt-[116px] ${COURSE_SECTION_CARD} px-6 py-5 md:px-8 md:py-6`}>
+      <h2 className="text-[34px] font-bold leading-[140%] text-heading">{title ?? COURSE_FAQ_TITLE}</h2>
 
-      <div className="mt-5" role="tablist" aria-label={faqs.title}>
+      {/* Category tabs */}
+      <div className="mt-5" role="tablist" aria-label={COURSE_FAQ_TITLE}>
         <div className={TAB_BAR_SCROLL}>
-          {faqs.tabs.map((tab) => {
-            const isActive = tab.id === activeTabId;
+          {faqs.map((group) => {
+            const isActive = group.categoryId === activeCategoryId;
             return (
               <button
-                key={tab.id}
+                key={group.categoryId}
                 type="button"
                 role="tab"
                 aria-selected={isActive}
-                onClick={() => {
-                  setActiveTabId(tab.id);
-                  setOpenItemId(tab.items[0]?.id ?? '');
-                }}
-                className={`flex h-full shrink-0 items-center border-0 border-b-[3px] bg-transparent px-0 text-[14px] font-medium whitespace-nowrap transition-colors ${
+                onClick={() => handleTabChange(group.categoryId)}
+                className={`flex h-full shrink-0 cursor-pointer items-center border-0 border-b-[3px] bg-transparent px-0 text-[14px] font-medium whitespace-nowrap transition-colors ${
                   isActive
                     ? 'border-b-brand text-brand'
                     : 'border-b-transparent text-heading hover:text-brand'
                 }`}
               >
-                {tab.label}
+                {group.categoryName}
               </button>
             );
           })}
         </div>
       </div>
 
-      <div className={`mt-5 ${COURSE_INNER_CARD}`} role="tabpanel">
-        {activeTab.items.map((item, index) => {
-          const isOpen = openItemId === item.id;
-          const isLastItem = index === activeTab.items.length - 1;
+      {/* FAQ items for active category */}
+      <div className={`mt-5 ${COURSE_INNER_CARD}`} role="tabpanel" aria-label={activeGroup.categoryName}>
+        {visible.map((item, index) => {
+          const isOpen  = openItemId === item.id;
+          const isFirst = index === 0;
+          const isLast  = index === visible.length - 1;
+          const addBottomPad = isLast && !hasMore;
 
           return (
-            <div key={item.id} className={!isLastItem ? COURSE_ROW_DIVIDER_FULL : undefined}>
+            <div
+              key={item.id}
+              className={!isLast || hasMore ? COURSE_ROW_DIVIDER_FULL : undefined}
+            >
               <button
                 type="button"
                 onClick={() => setOpenItemId(isOpen ? '' : item.id)}
-                className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left md:px-6"
+                className={`flex w-full cursor-pointer items-center justify-between gap-4 px-5 text-left transition-colors hover:bg-[#FAFAFA] md:px-6${isFirst ? ' pt-4 pb-3' : ' py-4'}`}
                 aria-expanded={isOpen}
               >
-                <span className="text-[14px] font-semibold text-heading">{item.question}</span>
+                <span className="text-[14px] font-semibold text-heading">{item.title}</span>
                 <FaqChevron open={isOpen} />
               </button>
-              {isOpen ? (
-                <div className="px-5 pb-5 md:px-6">
-                  <div className="ml-[5%] w-[95%] rounded-lg bg-[#F8F9FB] p-5 md:p-6">
-                    <h4 className="text-[13px] font-semibold text-heading">Learning Objectives</h4>
-                    <div className="mt-2 space-y-2">
-                      {item.learningObjectives.map((paragraph) => (
-                        <p key={paragraph} className="text-[13px] leading-relaxed text-muted">
-                          {paragraph}
-                        </p>
-                      ))}
-                    </div>
-                    <h4 className="mt-5 text-[13px] font-semibold text-heading">Topics Covered</h4>
-                    <ul className="mt-2 space-y-1.5" role="list">
-                      {item.topicsCovered.map((topic) => (
-                        <li key={topic} className="text-[13px] leading-relaxed text-muted">
-                          {topic}
-                        </li>
-                      ))}
-                    </ul>
+
+              <div className={`grid transition-all duration-200 ease-in-out ${isOpen ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'}`}>
+                <div className="overflow-hidden">
+                  <div className="px-5 pb-5 md:px-6">
+                    <div
+                      className="ml-[5%] w-[95%] rounded-lg bg-[#F8F9FB] p-5 md:p-6 [&_h3]:mb-2 [&_h3]:mt-4 [&_h3]:text-[13px] [&_h3]:font-semibold [&_h3]:text-heading [&_h3:first-child]:mt-0 [&_p]:text-[13px] [&_p]:leading-relaxed [&_p]:text-muted"
+                      dangerouslySetInnerHTML={{ __html: item.content.replaceAll('&nbsp;', ' ') }}
+                    />
                   </div>
                 </div>
-              ) : null}
+              </div>
+
+              {addBottomPad && !isOpen ? <div className="pb-4" /> : null}
             </div>
           );
         })}
 
-        <div className={`${COURSE_TOP_DIVIDER_FULL} px-5 py-4 text-center md:px-6`}>
-          <Link
-            href={faqs.viewMoreHref}
-            className="group inline-flex items-center gap-2 text-[14px] font-medium leading-[18px] text-brand transition hover:underline"
-          >
-            {faqs.viewMoreLabel}
-            <ViewMoreChevronIcon className="btn-download-icon shrink-0 text-brand" />
-          </Link>
-        </div>
+        {hasMore && !showAll ? (
+          <div className={`${COURSE_TOP_DIVIDER_FULL} px-5 py-4 text-center md:px-6`}>
+            <button
+              type="button"
+              onClick={() => setShowAll(true)}
+              className="group inline-flex cursor-pointer items-center gap-2 text-[14px] font-medium leading-[18px] text-brand transition hover:underline"
+            >
+              View More
+              <ViewMoreChevronIcon className="btn-download-icon shrink-0 text-brand" />
+            </button>
+          </div>
+        ) : null}
       </div>
     </div>
   );

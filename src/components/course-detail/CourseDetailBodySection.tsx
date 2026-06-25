@@ -4,6 +4,7 @@ import { GuidanceSection, defaultGuidanceContent } from '@/components/guidance';
 import CourseDetailSidebar from './CourseDetailSidebar';
 import CourseDetailStickyNav from './CourseDetailStickyNav';
 import CourseContentSection from './CourseContentSection';
+import CourseFaqsSection from './CourseFaqsSection';
 import CourseOverviewSection from './CourseOverviewSection';
 import WhyScaleXSection from '../why-scalex/WhyScaleXSection';
 import { getCourseDetails } from '@/app/actions/courseActions';
@@ -15,12 +16,16 @@ export default async function CourseDetailBodySection({
   isTechnical = false,
   phone,
   syllabusUrl,
+  courseContentTitle,
+  faqTitle,
 }: {
   courseUri: string;
   categoryUri: string;
   isTechnical?: boolean;
   phone?: string;
   syllabusUrl?: string | null;
+  courseContentTitle?: string | null;
+  faqTitle?: string | null;
 }) {
   const navItems = isTechnical ? BOOTCAMP_NAV_ITEMS : COURSE_NAV_ITEMS;
   const details = await getCourseDetails(courseUri, categoryUri);
@@ -42,7 +47,9 @@ export default async function CourseDetailBodySection({
                 <CourseContentSection
                   courseContent={details.courseContent}
                   syllabusUrl={syllabusUrl}
+                  title={courseContentTitle}
                 />
+                <CourseFaqsSection faqs={details.courseFaq} title={faqTitle} />
               </>
             ) : null}
             <WhyScaleXSection {...courseWhyScaleXContent} id="why-scalex" variant="embedded" />
