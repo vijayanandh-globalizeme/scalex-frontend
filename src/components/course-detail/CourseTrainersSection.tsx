@@ -9,7 +9,7 @@ import {
   chunkPages,
 } from '@/components/category/CategoryCarouselNav';
 import CourseBatchRequestBanner from '@/components/course-detail/CourseBatchRequestBanner';
-import type { CourseTrainer, CourseTrainersContent } from '@/lib/courseBody';
+import type { ApiTrainer } from '@/services/courseApi';
 
 const TRAINER_CARD =
   'relative flex h-full flex-col rounded-[20px] border border-[#EBEBEB] bg-white px-5 pb-5 pt-12 text-center shadow-[0_4px_14px_-4px_rgba(30,41,59,0.08),0_4px_4px_0_rgba(30,41,59,0.03)]';
@@ -39,18 +39,16 @@ function BriefcaseIcon() {
   );
 }
 
-function TrainerCard({ trainer }: { trainer: CourseTrainer }) {
+function TrainerCard({ trainer }: { trainer: ApiTrainer }) {
   const experienceMatch = trainer.experience.match(/^Experience\s+(.+)$/i);
   const experienceValue = experienceMatch?.[1] ?? trainer.experience;
 
   return (
-    <article
-      className={TRAINER_CARD}
-    >
+    <article className={TRAINER_CARD}>
       <div className="absolute top-0 left-1/2 h-[72px] w-[72px] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-full border-[3px] border-[#FFF6F7] bg-zinc-100">
         <Image
-          src={trainer.imageSrc}
-          alt={trainer.imageAlt}
+          src={trainer.avatar?.url ?? '/images/avatar-placeholder.png'}
+          alt={trainer.name}
           width={72}
           height={72}
           className="h-full w-full object-cover"
@@ -59,24 +57,26 @@ function TrainerCard({ trainer }: { trainer: CourseTrainer }) {
       </div>
 
       <h3 className="text-[20px] font-semibold leading-normal text-heading">{trainer.name}</h3>
-      <p className="mt-1 text-[14px] font-medium leading-normal text-[#FD022D]">{trainer.title}</p>
-      <p className="mt-3 line-clamp-4 text-[14px] font-normal leading-normal text-muted">{trainer.bio}</p>
+      <p className="mt-1 text-[14px] font-medium leading-normal text-[#FD022D]">{trainer.role}</p>
+      <p className="mt-3 line-clamp-4 text-[14px] font-normal leading-normal text-muted">{trainer.about}</p>
 
       <div className="mt-4 border-t border-[#EBEBEB] pt-4">
         <div className="flex items-center justify-between gap-3">
           <p className="text-[12px] font-normal leading-normal text-muted uppercase">
-            {trainer.associationLabel}
+            Associated with
           </p>
-          <div className="relative flex h-7 min-w-[80px] items-center justify-end">
-            <Image
-              src={trainer.associationLogoSrc}
-              alt={trainer.associationLogoAlt}
-              width={80}
-              height={24}
-              className="h-auto max-h-6 w-auto max-w-full object-contain"
-              sizes="80px"
-            />
-          </div>
+          {trainer.assocWith ? (
+            <div className="relative flex h-7 min-w-[80px] items-center justify-end">
+              <Image
+                src={trainer.assocWith.url}
+                alt={trainer.name}
+                width={80}
+                height={24}
+                className="h-auto max-h-6 w-auto max-w-full object-contain"
+                sizes="80px"
+              />
+            </div>
+          ) : null}
         </div>
       </div>
 
@@ -93,7 +93,7 @@ function TrainerCard({ trainer }: { trainer: CourseTrainer }) {
       </div>
 
       <Link
-        href={trainer.linkedinHref}
+        href={trainer.linkedInProfile}
         target="_blank"
         rel="noopener noreferrer"
         className="mt-4 inline-flex items-center justify-center gap-1.5 text-[12px] font-medium text-brand transition hover:underline"
@@ -113,9 +113,13 @@ function TrainerCard({ trainer }: { trainer: CourseTrainer }) {
 }
 
 export default function CourseTrainersSection({
+  title,
   trainers,
+  cta,
 }: {
-  trainers: CourseTrainersContent;
+  title: string;
+  trainers: ApiTrainer[];
+  cta?: React.ComponentProps<typeof CourseBatchRequestBanner>['banner'];
 }) {
   const [page, setPage] = useState(0);
   const [pageSize, setPageSize] = useState(3);
@@ -131,7 +135,7 @@ export default function CourseTrainersSection({
     return () => window.removeEventListener('resize', update);
   }, []);
 
-  const pages = useMemo(() => chunkPages(trainers.trainers, pageSize), [trainers.trainers, pageSize]);
+  const pages = useMemo(() => chunkPages(trainers, pageSize), [trainers, pageSize]);
   const totalPages = pages.length;
 
   useEffect(() => {
@@ -142,7 +146,7 @@ export default function CourseTrainersSection({
     <div id="trainers" className="scroll-mt-[116px] mb-0">
       <div className="py-5 md:py-6">
         <div className="flex items-center justify-between gap-4">
-          <h2 className="text-[34px] font-bold leading-[140%] text-heading">{trainers.title}</h2>
+          <h2 className="text-[34px] font-bold leading-[140%] text-heading">{title}</h2>
           {totalPages > 1 ? (
             <CategoryCarouselControls
               page={page}
@@ -169,8 +173,8 @@ export default function CourseTrainersSection({
         </CategoryCarouselTrack>
       </div>
 
-      {trainers.cta ? (
-        <CourseBatchRequestBanner banner={trainers.cta} className="pb-6 md:pb-8" />
+      {cta ? (
+        <CourseBatchRequestBanner banner={cta} className="pb-6 md:pb-8" />
       ) : null}
     </div>
   );

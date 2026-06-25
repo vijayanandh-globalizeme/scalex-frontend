@@ -110,3 +110,39 @@ export const CREDENTIALS_FEATURES: {
     },
   ],
 };
+
+export const REVIEWS_TYPE: {
+  id: string;
+  label: string;
+  logoSrc?: string;
+  logoAlt?: string;
+}[] = [
+  {
+    id: "all",
+    label: "All Reviews",
+  },
+  {
+    id: "GOOGLE_REVIEW",
+    label: "Google",
+    logoSrc: "/images/g.png",
+    logoAlt: "Google",
+  },
+  {
+    id: "FACEBOOK_REVIEW",
+    label: "Facebook",
+    logoSrc: "/images/star.png",
+    logoAlt: "Facebook",
+  },
+  {
+    id: "TRUST_PILOT_REVIEW",
+    label: "Trustpilot",
+    logoSrc: "/images/star.png",
+    logoAlt: "Trustpilot",
+  },
+  {
+    id: "SWTICH_UP_REVIEW",
+    label: "SwitchUp",
+    logoSrc: "/images/star.png",
+    logoAlt: "SwitchUp",
+  },
+];

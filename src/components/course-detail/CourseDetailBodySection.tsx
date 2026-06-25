@@ -9,12 +9,15 @@ import {AwardsSection} from "@/components/awards";
 import CourseFaqsSection from './CourseFaqsSection';
 import CourseOverviewSection from './CourseOverviewSection';
 import WhyScaleXSection from '../why-scalex/WhyScaleXSection';
-import { getCourseDetails } from '@/app/actions/courseActions';
+import { getCourseDetails, getCourseTrainers, getCourseReviews } from '@/app/actions/courseActions';
 import { courseWhyScaleXContent } from '@/lib/courseWhyScaleXContent';
 import {courseAwardsCards} from "@/lib/courseAwardsContent";
 import CourseAboutCertificationSection from './CourseAboutCertificationSection';
 import CourseBatchRequestBanner from './CourseBatchRequestBanner';
+import type { LayoutSettings } from '@/services/layoutApi';
 import CourseCredentialsSection from './CourseCredentialsSection';
+import CourseTrainersSection from './CourseTrainersSection';
+import CourseReviewsSection from './CourseReviewsSection';
 
 export default async function CourseDetailBodySection({
   courseUri,
@@ -26,6 +29,9 @@ export default async function CourseDetailBodySection({
   faqTitle,
   aboutTitle,
   aboutContent,
+  trainerTitle,
+  reviewsTitle,
+  settings,
 }: {
   courseUri: string;
   categoryUri: string;
@@ -36,9 +42,16 @@ export default async function CourseDetailBodySection({
   faqTitle?: string | null;
   aboutTitle?: string | null;
   aboutContent?: string | null;
+  trainerTitle?: string | null;
+  reviewsTitle?: string | null;
+  settings?: LayoutSettings;
 }) {
   const navItems = isTechnical ? BOOTCAMP_NAV_ITEMS : COURSE_NAV_ITEMS;
-  const details = await getCourseDetails(courseUri, categoryUri);
+  const [details, trainers, reviews] = await Promise.all([
+    getCourseDetails(courseUri, categoryUri),
+    getCourseTrainers(courseUri, categoryUri),
+    getCourseReviews(courseUri, categoryUri),
+  ]);
 
   return (
     <section className="full-bleed overflow-visible bg-[#F5F6F8] pb-16 pt-1" aria-label="Course details">
@@ -61,11 +74,24 @@ export default async function CourseDetailBodySection({
                 />
                 <CourseFaqsSection faqs={details.courseFaq} title={faqTitle} />
 
-                <CourseCredentialsSection 
+                <CourseCredentialsSection
                   credentials={details.credentials}
                   careerTabs={details.otherDetails.filter((d) => d.type === 'CREDENTIALS')}
                 />
               </>
+            ) : null}
+            {trainers.length > 0 ? (
+              <CourseTrainersSection
+                title={trainerTitle ?? 'Our Trainers'}
+                trainers={trainers}
+              />
+            ) : null}
+            {reviews.length > 0 ? (
+              <CourseReviewsSection
+                title={reviewsTitle ?? 'Learner Reviews'}
+                reviews={reviews}
+                settings={settings ?? {}}
+              />
             ) : null}
             <CourseBatchRequestBanner banner={EXPERTS_COURSE_BANNER} className="pb-6 md:pb-8" />
             <WhyScaleXSection {...courseWhyScaleXContent} id="why-scalex" variant="embedded" />

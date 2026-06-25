@@ -116,6 +116,56 @@ export async function fetchCourseDetails(
   return json?.success ? (json.data ?? null) : null;
 }
 
+export type ApiTrainer = {
+  id: string;
+  name: string;
+  role: string;
+  experience: string;
+  linkedInProfile: string;
+  about: string;
+  avatar: ApiCourseFile | null;
+  assocWith: ApiCourseFile | null;
+};
+
+type TrainerApiResponse = { success: boolean; data: { trainers: ApiTrainer[] } };
+
+export async function fetchCourseTrainers(
+  courseUri: string,
+  categoryUri: string,
+): Promise<ApiTrainer[]> {
+  const params = new URLSearchParams({ categoryUri });
+  const json = await get<TrainerApiResponse>(
+    `course/${courseUri}/trainer?${params.toString()}`,
+    { revalidate: 300, tags: [`course-${courseUri}-trainers`] },
+  );
+  return json?.success ? (json.data.trainers ?? []) : [];
+}
+
+export type ApiReview = {
+  id: string;
+  name: string;
+  role: string;
+  review: string;
+  rating: number;
+  type: string;
+  reviewUrl: string;
+  avatar: ApiCourseFile | null;
+};
+
+type ReviewsApiResponse = { success: boolean; data: { reviews: ApiReview[] } };
+
+export async function fetchCourseReviews(
+  courseUri: string,
+  categoryUri: string,
+): Promise<ApiReview[]> {
+  const params = new URLSearchParams({ categoryUri });
+  const json = await get<ReviewsApiResponse>(
+    `course/${courseUri}/reviews?${params.toString()}`,
+    { revalidate: 300, tags: [`course-${courseUri}-reviews`] },
+  );
+  return json?.success ? (json.data.reviews ?? []) : [];
+}
+
 // Shared types for the courses API — used by both server actions and client components
 
 export type ApiBatch = {

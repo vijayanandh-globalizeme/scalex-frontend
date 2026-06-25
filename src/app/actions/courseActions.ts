@@ -1,7 +1,7 @@
 'use server';
 
-export type { ApiCourse, ApiCourseOverview, ApiCourseDetails } from '@/services/courseApi';
-import { fetchCourses, fetchCourseOverview, fetchCourseDetails } from '@/services/courseApi';
+export type { ApiCourse, ApiCourseOverview, ApiCourseDetails, ApiTrainer, ApiReview } from '@/services/courseApi';
+import { fetchCourses, fetchCourseOverview, fetchCourseDetails, fetchCourseTrainers, fetchCourseReviews } from '@/services/courseApi';
 
 export async function getCourses(options: { categoryId?: string; limit?: number; offset?: number } = {}) {
   return fetchCourses(options);
@@ -13,4 +13,12 @@ export async function getCourseOverview(courseUri: string, categoryUri: string) 
 
 export async function getCourseDetails(courseUri: string, categoryUri: string) {
   return fetchCourseDetails(courseUri, categoryUri);
+}
+
+export async function getCourseTrainers(courseUri: string, categoryUri: string) {
+  return fetchCourseTrainers(courseUri, categoryUri);
+}
+
+export async function getCourseReviews(courseUri: string, categoryUri: string) {
+  return fetchCourseReviews(courseUri, categoryUri);
 }
