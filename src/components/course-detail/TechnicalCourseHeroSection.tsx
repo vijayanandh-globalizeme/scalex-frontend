@@ -175,11 +175,34 @@ function HeroMediaColumn({
   );
 }
 
+function RankedContent({ rankedContent, rankingLine }: { rankedContent?: string; rankingLine: { highlight: string; rest: string } }) {
+  if (rankedContent) {
+    const parts = rankedContent.split(/\*\*(.+?)\*\*/g);
+    return (
+      <p className="mt-6 text-[16px] font-bold leading-normal">
+        {parts.map((part, i) =>
+          i % 2 === 1
+            ? <span key={i} className="text-brand">{part}</span>
+            : <span key={i} className="text-heading">{part}</span>,
+        )}
+      </p>
+    );
+  }
+  if (!rankingLine.highlight && !rankingLine.rest) return null;
+  return (
+    <p className="mt-6 text-[16px] font-bold leading-normal">
+      <span className="text-brand">{rankingLine.highlight}</span>{' '}
+      <span className="text-heading">{rankingLine.rest}</span>
+    </p>
+  );
+}
+
 export default function TechnicalCourseHeroSection(course: TechnicalCourseContent) {
   const {
     breadcrumbs,
     heroTitle,
     featureRows,
+    rankedContent,
     rankingLine,
     reviews,
     learnersStat,
@@ -188,6 +211,7 @@ export default function TechnicalCourseHeroSection(course: TechnicalCourseConten
     heroBadges,
     collaboration,
     hiringPartners,
+    startedAt,
   } = course;
 
   const sectionRef = useRef<HTMLElement>(null);
@@ -207,7 +231,7 @@ export default function TechnicalCourseHeroSection(course: TechnicalCourseConten
     [],
   );
 
-  const review = reviews[0];
+  const googleReview = reviews.find((r) => r.id === 'google') ?? reviews[0];
 
   return (
     <section
@@ -267,7 +291,7 @@ export default function TechnicalCourseHeroSection(course: TechnicalCourseConten
                 <span className="text-[16px] font-semibold leading-[140%] text-[#0AB332]">Get Job.</span>{' '}
                 <span className="text-[16px] font-semibold leading-[140%] text-[#FC6E19]">Get Refunded.</span>
               </div>
-              {review ? (
+              {googleReview ? (
                 <div className="inline-flex items-center gap-2 rounded-[8px] border border-[#EBEBEB] bg-[#FBFBFB] px-4 py-2 shadow-[0_4px_4px_0_rgba(30,41,59,0.08),0_4px_4px_0_rgba(30,41,59,0.03)]">
                   <Image
                     src="/images/g.png"
@@ -276,7 +300,7 @@ export default function TechnicalCourseHeroSection(course: TechnicalCourseConten
                     height={20}
                     className="h-5 w-5 shrink-0 object-contain"
                   />
-                  <span className="text-[13px] font-semibold text-heading">{review.rating}</span>
+                  <span className="text-[13px] font-semibold text-heading">{googleReview.rating}</span>
                   <Image
                     src="/images/star.png"
                     alt=""
@@ -284,8 +308,7 @@ export default function TechnicalCourseHeroSection(course: TechnicalCourseConten
                     height={20}
                     className="h-5 w-5 shrink-0 object-contain"
                   />
-                  <span className="text-[13px] font-semibold text-heading">{review.rating}</span>
-                  <span className="text-[13px] text-muted">{review.reviewsLabel}</span>
+                  <span className="text-[13px] text-muted">{googleReview.reviewsLabel}</span>
                 </div>
               ) : null}
             </div>
@@ -305,10 +328,7 @@ export default function TechnicalCourseHeroSection(course: TechnicalCourseConten
               ))}
             </ul>
 
-            <p className="mt-6 text-[16px] font-bold leading-normal">
-              <span className="text-brand">{rankingLine.highlight}</span>{' '}
-              <span className="text-heading">{rankingLine.rest}</span>
-            </p>
+            <RankedContent rankedContent={rankedContent} rankingLine={rankingLine} />
 
             <div className="mt-[40px] flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:gap-4">
               <Link href={primaryCta.href} className="btn-brand h-[54px] w-full cursor-pointer gap-2 px-6 sm:w-auto md:px-7">
@@ -327,7 +347,7 @@ export default function TechnicalCourseHeroSection(course: TechnicalCourseConten
             <div className="mt-[38px]">
               <p className="text-[16px] font-medium leading-normal text-[#1E293B]">Next Webinar Starts in</p>
               <div className="mt-[14px] flex flex-wrap items-center gap-4">
-                <TechnicalCourseWebinarCountdown />
+                <TechnicalCourseWebinarCountdown targetDate={startedAt} />
                 <div className="flex min-w-0 items-center gap-2.5">
                   <div className="flex shrink-0 items-center">
                     {learnersStat.avatarSrcs.map((src, index) => (

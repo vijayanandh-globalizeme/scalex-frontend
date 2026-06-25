@@ -10,6 +10,7 @@ export type ApiCourseFile = {
 
 export type ApiCourseOverview = {
   id: string;
+  name: string;
   duration: string | null;
   categoryName: string;
   hasBootcamp: boolean;

@@ -2,8 +2,6 @@
 
 import { Fragment, useEffect, useState } from 'react';
 
-const INITIAL_SECONDS = 4 * 3600 + 38 * 60 + 54;
-
 function TimerDot() {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 8 8" fill="none" aria-hidden>
@@ -24,29 +22,43 @@ function TimerColonSeparator() {
 }
 
 function formatCountdown(totalSeconds: number) {
-  const days = Math.floor(totalSeconds / 86400);
-  const hours = Math.floor((totalSeconds % 86400) / 3600);
+  const days    = Math.floor(totalSeconds / 86400);
+  const hours   = Math.floor((totalSeconds % 86400) / 3600);
   const minutes = Math.floor((totalSeconds % 3600) / 60);
   const seconds = totalSeconds % 60;
 
   return [
-    { label: 'Days', value: String(days).padStart(2, '0') },
+    { label: 'Days',  value: String(days).padStart(2, '0') },
     { label: 'Hours', value: String(hours).padStart(2, '0') },
-    { label: 'Min', value: String(minutes).padStart(2, '0') },
-    { label: 'Sec', value: String(seconds).padStart(2, '0') },
+    { label: 'Min',   value: String(minutes).padStart(2, '0') },
+    { label: 'Sec',   value: String(seconds).padStart(2, '0') },
   ];
 }
 
-export default function TechnicalCourseWebinarCountdown() {
-  const [secondsLeft, setSecondsLeft] = useState(INITIAL_SECONDS);
+function secondsUntil(targetDate: string | null | undefined): number {
+  if (!targetDate) return 0;
+  const diff = Math.floor((new Date(targetDate).getTime() - Date.now()) / 1000);
+  return Math.max(0, diff);
+}
+
+export default function TechnicalCourseWebinarCountdown({
+  targetDate,
+}: {
+  targetDate?: string | null;
+}) {
+  const [secondsLeft, setSecondsLeft] = useState(() => secondsUntil(targetDate));
 
   useEffect(() => {
+    setSecondsLeft(secondsUntil(targetDate));
+
+    if (!targetDate) return;
+
     const timer = window.setInterval(() => {
       setSecondsLeft((current) => (current > 0 ? current - 1 : 0));
     }, 1000);
 
     return () => window.clearInterval(timer);
-  }, []);
+  }, [targetDate]);
 
   const units = formatCountdown(secondsLeft);
 

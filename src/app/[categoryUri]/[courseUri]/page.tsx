@@ -8,6 +8,7 @@ import {
 } from '@/components/course-detail';
 import { getCourseOverview } from '@/app/actions/courseActions';
 import { buildCourseDetailProps, buildTechnicalCourseProps } from '@/lib/coursePropsFromApi';
+import { fetchLayout } from '@/services/layoutApi';
 import { SITE_NAME } from '@/lib/site';
 
 type PageProps = {
@@ -20,7 +21,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   if (!course) return { title: 'Course Not Found' };
 
-  const title = course.seo?.metaTitle ?? course.title;
+  const title       = course.seo?.metaTitle       ?? course.title;
   const description = course.seo?.metaDescription ?? course.details?.aboutContent ?? '';
 
   return {
@@ -30,35 +31,38 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       title: `${title} | ${SITE_NAME}`,
       description,
     },
-    ...(course.seo?.metaKeywords
-      ? { keywords: course.seo.metaKeywords }
-      : {}),
+    ...(course.seo?.metaKeywords ? { keywords: course.seo.metaKeywords } : {}),
   };
 }
 
+const DEFAULT_FORM = {
+  title: "We're Here to Guide Your Success",
+  purposes: [
+    { id: 'career-growth', label: 'Career Growth' },
+    { id: 'certification', label: 'Get Certified' },
+    { id: 'upskill-team', label: 'Upskill My Team' },
+    { id: 'other',        label: 'Other' },
+  ],
+  termsHref:   '/terms',
+  privacyHref: '/privacy',
+  ctaLabel:    'Scale Your Career',
+};
+
 export default async function CourseDetailPage({ params }: PageProps) {
   const { categoryUri, courseUri } = await params;
-  const course = await getCourseOverview(courseUri, categoryUri);
+
+  const [course, layoutData] = await Promise.all([
+    getCourseOverview(courseUri, categoryUri),
+    fetchLayout(),
+  ]);
 
   if (!course) notFound();
 
+  const settings   = layoutData?.settings ?? {};
   const isBootcamp = course.startedAt !== null;
 
-  const DEFAULT_FORM = {
-    title: "We're Here to Guide Your Success",
-    purposes: [
-      { id: 'career-growth', label: 'Career Growth' },
-      { id: 'certification', label: 'Get Certified' },
-      { id: 'upskill-team', label: 'Upskill My Team' },
-      { id: 'other', label: 'Other' },
-    ],
-    termsHref: '/terms',
-    privacyHref: '/privacy',
-    ctaLabel: 'Scale Your Career',
-  };
-
   if (isBootcamp) {
-    const props = buildTechnicalCourseProps(course, categoryUri, courseUri);
+    const props = buildTechnicalCourseProps(course, categoryUri, courseUri, settings);
     return (
       <CourseDetailPageShell form={DEFAULT_FORM}>
         <TechnicalCourseHeroSection {...props} />
@@ -67,7 +71,7 @@ export default async function CourseDetailPage({ params }: PageProps) {
     );
   }
 
-  const props = buildCourseDetailProps(course, categoryUri, courseUri);
+  const props = buildCourseDetailProps(course, categoryUri, courseUri, settings);
   return (
     <CourseDetailPageShell form={DEFAULT_FORM}>
       <CourseDetailHeroSection {...props} />

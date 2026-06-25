@@ -76,12 +76,37 @@ function StarIcon({ className }: { className?: string }) {
   );
 }
 
+function RankedContent({ rankedContent, rankingLine }: { rankedContent?: string; rankingLine: { highlight: string; rest: string } }) {
+  if (rankedContent) {
+    // Parse **bold** segments → text-brand, rest → text-heading
+    const parts = rankedContent.split(/\*\*(.+?)\*\*/g);
+    return (
+      <p className="mt-6 text-[16px] font-bold leading-normal">
+        {parts.map((part, i) =>
+          i % 2 === 1
+            ? <span key={i} className="text-brand">{part}</span>
+            : <span key={i} className="text-heading">{part}</span>,
+        )}
+      </p>
+    );
+  }
+  if (!rankingLine.highlight && !rankingLine.rest) return null;
+  return (
+    <p className="mt-6 text-[16px] font-bold leading-normal">
+      <span className="text-brand">{rankingLine.highlight}</span>{' '}
+      <span className="text-heading">{rankingLine.rest}</span>
+    </p>
+  );
+}
+
 export default function CourseDetailHeroSection({
   breadcrumbs,
   titlePrefix,
   titleAccent,
+  rankedContent,
   features,
   rankingLine,
+  brochureUrl,
   reviews,
   learnersStat,
   primaryCta,
@@ -149,9 +174,11 @@ export default function CourseDetailHeroSection({
               <span className="block text-[26px] font-extrabold leading-[1.4] text-heading sm:text-[34px] md:text-[40px] md:leading-[60px]">
                 {titlePrefix}
               </span>
-              <span className="block text-[32px] font-extrabold leading-[1.3] text-heading sm:text-[42px] md:text-[50px] md:leading-[80px]">
-                {titleAccent}
-              </span>
+              {titleAccent ? (
+                <span className="block text-[32px] font-extrabold leading-[1.3] text-heading sm:text-[42px] md:text-[50px] md:leading-[80px]">
+                  {titleAccent}
+                </span>
+              ) : null}
               <CategoryTitleUnderline />
             </h1>
 
@@ -171,10 +198,7 @@ export default function CourseDetailHeroSection({
               </ul>
             ) : null}
 
-            <p className="mt-6 text-[16px] font-bold leading-normal">
-              <span className="text-brand">{rankingLine.highlight}</span>{' '}
-              <span className="text-heading">{rankingLine.rest}</span>
-            </p>
+            <RankedContent rankedContent={rankedContent} rankingLine={rankingLine} />
 
             <div className="mt-8 flex flex-wrap items-center gap-x-10 gap-y-5">
               {reviews.map((review) => (
@@ -216,21 +240,28 @@ export default function CourseDetailHeroSection({
             </div>
 
             <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:gap-[30px]">
-              {isBrochureCta ? (
-                <button
-                  type="button"
-                  onClick={openBrochureModal}
-                  className="btn-brand h-[54px] w-full cursor-pointer gap-2 px-6 sm:w-auto md:px-7"
-                >
-                  {primaryCta.label}
-                  <ArrowRightIcon className="btn-arrow-icon shrink-0" />
-                </button>
-              ) : (
-                <Link href={primaryCta.href} className="btn-brand h-[54px] w-full gap-2 px-6 sm:w-auto md:px-7">
-                  {primaryCta.label}
-                  <ArrowRightIcon className="btn-arrow-icon shrink-0" />
-                </Link>
-              )}
+              {brochureUrl ? (
+                isBrochureCta ? (
+                  <button
+                    type="button"
+                    onClick={openBrochureModal}
+                    className="btn-brand h-[54px] w-full cursor-pointer gap-2 px-6 sm:w-auto md:px-7"
+                  >
+                    Download Brochure
+                    <ArrowRightIcon className="btn-arrow-icon shrink-0" />
+                  </button>
+                ) : (
+                  <a
+                    href={brochureUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn-brand inline-flex h-[54px] w-full items-center justify-center gap-2 px-6 sm:w-auto md:px-7"
+                  >
+                    Download Brochure
+                    <ArrowRightIcon className="btn-arrow-icon shrink-0" />
+                  </a>
+                )
+              ) : null}
               <Link
                 href={secondaryCta.href}
                 className="btn-brand-outline inline-flex h-[54px] w-full items-center justify-center gap-[18px] px-6 text-sm font-semibold sm:w-auto md:px-8 md:text-[15px]"

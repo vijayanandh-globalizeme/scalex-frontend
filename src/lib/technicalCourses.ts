@@ -16,6 +16,8 @@ export type TechnicalCourseContent = CourseDetailContent & {
   heroBadges: HeroBadge[];
   collaboration: { alt: string; src: string }[];
   hiringPartners: CoursePartnerLogo[];
+  /** ISO date string; countdown ticks down to this date */
+  startedAt?: string | null;
 };
 
 const TECHNICAL_FEATURE_ROWS: [string, string][] = [

@@ -17,12 +17,17 @@ export interface CourseDetailContent {
   categorySlug: string;
   breadcrumbs: CourseBreadcrumb[];
   titlePrefix: string;
-  titleAccent: string;
-  features: string[];
+  titleAccent?: string;
+  /** Raw ranked content string; **bold** segments get text-brand styling */
+  rankedContent?: string;
+  /** Legacy split ranking line — used when rankedContent is absent */
   rankingLine: {
     highlight: string;
     rest: string;
   };
+  features: string[];
+  /** If set, shows the Download Brochure button */
+  brochureUrl?: string | null;
   reviews: CategoryReview[];
   learnersStat: CategoryLearnersStat;
   primaryCta: { href: string; label: string };
