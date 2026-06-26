@@ -1,5 +1,7 @@
 import Image from 'next/image';
-import type { CourseFeeContent, CourseFeePartnerLogo } from '@/lib/courseBody';
+import type { CourseFeePartnerLogo } from '@/lib/courseBody';
+import type { ApiCoursePlanBatch } from '@/services/courseApi';
+import { COURSE_FEE_STATIC } from '@/lib/courseDetailStatics';
 import CourseBrochureCta from './CourseBrochureCta';
 import { COURSE_SECTION_CARD } from './courseSectionCard';
 
@@ -34,18 +36,8 @@ function FeeFeatureIcon() {
     <span className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#FFF0F0]">
       <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden>
         <circle cx="9" cy="9" r="6.5" stroke="#FD022D" strokeWidth="1.4" />
-        <path
-          d="M9 9L9 5.5"
-          stroke="#FD022D"
-          strokeWidth="1.4"
-          strokeLinecap="round"
-        />
-        <path
-          d="M9 9L11.8 10.6"
-          stroke="#FD022D"
-          strokeWidth="1.4"
-          strokeLinecap="round"
-        />
+        <path d="M9 9L9 5.5" stroke="#FD022D" strokeWidth="1.4" strokeLinecap="round" />
+        <path d="M9 9L11.8 10.6" stroke="#FD022D" strokeWidth="1.4" strokeLinecap="round" />
         <circle cx="9" cy="9" r="1" fill="#FD022D" />
       </svg>
     </span>
@@ -66,7 +58,6 @@ function PartnerLogo({ partner }: { partner: CourseFeePartnerLogo }) {
       </div>
     );
   }
-
   if (partner.name === 'HDFC BANK') {
     return (
       <div className="flex h-8 shrink-0 items-center rounded bg-[#004C8F] px-2">
@@ -74,7 +65,6 @@ function PartnerLogo({ partner }: { partner: CourseFeePartnerLogo }) {
       </div>
     );
   }
-
   if (partner.name === 'ICICI Bank') {
     return (
       <div className="flex h-8 shrink-0 items-center gap-1">
@@ -83,7 +73,6 @@ function PartnerLogo({ partner }: { partner: CourseFeePartnerLogo }) {
       </div>
     );
   }
-
   if (partner.name === 'BAJAJ FINSERV') {
     return (
       <div className="flex h-8 shrink-0 items-center">
@@ -91,57 +80,91 @@ function PartnerLogo({ partner }: { partner: CourseFeePartnerLogo }) {
       </div>
     );
   }
-
-  return (
-    <span className="text-[11px] font-semibold text-[#1E293B]">{partner.name}</span>
-  );
+  return <span className="text-[11px] font-semibold text-[#1E293B]">{partner.name}</span>;
 }
 
 function PricingCard({
-  option,
+  label,
+  price,
+  priceSuffix,
+  description,
+  enrollLabel,
+  highlighted,
+  badge,
+  isEmi,
 }: {
-  option: CourseFeeContent['pricingOptions'][number];
+  label: string;
+  price: string;
+  priceSuffix?: string;
+  description: string;
+  enrollLabel: string;
+  highlighted?: boolean;
+  badge?: string;
+  isEmi?: boolean;
 }) {
-  const isHighlighted = option.highlighted;
-
   return (
     <div
       className={`relative flex w-full min-w-0 flex-col rounded-[20px] border bg-white p-5 shadow-[0_4px_4px_0_rgba(30,41,59,0.08),0_4px_4px_0_rgba(30,41,59,0.03)] sm:w-[232px] ${
-        isHighlighted ? 'border-[#FD022D]' : 'border-[#EBEBEB]'
+        highlighted ? 'border-[#FD022D]' : 'border-[#EBEBEB]'
       }`}
-      style={
-        isHighlighted
-          ? { background: 'linear-gradient(180deg, #FFF6F7 0%, #FFFFFF 28%)' }
-          : undefined
-      }
+      style={highlighted ? { background: 'linear-gradient(180deg, #FFF6F7 0%, #FFFFFF 28%)' } : undefined}
     >
-      {option.badge ? (
+      {badge ? (
         <span className="absolute top-4 right-4 rounded-lg bg-[#FFF6F7] px-2 py-0.5 text-[10px] font-medium leading-normal text-[#FD022D]">
-          {option.badge}
+          {badge}
         </span>
       ) : null}
-      <p className="pr-16 text-[14px] font-medium leading-[140%] text-[#788593]">{option.label}</p>
+      <p className="pr-16 text-[14px] font-medium leading-[140%] text-[#788593]">{label}</p>
       <div className="mt-2 flex flex-wrap items-baseline gap-1">
-        <span className="text-[24px] font-bold leading-[140%] text-[#1E293B]">{option.price}</span>
-        {option.priceSuffix ? (
-          <span className="text-[14px] font-medium leading-[140%] text-[#788593]">
-            {option.priceSuffix}
-          </span>
+        <span className="text-[24px] font-bold leading-[140%] text-[#1E293B]">{price}</span>
+        {priceSuffix ? (
+          <span className="text-[14px] font-medium leading-[140%] text-[#788593]">{priceSuffix}</span>
         ) : null}
       </div>
-      <p className="mt-3 text-[13px] font-normal leading-[150%] text-[#788593]">{option.description}</p>
-      <CourseBrochureCta
-        openModal
-        className="btn-brand-outline btn-brand-outline--flat mt-5 inline-flex h-[40px] w-full items-center justify-center gap-2 rounded-lg bg-white px-4 text-[12px] font-medium leading-[18px]"
-      >
-        {option.enrollLabel}
-        <ArrowRightIcon className="btn-arrow-icon shrink-0 text-brand" />
-      </CourseBrochureCta>
+      <p className="mt-3 text-[13px] font-normal leading-[150%] text-[#788593]">{description}</p>
+      {isEmi ? (
+        <a
+          href="tel:"
+          className="btn-brand-outline btn-brand-outline--flat mt-5 inline-flex h-[40px] w-full items-center justify-center gap-2 rounded-lg bg-white px-4 text-[12px] font-medium leading-[18px]"
+        >
+          {enrollLabel}
+          <PhoneIcon className="shrink-0 text-brand" />
+        </a>
+      ) : (
+        <CourseBrochureCta
+          openModal
+          className="btn-brand-outline btn-brand-outline--flat mt-5 inline-flex h-[40px] w-full items-center justify-center gap-2 rounded-lg bg-white px-4 text-[12px] font-medium leading-[18px]"
+        >
+          {enrollLabel}
+          <ArrowRightIcon className="btn-arrow-icon shrink-0 text-brand" />
+        </CourseBrochureCta>
+      )}
     </div>
   );
 }
 
-export default function CourseFeeSection({ content }: { content: CourseFeeContent }) {
+export default function CourseFeeSection({
+  batch,
+  advisorPhone,
+}: {
+  batch: ApiCoursePlanBatch;
+  advisorPhone?: string | null;
+}) {
+  if (!batch?.plan1HasEMI) return null;
+
+  const s = COURSE_FEE_STATIC;
+  const sym = batch.currencySymbol ?? '₹';
+
+  const emiPrice = batch.plan1SellingPrice && batch.plan1EMIMonthCount
+    ? `${sym}${Math.ceil(Number(batch.plan1SellingPrice) / batch.plan1EMIMonthCount).toLocaleString('en-IN')}`
+    : null;
+
+  const fullPrice = batch.plan1SellingPrice
+    ? `${sym}${Number(batch.plan1SellingPrice).toLocaleString('en-IN')}`
+    : null;
+
+  const phone = advisorPhone ?? '';
+
   return (
     <section
       id="course-fee"
@@ -150,45 +173,42 @@ export default function CourseFeeSection({ content }: { content: CourseFeeConten
     >
       <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
         <div>
-          <h2
-            id="course-fee-heading"
-            className="text-[34px] font-bold leading-[140%] text-[#1E293B]"
-          >
-            {content.title}
+          <h2 id="course-fee-heading" className="text-[34px] font-bold leading-[140%] text-[#1E293B]">
+            {s.title}
           </h2>
           <p className="mt-1 max-w-2xl text-[18px] font-medium leading-[140%] text-[#788593]">
-            {content.subtitle}
+            {s.subtitle}
           </p>
         </div>
-        <a
-          href={`tel:${content.advisorPhone.replace(/[^\d+]/g, '')}`}
-          className="btn-brand-outline btn-brand-outline--flat inline-flex h-10 shrink-0 items-center justify-center gap-2 self-start rounded-lg px-5 text-[14px] font-semibold sm:self-auto"
-        >
-          {content.advisorCtaLabel}
-          <PhoneIcon className="text-brand" />
-        </a>
+        {phone ? (
+          <a
+            href={`tel:${phone.replace(/[^\d+]/g, '')}`}
+            className="btn-brand-outline btn-brand-outline--flat inline-flex h-10 shrink-0 items-center justify-center gap-2 self-start rounded-lg px-5 text-[14px] font-semibold sm:self-auto"
+          >
+            {s.advisorCtaLabel}
+            <PhoneIcon className="text-brand" />
+          </a>
+        ) : null}
       </div>
 
       <div className="mt-10 flex flex-col gap-10 xl:flex-row xl:items-start xl:justify-between xl:gap-12">
         <div className="min-w-0 xl:max-w-[360px]">
-          <h3 className="text-[20px] font-bold leading-[140%] text-[#1E293B]">{content.infoHeading}</h3>
+          <h3 className="text-[20px] font-bold leading-[140%] text-[#1E293B]">{s.infoHeading}</h3>
           <ul className="mt-6 space-y-5" role="list">
-            {content.features.map((feature) => (
+            {s.features.map((feature) => (
               <li key={feature.title} className="flex gap-3">
                 <FeeFeatureIcon />
                 <div>
                   <p className="text-[14px] font-bold leading-[140%] text-[#1E293B]">{feature.title}</p>
-                  <p className="mt-1 text-[13px] font-normal leading-[150%] text-[#788593]">
-                    {feature.description}
-                  </p>
+                  <p className="mt-1 text-[13px] font-normal leading-[150%] text-[#788593]">{feature.description}</p>
                 </div>
               </li>
             ))}
           </ul>
           <div className="mt-8">
-            <p className="text-[13px] font-normal leading-[150%] text-[#788593]">{content.partnersLabel}</p>
+            <p className="text-[13px] font-normal leading-[150%] text-[#788593]">{s.partnersLabel}</p>
             <div className="mt-3 flex flex-wrap items-center gap-4 gap-y-3">
-              {content.partnerLogos.map((partner) => (
+              {s.partnerLogos.map((partner) => (
                 <PartnerLogo key={partner.name} partner={partner} />
               ))}
             </div>
@@ -196,9 +216,26 @@ export default function CourseFeeSection({ content }: { content: CourseFeeConten
         </div>
 
         <div className="flex min-w-0 flex-col gap-4 sm:flex-row sm:justify-end xl:shrink-0">
-          {content.pricingOptions.map((option) => (
-            <PricingCard key={option.id} option={option} />
-          ))}
+          {emiPrice ? (
+            <PricingCard
+              label={s.emiLabel}
+              price={emiPrice}
+              priceSuffix={s.emiSuffix}
+              description={s.emiDescription}
+              enrollLabel={s.emiEnrollLabel}
+              highlighted
+              badge="Popular"
+              isEmi
+            />
+          ) : null}
+          {fullPrice ? (
+            <PricingCard
+              label={s.fullLabel}
+              price={fullPrice}
+              description={s.fullDescription}
+              enrollLabel={s.fullEnrollLabel}
+            />
+          ) : null}
         </div>
       </div>
     </section>

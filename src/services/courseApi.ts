@@ -253,3 +253,59 @@ export async function fetchCourses(options: { categoryId?: string; limit?: numbe
   const json = await get<CoursesApiResponse>(`courses?${params.toString()}`, { revalidate: 0 });
   return json?.success ? (json.data.items ?? []) : [];
 }
+
+// ── Course Plans ──────────────────────────────────────────────────────────────
+
+export type ApiCoursePlan = {
+  planNumber: number;
+  name: string;
+  btnName: string | null;
+  tagline: string | null;
+  isTrending: boolean;
+  moneyBack: boolean;
+};
+
+export type ApiCoursePlanFeature = {
+  id: string;
+  title: string;
+  priority: number;
+  plan1: boolean;
+  plan2: boolean;
+  plan3: boolean;
+};
+
+export type ApiCoursePlanBatch = {
+  id: string;
+  startDate: string;
+  noOfSessions: string;
+  currency: string;
+  currencySymbol: string;
+  plan1RetailPrice: string | null;
+  plan1SellingPrice: string | null;
+  plan1HasEMI: boolean;
+  plan1EMIMonthCount: number | null;
+  plan2RetailPrice: string | null;
+  plan2SellingPrice: string | null;
+  plan3RetailPrice: string | null;
+  plan3SellingPrice: string | null;
+};
+
+export type ApiCoursePlansData = {
+  plans: ApiCoursePlan[];
+  features: ApiCoursePlanFeature[];
+  batch: ApiCoursePlanBatch;
+};
+
+type CoursePlansApiResponse = { success: boolean; data: ApiCoursePlansData };
+
+export async function fetchCoursePlans(
+  courseUri: string,
+  categoryUri: string,
+): Promise<ApiCoursePlansData | null> {
+  const params = new URLSearchParams({ categoryUri });
+  const json = await get<CoursePlansApiResponse>(
+    `course/${courseUri}/plans?${params.toString()}`,
+    { revalidate: 300, tags: [`course-${courseUri}-plans`] },
+  );
+  return json?.success ? (json.data ?? null) : null;
+}

@@ -25,6 +25,8 @@ import CourseProgramRoadmapSection from './CourseProgramRoadmapSection';
 import CourseWebinarCtaSection from './CourseWebinarCtaSection';
 import CoursePrepComparisonSection from './CoursePrepComparisonSection';
 import CourseCareerTransformationsSection from './CourseCareerTransformationsSection';
+import CourseCareerAssuranceSection from './CourseCareerAssuranceSection';
+import CoursePricingSection from './CoursePricingSection';
 
 export default async function CourseDetailBodySection({
   courseUri,
@@ -104,9 +106,22 @@ export default async function CourseDetailBodySection({
               />
             ) : null}
 
-            {isTechnical && details?.eligibility ? (
+            {!isTechnical ? (
               <CourseBatchRequestBanner banner={UNLOCK_COURSE_BANNER} className="pb-6 md:pb-8" />
             ) : null}
+
+            {isTechnical ? (
+              <CourseCareerAssuranceSection />
+            ) : null}
+
+            {courseUri && categoryUri ? (
+              <CoursePricingSection
+                courseUri={courseUri}
+                categoryUri={categoryUri}
+                advisorPhone={settings?.CONTACT_PHONE_NO ?? phone}
+              />
+            ) : null}
+            
 
             {isTechnical && details?.eligibility ? (
               <CourseEligibilityRequirementsSection eligibilityRequirements={details.eligibility} />

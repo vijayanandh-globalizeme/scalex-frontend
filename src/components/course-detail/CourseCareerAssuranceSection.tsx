@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import type { CSSProperties } from 'react';
-import type { CourseCareerAssuranceContent } from '@/lib/courseBody';
+import { CAREER_ASSURANCE } from '@/lib/courseDetailStatics';
 import CourseBrochureCta from './CourseBrochureCta';
 
 const ASSURANCE_BANNER_SURFACE =
@@ -135,11 +135,8 @@ function DownloadIcon({ className }: { className?: string }) {
   );
 }
 
-export default function CourseCareerAssuranceSection({
-  content,
-}: {
-  content: CourseCareerAssuranceContent;
-}) {
+export default function CourseCareerAssuranceSection() {
+  const content = CAREER_ASSURANCE;
   return (
     <section
       id="career-assurance"
@@ -212,8 +209,7 @@ export default function CourseCareerAssuranceSection({
           </ul>
 
           <CourseBrochureCta
-            href={content.ctaHref}
-            openModal={!content.ctaHref}
+            openModal
             className="btn-brand mt-6 inline-flex h-10 w-fit items-center justify-center gap-2 rounded-lg px-5 text-[13px] font-semibold leading-[18px] text-white sm:text-[14px]"
           >
             {content.ctaLabel}

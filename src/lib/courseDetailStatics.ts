@@ -205,3 +205,47 @@ export const BOOTCAMP_TABLE = {
     { offering: "All-In-One Platform", values: [false, true] },
   ],
 };
+
+export const COURSE_FEE_STATIC = {
+  title: 'Course Fee',
+  subtitle: 'Access to global opportunities made accessible and affordable',
+  advisorCtaLabel: 'Talk to Advisor',
+  infoHeading: "Your Career Can't Wait, We Make It Affordable",
+  features: [
+    { title: 'Connect with Admissions', description: 'Discuss program & payment options' },
+    { title: 'Start Your Journey',      description: 'Begin learning with full support' },
+  ],
+  partnersLabel: 'In Partner with',
+  partnerLogos: [
+    { name: 'HDFC BANK',     logoSrc: '/images/HDFC_Bank_Logo.png' },
+    { name: 'ICICI Bank',    logoSrc: '/images/ICICI_Bank_Logo.png' },
+    { name: 'BAJAJ FINSERV', logoSrc: '/images/Bajaj_Finserv_Logo.png' },
+  ],
+  emiLabel:     'Pay in EMI',
+  emiSuffix:    '/month',
+  emiDescription: 'Pay in easy monthly installments. Financing options for as low as 0% interest',
+  emiEnrollLabel: 'Contact Us',
+  fullLabel:       'Pay in Full',
+  fullDescription: 'Secure One-Time Pay through Internet Banking, Debit/Card & Digital Wallets',
+  fullEnrollLabel: 'Enroll Now',
+};
+
+export const COURSE_PLAN_COMPARISON_STATIC = {
+  subtitle: 'Unlock more features and benefits by upgrading your plan',
+  featuresColumnLabel: 'Features',
+};
+
+export const CAREER_ASSURANCE = {
+  brandTitle: 'Learning Career Assurance+',
+  subheading:
+    'Empower your team with industry-leading skills and custom learning pathways.',
+  features: [
+    { id: 'hiring-partners', label: 'Exclusive Access to 1200+ Hiring Partners' },
+    { id: 'fresher-drives', label: 'Exclusive Access to Fresher Hiring Drives' },
+    { id: 'pre-interview', label: 'Pre-Interview Dedicated Support' },
+    { id: 'post-placement', label: '6-Month Post-Placement Support' },
+  ],
+  ctaLabel: 'Download Placement Report 2026',
+  imageSrc: '/images/julio-lopez.png',
+  imageAlt: 'Career advisor with arms crossed',
+};
