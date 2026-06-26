@@ -90,7 +90,11 @@ function buildBaseProps(
   categoryUri: string,
   courseUri: string,
   settings: LayoutSettings,
+  scheduleBasePath?: string,
 ): Omit<CourseDetailContent, 'slug' | 'categorySlug'> {
+  const schedulePath = scheduleBasePath
+    ? `${scheduleBasePath}/schedule`
+    : `/${categoryUri}/${courseUri}/schedule`;
   return {
     breadcrumbs: [
       { label: course.categoryName, href: `/${categoryUri}` },
@@ -104,8 +108,8 @@ function buildBaseProps(
     brochureUrl:   course.details?.brochure?.url ?? null,
     reviews:       buildReviews(settings),
     learnersStat:  buildLearnersStat(settings),
-    primaryCta:    { href: '#schedules', label: 'View Schedules' },
-    secondaryCta:  { href: '#schedules', label: 'View Schedules' },
+    primaryCta:    { href: schedulePath, label: 'View Schedules' },
+    secondaryCta:  { href: schedulePath, label: 'View Schedules' },
     licensedPartner: {
       label:   'Licensed Training Partner',
       logoSrc: '/images/course/scrum-alliance.png',
@@ -139,11 +143,12 @@ export function buildCourseDetailProps(
   categoryUri: string,
   courseUri: string,
   settings: LayoutSettings,
+  scheduleBasePath?: string,
 ): CourseDetailContent {
   return {
     slug:         courseUri,
     categorySlug: categoryUri,
-    ...buildBaseProps(course, categoryUri, courseUri, settings),
+    ...buildBaseProps(course, categoryUri, courseUri, settings, scheduleBasePath),
   };
 }
 
@@ -152,11 +157,12 @@ export function buildTechnicalCourseProps(
   categoryUri: string,
   courseUri: string,
   settings: LayoutSettings,
+  scheduleBasePath?: string,
 ): TechnicalCourseContent {
   return {
     slug:         courseUri,
     categorySlug: categoryUri,
-    ...buildBaseProps(course, categoryUri, courseUri, settings),
+    ...buildBaseProps(course, categoryUri, courseUri, settings, scheduleBasePath),
     heroTitle:  course.title,
     startedAt:  course.startedAt,
     featureRows: [

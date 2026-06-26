@@ -54,8 +54,11 @@ type CourseOverviewApiResponse = {
 export async function fetchCourseOverview(
   courseUri: string,
   categoryUri: string,
+  options?: { countryUri?: string; cityUri?: string },
 ): Promise<ApiCourseOverview | null> {
   const params = new URLSearchParams({ categoryUri });
+  if (options?.countryUri) params.set('countryUri', options.countryUri);
+  if (options?.cityUri) params.set('cityUri', options.cityUri);
   const json = await get<CourseOverviewApiResponse>(
     `course/${courseUri}?${params.toString()}`,
     { revalidate: 300, tags: [`course-${courseUri}`] },
@@ -127,8 +130,11 @@ type CourseDetailsApiResponse = {
 export async function fetchCourseDetails(
   courseUri: string,
   categoryUri: string,
+  options?: { countryUri?: string; cityUri?: string },
 ): Promise<ApiCourseDetails | null> {
   const params = new URLSearchParams({ categoryUri });
+  if (options?.countryUri) params.set('countryUri', options.countryUri);
+  if (options?.cityUri) params.set('cityUri', options.cityUri);
   const json = await get<CourseDetailsApiResponse>(
     `course/${courseUri}/details?${params.toString()}`,
     { revalidate: 300, tags: [`course-${courseUri}-details`] },
@@ -153,8 +159,11 @@ type LearnersApiResponse = { success: boolean; data: { learners: ApiLearner[] } 
 export async function fetchCourseLearners(
   courseUri: string,
   categoryUri: string,
+  options?: { countryUri?: string; cityUri?: string },
 ): Promise<ApiLearner[]> {
   const params = new URLSearchParams({ categoryUri });
+  if (options?.countryUri) params.set('countryUri', options.countryUri);
+  if (options?.cityUri) params.set('cityUri', options.cityUri);
   const json = await get<LearnersApiResponse>(
     `course/${courseUri}/learners?${params.toString()}`,
     { revalidate: 300, tags: [`course-${courseUri}-learners`] },
@@ -243,6 +252,70 @@ type CoursesApiResponse = {
   };
 };
 
+// ── Course Batches (Schedules) ────────────────────────────────────────────────
+
+export type ApiCourseBatch = {
+  id: string;
+  isTrending: boolean;
+  availability: string;
+  dayType: string;
+  startDate: string;
+  endDate: string;
+  startTime: string;
+  endTime: string;
+  noOfSessions: string;
+  venue: string;
+  plan1RetailPrice: string | null;
+  plan1SellingPrice: string | null;
+  plan1HasEMI: boolean;
+  plan1EMIMonthCount: number | null;
+  plan2RetailPrice: string | null;
+  plan2SellingPrice: string | null;
+  plan3RetailPrice: string | null;
+  plan3SellingPrice: string | null;
+  trainerName: string;
+  currency: string;
+  currencySymbol: string;
+  timezone: string;
+};
+
+type CourseBatchesApiResponse = { success: boolean; data: { batches: ApiCourseBatch[] } };
+
+export async function fetchCourseBatches(
+  courseUri: string,
+  categoryUri: string,
+  filter?: string,
+): Promise<ApiCourseBatch[]> {
+  const params = new URLSearchParams({ categoryUri });
+  if (filter) params.set('filter', filter);
+  const json = await get<CourseBatchesApiResponse>(
+    `course/${courseUri}/batches?${params.toString()}`,
+    { revalidate: 0 },
+  );
+  return json?.success ? (json.data.batches ?? []) : [];
+}
+
+// ── Course Locations ──────────────────────────────────────────────────────────
+
+export type ApiCourseLocation = {
+  countryId: string;
+  countryName: string;
+  countryUri: string;
+  cityId: string | null;
+  cityName: string | null;
+  cityUri: string | null;
+};
+
+type CourseLocationsApiResponse = { success: boolean; data: { locations: ApiCourseLocation[] } };
+
+export async function fetchCourseLocations(courseUri: string): Promise<ApiCourseLocation[]> {
+  const json = await get<CourseLocationsApiResponse>(
+    `course/${courseUri}/locations`,
+    { revalidate: 300, tags: [`course-${courseUri}-locations`] },
+  );
+  return json?.success ? (json.data.locations ?? []) : [];
+}
+
 export async function fetchRelatedCourses(courseUri: string): Promise<ApiCourse[]> {
   const params = new URLSearchParams({ courseUri, limit: '12', offset: '0' });
   const json = await get<CoursesApiResponse>(`course/fetch?${params.toString()}`, {
@@ -310,8 +383,11 @@ type CoursePlansApiResponse = { success: boolean; data: ApiCoursePlansData };
 export async function fetchCoursePlans(
   courseUri: string,
   categoryUri: string,
+  options?: { countryUri?: string; cityUri?: string },
 ): Promise<ApiCoursePlansData | null> {
   const params = new URLSearchParams({ categoryUri });
+  if (options?.countryUri) params.set('countryUri', options.countryUri);
+  if (options?.cityUri) params.set('cityUri', options.cityUri);
   const json = await get<CoursePlansApiResponse>(
     `course/${courseUri}/plans?${params.toString()}`,
     { revalidate: 300, tags: [`course-${courseUri}-plans`] },

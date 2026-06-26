@@ -61,7 +61,7 @@ export default function CourseSkillsToolsSection({
 
   return (
     <section
-      id="skills-tools"
+      id="skill-and-tool"
       className={`scroll-mt-[116px] px-6 py-5 md:px-8 md:py-6 ${COURSE_SECTION_CARD}`}
       aria-labelledby="skills-tools-heading"
     >

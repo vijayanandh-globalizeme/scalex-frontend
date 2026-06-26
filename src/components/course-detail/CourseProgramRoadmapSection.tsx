@@ -354,7 +354,7 @@ export default function CourseProgramRoadmapSection({
   };
 
   return (
-    <section id="program-roadmap" className={`relative scroll-mt-[116px] px-6 py-5 pr-10 md:px-8 md:py-6 md:pr-12 ${COURSE_SECTION_CARD}`} aria-labelledby="program-roadmap-heading">
+    <section id="roadmap" className={`relative scroll-mt-[116px] px-6 py-5 pr-10 md:px-8 md:py-6 md:pr-12 ${COURSE_SECTION_CARD}`} aria-labelledby="program-roadmap-heading">
       <div
         className="transition-opacity duration-200"
         style={{ opacity: fading ? 0 : 1 }}

@@ -28,6 +28,7 @@ import CourseCareerTransformationsSection from './CourseCareerTransformationsSec
 import CourseCareerAssuranceSection from './CourseCareerAssuranceSection';
 import CoursePricingSection from './CoursePricingSection';
 import CourseRelatedCoursesSection from './CourseRelatedCoursesSection';
+import CourseTrainingCitiesSection from './CourseTrainingCitiesSection';
 
 export default async function CourseDetailBodySection({
   courseUri,
@@ -36,6 +37,8 @@ export default async function CourseDetailBodySection({
   phone,
   courseDetails,
   settings,
+  countryUri,
+  cityUri,
 }: {
   courseUri: string;
   categoryUri: string;
@@ -43,6 +46,8 @@ export default async function CourseDetailBodySection({
   phone?: string;
   courseDetails?: ApiCourseOverview | null;
   settings?: LayoutSettings;
+  countryUri?: string;
+  cityUri?: string;
 }) {
   const d = courseDetails?.details;
 
@@ -58,9 +63,10 @@ export default async function CourseDetailBodySection({
   const hasBootcamp    = courseDetails?.hasBootcamp        ?? false;
 
   const navItems = isTechnical ? BOOTCAMP_NAV_ITEMS : COURSE_NAV_ITEMS;
+  const locationOpts = { countryUri, cityUri };
   const [details, learners] = await Promise.all([
-    getCourseDetails(courseUri, categoryUri),
-    isTechnical ? getCourseLearners(courseUri, categoryUri) : Promise.resolve([]),
+    getCourseDetails(courseUri, categoryUri, locationOpts),
+    isTechnical ? getCourseLearners(courseUri, categoryUri, locationOpts) : Promise.resolve([]),
   ]);
 
   return (
@@ -120,6 +126,8 @@ export default async function CourseDetailBodySection({
                 courseUri={courseUri}
                 categoryUri={categoryUri}
                 advisorPhone={settings?.CONTACT_PHONE_NO ?? phone}
+                countryUri={countryUri}
+                cityUri={cityUri}
               />
             ) : null}
             
@@ -180,12 +188,16 @@ export default async function CourseDetailBodySection({
               variant="embedded"
             />
             <CourseAboutCertificationSection title={aboutTitle} content={aboutContent} />
+            
+            {courseUri && categoryUri ? (
+              <CourseRelatedCoursesSection courseUri={courseUri} />
+            ) : null}
+
+
+            <CourseTrainingCitiesSection courseUri={courseUri} categoryUri={categoryUri} />
           </div>
           <CourseDetailSidebar sidebar={sidebar} />
 
-          {courseUri && categoryUri ? (
-            <CourseRelatedCoursesSection courseUri={courseUri} />
-          ) : null}
 
         </div>
       </div>
