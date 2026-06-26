@@ -20,6 +20,8 @@ import CourseCredentialsSection from './CourseCredentialsSection';
 import CourseTrainersSection from './CourseTrainersSection';
 import CourseReviewsSection from './CourseReviewsSection';
 import CourseEligibilityRequirementsSection from './CourseEligibilityRequirementsSection';
+import CourseSkillsToolsSection from './CourseSkillsToolsSection';
+import CourseProgramRoadmapSection from './CourseProgramRoadmapSection';
 
 export default async function CourseDetailBodySection({
   courseUri,
@@ -73,7 +75,13 @@ export default async function CourseDetailBodySection({
             ) : null}
 
             {isTechnical && details ? (
-              <CourseEligibilityRequirementsSection eligibilityRequirements={details.eligibility} />
+              <>
+                <CourseSkillsToolsSection
+                  skillsTools={details.skillsTools}
+                  tools={details.otherDetails.filter((d) => d.type === 'TOOLS')}
+                />
+                <CourseEligibilityRequirementsSection eligibilityRequirements={details.eligibility} />
+              </>
             ) : null}
 
             <CourseTrainersSection
@@ -93,7 +101,6 @@ export default async function CourseDetailBodySection({
               categoryUri={categoryUri}
               title={reviewsTitle ?? 'Learner Reviews'}
               settings={settings ?? {}}
-              videoUrl={reviewVideoUrl}
             />
             {details ? (
               <>

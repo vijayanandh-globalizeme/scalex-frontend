@@ -4,6 +4,8 @@ export const COURSE_CONTENT_SYLLABUS_LABEL = "Download Syllabus";
 export const COURSE_OVERVIEW_STANDOUT_TITLE = "Most Standout Features";
 export const COURSE_OVERVIEW_SKILLS_TITLE = "Skills Covered";
 export const COURSE_OVERVIEW_DEMAND_LABEL = "of enterprises level skill";
+export const SKILLS_TOOLS_SKILLS_TITLE    = 'Skills';
+export const SKILLS_TOOLS_TOOLS_TITLE     = 'Tools & Technologies';
 
 export const CAREER_SECTION_TITLE = "Accelerate Your Career";
 export const CAREER_SALARY_SUBTITLE = "Annual Salary in India (INR)";

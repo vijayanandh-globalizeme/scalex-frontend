@@ -94,7 +94,7 @@ export type ApiCourseDetails = {
     subContent: string;
     certificationImage: ApiCourseFile | null;
   } | null;
-  skillsTools: unknown | null;
+  skillsTools: { title: string; description: string; skill: string } | null;
   roadmaps: unknown[];
   otherDetails: ApiOtherDetail[];
 };
