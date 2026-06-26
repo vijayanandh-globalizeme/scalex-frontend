@@ -13,7 +13,7 @@ const CHANDRA_CAREER_STORY = {
   id: 'chandra-uthhappu',
   name: 'Chandra Uthhappu',
   quote:
-    "My time with ScaleX Learning has been invaluable in shaping my professional journey. It's more than just training — the hands-on Gen AI projects and mentor support helped me transition into a high-impact role at a leading AI company.",
+    "My time with EdgeX Learning has been invaluable in shaping my professional journey. It's more than just training — the hands-on Gen AI projects and mentor support helped me transition into a high-impact role at a leading AI company.",
   hikePercent: 80,
   imageSrc: '/images/carrowr-transportation.png',
   imageAlt: 'Chandra Uthhappu holding a laptop',
@@ -54,7 +54,7 @@ function buildTechnicalBody(def: TechnicalCourseDefinition): CourseBodyContent {
     overview: {
       ...BASE.overview,
       title: def.heroTitle.includes('Gen AI') ? 'Gen AI Course Overview' : `${def.heroTitle} Overview`,
-      description: `Accelerate your career with ScaleX's ${def.heroTitle} program. Delivered by industry experts, this immersive training equips you with real-world data analytics skills, Gen AI tools, and hands-on projects to drive business insights, build predictive models, and unlock high-growth opportunities at leading tech companies.`,
+      description: `Accelerate your career with EdgeX's ${def.heroTitle} program. Delivered by industry experts, this immersive training equips you with real-world data analytics skills, Gen AI tools, and hands-on projects to drive business insights, build predictive models, and unlock high-growth opportunities at leading tech companies.`,
       standoutTitle: 'Most Standout Features',
       features: BASE.overview.features,
       skillsTitle: 'Skills Covered',
@@ -208,7 +208,7 @@ function buildTechnicalBody(def: TechnicalCourseDefinition): CourseBodyContent {
                     'Real hiring simulations that build composure and clarity.',
                 },
                 {
-                  title: 'Access to ScaleX Job Portal',
+                  title: 'Access to EdgeX Job Portal',
                   description:
                     'Real hiring simulations that build composure and clarity.',
                 },
@@ -465,7 +465,7 @@ function buildTechnicalBody(def: TechnicalCourseDefinition): CourseBodyContent {
       sideHeading: {
         heading: 'Why This Program',
         paragraphs: [
-          `ScaleX ${def.menuLabel} is designed for learners who want practical, job-focused training — not just theory.`,
+          ` EdgeX ${def.menuLabel} is designed for learners who want practical, job-focused training — not just theory.`,
           'With live instruction, hands-on labs, and placement support, you graduate ready to contribute from day one.',
         ],
       },

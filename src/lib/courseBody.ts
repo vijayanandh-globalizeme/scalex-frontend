@@ -514,7 +514,7 @@ const CSM_BODY: CourseBodyContent = {
     { id: 'trainers', label: 'Trainers', href: '#trainers' },
     { id: 'reviews', label: 'Reviews', href: '#reviews' },
     { id: 'faqs', label: 'FAQs', href: '#faqs' },
-    { id: 'why-scalex', label: 'Why ScaleX', href: '#why-scalex' },
+    { id: 'why-scalex', label: 'Why EdgeX', href: '#why-scalex' },
   ],
   phone: '+91-9848032919',
   overview: {
@@ -948,7 +948,7 @@ const CSM_BODY: CourseBodyContent = {
         id: 'review-2',
         title: 'It was a great Experience !!!',
         quote:
-          'ScaleX made certification feel achievable. Live sessions, mock tests, and post-training support helped me clear the CSM exam on my first attempt.',
+          ' EdgeX made certification feel achievable. Live sessions, mock tests, and post-training support helped me clear the CSM exam on my first attempt.',
         readOnLabel: 'Read on Google',
         readOnLogoSrc: '/images/hero/google.png',
         readOnLogoAlt: 'Google',
@@ -961,7 +961,7 @@ const CSM_BODY: CourseBodyContent = {
       },
       {
         id: 'review-3',
-        title: 'Highly recommend ScaleX',
+        title: 'Highly recommend EdgeX',
         quote:
           'Excellent faculty and structured curriculum. The Trustpilot reviews were accurate — this is one of the best CSM programs in India.',
         readOnLabel: 'Read on Trustpilot',
@@ -1121,7 +1121,7 @@ const CSM_BODY: CourseBodyContent = {
             id: 'reappear',
             question: 'Can I reappear if I cannot clear the CSM exam on your first attempt?',
             learningObjectives: [
-              'Learn retake eligibility, waiting periods, and ScaleX support if you do not pass on your first attempt.',
+              'Learn retake eligibility, waiting periods, and EdgeX support if you do not pass on your first attempt.',
             ],
             topicsCovered: [
               'Retake fees, cooldown rules, exam pass guarantee terms, and how to schedule a second attempt.',
@@ -1183,7 +1183,7 @@ const CSM_BODY: CourseBodyContent = {
             id: 'refund-policy',
             question: 'What is the refund and money-back policy?',
             learningObjectives: [
-              'Learn about ScaleX refund terms and the 100% money-back guarantee conditions.',
+              'Learn about EdgeX refund terms and the 100% money-back guarantee conditions.',
             ],
             topicsCovered: [
               'Cancellation windows, refund processing timelines, and guarantee eligibility',
@@ -1247,7 +1247,7 @@ const CSM_BODY: CourseBodyContent = {
     sideHeading: {
       heading: 'Side Heading',
       paragraphs: [
-        'The Certified ScrumMaster (CSM) credential validates your understanding of Scrum principles and your ability to apply them in real-world projects. ScaleX CSM training combines live CST-led instruction with hands-on activities so you are ready to coach teams from day one.',
+        'The Certified ScrumMaster (CSM) credential validates your understanding of Scrum principles and your ability to apply them in real-world projects. EdgeX CSM training combines live CST-led instruction with hands-on activities so you are ready to coach teams from day one.',
         'Whether you are a developer, project manager, or aspiring Scrum Master, this certification opens doors to Agile leadership roles across industries worldwide.',
       ],
     },

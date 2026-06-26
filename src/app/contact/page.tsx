@@ -129,7 +129,7 @@ export default function ContactPage() {
                 <div className="relative rounded-xl mt-5" style={{ maxWidth: '547px', height: '700px', margin: '-50px auto 0', paddingLeft: '20px', paddingRight: '20px' }}>
                   <Image
                     src="/images/map.png"
-                    alt="India map showing ScaleX Learning presence"
+                    alt="India map showing EdgeX Learning presence"
                     fill
                     className="object-contain"
                     priority
@@ -233,7 +233,7 @@ export default function ContactPage() {
             <div className="relative min-h-[280px] overflow-hidden rounded-2xl lg:min-h-0 flex-1" style={{ maxWidth: '850px' }}>
               <Image
                 src="/images/rit.png"
-                alt="Bengaluru, Karnataka — ScaleX Learning HQ"
+                alt="Bengaluru, Karnataka — EdgeX Learning HQ"
                 fill
                 className="object-cover"
               />

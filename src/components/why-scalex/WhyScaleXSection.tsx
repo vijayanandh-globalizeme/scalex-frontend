@@ -174,7 +174,7 @@ export default function WhyScaleXSection({
             </ul>
           </div>
 
-          {/* ScaleX */}
+          {/* EdgeX */}
           <div
             className={`${
               isEmbedded ? EMBEDDED_SCALEX_CARD_CLASS : SCALEX_CARD_CLASS

@@ -22,6 +22,7 @@ export interface ReviewPlatform {
   logoAlt: string;
   rating: string;
   reviewsLabel: string;
+  url?: string;
 }
 
 export interface TestimonialsSectionProps {
@@ -209,6 +210,7 @@ export function ReviewPlatformRow({ reviews, settings }: { reviews?: ReviewPlatf
           logoAlt: cfg.logoAlt,
           rating: `${entry.rating}/5`,
           reviewsLabel: `${entry.count.toLocaleString()} Reviews`,
+          url: entry.url || undefined,
         }];
       })
     : (reviews ?? []);
@@ -234,7 +236,18 @@ export function ReviewPlatformRow({ reviews, settings }: { reviews?: ReviewPlatf
               />
             </svg>
             {review.rating}
-            <span className="font-medium text-subtle">{review.reviewsLabel}</span>
+            {review.url ? (
+              <a
+                href={review.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-medium text-subtle hover:underline"
+              >
+                {review.reviewsLabel}
+              </a>
+            ) : (
+              <span className="font-medium text-subtle">{review.reviewsLabel}</span>
+            )}
           </div>
         </div>
       ))}

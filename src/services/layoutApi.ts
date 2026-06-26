@@ -4,6 +4,7 @@ import type { MegaMenuCategory } from '@/lib/allCoursesMegaMenu';
 export type ReviewEntry = {
   rating: string;
   count: number;
+  url?: string;
 };
 
 export type LayoutSettings = {

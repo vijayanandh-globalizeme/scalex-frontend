@@ -29,7 +29,7 @@ export interface WorkforcePartner {
 export interface WorkforceSectionProps {
   /** Heading split around the inline brand image (e.g. "Future-Proof Your Workforce with " + brand + " Hiring Partners"). */
   headingBefore: string;
-  /** Alt text for the inline ScaleX wordmark (SVG). */
+  /** Alt text for the inline EdgeX wordmark (SVG). */
   brandLogo: { alt: string };
   headingAfter: string;
   subheading: string;

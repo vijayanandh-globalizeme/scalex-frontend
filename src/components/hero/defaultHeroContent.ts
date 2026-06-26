@@ -57,7 +57,7 @@ export const defaultHeroContent: HeroSectionProps = {
   },
   figure: {
     src: '/images/hero/person.png',
-    alt: 'Professional learner smiling, representing ScaleX career growth programs',
+    alt: 'Professional learner smiling, representing EdgeX career growth programs',
   },
   backgroundImage: {
     src: '/images/hero/aero-bg-v2.png',

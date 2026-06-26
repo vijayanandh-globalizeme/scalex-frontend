@@ -370,9 +370,9 @@ export default function AboutPage() {
           <div className="grid grid-cols-1 gap-5 sm:grid-cols-3 lg:grid-cols-5">
             {[
               { img: '/images/pranee.png', name: 'Praneeth Kuridi', role: 'Founder & CEO', bio: '12+ years in tech education and enterprise training leadership across India.' },
-              { img: '/images/naray.png', name: 'Narayana Ajay', role: 'Co-Founder & CTO', bio: 'Technology architect driving ScaleX platform innovation and AI-powered learning.' },
+              { img: '/images/naray.png', name: 'Narayana Ajay', role: 'Co-Founder & CTO', bio: 'Technology architect driving EdgeX platform innovation and AI-powered learning.' },
               { img: '/images/narasim.png', name: 'Narasimha', role: 'Head of Learning Design', bio: 'Ex-L&D Director at top MNCs. Curriculum architect for 130+ programs.' },
-              { img: '/images/ram.png', name: 'Ram Charan', role: 'VP — Enterprise Sales', bio: 'Grew ScaleX enterprise client portfolio to 100+ organisations across India.' },
+              { img: '/images/ram.png', name: 'Ram Charan', role: 'VP — Enterprise Sales', bio: 'Grew EdgeX enterprise client portfolio to 100+ organisations across India.' },
               { img: '/images/aninth.png', name: 'Anitha Reddy', role: 'Head — Career Success', bio: 'Mentored 5,000+ professionals through career transitions and salary negotiations.' },
             ].map((person) => (
               <div key={person.name} className="flex flex-col rounded-2xl border border-zinc-100 bg-white p-5 shadow-sm">
@@ -429,7 +429,7 @@ export default function AboutPage() {
                 </div>
                 <div className="mt-3 h-[2px] w-8 rounded-full bg-brand" />
                 <p className="mt-4 flex-1" style={{ color: '#1E293B', fontFamily: 'Inter', fontSize: '14px', fontWeight: 700, lineHeight: '22px' }}>
-                  ScaleX Learning Emerges as Top EdTech Platform in India&apos;s Professional Upskilling Space
+                  EdgeX Learning Emerges as Top EdTech Platform in India&apos;s Professional Upskilling Space
                 </p>
                 <p className="mt-4" style={{ color: '#788593', fontFamily: 'Inter', fontSize: '13px', fontWeight: 400 }}>
                   March 2025

@@ -45,22 +45,29 @@ function ArrowRightIcon({ className }: { className?: string }) {
   );
 }
 
-function StarIcon({ className }: { className?: string }) {
+const STAR_PATH = "M3.01902 14.8627C3.30952 15.0888 3.67795 15.0111 4.11724 14.6932L7.86538 11.9453L11.6206 14.6932C12.0598 15.0111 12.4212 15.0888 12.7188 14.8627C13.0093 14.6437 13.073 14.2835 12.8959 13.7678L11.4151 9.37398L15.1986 6.66138C15.638 6.35057 15.8151 6.02562 15.7017 5.67242C15.5883 5.33335 15.2553 5.17087 14.7098 5.17087H10.0689L8.65889 0.784104C8.4889 0.261369 8.2338 0 7.86538 0C7.50399 0 7.24894 0.261369 7.0789 0.784104L5.66892 5.17087H1.02805C0.482481 5.17087 0.149473 5.33335 0.0361076 5.67242C-0.0843426 6.02562 0.099875 6.35057 0.539164 6.66138L4.32271 9.37398L2.84188 13.7678C2.66475 14.2835 2.72852 14.6437 3.01902 14.8627Z";
+
+function StarIcon({ fill, uid }: { fill: number; uid: string }) {
+  const clipId = `star-clip-${uid}`;
+  const fillWidth = (16 * Math.min(Math.max(fill, 0), 1)).toFixed(2);
   return (
-    <svg className={className} width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden>
-      <g clipPath="url(#success-star-clip)">
-        <path
-          d="M3.01902 14.8627C3.30952 15.0888 3.67795 15.0111 4.11724 14.6932L7.86538 11.9453L11.6206 14.6932C12.0598 15.0111 12.4212 15.0888 12.7188 14.8627C13.0093 14.6437 13.073 14.2835 12.8959 13.7678L11.4151 9.37398L15.1986 6.66138C15.638 6.35057 15.8151 6.02562 15.7017 5.67242C15.5883 5.33335 15.2553 5.17087 14.7098 5.17087H10.0689L8.65889 0.784104C8.4889 0.261369 8.2338 0 7.86538 0C7.50399 0 7.24894 0.261369 7.0789 0.784104L5.66892 5.17087H1.02805C0.482481 5.17087 0.149473 5.33335 0.0361076 5.67242C-0.0843426 6.02562 0.099875 6.35057 0.539164 6.66138L4.32271 9.37398L2.84188 13.7678C2.66475 14.2835 2.72852 14.6437 3.01902 14.8627Z"
-          fill="currentColor"
-        />
-      </g>
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden>
       <defs>
-        <clipPath id="success-star-clip">
-          <rect width="16" height="16" fill="white" />
+        <clipPath id={clipId}>
+          <rect x="0" y="0" width={fillWidth} height="16" />
         </clipPath>
       </defs>
+      <path d={STAR_PATH} fill="#000" opacity="0.2" />
+      {fill > 0 && (
+        <path d={STAR_PATH} fill="#000" clipPath={`url(#${clipId})`} />
+      )}
     </svg>
   );
+}
+
+function starsFromRating(rating: number): number[] {
+  const clamped = Math.min(Math.max(rating, 0), 5);
+  return Array.from({ length: 5 }, (_, i) => Math.min(Math.max(clamped - i, 0), 1));
 }
 
 function VideoThumbnail({
@@ -122,7 +129,7 @@ function VideoThumbnail({
 }
 
 function TestimonialCardOnly({ story }: { story: Reviewer }) {
-  const filledStars = Math.round(Math.min(story.rating, 5));
+  const starFills = starsFromRating(story.rating ?? 0);
   return (
     <article
       className="flex flex-col justify-between gap-4 rounded-2xl bg-white p-5 shadow-[0_10px_30px_-10px_rgba(15,23,42,0.18)] md:p-6"
@@ -147,11 +154,8 @@ function TestimonialCardOnly({ story }: { story: Reviewer }) {
           <p className="text-[13px] font-bold uppercase tracking-wide text-heading">{story.name}</p>
           <p className="text-[11px] font-medium text-subtle">{story.role}</p>
           <div className="mt-1 flex items-center gap-0.5">
-            {Array.from({ length: 5 }).map((_, i) => (
-              <StarIcon
-                key={i}
-                className={i < filledStars ? 'h-3.5 w-3.5 text-black' : 'h-3.5 w-3.5 text-black opacity-30'}
-              />
+            {starFills.map((fill, i) => (
+              <StarIcon key={i} fill={fill} uid={`${story.id}-${i}`} />
             ))}
           </div>
         </div>

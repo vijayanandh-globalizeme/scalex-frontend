@@ -70,7 +70,7 @@ function MegaMenuPanel({ categories, activeCategory, onCategoryHover, onClose }:
       <div className="border-r border-zinc-100 py-6 pl-6 pr-4">
         <p className="mb-4 text-[15px] font-bold text-heading">Category</p>
         <ul className="space-y-0.5" role="list">
-          {categories.map((category) => {
+          {categories.slice(0, 8).map((category) => {
             const isActive = category.slug === activeCategory.slug;
             return (
               <li key={category.slug}>

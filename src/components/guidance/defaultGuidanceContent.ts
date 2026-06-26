@@ -5,7 +5,7 @@ export const defaultGuidanceContent: GuidanceSectionProps = {
   stats: [
     { id: 'leaders', value: '30000+', label: 'Future-Ready Leaders Certified' },
     { id: 'goal', value: '100%', label: 'Professional Goal Achievement Rate' },
-    { id: 'countries', value: '100+', label: 'Countries Transforming with ScaleX' },
+    { id: 'countries', value: '100+', label: 'Countries Transforming with EdgeX' },
   ],
   formTitle: "We're Here to Guide Your Success",
   courses: [

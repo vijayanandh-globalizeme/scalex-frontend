@@ -1,13 +1,13 @@
 /** Set in production, e.g. https://example.com (no trailing slash). */
-export const SITE_NAME = 'ScaleX Learning';
+export const SITE_NAME = ' EdgeX Learning';
 
 /** Default meta description . */
 export const SITE_DESCRIPTION =
-  'ScaleX Learning offers professional training and certification prep in agile, project management, cloud, and more. Learn from expert trainers and scale your career.';
+  ' EdgeX Learning offers professional training and certification prep in agile, project management, cloud, and more. Learn from expert trainers and scale your career.';
 
 /** Seed keywords for root metadata; extend per route as content grows. */
 export const SITE_KEYWORDS = [
-  'ScaleX Learning',
+  ' EdgeX Learning',
   'online training',
   'certification prep',
   'PMP',

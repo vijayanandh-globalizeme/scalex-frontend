@@ -47,7 +47,7 @@ function apiBlogToItem(blog: ApiBlog, index: number): BlogItem {
     id: blog.id,
     title: blog.title,
     excerpt: blog.shortDescription ?? '',
-    author: blog.trainer?.name ?? 'ScaleX Team',
+    author: blog.trainer?.name ?? ' EdgeX Team',
     date: blog.createdAt
       ? new Date(blog.createdAt).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })
       : '',
