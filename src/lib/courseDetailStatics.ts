@@ -187,3 +187,19 @@ export const TECH_WEBINER = {
   imageSrc: "/images/julio-lopez-ii.png",
   imageAlt: "Professional holding a tablet",
 };
+
+export const BOOTCAMP_TABLE = {
+  heading: "A Better Way to Prep Scrum Master",
+  columns: ["CSM", "Bootcamp"],
+  rows: [
+    { offering: "100+ Practice Questions", values: [true, true] },
+    { offering: "Data Structures Content", values: [true, true] },
+    { offering: "Guided Format", values: [true, true] },
+    { offering: "High Quality Solutions", values: [true, true] },
+    { offering: "Multiple Programming Languages", values: [false, true] },
+    { offering: "Coding Workspace", values: [false, true] },
+    { offering: "Video Explanations", values: [false, true] },
+    { offering: "Mock Interviews", values: [false, true] },
+    { offering: "All-In-One Platform", values: [false, true] },
+  ],
+};

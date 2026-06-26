@@ -23,6 +23,7 @@ import CourseEligibilityRequirementsSection from './CourseEligibilityRequirement
 import CourseSkillsToolsSection from './CourseSkillsToolsSection';
 import CourseProgramRoadmapSection from './CourseProgramRoadmapSection';
 import CourseWebinarCtaSection from './CourseWebinarCtaSection';
+import CoursePrepComparisonSection from './CoursePrepComparisonSection';
 
 export default async function CourseDetailBodySection({
   courseUri,
@@ -50,6 +51,7 @@ export default async function CourseDetailBodySection({
   const reviewsTitle      = d?.reviewsTitle         ?? null;
   const reviewVideoUrl    = d?.courseVideoUrl        ?? null;
   const startedAt    = courseDetails?.startedAt        ?? null;
+  const hasBootcamp    = courseDetails?.hasBootcamp        ?? false;
 
   const navItems = isTechnical ? BOOTCAMP_NAV_ITEMS : COURSE_NAV_ITEMS;
   const details = await getCourseDetails(courseUri, categoryUri);
@@ -76,6 +78,10 @@ export default async function CourseDetailBodySection({
                 title={courseContentTitle}
               />
             ) : null}
+            
+            {/* {isTechnical && courseUri && categoryUri ? (
+              <CourseCareerTransformationsSection />
+            ) : null} */}
 
             {isTechnical && details?.skillsTools && details.otherDetails ? (
               <CourseSkillsToolsSection
@@ -97,6 +103,10 @@ export default async function CourseDetailBodySection({
 
             {isTechnical && details?.eligibility ? (
               <CourseEligibilityRequirementsSection eligibilityRequirements={details.eligibility} />
+            ) : null}
+
+            {hasBootcamp ? (
+              <CoursePrepComparisonSection />
             ) : null}
             
             {courseUri && categoryUri ? (
