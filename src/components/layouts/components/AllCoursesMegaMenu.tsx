@@ -102,7 +102,7 @@ function MegaMenuPanel({ categories, activeCategory, onCategoryHover, onClose }:
         ) : (
           <>
             <ul className="flex-1 space-y-0.5" role="list">
-              {activeCategory.courses.map((course) => (
+              {activeCategory.courses.slice(0, 8).map((course) => (
                 <li key={course.label}>
                   <Link
                     href={course.href}

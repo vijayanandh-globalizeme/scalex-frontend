@@ -91,7 +91,7 @@ function CategorySection({
 
       {hasCourses && expanded && (
         <ul className="border-t border-zinc-100 bg-zinc-50 pb-2 pt-1">
-          {category.courses.map((course) => (
+          {category.courses.slice(0, 8).map((course) => (
             <li key={course.label}>
               <Link
                 href={course.href}
