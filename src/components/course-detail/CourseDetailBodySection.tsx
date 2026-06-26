@@ -80,6 +80,10 @@ export default async function CourseDetailBodySection({
                   skillsTools={details.skillsTools}
                   tools={details.otherDetails.filter((d) => d.type === 'TOOLS')}
                 />
+                <CourseProgramRoadmapSection 
+                  roadmap={details.roadmaps}
+                  content={details.otherDetails.filter((d) => d.type === 'ROADMAP')}
+                />
                 <CourseEligibilityRequirementsSection eligibilityRequirements={details.eligibility} />
               </>
             ) : null}

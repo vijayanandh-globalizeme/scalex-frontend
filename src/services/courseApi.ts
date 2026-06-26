@@ -78,7 +78,27 @@ export type ApiOtherDetail = {
   title: string;
   type: string;
   percentage: number;
+  entityId: string;
   file: ApiCourseFile | null;
+};
+
+export type ApiRoadmapQuestion = {
+  icon: string;
+  title: string;
+  content: string;
+};
+
+export type ApiRoadmap = {
+  id: string;
+  type: number;
+  icon: string;
+  title: string;
+  description: string;
+  sideTitle: string;
+  sideDescription: string;
+  heading: string;
+  content: string | null;
+  questions: ApiRoadmapQuestion[] | null;
 };
 
 export type ApiCourseDetails = {
@@ -95,7 +115,7 @@ export type ApiCourseDetails = {
     certificationImage: ApiCourseFile | null;
   } | null;
   skillsTools: { title: string; description: string; skill: string } | null;
-  roadmaps: unknown[];
+  roadmaps: ApiRoadmap[];
   otherDetails: ApiOtherDetail[];
 };
 
