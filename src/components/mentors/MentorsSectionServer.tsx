@@ -3,6 +3,6 @@ import MentorsSection from './MentorsSection';
 import { defaultMentorsContent } from './defaultMentorsContent';
 
 export default async function MentorsSectionServer() {
-  const mentors = await fetchTrainers(10);
+  const mentors = await fetchTrainers(5);
   return <MentorsSection {...defaultMentorsContent} mentors={mentors} />;
 }
