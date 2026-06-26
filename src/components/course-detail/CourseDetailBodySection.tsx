@@ -27,6 +27,7 @@ import CoursePrepComparisonSection from './CoursePrepComparisonSection';
 import CourseCareerTransformationsSection from './CourseCareerTransformationsSection';
 import CourseCareerAssuranceSection from './CourseCareerAssuranceSection';
 import CoursePricingSection from './CoursePricingSection';
+import CourseRelatedCoursesSection from './CourseRelatedCoursesSection';
 
 export default async function CourseDetailBodySection({
   courseUri,
@@ -181,6 +182,11 @@ export default async function CourseDetailBodySection({
             <CourseAboutCertificationSection title={aboutTitle} content={aboutContent} />
           </div>
           <CourseDetailSidebar sidebar={sidebar} />
+
+          {courseUri && categoryUri ? (
+            <CourseRelatedCoursesSection courseUri={courseUri} />
+          ) : null}
+
         </div>
       </div>
 

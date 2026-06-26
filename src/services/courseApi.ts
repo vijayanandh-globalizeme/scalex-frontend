@@ -243,6 +243,15 @@ type CoursesApiResponse = {
   };
 };
 
+export async function fetchRelatedCourses(courseUri: string): Promise<ApiCourse[]> {
+  const params = new URLSearchParams({ courseUri, limit: '12', offset: '0' });
+  const json = await get<CoursesApiResponse>(`course/fetch?${params.toString()}`, {
+    revalidate: 300,
+    tags: [`course-${courseUri}-related`],
+  });
+  return json?.success ? (json.data.items ?? []) : [];
+}
+
 export async function fetchCourses(options: { categoryId?: string; limit?: number; offset?: number } = {}): Promise<ApiCourse[]> {
   const { categoryId, limit = 12, offset = 0 } = options;
   const params = new URLSearchParams();

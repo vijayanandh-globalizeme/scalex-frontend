@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google';
 import { ReactNode } from 'react';
 import JsonLd from '@/components/seo/JsonLd';
 import MainLayout from '@/components/layouts/MainLayout';
+import ScrollToTop from '@/components/shared/ScrollToTop';
 import {
   getRootJsonLd,
   getSiteOrigin,
@@ -78,6 +79,7 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
         />
       </head>
       <body className="min-h-screen bg-white font-sans text-zinc-900 antialiased">
+        <ScrollToTop />
         <JsonLd data={rootJsonLd} />
         <MainLayout>{children}</MainLayout>
       </body>
