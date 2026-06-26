@@ -6,7 +6,6 @@ import {
   CourseEnterpriseSection,
   TechnicalCourseHeroSection,
 } from '@/components/course-detail';
-import { getBootcampCourseBodyBySlug } from '@/lib/bootcampCourseBody';
 import { getAllBootcampCourseSlugs, getBootcampCourseBySlug } from '@/lib/bootcampCourses';
 import { SITE_NAME } from '@/lib/site';
 
@@ -47,13 +46,11 @@ export default async function BootcampCoursePage({ params }: PageProps) {
     notFound();
   }
 
-  const body = getBootcampCourseBodyBySlug(slug);
-
   return (
     <CourseDetailPageShell form={course.form}>
       <TechnicalCourseHeroSection {...course} />
       <CourseEnterpriseSection compact />
-      {body ? <CourseDetailBodySection body={body} isTechnical /> : null}
+      <CourseDetailBodySection courseUri={course.slug} categoryUri={course.categorySlug} isTechnical />
     </CourseDetailPageShell>
   );
 }

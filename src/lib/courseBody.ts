@@ -497,10 +497,11 @@ const CSM_RELATED_COURSES: RelatedCourse[] = Array.from({ length: 6 }).map((_, i
   rating: 4.8,
   hours: 16,
   learners: '75K+ Learners',
+  duration: '2 Days',
   price: 12999,
   originalPrice: 18999,
   savePercent: 40,
-  slotsLeft: 4,
+  slotsLeft: '4',
   href: '/courses/certified-scrum-master',
 }));
 

@@ -27,7 +27,7 @@ function ViewMoreChevronIcon({ className }: { className?: string }) {
   );
 }
 
-interface CategoryCoursesSectionProps {
+export interface CategoryCoursesSectionProps {
   categoryId: string;
   categoryName: string;
   currencySymbol?: string;

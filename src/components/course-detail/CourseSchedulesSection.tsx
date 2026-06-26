@@ -105,9 +105,10 @@ function DateRangePicker({
 
   const firstDay = new Date(viewYear, viewMonth, 1).getDay();
   const daysInMonth = new Date(viewYear, viewMonth + 1, 0).getDate();
-  const cells = Array.from({ length: firstDay }, () => null).concat(
-    Array.from({ length: daysInMonth }, (_, i) => i + 1),
-  );
+  const cells: (number | null)[] = [
+    ...Array.from({ length: firstDay }, () => null),
+    ...Array.from({ length: daysInMonth }, (_, i) => i + 1),
+  ];
   // pad to 6 rows if needed
   while (cells.length % 7 !== 0) cells.push(null);
 

@@ -6,7 +6,6 @@ import {
   CourseDetailPageShell,
   CourseEnterpriseSection,
 } from '@/components/course-detail';
-import { getCourseBodyBySlug } from '@/lib/courseBody';
 import { getAllCourseSlugs, getCourseBySlug } from '@/lib/courses';
 import { SITE_NAME } from '@/lib/site';
 
@@ -47,13 +46,11 @@ export default async function CourseDetailPage({ params }: PageProps) {
     notFound();
   }
 
-  const body = getCourseBodyBySlug(slug);
-
   return (
     <CourseDetailPageShell form={course.form}>
       <CourseDetailHeroSection {...course} />
       <CourseEnterpriseSection />
-      {body ? <CourseDetailBodySection body={body} /> : null}
+      <CourseDetailBodySection courseUri={course.slug} categoryUri={course.categorySlug} />
     </CourseDetailPageShell>
   );
 }
