@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import type { CSSProperties } from 'react';
-import type { CourseWebinarCtaContent } from '@/lib/courseBody';
+import { TECH_WEBINER } from '@/lib/courseDetailStatics';
 import TechnicalCourseWebinarCountdown from './TechnicalCourseWebinarCountdown';
 
 function ScaleXMark({ className }: { className?: string }) {
@@ -41,7 +41,8 @@ function ArrowRightIcon({ className }: { className?: string }) {
   );
 }
 
-export default function CourseWebinarCtaSection({ content }: { content: CourseWebinarCtaContent }) {
+export default function CourseWebinarCtaSection({ startedAt }: { startedAt?: string | null }) {
+  const content = TECH_WEBINER;
   return (
     <section
       id="webinar-cta"
@@ -89,7 +90,7 @@ export default function CourseWebinarCtaSection({ content }: { content: CourseWe
               {content.countdownLabel}
             </p>
             <div className="mt-3">
-              <TechnicalCourseWebinarCountdown />
+              <TechnicalCourseWebinarCountdown targetDate={startedAt} />
             </div>
           </div>
         </div>
@@ -138,7 +139,7 @@ export default function CourseWebinarCtaSection({ content }: { content: CourseWe
                 {content.countdownLabel}
               </p>
               <div className="mt-3">
-                <TechnicalCourseWebinarCountdown />
+                <TechnicalCourseWebinarCountdown targetDate={startedAt} />
               </div>
             </div>
           </div>

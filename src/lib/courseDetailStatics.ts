@@ -4,20 +4,20 @@ export const COURSE_CONTENT_SYLLABUS_LABEL = "Download Syllabus";
 export const COURSE_OVERVIEW_STANDOUT_TITLE = "Most Standout Features";
 export const COURSE_OVERVIEW_SKILLS_TITLE = "Skills Covered";
 export const COURSE_OVERVIEW_DEMAND_LABEL = "of enterprises level skill";
-export const SKILLS_TOOLS_SKILLS_TITLE    = 'Skills';
-export const SKILLS_TOOLS_TOOLS_TITLE     = 'Tools & Technologies';
-export const ROADMAP_SHOW_MORE_LABEL      = 'Show More';
-export const ROADMAP_HIRING_PARTNERS_TITLE = 'Our Hiring Partners';
+export const SKILLS_TOOLS_SKILLS_TITLE = "Skills";
+export const SKILLS_TOOLS_TOOLS_TITLE = "Tools & Technologies";
+export const ROADMAP_SHOW_MORE_LABEL = "Show More";
+export const ROADMAP_HIRING_PARTNERS_TITLE = "Our Hiring Partners";
 
 export const ROADMAP_HIRING_PARTNER_LOGOS: { src: string; alt: string }[] = [
-  { src: '/images/course/google.png',    alt: 'Google' },
-  { src: '/images/course/amazon.png',    alt: 'Amazon' },
-  { src: '/images/course/ibm.png',       alt: 'IBM' },
-  { src: '/images/course/walmart.png',   alt: 'Walmart' },
-  { src: '/images/course/sapient.png',   alt: 'Sapient' },
-  { src: '/images/course/hsbc.png',      alt: 'HSBC' },
-  { src: '/images/course/accenture.png', alt: 'Accenture' },
-  { src: '/images/course/claude.png',    alt: 'Claude' },
+  { src: "/images/course/google.png", alt: "Google" },
+  { src: "/images/course/amazon.png", alt: "Amazon" },
+  { src: "/images/course/ibm.png", alt: "IBM" },
+  { src: "/images/course/walmart.png", alt: "Walmart" },
+  { src: "/images/course/sapient.png", alt: "Sapient" },
+  { src: "/images/course/hsbc.png", alt: "HSBC" },
+  { src: "/images/course/accenture.png", alt: "Accenture" },
+  { src: "/images/course/claude.png", alt: "Claude" },
 ];
 
 export const CAREER_SECTION_TITLE = "Accelerate Your Career";
@@ -175,3 +175,15 @@ export const REVIEWS_TYPE: {
     logoAlt: "SwitchUp",
   },
 ];
+
+export const TECH_WEBINER = {
+  headingLines: [
+    "Get Closer to your dream by registering",
+    "for our free webinar",
+  ],
+  ctaLabel: "Register for FREE Webinar",
+  ctaHref: "#schedules",
+  countdownLabel: "Next Webinar Starts in",
+  imageSrc: "/images/julio-lopez-ii.png",
+  imageAlt: "Professional holding a tablet",
+};

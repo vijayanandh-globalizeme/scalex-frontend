@@ -22,6 +22,7 @@ import CourseReviewsSection from './CourseReviewsSection';
 import CourseEligibilityRequirementsSection from './CourseEligibilityRequirementsSection';
 import CourseSkillsToolsSection from './CourseSkillsToolsSection';
 import CourseProgramRoadmapSection from './CourseProgramRoadmapSection';
+import CourseWebinarCtaSection from './CourseWebinarCtaSection';
 
 export default async function CourseDetailBodySection({
   courseUri,
@@ -48,6 +49,7 @@ export default async function CourseDetailBodySection({
   const trainerTitle      = d?.trainerTitle         ?? null;
   const reviewsTitle      = d?.reviewsTitle         ?? null;
   const reviewVideoUrl    = d?.courseVideoUrl        ?? null;
+  const startedAt    = courseDetails?.startedAt        ?? null;
 
   const navItems = isTechnical ? BOOTCAMP_NAV_ITEMS : COURSE_NAV_ITEMS;
   const details = await getCourseDetails(courseUri, categoryUri);
@@ -59,62 +61,78 @@ export default async function CourseDetailBodySection({
       <div className="site-container pb-15 pt-4">
         <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_246px] lg:gap-[80px]">
           <div className="min-w-0 space-y-8 overflow-visible">
-            {details ? (
-              <>
-                <CourseOverviewSection
-                  overview={details.overview}
-                  careerTabs={details.otherDetails.filter((d) => d.type === 'OVERVIEW')}
-                  variant={isTechnical ? 'technical' : 'default'}
-                />
-                <CourseContentSection
-                  courseContent={details.courseContent}
-                  syllabusUrl={syllabusUrl}
-                  title={courseContentTitle}
-                />
-              </>
+            {details?.overview && details.otherDetails ? (
+              <CourseOverviewSection
+                overview={details.overview}
+                careerTabs={details.otherDetails.filter((d) => d.type === 'OVERVIEW')}
+                variant={isTechnical ? 'technical' : 'default'}
+              />
             ) : null}
 
-            {isTechnical && details ? (
-              <>
-                <CourseSkillsToolsSection
-                  skillsTools={details.skillsTools}
-                  tools={details.otherDetails.filter((d) => d.type === 'TOOLS')}
-                />
-                <CourseProgramRoadmapSection 
-                  roadmap={details.roadmaps}
-                  content={details.otherDetails.filter((d) => d.type === 'ROADMAP')}
-                />
-                <CourseEligibilityRequirementsSection eligibilityRequirements={details.eligibility} />
-              </>
+            {details?.courseContent ? (
+              <CourseContentSection
+                courseContent={details.courseContent}
+                syllabusUrl={syllabusUrl}
+                title={courseContentTitle}
+              />
             ) : null}
 
-            <CourseTrainersSection
-              courseUri={courseUri}
-              categoryUri={categoryUri}
-              title={trainerTitle ?? 'Our Trainers'}
-            />
+            {isTechnical && details?.skillsTools && details.otherDetails ? (
+              <CourseSkillsToolsSection
+                skillsTools={details.skillsTools}
+                tools={details.otherDetails.filter((d) => d.type === 'TOOLS')}
+              />
+            ) : null}
 
-            <CourseBatchRequestBanner banner={UNLOCK_COURSE_BANNER} className="pb-6 md:pb-8" />
+            {isTechnical && details?.roadmaps && details.otherDetails ? (
+              <CourseProgramRoadmapSection 
+                roadmap={details.roadmaps}
+                content={details.otherDetails.filter((d) => d.type === 'ROADMAP')}
+              />
+            ) : null}
 
-            {!isTechnical && details ? (
+            {isTechnical && details?.eligibility ? (
+              <CourseBatchRequestBanner banner={UNLOCK_COURSE_BANNER} className="pb-6 md:pb-8" />
+            ) : null}
+
+            {isTechnical && details?.eligibility ? (
+              <CourseEligibilityRequirementsSection eligibilityRequirements={details.eligibility} />
+            ) : null}
+            
+            {courseUri && categoryUri ? (
+              <CourseTrainersSection
+                courseUri={courseUri}
+                categoryUri={categoryUri}
+                title={trainerTitle ?? 'Our Trainers'}
+              />
+            ) : null}
+
+            {!isTechnical && details?.eligibility ? (
               <CourseEligibilityRequirementsSection eligibilityRequirements={details.eligibility} />
             ) : null}
 
-            <CourseReviewsSection
-              courseUri={courseUri}
-              categoryUri={categoryUri}
-              title={reviewsTitle ?? 'Learner Reviews'}
-              settings={settings ?? {}}
-            />
-            {details ? (
-              <>
-                <CourseCredentialsSection
-                  credentials={details.credentials}
-                  careerTabs={details.otherDetails.filter((d) => d.type === 'CREDENTIALS')}
-                />
+            {isTechnical && startedAt ? (
+              <CourseWebinarCtaSection startedAt={startedAt} />
+            ) : null}
 
+            {courseUri && categoryUri ? (
+              <CourseReviewsSection
+                courseUri={courseUri}
+                categoryUri={categoryUri}
+                title={reviewsTitle ?? 'Learner Reviews'}
+                settings={settings ?? {}}
+              />
+            ) : null}
+
+            {details?.credentials && details.otherDetails ? (
+              <CourseCredentialsSection
+                credentials={details.credentials}
+                careerTabs={details.otherDetails.filter((d) => d.type === 'CREDENTIALS')}
+              />
+            ) : null}
+
+            {details?.courseFaq && faqTitle ? (
                 <CourseFaqsSection faqs={details.courseFaq} title={faqTitle} />
-              </>
             ) : null}
 
             <CourseBatchRequestBanner banner={EXPERTS_COURSE_BANNER} className="pb-6 md:pb-8" />
