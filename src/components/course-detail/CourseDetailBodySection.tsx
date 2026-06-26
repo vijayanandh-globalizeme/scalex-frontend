@@ -9,7 +9,7 @@ import {AwardsSection} from "@/components/awards";
 import CourseFaqsSection from './CourseFaqsSection';
 import CourseOverviewSection from './CourseOverviewSection';
 import WhyScaleXSection from '../why-scalex/WhyScaleXSection';
-import { getCourseDetails } from '@/app/actions/courseActions';
+import { getCourseDetails, getCourseLearners } from '@/app/actions/courseActions';
 import { courseWhyScaleXContent } from '@/lib/courseWhyScaleXContent';
 import {courseAwardsCards} from "@/lib/courseAwardsContent";
 import CourseAboutCertificationSection from './CourseAboutCertificationSection';
@@ -24,6 +24,7 @@ import CourseSkillsToolsSection from './CourseSkillsToolsSection';
 import CourseProgramRoadmapSection from './CourseProgramRoadmapSection';
 import CourseWebinarCtaSection from './CourseWebinarCtaSection';
 import CoursePrepComparisonSection from './CoursePrepComparisonSection';
+import CourseCareerTransformationsSection from './CourseCareerTransformationsSection';
 
 export default async function CourseDetailBodySection({
   courseUri,
@@ -54,7 +55,10 @@ export default async function CourseDetailBodySection({
   const hasBootcamp    = courseDetails?.hasBootcamp        ?? false;
 
   const navItems = isTechnical ? BOOTCAMP_NAV_ITEMS : COURSE_NAV_ITEMS;
-  const details = await getCourseDetails(courseUri, categoryUri);
+  const [details, learners] = await Promise.all([
+    getCourseDetails(courseUri, categoryUri),
+    isTechnical ? getCourseLearners(courseUri, categoryUri) : Promise.resolve([]),
+  ]);
 
   return (
     <section className="full-bleed overflow-visible bg-[#F5F6F8] pb-16 pt-1" aria-label="Course details">
@@ -79,9 +83,12 @@ export default async function CourseDetailBodySection({
               />
             ) : null}
             
-            {/* {isTechnical && courseUri && categoryUri ? (
-              <CourseCareerTransformationsSection />
-            ) : null} */}
+            {isTechnical && learners.length > 0 ? (
+              <CourseCareerTransformationsSection
+                learners={learners}
+                title={d?.careerTitle}
+              />
+            ) : null}
 
             {isTechnical && details?.skillsTools && details.otherDetails ? (
               <CourseSkillsToolsSection

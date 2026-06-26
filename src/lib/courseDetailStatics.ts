@@ -6,6 +6,8 @@ export const COURSE_OVERVIEW_SKILLS_TITLE = "Skills Covered";
 export const COURSE_OVERVIEW_DEMAND_LABEL = "of enterprises level skill";
 export const SKILLS_TOOLS_SKILLS_TITLE = "Skills";
 export const SKILLS_TOOLS_TOOLS_TITLE = "Tools & Technologies";
+export const CAREER_TRANSFORMATIONS_SUBTITLE = 'Real stories from our learners who transformed their careers';
+
 export const ROADMAP_SHOW_MORE_LABEL = "Show More";
 export const ROADMAP_HIRING_PARTNERS_TITLE = "Our Hiring Partners";
 

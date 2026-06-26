@@ -136,6 +136,32 @@ export async function fetchCourseDetails(
   return json?.success ? (json.data ?? null) : null;
 }
 
+export type ApiLearner = {
+  id: string;
+  name: string;
+  currentRole: string;
+  prevRole: string;
+  hike: string;
+  review: string;
+  avatar: ApiCourseFile | null;
+  currentCompanyImage: ApiCourseFile | null;
+  prevCompanyImage: ApiCourseFile | null;
+};
+
+type LearnersApiResponse = { success: boolean; data: { learners: ApiLearner[] } };
+
+export async function fetchCourseLearners(
+  courseUri: string,
+  categoryUri: string,
+): Promise<ApiLearner[]> {
+  const params = new URLSearchParams({ categoryUri });
+  const json = await get<LearnersApiResponse>(
+    `course/${courseUri}/learners?${params.toString()}`,
+    { revalidate: 300, tags: [`course-${courseUri}-learners`] },
+  );
+  return json?.success ? (json.data.learners ?? []) : [];
+}
+
 export type ApiTrainer = {
   id: string;
   name: string;

@@ -3,11 +3,41 @@
 import Image from 'next/image';
 import { useEffect, useId, useLayoutEffect, useRef, useState } from 'react';
 import { CategoryCarouselControls } from '@/components/category/CategoryCarouselNav';
-import type {
-  CareerTransformationStory,
-  CourseCareerTransformationsContent,
-} from '@/lib/courseBody';
+import type { ApiLearner } from '@/services/courseApi';
+import { CAREER_TRANSFORMATIONS_SUBTITLE } from '@/lib/courseDetailStatics';
 import { COURSE_SECTION_CARD } from './courseSectionCard';
+
+type CareerTransformationStory = {
+  id: string;
+  name: string;
+  quote: string;
+  hikePercent: number;
+  imageSrc: string;
+  imageAlt: string;
+  before: { role: string; companyLogoSrc: string; companyLogoAlt: string };
+  after:  { role: string; companyLogoSrc: string; companyLogoAlt: string };
+};
+
+function learnerToStory(l: ApiLearner): CareerTransformationStory {
+  return {
+    id: l.id,
+    name: l.name,
+    quote: l.review,
+    hikePercent: parseInt(l.hike, 10) || 0,
+    imageSrc: l.avatar?.url ?? '',
+    imageAlt: l.name,
+    before: {
+      role: l.prevRole,
+      companyLogoSrc: l.prevCompanyImage?.url ?? '',
+      companyLogoAlt: l.name,
+    },
+    after: {
+      role: l.currentRole,
+      companyLogoSrc: l.currentCompanyImage?.url ?? '',
+      companyLogoAlt: l.name,
+    },
+  };
+}
 
 const PERSON_IMAGE_WIDTH = 251;
 const PERSON_IMAGE_HEIGHT = 255;
@@ -167,7 +197,6 @@ function StoryPersonImage({ story }: { story: CareerTransformationStory }) {
       style={{
         left: `${getPersonImageLeftPx(story.id)}px`,
         bottom: PERSON_IMAGE_BOTTOM_PX,
-        transform: `translateY(${PERSON_IMAGE_OFFSET_Y_PX}px)`,
       }}
     >
       <Image
@@ -206,16 +235,45 @@ function HikeBadge({ hikePercent }: { hikePercent: number }) {
 
 function TransformationStoryCard({ story }: { story: CareerTransformationStory }) {
   return (
-    <article className="relative w-full overflow-visible">
+    <article className="relative flex h-full w-full flex-col overflow-visible pt-11">
+      {/* Hike badge */}
       <div className="pointer-events-none absolute top-[40px] left-1/2 z-30 -translate-x-1/2 max-md:static max-md:pointer-events-auto max-md:mx-auto max-md:mb-4 max-md:translate-x-0 md:left-[135px] md:translate-x-0">
         <HikeBadge hikePercent={story.hikePercent} />
       </div>
 
+      {/* Person image — desktop: anchored to bottom of article */}
       <div
-        className="relative z-0 min-h-[210px] w-full overflow-visible rounded-[20px] border border-[#DCDCDC] shadow-[0_4px_4px_0_rgba(30,41,59,0.08),0_4px_4px_0_rgba(30,41,59,0.03)]"
+        className="pointer-events-none absolute bottom-0 left-[20px] z-[60] hidden h-[255px] w-[251px] md:block"
+        aria-hidden
+      >
+        <Image
+          src={story.imageSrc}
+          alt={story.imageAlt}
+          width={PERSON_IMAGE_WIDTH}
+          height={PERSON_IMAGE_HEIGHT}
+          className="h-full w-full object-contain object-bottom"
+          sizes="251px"
+        />
+      </div>
+
+      {/* Card */}
+      <div
+        className="relative z-0 flex min-h-[210px] w-full flex-1 overflow-visible rounded-[20px] border border-[#DCDCDC] shadow-[0_4px_4px_0_rgba(30,41,59,0.08),0_4px_4px_0_rgba(30,41,59,0.03)]"
         style={{ background: 'linear-gradient(259deg, #FFF 64.75%, #FFD3D3 108.27%)' }}
       >
-        <div className="relative z-10 flex w-full min-w-0 max-w-full flex-col gap-6 px-8 py-6 max-md:pt-36 md:grid md:min-h-[210px] md:grid-cols-[minmax(0,1fr)_auto] md:items-center md:gap-6 md:py-7 md:pl-[240px] md:pt-6">
+        {/* Person image — mobile */}
+        <div className="pointer-events-none absolute top-0 left-1/2 z-[60] h-[140px] w-[140px] -translate-x-1/2 -translate-y-1/2 md:hidden" aria-hidden>
+          <Image
+            src={story.imageSrc}
+            alt={story.imageAlt}
+            width={PERSON_IMAGE_WIDTH}
+            height={PERSON_IMAGE_HEIGHT}
+            className="h-full w-full object-contain object-bottom"
+            sizes="140px"
+          />
+        </div>
+
+        <div className="relative z-10 flex w-full min-w-0 max-w-full flex-col gap-6 px-8 py-6 max-md:pt-20 md:grid md:min-h-[210px] md:grid-cols-[minmax(0,1fr)_auto] md:items-center md:gap-6 md:py-7 md:pl-[240px] md:pt-6">
           <div className="min-w-0 md:pl-[66px]">
             <h3 className="text-[18px] font-bold leading-normal text-[#1E293B] md:text-[20px]">
               {story.name}
@@ -244,36 +302,22 @@ function TransformationStoryCard({ story }: { story: CareerTransformationStory }
           </div>
         </div>
       </div>
-
-      <div
-        className={`pointer-events-none absolute bottom-0 z-[60] h-[200px] w-[200px] max-md:top-0 max-md:bottom-auto max-md:left-1/2 md:hidden ${
-          story.id === 'priya-sharma'
-            ? 'max-md:translate-x-[calc(-50%-30px)]'
-            : 'max-md:-translate-x-1/2'
-        } left-[-25px]`}
-      >
-        <Image
-          src={story.imageSrc}
-          alt={story.imageAlt}
-          width={PERSON_IMAGE_WIDTH}
-          height={PERSON_IMAGE_HEIGHT}
-          className="relative z-[60] h-full w-full object-contain object-bottom"
-          sizes="200px"
-        />
-      </div>
     </article>
   );
 }
 
 export default function CourseCareerTransformationsSection({
-  content,
+  learners,
+  title,
 }: {
-  content: CourseCareerTransformationsContent;
+  learners: ApiLearner[];
+  title?: string | null;
 }) {
+  const stories = learners.map(learnerToStory);
   const [page, setPage] = useState(0);
   const viewportRef = useRef<HTMLDivElement>(null);
   const [slideWidth, setSlideWidth] = useState(0);
-  const totalPages = content.stories.length;
+  const totalPages = stories.length;
 
   useLayoutEffect(() => {
     const node = viewportRef.current;
@@ -304,7 +348,7 @@ export default function CourseCareerTransformationsSection({
 
   if (totalPages === 0) return null;
 
-  const activeStory = content.stories[page];
+  const activeStory = stories[page];
   const offsetPx = page * slideWidth;
   const trackStyle = {
     transform: slideWidth > 0 ? `translate3d(-${offsetPx}px, 0, 0)` : undefined,
@@ -326,10 +370,10 @@ export default function CourseCareerTransformationsSection({
             id="career-transformations-heading"
             className="text-[32px] font-bold leading-normal text-[#1E293B]"
           >
-            {content.title}
+            {title}
           </h2>
           <p className="mt-1 text-[14px] font-normal leading-[150%] text-[#788593]">
-            {content.subtitle}
+            {CAREER_TRANSFORMATIONS_SUBTITLE}
           </p>
         </div>
         {totalPages > 1 ? (
@@ -351,27 +395,15 @@ export default function CourseCareerTransformationsSection({
           paddingLeft: `${PERSON_LEFT_GUTTER_PX}px`,
         }}
       >
-        {activeStory ? (
-          <div
-            key={activeStory.id}
-            className="pointer-events-none absolute inset-x-0 top-5 z-[60] hidden overflow-visible md:block md:pt-11"
-            aria-hidden
-          >
-            <div className="relative min-h-[210px] overflow-visible">
-              <StoryPersonImage story={activeStory} />
-            </div>
-          </div>
-        ) : null}
-
         <div
           ref={viewportRef}
           className="relative z-0 w-full min-w-0 overflow-x-hidden overflow-y-visible max-md:pt-14 md:pt-11"
         >
-          <div className={`flex ${SLIDE_TRANSITION}`} style={trackStyle}>
-            {content.stories.map((story) => (
+          <div className={`flex items-stretch ${SLIDE_TRANSITION}`} style={trackStyle}>
+            {stories.map((story) => (
               <div
                 key={story.id}
-                className="box-border shrink-0 grow-0 overflow-visible"
+                className="box-border shrink-0 grow-0 overflow-visible h-full"
                 style={slideStyle}
               >
                 <TransformationStoryCard story={story} />
