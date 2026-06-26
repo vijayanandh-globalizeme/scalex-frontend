@@ -9,6 +9,17 @@ export const SKILLS_TOOLS_TOOLS_TITLE     = 'Tools & Technologies';
 export const ROADMAP_SHOW_MORE_LABEL      = 'Show More';
 export const ROADMAP_HIRING_PARTNERS_TITLE = 'Our Hiring Partners';
 
+export const ROADMAP_HIRING_PARTNER_LOGOS: { src: string; alt: string }[] = [
+  { src: '/images/course/google.png',    alt: 'Google' },
+  { src: '/images/course/amazon.png',    alt: 'Amazon' },
+  { src: '/images/course/ibm.png',       alt: 'IBM' },
+  { src: '/images/course/walmart.png',   alt: 'Walmart' },
+  { src: '/images/course/sapient.png',   alt: 'Sapient' },
+  { src: '/images/course/hsbc.png',      alt: 'HSBC' },
+  { src: '/images/course/accenture.png', alt: 'Accenture' },
+  { src: '/images/course/claude.png',    alt: 'Claude' },
+];
+
 export const CAREER_SECTION_TITLE = "Accelerate Your Career";
 export const CAREER_SALARY_SUBTITLE = "Annual Salary in India (INR)";
 export const CAREER_SALARY_BADGE = "Competitive Salaries for In-Demand Skills";
