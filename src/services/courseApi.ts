@@ -281,13 +281,21 @@ export type ApiCourseBatch = {
 
 type CourseBatchesApiResponse = { success: boolean; data: { batches: ApiCourseBatch[] } };
 
+export type CourseBatchFilter = {
+  filter?: string;
+  dateFrom?: string;
+  dateTo?: string;
+};
+
 export async function fetchCourseBatches(
   courseUri: string,
   categoryUri: string,
-  filter?: string,
+  batchFilter?: CourseBatchFilter,
 ): Promise<ApiCourseBatch[]> {
   const params = new URLSearchParams({ categoryUri });
-  if (filter) params.set('filter', filter);
+  if (batchFilter?.filter) params.set('filter', batchFilter.filter);
+  if (batchFilter?.dateFrom) params.set('dateFrom', batchFilter.dateFrom);
+  if (batchFilter?.dateTo) params.set('dateTo', batchFilter.dateTo);
   const json = await get<CourseBatchesApiResponse>(
     `course/${courseUri}/batches?${params.toString()}`,
     { revalidate: 0 },

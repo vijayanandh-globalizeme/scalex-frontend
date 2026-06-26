@@ -8,7 +8,7 @@ const MainLayout = async ({ children }: { children: ReactNode }) => {
   const megaMenuCategories = layoutData?.categories ?? [];
   const settings = layoutData?.settings ?? {};
   return (
-    <div className="flex min-h-screen flex-col overflow-x-hidden">
+    <div className="flex min-h-screen flex-col overflow-x-clip">
       <Header megaMenuCategories={megaMenuCategories} />
       <main id="main-content" className="min-w-0 flex-1 overflow-visible">
         {children}

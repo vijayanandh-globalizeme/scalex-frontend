@@ -131,7 +131,15 @@ function ArrowRightIcon({ className }: { className?: string }) {
   );
 }
 
-export default function CourseDetailSidebar({ sidebar }: { sidebar: CourseBodyContent['sidebar'] }) {
+export default function CourseDetailSidebar({
+  sidebar,
+  stickyTop = 'calc(4rem + 3.25rem)',
+  width = 'w-[246px]',
+}: {
+  sidebar: CourseBodyContent['sidebar'];
+  stickyTop?: string;
+  width?: string;
+}) {
   const [agreed, setAgreed] = useState(true);
 
   function handleSubmit(e: FormEvent<HTMLFormElement>) {
@@ -139,8 +147,8 @@ export default function CourseDetailSidebar({ sidebar }: { sidebar: CourseBodyCo
   }
 
   return (
-    <aside className="hidden w-[246px] shrink-0 overflow-visible lg:block" aria-label="Course assistance">
-      <div className="sticky top-[calc(4rem+3.25rem)] z-30 flex max-h-[calc(100dvh-7.25rem)] flex-col overflow-visible">
+    <aside className={`hidden ${width} shrink-0 overflow-visible lg:block`} aria-label="Course assistance">
+      <div className="sticky z-30 flex max-h-[calc(100dvh-4.5rem)] flex-col overflow-visible" style={{ top: stickyTop }}>
         <div className="min-h-0 flex-1 overflow-y-auto overflow-x-visible overscroll-contain space-y-5">
         <form
           onSubmit={handleSubmit}

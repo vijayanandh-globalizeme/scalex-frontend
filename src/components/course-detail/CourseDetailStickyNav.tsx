@@ -51,6 +51,7 @@ export default function CourseDetailStickyNav({
   const [activeId, setActiveId] = useState(items[0]?.id ?? 'overview');
   const pendingScrollIdRef = useRef<string | null>(null);
   const scrollIdleTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const navScrollRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const stickyOffset = HEADER_HEIGHT_PX + NAV_HEIGHT_PX;
@@ -103,6 +104,22 @@ export default function CourseDetailStickyNav({
       }
 
       setActiveId(active.id);
+      // auto-scroll the nav bar on mobile so the active tab is visible
+      const navEl = navScrollRef.current;
+      if (navEl) {
+        const activeBtn = navEl.querySelector<HTMLButtonElement>(`[data-navid="${active.id}"]`);
+        if (activeBtn) {
+          const btnLeft = activeBtn.offsetLeft;
+          const btnRight = btnLeft + activeBtn.offsetWidth;
+          const visLeft = navEl.scrollLeft;
+          const visRight = visLeft + navEl.offsetWidth;
+          if (btnLeft < visLeft) {
+            navEl.scrollTo({ left: btnLeft - 16, behavior: 'smooth' });
+          } else if (btnRight > visRight) {
+            navEl.scrollTo({ left: btnRight - navEl.offsetWidth + 16, behavior: 'smooth' });
+          }
+        }
+      }
     }
 
     updateActiveFromScroll();
@@ -151,13 +168,14 @@ export default function CourseDetailStickyNav({
     <nav className="sticky top-16 z-40 mb-12" aria-label="Course sections">
       <div className="full-bleed bg-[#fcfcfc] shadow-[0_4px_4px_0_rgba(30,41,59,0.08),4px_-4px_4px_0_rgba(30,41,59,0.03)]">
         <div className="site-container">
-          <div className="flex h-[52px] w-full items-stretch gap-6 overflow-x-auto [-ms-overflow-style:none] [scrollbar-width:none] lg:justify-between lg:gap-0 [&::-webkit-scrollbar]:hidden">
+          <div ref={navScrollRef} className="flex h-[52px] w-full items-stretch gap-6 overflow-x-auto [-ms-overflow-style:none] [scrollbar-width:none] lg:justify-between lg:gap-0 [&::-webkit-scrollbar]:hidden">
             {items.map((item) => {
               const isActive = activeId === item.id;
 
               return (
                 <button
                   key={item.id}
+                  data-navid={item.id}
                   type="button"
                   onClick={() => scrollToSection(item)}
                   className={`flex shrink-0 cursor-pointer items-center border-0 border-b-[3px] bg-transparent p-0 text-[14px] font-medium whitespace-nowrap transition-colors ${

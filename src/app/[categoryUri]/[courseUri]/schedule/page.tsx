@@ -8,7 +8,7 @@ import { sidebar } from '@/lib/courseSideBar';
 
 type PageProps = {
   params: Promise<{ categoryUri: string; courseUri: string }>;
-  searchParams: Promise<{ filter?: string }>;
+  searchParams: Promise<{ filter?: string; dateFrom?: string; dateTo?: string }>;
 };
 
 function HomeIcon() {
@@ -47,6 +47,8 @@ type SchedulePageCore = {
   countryUri?: string;
   cityUri?: string;
   filter?: string;
+  dateFrom?: string;
+  dateTo?: string;
 };
 
 export async function SchedulePageContent({
@@ -55,12 +57,15 @@ export async function SchedulePageContent({
   countryUri,
   cityUri,
   filter,
+  dateFrom,
+  dateTo,
 }: SchedulePageCore) {
   const locationOpts = countryUri ? { countryUri, cityUri } : undefined;
+  const batchFilter = { filter, dateFrom, dateTo };
 
   const [course, batches, locations] = await Promise.all([
     getCourseOverview(courseUri, categoryUri, locationOpts),
-    getCourseBatches(courseUri, categoryUri, filter),
+    getCourseBatches(courseUri, categoryUri, batchFilter),
     countryUri ? getCourseLocations(courseUri) : Promise.resolve([]),
   ]);
 
@@ -131,14 +136,14 @@ export async function SchedulePageContent({
           </div>
 
           {/* Two-column layout */}
-          <div className="flex items-start gap-6">
+          <div className="flex items-start gap-8 lg:gap-10">
             <div className="min-w-0 flex-1">
               <CourseSchedulesSection
                 initialBatches={batches}
                 courseName={course.name}
               />
             </div>
-            <CourseDetailSidebar sidebar={sidebar} />
+            <CourseDetailSidebar sidebar={sidebar} stickyTop="5rem" width="w-[270px]" />
           </div>
         </div>
       </section>
@@ -148,12 +153,14 @@ export async function SchedulePageContent({
 
 export default async function SchedulePage({ params, searchParams }: PageProps) {
   const { categoryUri, courseUri } = await params;
-  const { filter } = await searchParams;
+  const { filter, dateFrom, dateTo } = await searchParams;
   return (
     <SchedulePageContent
       categoryUri={categoryUri}
       courseUri={courseUri}
       filter={filter}
+      dateFrom={dateFrom}
+      dateTo={dateTo}
     />
   );
 }
