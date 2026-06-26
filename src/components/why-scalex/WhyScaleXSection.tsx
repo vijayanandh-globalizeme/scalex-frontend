@@ -201,7 +201,7 @@ export default function WhyScaleXSection({
                 >
                   <CheckBadgeIcon className="mt-0.5 h-[22px] w-[22px] shrink-0" />
                   <div className="min-w-0">
-                    <p className="text-[15px] font-semibold leading-snug text-brand md:text-[16px]">
+                    <p className="text-[15px] font-semibold leading-snug md:text-[16px]">
                       {row.scalex.title}
                     </p>
                     <p className="mt-1 text-[13px] leading-relaxed text-muted md:text-[14px]">
