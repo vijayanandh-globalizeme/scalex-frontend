@@ -120,8 +120,10 @@ export default function CoursePlanComparisonSection({
 }: {
   plans: ApiCoursePlan[];
   features: ApiCoursePlanFeature[];
-  batch: ApiCoursePlanBatch;
+  batch: ApiCoursePlanBatch | null | undefined;
 }) {
+  if (!batch) return null;
+
   const s = COURSE_PLAN_COMPARISON_STATIC;
 
   // Determine active plans (retail price not null)

@@ -2,7 +2,6 @@ import Image from 'next/image';
 import type { CourseFeePartnerLogo } from '@/lib/courseBody';
 import type { ApiCoursePlanBatch } from '@/services/courseApi';
 import { COURSE_FEE_STATIC } from '@/lib/courseDetailStatics';
-import CourseBrochureCta from './CourseBrochureCta';
 import { COURSE_SECTION_CARD } from './courseSectionCard';
 
 function PhoneIcon({ className }: { className?: string }) {
@@ -92,6 +91,7 @@ function PricingCard({
   highlighted,
   badge,
   isEmi,
+  onEnroll,
 }: {
   label: string;
   price: string;
@@ -101,6 +101,7 @@ function PricingCard({
   highlighted?: boolean;
   badge?: string;
   isEmi?: boolean;
+  onEnroll?: () => void;
 }) {
   return (
     <div
@@ -123,21 +124,23 @@ function PricingCard({
       </div>
       <p className="mt-3 text-[13px] font-normal leading-[150%] text-[#788593]">{description}</p>
       {isEmi ? (
-        <a
-          href="tel:"
+        <button
+          type="button"
+          onClick={onEnroll}
           className="btn-brand-outline btn-brand-outline--flat mt-5 inline-flex h-[40px] w-full items-center justify-center gap-2 rounded-lg bg-white px-4 text-[12px] font-medium leading-[18px]"
         >
           {enrollLabel}
           <PhoneIcon className="shrink-0 text-brand" />
-        </a>
+        </button>
       ) : (
-        <CourseBrochureCta
-          openModal
+        <button
+          type="button"
+          onClick={onEnroll}
           className="btn-brand-outline btn-brand-outline--flat mt-5 inline-flex h-[40px] w-full items-center justify-center gap-2 rounded-lg bg-white px-4 text-[12px] font-medium leading-[18px]"
         >
           {enrollLabel}
           <ArrowRightIcon className="btn-arrow-icon shrink-0 text-brand" />
-        </CourseBrochureCta>
+        </button>
       )}
     </div>
   );
@@ -146,9 +149,11 @@ function PricingCard({
 export default function CourseFeeSection({
   batch,
   advisorPhone,
+  onEnroll,
 }: {
   batch: ApiCoursePlanBatch;
   advisorPhone?: string | null;
+  onEnroll?: (batch: ApiCoursePlanBatch) => void;
 }) {
   if (!batch?.plan1HasEMI) return null;
 
@@ -226,6 +231,7 @@ export default function CourseFeeSection({
               highlighted
               badge="Popular"
               isEmi
+              onEnroll={() => onEnroll?.(batch)}
             />
           ) : null}
           {fullPrice ? (
@@ -234,6 +240,7 @@ export default function CourseFeeSection({
               price={fullPrice}
               description={s.fullDescription}
               enrollLabel={s.fullEnrollLabel}
+              onEnroll={() => onEnroll?.(batch)}
             />
           ) : null}
         </div>

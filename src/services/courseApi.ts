@@ -280,28 +280,39 @@ export type ApiCourseBatch = {
   timezone: string;
 };
 
-type CourseBatchesApiResponse = { success: boolean; data: { batches: ApiCourseBatch[] } };
-
 export type CourseBatchFilter = {
   filter?: string;
   dateFrom?: string;
   dateTo?: string;
+  limit?: number;
+  offset?: number;
 };
+
+export type CourseBatchesResult = {
+  batches: ApiCourseBatch[];
+  total: number;
+  limit: number;
+  offset: number;
+};
+
+type CourseBatchesApiResponse = { success: boolean; data: CourseBatchesResult };
 
 export async function fetchCourseBatches(
   courseUri: string,
   categoryUri: string,
   batchFilter?: CourseBatchFilter,
-): Promise<ApiCourseBatch[]> {
+): Promise<CourseBatchesResult> {
   const params = new URLSearchParams({ categoryUri });
   if (batchFilter?.filter) params.set('filter', batchFilter.filter);
   if (batchFilter?.dateFrom) params.set('dateFrom', batchFilter.dateFrom);
   if (batchFilter?.dateTo) params.set('dateTo', batchFilter.dateTo);
+  if (batchFilter?.limit !== undefined) params.set('limit', String(batchFilter.limit));
+  if (batchFilter?.offset !== undefined) params.set('offset', String(batchFilter.offset));
   const json = await get<CourseBatchesApiResponse>(
     `course/${courseUri}/batches?${params.toString()}`,
     { revalidate: 0 },
   );
-  return json?.success ? (json.data.batches ?? []) : [];
+  return json?.success ? json.data : { batches: [], total: 0, limit: 10, offset: 0 };
 }
 
 // ── Course Locations ──────────────────────────────────────────────────────────
@@ -382,9 +393,10 @@ export type ApiCoursePlanBatch = {
 };
 
 export type ApiCoursePlansData = {
+  moneyBack: boolean;
   plans: ApiCoursePlan[];
   features: ApiCoursePlanFeature[];
-  batch: ApiCoursePlanBatch;
+  batch?: ApiCoursePlanBatch | null;
 };
 
 type CoursePlansApiResponse = { success: boolean; data: ApiCoursePlansData };

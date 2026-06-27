@@ -1,10 +1,12 @@
 'use client';
 
 import { useState, useRef, useEffect, useMemo, type ReactNode } from 'react';
-import { getCourseBatches } from '@/app/actions/courseActions';
+import { getCourseBatches, getCoursePlans } from '@/app/actions/courseActions';
 import CourseFeeSection from './CourseFeeSection';
 import CourseCareerAssuranceSection from './CourseCareerAssuranceSection';
+import CoursePlanComparisonSection from './CoursePlanComparisonSection';
 import CourseBrochureCta from './CourseBrochureCta';
+import type { ApiCoursePlansData } from '@/services/courseApi';
 import { COURSE_SECTION_CARD } from './courseSectionCard';
 import { COURSE_SCHEDULE_FILTERS } from '@/lib/courseFilter';
 import type { ApiCourseBatch } from '@/services/courseApi';
@@ -351,10 +353,11 @@ function TimeOfDayIcon({ tod, className }: { tod: 'morning' | 'evening' | 'night
   return <MoonIcon className={className} />;
 }
 
-function ScheduleCard({ batch, quantity, onQuantityChange }: {
+function ScheduleCard({ batch, quantity, onQuantityChange, onEnroll }: {
   batch: ApiCourseBatch;
   quantity: number;
   onQuantityChange: (n: number) => void;
+  onEnroll?: (batch: ApiCourseBatch) => void;
 }) {
   const sym = batch.currencySymbol;
   const retail = Number(batch.plan1RetailPrice ?? 0);
@@ -445,10 +448,14 @@ function ScheduleCard({ batch, quantity, onQuantityChange }: {
               <span className="text-zinc-300" aria-hidden>|</span>
               <span>24/7<br />Support</span>
             </div>
-            <CourseBrochureCta openModal className="btn-brand mt-3 inline-flex w-[139px] items-center justify-center gap-[11px] px-4 py-[11px] text-[14px] font-medium leading-[18px]">
+            <button
+              type="button"
+              onClick={() => onEnroll?.(batch)}
+              className="btn-brand mt-3 inline-flex w-[139px] items-center justify-center gap-[11px] px-4 py-[11px] text-[14px] font-medium leading-[18px]"
+            >
               Enroll Now
               <ArrowRightIcon className="btn-arrow-icon shrink-0 text-white" />
-            </CourseBrochureCta>
+            </button>
           </div>
         </div>
       </div>
@@ -496,20 +503,50 @@ export default function CourseSchedulesSection({
   courseName: string;
   variant?: 'default' | 'technical';
 }) {
+  const INITIAL_LIMIT = 3;
+  const LOAD_MORE_LIMIT = 5;
+
   const isTechnical = variant === 'technical';
   const [batches, setBatches] = useState<ApiCourseBatch[]>([]);
+  const [total, setTotal] = useState(0);
+  const [loadingMore, setLoadingMore] = useState(false);
   const [activeFilter, setActiveFilter] = useState('');
   const [dateRange, setDateRange] = useState<{ from: string; to: string } | null>(null);
   const [quantities, setQuantities] = useState<Record<string, number>>({});
   const [pickerOpen, setPickerOpen] = useState(false);
+  const [enrollModalOpen, setEnrollModalOpen] = useState(false);
+  const [enrollBatch, setEnrollBatch] = useState<ApiCourseBatch | null>(null);
+  const [plansData, setPlansData] = useState<ApiCoursePlansData | null>(null);
   const pickerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    getCourseBatches(courseUri, categoryUri).then((data) => {
-      setBatches(data);
-      setQuantities(Object.fromEntries(data.map((b) => [b.id, 1])));
+    getCourseBatches(courseUri, categoryUri, { limit: INITIAL_LIMIT, offset: 0 }).then((result) => {
+      setBatches(result.batches);
+      setTotal(result.total);
+      setQuantities(Object.fromEntries(result.batches.map((b) => [b.id, 1])));
+    });
+    getCoursePlans(courseUri, categoryUri).then((data) => {
+      setPlansData(data);
     });
   }, [courseUri, categoryUri]);
+
+  function handleLoadMore() {
+    setLoadingMore(true);
+    getCourseBatches(courseUri, categoryUri, { limit: LOAD_MORE_LIMIT, offset: batches.length }).then((result) => {
+      setBatches((prev) => [...prev, ...result.batches]);
+      setTotal(result.total);
+      setQuantities((prev) => ({
+        ...prev,
+        ...Object.fromEntries(result.batches.map((b) => [b.id, 1])),
+      }));
+      setLoadingMore(false);
+    });
+  }
+
+  function handleEnroll(batch: ApiCourseBatch) {
+    setEnrollBatch(batch);
+    setEnrollModalOpen(true);
+  }
 
   useEffect(() => {
     function handler(e: MouseEvent) {
@@ -544,12 +581,12 @@ export default function CourseSchedulesSection({
   const dateRangeLabel = dateRange
     ? `${new Date(dateRange.from).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })} - ${new Date(dateRange.to).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}`
     : 'Month';
-
+console.log("plansData?.moneyBack: ",plansData?.moneyBack);
   return (
     <>
       {emiBatch ? (
         <div className="mt-8">
-          <CourseFeeSection batch={emiBatch} />
+          <CourseFeeSection batch={emiBatch} onEnroll={(b) => handleEnroll(b as ApiCourseBatch)} />
         </div>
       ) : null}
 
@@ -561,12 +598,15 @@ export default function CourseSchedulesSection({
 
       <div className={`overflow-visible mt-8 ${COURSE_SECTION_CARD} px-5 py-5 md:px-6 md:py-5`}>
         {/* Header */}
+        
         <div className="flex flex-wrap items-center gap-3">
           <h2 className="text-[22px] font-bold leading-[140%] text-heading">Upcoming Schedules</h2>
-          <span className="inline-flex w-fit items-center gap-1.5 rounded-lg bg-[#FFF6F7] px-2.5 py-1 text-[11px] font-medium leading-[140%] text-brand">
-            <GuaranteeIcon className="shrink-0" />
-            100% Money Back Guarantee
-          </span>
+          {plansData?.moneyBack ? (
+            <span className="inline-flex w-fit items-center gap-1.5 rounded-lg bg-[#FFF6F7] px-2.5 py-1 text-[11px] font-medium leading-[140%] text-brand">
+              <GuaranteeIcon className="shrink-0" />
+              100% Money Back Guarantee
+            </span>
+          ) : null}
         </div>
 
         {/* Filters */}
@@ -626,11 +666,72 @@ export default function CourseSchedulesSection({
                 batch={batch}
                 quantity={quantities[batch.id] ?? 1}
                 onQuantityChange={(n) => setQuantities((prev) => ({ ...prev, [batch.id]: n }))}
+                onEnroll={handleEnroll}
               />
             ))
           )}
         </div>
+
+        {/* View more */}
+        {!activeFilter && !dateRange && batches.length < total ? (
+          <div className="mt-5 flex justify-center">
+            <button
+              type="button"
+              onClick={handleLoadMore}
+              disabled={loadingMore}
+              className="btn-brand-outline btn-brand-outline--flat inline-flex h-9 items-center gap-2 rounded-lg px-5 text-[13px] font-medium disabled:opacity-60"
+            >
+              {loadingMore ? 'Loading…' : `View More (${total - batches.length} remaining)`}
+            </button>
+          </div>
+        ) : null}
       </div>
+
+      {/* Enroll modal */}
+      {enrollModalOpen ? (
+        <div
+          className="fixed inset-0 z-[200] flex items-center justify-center bg-black/50 p-4"
+          onClick={() => setEnrollModalOpen(false)}
+        >
+          {(() => {
+            const modalBatch = enrollBatch ?? plansData?.batch ?? emiBatch ?? batches[0] ?? null;
+            const activePlanCount = plansData && modalBatch
+              ? plansData.plans.filter((p) => {
+                  const n = p.planNumber;
+                  const retail = n === 1 ? modalBatch.plan1RetailPrice : n === 2 ? modalBatch.plan2RetailPrice : modalBatch.plan3RetailPrice;
+                  return retail !== null;
+                }).length
+              : 0;
+            const maxW = activePlanCount >= 3 ? 'max-w-[1200px]' : activePlanCount === 2 ? 'max-w-4xl' : 'max-w-2xl';
+            return (
+          <div
+            className={`relative w-full ${maxW} max-h-[90dvh] overflow-auto rounded-[20px] bg-white`}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              type="button"
+              onClick={() => setEnrollModalOpen(false)}
+              className="absolute top-3 right-3 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-white/90 text-heading shadow hover:bg-white"
+              aria-label="Close"
+            >
+              ✕
+            </button>
+            {plansData ? (
+              <CoursePlanComparisonSection
+                plans={plansData.plans}
+                features={plansData.features}
+                batch={modalBatch}
+              />
+            ) : (
+              <div className="flex items-center justify-center py-16 text-[14px] text-muted">
+                Loading…
+              </div>
+            )}
+          </div>
+            );
+          })()}
+        </div>
+      ) : null}
     </>
   );
 }
