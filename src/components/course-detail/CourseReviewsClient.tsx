@@ -177,11 +177,11 @@ export default function CourseReviewsClient({
   const platformRatings = useMemo(() =>
     PLATFORM_KEYS
       .map(({ typeId, settingKey, logoSrc, logoAlt }) => {
-        const entry = settings[settingKey] as { rating: string; count: number } | undefined;
+        const entry = settings[settingKey] as { rating: string; count: number; url?: string } | undefined;
         if (!entry) return null;
-        return { id: typeId, logoSrc, logoAlt, rating: entry.rating, reviewsLabel: `${entry.count} Reviews` };
+        return { id: typeId, logoSrc, logoAlt, rating: entry.rating, reviewsLabel: `${entry.count} Reviews`, url: entry.url || undefined };
       })
-      .filter(Boolean) as { id: string; logoSrc: string; logoAlt: string; rating: string; reviewsLabel: string }[],
+      .filter(Boolean) as { id: string; logoSrc: string; logoAlt: string; rating: string; reviewsLabel: string; url?: string }[],
     [settings],
   );
 
@@ -255,7 +255,18 @@ export default function CourseReviewsClient({
                   <PlatformStarIcon />
                   {platform.rating}
                 </span>
-                <span className="text-[11px] font-normal leading-normal text-muted">{platform.reviewsLabel}</span>
+                {platform.url ? (
+                  <a
+                    href={platform.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-[11px] font-normal leading-normal text-muted hover:underline"
+                  >
+                    {platform.reviewsLabel}
+                  </a>
+                ) : (
+                  <span className="text-[11px] font-normal leading-normal text-muted">{platform.reviewsLabel}</span>
+                )}
               </div>
             </div>
           ))}

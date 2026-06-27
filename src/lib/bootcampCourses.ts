@@ -174,7 +174,7 @@ function buildTechnicalCourse(def: BootcampCourseDefinition): BootcampCourseCont
       ],
     },
     primaryCta: { href: '#schedules', label: 'Register for FREE Webinar' },
-    secondaryCta: { href: '#brochure', label: 'Download Brochure' },
+    secondaryCta: { href: '#schedules', label: 'View Schedule' },
     licensedPartner: {
       label: 'Industry-Aligned Curriculum',
       logoSrc: '/images/course/google.png',

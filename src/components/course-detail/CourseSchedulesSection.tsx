@@ -1,7 +1,6 @@
 'use client';
 
-import { useState, useTransition, useRef, useEffect, type ReactNode } from 'react';
-import { useRouter, usePathname, useSearchParams } from 'next/navigation';
+import { useState, useRef, useEffect, useMemo, type ReactNode } from 'react';
 import CourseBrochureCta from './CourseBrochureCta';
 import { COURSE_SECTION_CARD } from './courseSectionCard';
 import { COURSE_SCHEDULE_FILTERS } from '@/lib/courseFilter';
@@ -69,6 +68,38 @@ function ChevronDownIcon({ className }: { className?: string }) {
   return (
     <svg className={className} width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden>
       <path d="M2 4l4 4 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+function SunIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+      <circle cx="12" cy="12" r="4" />
+      <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
+    </svg>
+  );
+}
+
+function SunsetIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+      <path d="M17 18a5 5 0 0 0-10 0" />
+      <line x1="12" y1="9" x2="12" y2="2" />
+      <line x1="4.22" y1="10.22" x2="5.64" y2="11.64" />
+      <line x1="1" y1="18" x2="3" y2="18" />
+      <line x1="21" y1="18" x2="23" y2="18" />
+      <line x1="18.36" y1="11.64" x2="19.78" y2="10.22" />
+      <line x1="23" y1="22" x2="1" y2="22" />
+      <polyline points="16 5 12 9 8 5" />
+    </svg>
+  );
+}
+
+function MoonIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
     </svg>
   );
 }
@@ -252,11 +283,26 @@ const SCHEDULE_CARD =
   'relative overflow-hidden rounded-[20px] border border-[#EBEBEB] bg-white shadow-[0_4px_4px_0_rgba(30,41,59,0.08),0_4px_4px_0_rgba(30,41,59,0.03)]';
 
 function formatDate(iso: string) {
-  return new Date(iso).toLocaleDateString('en-GB', {
-    day: 'numeric',
+  return new Date(iso).toLocaleDateString('en-US', {
     month: 'long',
-    year: 'numeric',
+    day: 'numeric',
   });
+}
+
+function formatTime(time: string) {
+  const [hStr, mStr] = time.split(':');
+  const h = parseInt(hStr, 10);
+  const m = parseInt(mStr || '0', 10);
+  const period = h < 12 ? 'AM' : 'PM';
+  const h12 = h % 12 === 0 ? 12 : h % 12;
+  return m === 0 ? `${h12}:00 ${period}` : `${h12}:${String(m).padStart(2, '0')} ${period}`;
+}
+
+function getTimeOfDay(time: string): 'morning' | 'evening' | 'night' {
+  const h = parseInt(time.split(':')[0], 10);
+  if (h < 12) return 'morning';
+  if (h < 18) return 'evening';
+  return 'night';
 }
 
 function discountPct(retail: number, selling: number) {
@@ -287,6 +333,27 @@ function QuantityStepper({ value, onChange }: { value: number; onChange: (n: num
   );
 }
 
+const TIME_OF_DAY_LABELS = {
+  morning: {
+    title: 'Morning Batch',
+    subtitle: 'Start your day light with energising morning sessions.',
+  },
+  evening: {
+    title: 'Evening Batch',
+    subtitle: 'Wind down productively with focused evening training.',
+  },
+  night: {
+    title: 'Night Batch',
+    subtitle: 'Maximise your night with dedicated late-hour classes.',
+  },
+};
+
+function TimeOfDayIcon({ tod, className }: { tod: 'morning' | 'evening' | 'night'; className?: string }) {
+  if (tod === 'morning') return <SunIcon className={className} />;
+  if (tod === 'evening') return <SunsetIcon className={className} />;
+  return <MoonIcon className={className} />;
+}
+
 function ScheduleCard({ batch, quantity, onQuantityChange }: {
   batch: ApiCourseBatch;
   quantity: number;
@@ -299,9 +366,11 @@ function ScheduleCard({ batch, quantity, onQuantityChange }: {
 
   const startLabel = formatDate(batch.startDate);
   const endLabel = formatDate(batch.endDate);
-  const dateRange = startLabel === endLabel ? startLabel : `${startLabel} – ${endLabel}`;
-  const timeLabel = `${batch.timezone}: ${batch.startTime} – ${batch.endTime}`;
+  const dateRange = startLabel === endLabel ? startLabel : `${startLabel} - ${endLabel}`;
+  const timeLabel = `${batch.timezone}: ${formatTime(batch.startTime)} - ${formatTime(batch.endTime)}`;
   const dayLabel = batch.dayType === 'WEEKDAY' ? 'Weekday Batch' : 'Weekend Batch';
+  const tod = getTimeOfDay(batch.startTime);
+  const todMeta = TIME_OF_DAY_LABELS[tod];
 
   return (
     <article className={SCHEDULE_CARD}>
@@ -315,7 +384,7 @@ function ScheduleCard({ batch, quantity, onQuantityChange }: {
             <div className="min-w-0">
               <span className="inline-flex items-center gap-1.5 rounded-lg bg-[#FFF6F7] px-2 py-1 text-[12px] font-medium leading-[140%] text-brand">
                 <span className="h-1.5 w-1.5 rounded-full bg-brand" aria-hidden />
-                LIVE VIRTUAL TRAINING
+                {batch.venue.toUpperCase()}
               </span>
               <p className="mt-3 text-[24px] font-semibold text-heading">{dateRange}</p>
               <p className="mt-1.5 flex items-center gap-1.5 text-[14px] font-medium text-muted">
@@ -326,10 +395,22 @@ function ScheduleCard({ batch, quantity, onQuantityChange }: {
             <QuantityStepper value={quantity} onChange={onQuantityChange} />
           </div>
 
-          <div className="grid gap-4 py-4 pr-4 pl-[35px] sm:grid-cols-3 md:py-5 md:pr-5">
-            <MetaItem icon={<CalendarIcon className="text-brand" />} title={dayLabel} subtitle={`${batch.noOfSessions} Sessions`} />
-            <MetaItem icon={<PersonIcon className="text-brand" />} title={batch.trainerName} subtitle="Certified Trainer" />
-            <MetaItem icon={<ClockIcon className="text-brand" />} title={batch.venue} subtitle={batch.availability} />
+          <div className="flex flex-col gap-4 py-4 pr-4 pl-[35px] sm:flex-row sm:gap-0 md:py-5 md:pr-5">
+            <div className="flex-1">
+              <MetaItem icon={<CalendarIcon className="text-brand" />} title={dayLabel} subtitle={`${batch.noOfSessions} Sessions`} />
+            </div>
+            <div className="hidden sm:block w-px self-stretch bg-zinc-100 mx-3" aria-hidden />
+            <div className="flex-1">
+              <MetaItem icon={<PersonIcon className="text-brand" />} title={batch.trainerName} subtitle="Certified Trainer" />
+            </div>
+            <div className="hidden sm:block w-px self-stretch bg-zinc-100 mx-3" aria-hidden />
+            <div className="flex-1">
+              <MetaItem
+                icon={<TimeOfDayIcon tod={tod} className="text-brand" />}
+                title={todMeta.title}
+                subtitle={todMeta.subtitle}
+              />
+            </div>
           </div>
         </div>
 
@@ -353,7 +434,7 @@ function ScheduleCard({ batch, quantity, onQuantityChange }: {
             </div>
             <p className="mt-3 inline-flex items-center gap-1.5 rounded-lg bg-[#F5F6F8] px-2.5 py-1 text-[12px] font-normal leading-[140%] text-heading">
               <SlotsIcon className="shrink-0" />
-              {batch.availability === 'AVAILABLE' ? 'Available' : batch.availability}
+              {batch.availability}
             </p>
           </div>
 
@@ -378,6 +459,33 @@ function ScheduleCard({ batch, quantity, onQuantityChange }: {
 
 // ── Main Section ──────────────────────────────────────────────────────────────
 
+function filterBatches(batches: ApiCourseBatch[], activeFilter: string, dateRange: { from: string; to: string } | null): ApiCourseBatch[] {
+  const now = new Date();
+  const thisYear = now.getFullYear();
+  const thisMonth = now.getMonth();
+
+  if (dateRange) {
+    return batches.filter((b) => b.startDate >= dateRange.from && b.startDate <= dateRange.to);
+  }
+  if (activeFilter === 'this_month') {
+    return batches.filter((b) => {
+      const d = new Date(b.startDate);
+      return d.getFullYear() === thisYear && d.getMonth() === thisMonth;
+    });
+  }
+  if (activeFilter === 'next_month') {
+    const nextMonth = (thisMonth + 1) % 12;
+    const nextYear = thisMonth === 11 ? thisYear + 1 : thisYear;
+    return batches.filter((b) => {
+      const d = new Date(b.startDate);
+      return d.getFullYear() === nextYear && d.getMonth() === nextMonth;
+    });
+  }
+  if (activeFilter === 'weekends') return batches.filter((b) => b.dayType === 'WEEKEND');
+  if (activeFilter === 'weekday') return batches.filter((b) => b.dayType === 'WEEKDAY');
+  return batches;
+}
+
 export default function CourseSchedulesSection({
   initialBatches,
   courseName,
@@ -385,23 +493,14 @@ export default function CourseSchedulesSection({
   initialBatches: ApiCourseBatch[];
   courseName: string;
 }) {
-  const router = useRouter();
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
-  const [isPending, startTransition] = useTransition();
-
-  const activeFilter = searchParams.get('filter') ?? '';
-  const activeDateFrom = searchParams.get('dateFrom') ?? '';
-  const activeDateTo = searchParams.get('dateTo') ?? '';
-  const hasDateRange = Boolean(activeDateFrom && activeDateTo);
-
+  const [activeFilter, setActiveFilter] = useState('');
+  const [dateRange, setDateRange] = useState<{ from: string; to: string } | null>(null);
   const [quantities, setQuantities] = useState<Record<string, number>>(() =>
     Object.fromEntries(initialBatches.map((b) => [b.id, 1])),
   );
   const [pickerOpen, setPickerOpen] = useState(false);
   const pickerRef = useRef<HTMLDivElement>(null);
 
-  // Close picker on outside click
   useEffect(() => {
     function handler(e: MouseEvent) {
       if (pickerRef.current && !pickerRef.current.contains(e.target as Node)) {
@@ -413,27 +512,22 @@ export default function CourseSchedulesSection({
   }, [pickerOpen]);
 
   function handleFilterClick(param: string) {
-    startTransition(() => {
-      const next = new URLSearchParams();
-      if (activeFilter !== param) next.set('filter', param);
-      // clear date range when a preset filter is selected
-      router.push(`${pathname}?${next.toString()}`);
-    });
+    setActiveFilter((prev) => (prev === param ? '' : param));
+    setDateRange(null);
   }
 
   function handleDateRange(v: { from: string; to: string } | null) {
-    startTransition(() => {
-      const next = new URLSearchParams();
-      if (v) {
-        next.set('dateFrom', v.from);
-        next.set('dateTo', v.to);
-      }
-      router.push(`${pathname}?${next.toString()}`);
-    });
+    setDateRange(v);
+    setActiveFilter('');
   }
 
-  const dateRangeLabel = hasDateRange
-    ? `${new Date(activeDateFrom).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })} – ${new Date(activeDateTo).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}`
+  const visibleBatches = useMemo(
+    () => filterBatches(initialBatches, activeFilter, dateRange),
+    [initialBatches, activeFilter, dateRange],
+  );
+
+  const dateRangeLabel = dateRange
+    ? `${new Date(dateRange.from).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })} - ${new Date(dateRange.to).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}`
     : 'Month';
 
   return (
@@ -450,13 +544,12 @@ export default function CourseSchedulesSection({
       {/* Filters */}
       <div className="mt-3 flex flex-wrap items-center gap-2">
         {COURSE_SCHEDULE_FILTERS.map((filter) => {
-          const isActive = activeFilter === filter.param && !hasDateRange;
+          const isActive = activeFilter === filter.param && !dateRange;
           return (
             <button
               key={filter.id}
               type="button"
               onClick={() => handleFilterClick(filter.param)}
-              disabled={isPending}
               className={`inline-flex h-8 items-center rounded-lg px-3 text-[12px] font-medium leading-[140%] transition ${
                 isActive
                   ? 'bg-brand/10 text-brand ring-1 ring-brand/30'
@@ -473,9 +566,8 @@ export default function CourseSchedulesSection({
           <button
             type="button"
             onClick={() => setPickerOpen((o) => !o)}
-            disabled={isPending}
             className={`inline-flex h-8 items-center gap-1.5 rounded-lg px-3 text-[12px] font-medium leading-[140%] transition ${
-              hasDateRange
+              dateRange
                 ? 'bg-brand/10 text-brand ring-1 ring-brand/30'
                 : 'btn-mui-ink-tint bg-[#F4F4F4] text-heading'
             }`}
@@ -487,7 +579,7 @@ export default function CourseSchedulesSection({
 
           {pickerOpen ? (
             <DateRangePicker
-              value={hasDateRange ? { from: activeDateFrom, to: activeDateTo } : null}
+              value={dateRange}
               onChange={handleDateRange}
               onClose={() => setPickerOpen(false)}
             />
@@ -496,11 +588,11 @@ export default function CourseSchedulesSection({
       </div>
 
       {/* Batch list */}
-      <div className={`mt-5 space-y-4 overflow-visible transition-opacity duration-200 ${isPending ? 'opacity-50' : 'opacity-100'}`}>
-        {initialBatches.length === 0 ? (
+      <div className="mt-5 space-y-4 overflow-visible">
+        {visibleBatches.length === 0 ? (
           <p className="py-8 text-center text-[14px] text-muted">No schedules found for the selected filter.</p>
         ) : (
-          initialBatches.map((batch) => (
+          visibleBatches.map((batch) => (
             <ScheduleCard
               key={batch.id}
               batch={batch}

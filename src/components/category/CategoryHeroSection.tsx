@@ -6,6 +6,7 @@ import { HeroMediaColumn } from '@/components/shared';
 import type { HeroBadge } from '@/components/shared';
 import type { ApiCategoryDetail } from '@/services/categoryApi';
 import type { LayoutSettings } from '@/services/layoutApi';
+import { AVATAR_SRCS } from '@/lib/coursePropsFromApi';
 
 export interface CategoryReview {
   id: string;
@@ -14,6 +15,7 @@ export interface CategoryReview {
   logoAlt: string;
   rating: string;
   reviewsLabel: string;
+  url?: string;
 }
 
 export interface CategoryLogo {
@@ -62,12 +64,6 @@ const DEFAULT_COLLABORATION: CategoryPageContent['collaboration'] = {
   ],
 };
 
-const DEFAULT_AVATAR_SRCS = [
-  '/images/hero/person.png',
-  '/images/hero/person.png',
-  '/images/hero/person.png',
-  '/images/hero/person.png',
-];
 
 function HomeIcon({ className }: { className?: string }) {
   return (
@@ -159,7 +155,18 @@ function ReviewBlock({ review }: { review: CategoryReview }) {
       <div className="flex flex-wrap items-center gap-1.5">
         <StarIcon className="shrink-0 text-[#F4AA1F]" />
         <span className="text-[13px] font-semibold text-heading">{review.rating}</span>
-        <span className="text-[14px] font-normal leading-[140%] text-muted">{review.reviewsLabel}</span>
+        {review.url ? (
+          <a
+            href={review.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-[14px] font-normal leading-[140%] text-muted hover:underline"
+          >
+            {review.reviewsLabel}
+          </a>
+        ) : (
+          <span className="text-[14px] font-normal leading-[140%] text-muted">{review.reviewsLabel}</span>
+        )}
       </div>
     </div>
   );
@@ -171,7 +178,7 @@ function LearnersBlock({ count, label, avatarSrcs }: CategoryLearnersStat) {
       <div className="flex shrink-0 items-center">
         {avatarSrcs.map((src, index) => (
           <div
-            key={`${src}-${index}`}
+            key={index}
             className={`relative h-7 w-7 shrink-0 overflow-hidden rounded-full ring-2 ring-white ${index > 0 ? '-ml-2' : ''}`}
           >
             <Image src={src} alt="" width={28} height={28} className="h-7 w-7 object-cover" />
@@ -224,6 +231,7 @@ export default function CategoryHeroSection({ category, settings, heroBadges = [
       logoAlt: 'Google reviews',
       rating: `${settings.GOOGLE_REVIEW.rating}/5`,
       reviewsLabel: `${settings.GOOGLE_REVIEW.count} Reviews`,
+      url: settings.GOOGLE_REVIEW.url || undefined,
     });
   }
   if (settings.TRUST_PILOT_REVIEW) {
@@ -234,13 +242,14 @@ export default function CategoryHeroSection({ category, settings, heroBadges = [
       logoAlt: 'Trustpilot reviews',
       rating: `${settings.TRUST_PILOT_REVIEW.rating}/5`,
       reviewsLabel: `${settings.TRUST_PILOT_REVIEW.count} Reviews`,
+      url: settings.TRUST_PILOT_REVIEW.url || undefined,
     });
   }
 
   const learnersStat: CategoryLearnersStat = {
-    count: settings.TOTAL_LEARNERS ? `${settings.TOTAL_LEARNERS}+` : category.learnerCount ? `${category.learnerCount}+` : '700K+',
+    count: settings.TOTAL_LEARNERS ? `${settings.TOTAL_LEARNERS}` : category.learnerCount ? `${category.learnerCount}` : '700K+',
     label: 'Learners',
-    avatarSrcs: DEFAULT_AVATAR_SRCS,
+    avatarSrcs: AVATAR_SRCS,
   };
 
   const heroImage = {

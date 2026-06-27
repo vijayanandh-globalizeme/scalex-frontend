@@ -215,9 +215,20 @@ export default function CourseDetailHeroSection({
                   <div className="flex flex-wrap items-center gap-1.5">
                     <StarIcon className="shrink-0 text-[#F4AA1F]" />
                     <span className="text-[13px] font-semibold text-heading">{review.rating}</span>
-                    <span className="text-[14px] font-normal leading-[140%] text-muted">
-                      {review.reviewsLabel}
-                    </span>
+                    {review.url ? (
+                      <a
+                        href={review.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-[14px] font-normal leading-[140%] text-muted hover:underline"
+                      >
+                        {review.reviewsLabel}
+                      </a>
+                    ) : (
+                      <span className="text-[14px] font-normal leading-[140%] text-muted">
+                        {review.reviewsLabel}
+                      </span>
+                    )}
                   </div>
                 </div>
               ))}

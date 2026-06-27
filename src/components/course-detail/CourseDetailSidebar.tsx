@@ -133,7 +133,7 @@ function ArrowRightIcon({ className }: { className?: string }) {
 
 export default function CourseDetailSidebar({
   sidebar,
-  stickyTop = 'calc(4rem + 3.25rem)',
+  stickyTop = 'calc(4rem + 4.5rem)',
   width = 'w-[246px]',
 }: {
   sidebar: CourseBodyContent['sidebar'];

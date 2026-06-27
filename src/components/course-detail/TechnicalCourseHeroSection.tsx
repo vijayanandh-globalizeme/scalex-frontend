@@ -308,7 +308,18 @@ export default function TechnicalCourseHeroSection(course: TechnicalCourseConten
                     height={20}
                     className="h-5 w-5 shrink-0 object-contain"
                   />
-                  <span className="text-[13px] text-muted">{googleReview.reviewsLabel}</span>
+                  {googleReview.url ? (
+                    <a
+                      href={googleReview.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-[13px] text-muted hover:underline"
+                    >
+                      {googleReview.reviewsLabel}
+                    </a>
+                  ) : (
+                    <span className="text-[13px] text-muted">{googleReview.reviewsLabel}</span>
+                  )}
                 </div>
               ) : null}
             </div>
@@ -335,13 +346,13 @@ export default function TechnicalCourseHeroSection(course: TechnicalCourseConten
                 {primaryCta.label}
                 <ArrowRightIcon className="btn-arrow-icon shrink-0" />
               </Link>
-              <CourseBrochureCta
+              <Link
                 href={secondaryCta.href}
                 className="btn-brand-outline inline-flex h-[54px] w-full cursor-pointer items-center justify-center gap-2 px-6 text-sm font-semibold sm:w-auto md:px-8 md:text-[15px]"
               >
                 {secondaryCta.label}
-                <CourseDownloadIcon className="btn-download-icon shrink-0" />
-              </CourseBrochureCta>
+                <ArrowRightIcon className="btn-arrow-icon shrink-0" />
+              </Link>
             </div>
 
             <div className="mt-[38px]">

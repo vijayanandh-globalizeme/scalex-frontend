@@ -29,6 +29,8 @@ import CourseCareerAssuranceSection from './CourseCareerAssuranceSection';
 import CoursePricingSection from './CoursePricingSection';
 import CourseRelatedCoursesSection from './CourseRelatedCoursesSection';
 import CourseTrainingCitiesSection from './CourseTrainingCitiesSection';
+import CourseSchedulesSection from './CourseSchedulesSection';
+import { getCourseBatches } from '@/app/actions/courseActions';
 
 export default async function CourseDetailBodySection({
   courseUri,
@@ -64,9 +66,10 @@ export default async function CourseDetailBodySection({
 
   const navItems = isTechnical ? BOOTCAMP_NAV_ITEMS : COURSE_NAV_ITEMS;
   const locationOpts = { countryUri, cityUri };
-  const [details, learners] = await Promise.all([
+  const [details, learners, batches] = await Promise.all([
     getCourseDetails(courseUri, categoryUri, locationOpts),
     isTechnical ? getCourseLearners(courseUri, categoryUri, locationOpts) : Promise.resolve([]),
+    getCourseBatches(courseUri, categoryUri),
   ]);
 
   return (
@@ -177,6 +180,14 @@ export default async function CourseDetailBodySection({
             ) : null}
 
             <CourseBatchRequestBanner banner={EXPERTS_COURSE_BANNER} className="pb-6 md:pb-8" />
+
+            <div id="schedules">
+              <CourseSchedulesSection
+                initialBatches={batches}
+                courseName={courseDetails?.name ?? ''}
+              />
+            </div>
+
             <WhyScaleXSection {...courseWhyScaleXContent} id="why-scalex" variant="embedded" />
             <AwardsSection
               heading="Awards and Recognitions"

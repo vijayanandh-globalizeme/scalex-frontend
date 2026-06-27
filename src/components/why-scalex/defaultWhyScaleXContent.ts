@@ -3,10 +3,10 @@ import type { WhyScaleXSectionProps } from './WhyScaleXSection';
 export const defaultWhyScaleXContent: WhyScaleXSectionProps = {
   headingBefore: 'Why',
   headingAfter: 'is the Preferred Choice for Professionals',
-  brandLogo: { src: '/images/why-logo.png', alt: 'EdgeX' },
+  brandLogo: { src: '/images/logo.png', alt: 'EdgeX' },
   subheading:
     "We don't just teach skills; we build careers. Our ecosystem is designed to bridge the gap between classroom learning and board-room execution.",
-  scalexBrandLogo: { src: '/images/footer-logo.png', alt: 'EdgeX' },
+  scalexBrandLogo: { src: '/images/logo.png', alt: 'EdgeX' },
   rows: [
     {
       id: 'features',

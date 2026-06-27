@@ -24,7 +24,7 @@ const HIRING_PARTNERS = [
   { id: 'tcs',       name: 'TCS',       logoSrc: '/images/course/tcs.png',       logoAlt: 'TCS' },
 ];
 
-const AVATAR_SRCS = [
+export const AVATAR_SRCS = [
   '/images/hero/person1.png',
   '/images/hero/person2.png',
   '/images/hero/person3.png',
@@ -44,6 +44,7 @@ function buildReviews(settings: LayoutSettings) {
       logoAlt:      'Google reviews',
       rating:       settings.GOOGLE_REVIEW.rating,
       reviewsLabel: `${settings.GOOGLE_REVIEW.count.toLocaleString()} Reviews`,
+      url:          settings.GOOGLE_REVIEW.url || undefined,
     });
   }
 
@@ -55,6 +56,7 @@ function buildReviews(settings: LayoutSettings) {
       logoAlt:      'Trustpilot reviews',
       rating:       settings.TRUST_PILOT_REVIEW.rating,
       reviewsLabel: `${settings.TRUST_PILOT_REVIEW.count.toLocaleString()} Reviews`,
+      url:          settings.TRUST_PILOT_REVIEW.url || undefined,
     });
   }
 
@@ -109,7 +111,7 @@ function buildBaseProps(
     reviews:       buildReviews(settings),
     learnersStat:  buildLearnersStat(settings),
     primaryCta:    { href: schedulePath, label: 'View Schedules' },
-    secondaryCta:  { href: schedulePath, label: 'View Schedules' },
+    secondaryCta:  { href: '#schedules', label: 'View Schedules' },
     licensedPartner: {
       label:   'Licensed Training Partner',
       logoSrc: '/images/course/scrum-alliance.png',
