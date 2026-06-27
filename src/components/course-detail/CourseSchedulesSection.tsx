@@ -5,7 +5,9 @@ import { getCourseBatches, getCoursePlans } from '@/app/actions/courseActions';
 import CourseFeeSection from './CourseFeeSection';
 import CourseCareerAssuranceSection from './CourseCareerAssuranceSection';
 import CoursePlanComparisonSection from './CoursePlanComparisonSection';
+import CourseBatchRequestBanner from './CourseBatchRequestBanner';
 import CourseBrochureCta from './CourseBrochureCta';
+import { CUSTOMIZE_BATCH_BANNER } from '@/lib/courseDetailStatics';
 import type { ApiCoursePlansData } from '@/services/courseApi';
 import { COURSE_SECTION_CARD } from './courseSectionCard';
 import { COURSE_SCHEDULE_FILTERS } from '@/lib/courseFilter';
@@ -660,14 +662,20 @@ console.log("plansData?.moneyBack: ",plansData?.moneyBack);
           {visibleBatches.length === 0 ? (
             <p className="py-8 text-center text-[14px] text-muted">No schedules found for the selected filter.</p>
           ) : (
-            visibleBatches.map((batch) => (
-              <ScheduleCard
-                key={batch.id}
-                batch={batch}
-                quantity={quantities[batch.id] ?? 1}
-                onQuantityChange={(n) => setQuantities((prev) => ({ ...prev, [batch.id]: n }))}
-                onEnroll={handleEnroll}
-              />
+            visibleBatches.map((batch, index) => (
+              <div key={batch.id}>
+                <ScheduleCard
+                  batch={batch}
+                  quantity={quantities[batch.id] ?? 1}
+                  onQuantityChange={(n) => setQuantities((prev) => ({ ...prev, [batch.id]: n }))}
+                  onEnroll={handleEnroll}
+                />
+                {index === 1 ? (
+                  <div className="mt-4">
+                    <CourseBatchRequestBanner banner={CUSTOMIZE_BATCH_BANNER} />
+                  </div>
+                ) : null}
+              </div>
             ))
           )}
         </div>

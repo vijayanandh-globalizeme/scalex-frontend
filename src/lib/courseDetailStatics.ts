@@ -98,6 +98,14 @@ export const EXPERTS_COURSE_BANNER = {
   imageAlt: "Learning advisor ready to help",
 };
 
+export const CUSTOMIZE_BATCH_BANNER = {
+  headingLines: ['Do you want to customize', 'your batch request?'],
+  ctaLabel: 'Request a Batch',
+  ctaHref: '#contact',
+  imageSrc: '/images/hero/person.png',
+  imageAlt: 'Learning advisor ready to help',
+};
+
 export const REVIEW_VIDEO_SECTION = {
   thumbnailSrc: "/images/Alex.png",
   thumbnailAlt: "Alex video testimonial",
