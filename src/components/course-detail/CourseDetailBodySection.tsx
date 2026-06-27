@@ -120,10 +120,6 @@ export default async function CourseDetailBodySection({
               <CourseBatchRequestBanner banner={UNLOCK_COURSE_BANNER} className="pb-6 md:pb-8" />
             ) : null}
 
-            {isTechnical ? (
-              <CourseCareerAssuranceSection />
-            ) : null}
-
             {courseUri && categoryUri ? (
               <CoursePricingSection
                 courseUri={courseUri}
@@ -133,8 +129,18 @@ export default async function CourseDetailBodySection({
                 cityUri={cityUri}
               />
             ) : null}
-            
 
+            {isTechnical ? (
+              <CourseCareerAssuranceSection />
+            ) : null}
+
+            <div id="schedules">
+              <CourseSchedulesSection
+                initialBatches={batches}
+                courseName={courseDetails?.name ?? ''}
+              />
+            </div>
+            
             {isTechnical && details?.eligibility ? (
               <CourseEligibilityRequirementsSection eligibilityRequirements={details.eligibility} />
             ) : null}
@@ -180,13 +186,6 @@ export default async function CourseDetailBodySection({
             ) : null}
 
             <CourseBatchRequestBanner banner={EXPERTS_COURSE_BANNER} className="pb-6 md:pb-8" />
-
-            <div id="schedules">
-              <CourseSchedulesSection
-                initialBatches={batches}
-                courseName={courseDetails?.name ?? ''}
-              />
-            </div>
 
             <WhyScaleXSection {...courseWhyScaleXContent} id="why-scalex" variant="embedded" />
             <AwardsSection

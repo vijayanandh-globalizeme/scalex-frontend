@@ -258,6 +258,7 @@ export type ApiCourseBatch = {
   id: string;
   isTrending: boolean;
   availability: string;
+  label?: string;
   dayType: string;
   startDate: string;
   endDate: string;

@@ -8,8 +8,8 @@ export const BOOTCAMP_NAV_ITEMS = [
   },
   { id: "skill-and-tool", label: "Skills & Tools", href: "#skill-and-tool" },
   { id: "roadmap", label: "Roadmap", href: "#roadmap" },
-  { id: "eligibility", label: "Eligibility", href: "#eligibility" },
   { id: "schedule", label: "Schedule", href: "#schedules" },
+  { id: "eligibility", label: "Eligibility", href: "#eligibility" },
   { id: "faqs", label: "FAQs", href: "#faqs" },
 ] as const;
 

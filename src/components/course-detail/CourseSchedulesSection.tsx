@@ -334,18 +334,9 @@ function QuantityStepper({ value, onChange }: { value: number; onChange: (n: num
 }
 
 const TIME_OF_DAY_LABELS = {
-  morning: {
-    title: 'Morning Batch',
-    subtitle: 'Start your day light with energising morning sessions.',
-  },
-  evening: {
-    title: 'Evening Batch',
-    subtitle: 'Wind down productively with focused evening training.',
-  },
-  night: {
-    title: 'Night Batch',
-    subtitle: 'Maximise your night with dedicated late-hour classes.',
-  },
+  morning: { title: 'Morning Batch', subtitle: 'Start your day light.' },
+  evening: { title: 'Evening Batch', subtitle: 'Grow every evening.' },
+  night:   { title: 'Night Batch',   subtitle: 'Learn. Dream. Achieve.' },
 };
 
 function TimeOfDayIcon({ tod, className }: { tod: 'morning' | 'evening' | 'night'; className?: string }) {
@@ -401,15 +392,15 @@ function ScheduleCard({ batch, quantity, onQuantityChange }: {
             </div>
             <div className="hidden sm:block w-px self-stretch bg-zinc-100 mx-3" aria-hidden />
             <div className="flex-1">
-              <MetaItem icon={<PersonIcon className="text-brand" />} title={batch.trainerName} subtitle="Certified Trainer" />
-            </div>
-            <div className="hidden sm:block w-px self-stretch bg-zinc-100 mx-3" aria-hidden />
-            <div className="flex-1">
               <MetaItem
                 icon={<TimeOfDayIcon tod={tod} className="text-brand" />}
                 title={todMeta.title}
                 subtitle={todMeta.subtitle}
               />
+            </div>
+            <div className="hidden sm:block w-px self-stretch bg-zinc-100 mx-3" aria-hidden />
+            <div className="flex-1">
+              <MetaItem icon={<PersonIcon className="text-brand" />} title={batch.trainerName} subtitle="Certified Trainer" />
             </div>
           </div>
         </div>
@@ -432,10 +423,12 @@ function ScheduleCard({ batch, quantity, onQuantityChange }: {
                 <span className="text-[13px] text-muted line-through">{sym} {retail.toLocaleString('en-IN')}</span>
               ) : null}
             </div>
-            <p className="mt-3 inline-flex items-center gap-1.5 rounded-lg bg-[#F5F6F8] px-2.5 py-1 text-[12px] font-normal leading-[140%] text-heading">
-              <SlotsIcon className="shrink-0" />
-              {batch.availability}
-            </p>
+            {batch.label ? (
+              <p className="mt-3 inline-flex items-center gap-1.5 rounded-lg bg-[#F5F6F8] px-2.5 py-1 text-[12px] font-normal leading-[140%] text-heading">
+                <SlotsIcon className="shrink-0" />
+                {batch.label}
+              </p>
+            ) : null}
           </div>
 
           <div className="mt-4">
