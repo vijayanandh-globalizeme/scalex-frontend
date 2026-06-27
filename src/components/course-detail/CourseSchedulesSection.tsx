@@ -462,20 +462,20 @@ function filterBatches(batches: ApiCourseBatch[], activeFilter: string, dateRang
   const thisMonth = now.getMonth();
 
   if (dateRange) {
-    return batches.filter((b) => b.startDate >= dateRange.from && b.startDate <= dateRange.to);
+    return batches.filter((b) => b.startDate.slice(0, 10) >= dateRange.from && b.startDate.slice(0, 10) <= dateRange.to);
   }
   if (activeFilter === 'this_month') {
     return batches.filter((b) => {
-      const d = new Date(b.startDate);
-      return d.getFullYear() === thisYear && d.getMonth() === thisMonth;
+      const [y, m] = b.startDate.slice(0, 7).split('-').map(Number);
+      return y === thisYear && m - 1 === thisMonth;
     });
   }
   if (activeFilter === 'next_month') {
     const nextMonth = (thisMonth + 1) % 12;
     const nextYear = thisMonth === 11 ? thisYear + 1 : thisYear;
     return batches.filter((b) => {
-      const d = new Date(b.startDate);
-      return d.getFullYear() === nextYear && d.getMonth() === nextMonth;
+      const [y, m] = b.startDate.slice(0, 7).split('-').map(Number);
+      return y === nextYear && m - 1 === nextMonth;
     });
   }
   if (activeFilter === 'weekends') return batches.filter((b) => b.dayType === 'WEEKEND');
