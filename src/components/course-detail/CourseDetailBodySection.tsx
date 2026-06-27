@@ -134,12 +134,15 @@ export default async function CourseDetailBodySection({
               <CourseCareerAssuranceSection />
             ) : null}
 
-            <div id="schedules">
-              <CourseSchedulesSection
-                initialBatches={batches}
-                courseName={courseDetails?.name ?? ''}
-              />
-            </div>
+            {courseUri && categoryUri ? (
+              <div id="schedules">
+                <CourseSchedulesSection
+                  courseUri={courseUri}
+                  categoryUri={categoryUri}
+                  courseName={courseDetails?.name ?? ''}
+                />
+              </div>
+            ) : null}
             
             {isTechnical && details?.eligibility ? (
               <CourseEligibilityRequirementsSection eligibilityRequirements={details.eligibility} />

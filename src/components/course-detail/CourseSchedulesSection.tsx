@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect, useMemo, type ReactNode } from 'react';
+import { getCourseBatches } from '@/app/actions/courseActions';
 import CourseBrochureCta from './CourseBrochureCta';
 import { COURSE_SECTION_CARD } from './courseSectionCard';
 import { COURSE_SCHEDULE_FILTERS } from '@/lib/courseFilter';
@@ -112,7 +113,10 @@ const MONTHS = [
 ];
 
 function toIso(d: Date) {
-  return d.toISOString().slice(0, 10);
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${y}-${m}-${day}`;
 }
 
 function DateRangePicker({
@@ -480,19 +484,27 @@ function filterBatches(batches: ApiCourseBatch[], activeFilter: string, dateRang
 }
 
 export default function CourseSchedulesSection({
-  initialBatches,
+  courseUri,
+  categoryUri,
   courseName,
 }: {
-  initialBatches: ApiCourseBatch[];
+  courseUri: string;
+  categoryUri: string;
   courseName: string;
 }) {
+  const [batches, setBatches] = useState<ApiCourseBatch[]>([]);
   const [activeFilter, setActiveFilter] = useState('');
   const [dateRange, setDateRange] = useState<{ from: string; to: string } | null>(null);
-  const [quantities, setQuantities] = useState<Record<string, number>>(() =>
-    Object.fromEntries(initialBatches.map((b) => [b.id, 1])),
-  );
+  const [quantities, setQuantities] = useState<Record<string, number>>({});
   const [pickerOpen, setPickerOpen] = useState(false);
   const pickerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    getCourseBatches(courseUri, categoryUri).then((data) => {
+      setBatches(data);
+      setQuantities(Object.fromEntries(data.map((b) => [b.id, 1])));
+    });
+  }, [courseUri, categoryUri]);
 
   useEffect(() => {
     function handler(e: MouseEvent) {
@@ -515,8 +527,8 @@ export default function CourseSchedulesSection({
   }
 
   const visibleBatches = useMemo(
-    () => filterBatches(initialBatches, activeFilter, dateRange),
-    [initialBatches, activeFilter, dateRange],
+    () => filterBatches(batches, activeFilter, dateRange),
+    [batches, activeFilter, dateRange],
   );
 
   const dateRangeLabel = dateRange
