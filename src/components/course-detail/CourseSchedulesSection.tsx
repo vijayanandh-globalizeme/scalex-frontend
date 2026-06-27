@@ -2,6 +2,8 @@
 
 import { useState, useRef, useEffect, useMemo, type ReactNode } from 'react';
 import { getCourseBatches } from '@/app/actions/courseActions';
+import CourseFeeSection from './CourseFeeSection';
+import CourseCareerAssuranceSection from './CourseCareerAssuranceSection';
 import CourseBrochureCta from './CourseBrochureCta';
 import { COURSE_SECTION_CARD } from './courseSectionCard';
 import { COURSE_SCHEDULE_FILTERS } from '@/lib/courseFilter';
@@ -487,11 +489,14 @@ export default function CourseSchedulesSection({
   courseUri,
   categoryUri,
   courseName,
+  variant = 'default'
 }: {
   courseUri: string;
   categoryUri: string;
   courseName: string;
+  variant?: 'default' | 'technical';
 }) {
+  const isTechnical = variant === 'technical';
   const [batches, setBatches] = useState<ApiCourseBatch[]>([]);
   const [activeFilter, setActiveFilter] = useState('');
   const [dateRange, setDateRange] = useState<{ from: string; to: string } | null>(null);
@@ -531,82 +536,101 @@ export default function CourseSchedulesSection({
     [batches, activeFilter, dateRange],
   );
 
+  const emiBatch = useMemo(
+    () => batches.find((b) => b.plan1HasEMI && b.plan1EMIMonthCount) ?? null,
+    [batches],
+  );
+
   const dateRangeLabel = dateRange
     ? `${new Date(dateRange.from).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })} - ${new Date(dateRange.to).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}`
     : 'Month';
 
   return (
-    <div className={`overflow-visible ${COURSE_SECTION_CARD} px-5 py-5 md:px-6 md:py-5`}>
-      {/* Header */}
-      <div className="flex flex-wrap items-center gap-3">
-        <h2 className="text-[22px] font-bold leading-[140%] text-heading">Upcoming Schedules</h2>
-        <span className="inline-flex w-fit items-center gap-1.5 rounded-lg bg-[#FFF6F7] px-2.5 py-1 text-[11px] font-medium leading-[140%] text-brand">
-          <GuaranteeIcon className="shrink-0" />
-          100% Money Back Guarantee
-        </span>
-      </div>
+    <>
+      {emiBatch ? (
+        <div className="mt-8">
+          <CourseFeeSection batch={emiBatch} />
+        </div>
+      ) : null}
 
-      {/* Filters */}
-      <div className="mt-3 flex flex-wrap items-center gap-2">
-        {COURSE_SCHEDULE_FILTERS.map((filter) => {
-          const isActive = activeFilter === filter.param && !dateRange;
-          return (
+      {isTechnical ? (
+        <div className="mt-8">
+          <CourseCareerAssuranceSection />
+        </div>
+      ) : null}
+
+      <div className={`overflow-visible mt-8 ${COURSE_SECTION_CARD} px-5 py-5 md:px-6 md:py-5`}>
+        {/* Header */}
+        <div className="flex flex-wrap items-center gap-3">
+          <h2 className="text-[22px] font-bold leading-[140%] text-heading">Upcoming Schedules</h2>
+          <span className="inline-flex w-fit items-center gap-1.5 rounded-lg bg-[#FFF6F7] px-2.5 py-1 text-[11px] font-medium leading-[140%] text-brand">
+            <GuaranteeIcon className="shrink-0" />
+            100% Money Back Guarantee
+          </span>
+        </div>
+
+        {/* Filters */}
+        <div className="mt-3 flex flex-wrap items-center gap-2">
+          {COURSE_SCHEDULE_FILTERS.map((filter) => {
+            const isActive = activeFilter === filter.param && !dateRange;
+            return (
+              <button
+                key={filter.id}
+                type="button"
+                onClick={() => handleFilterClick(filter.param)}
+                className={`inline-flex h-8 items-center rounded-lg px-3 text-[12px] font-medium leading-[140%] transition ${
+                  isActive
+                    ? 'bg-brand/10 text-brand ring-1 ring-brand/30'
+                    : 'btn-mui-ink-tint bg-[#F4F4F4] text-heading'
+                }`}
+              >
+                {filter.label}
+              </button>
+            );
+          })}
+
+          {/* Month / date range picker */}
+          <div ref={pickerRef} className="relative">
             <button
-              key={filter.id}
               type="button"
-              onClick={() => handleFilterClick(filter.param)}
-              className={`inline-flex h-8 items-center rounded-lg px-3 text-[12px] font-medium leading-[140%] transition ${
-                isActive
+              onClick={() => setPickerOpen((o) => !o)}
+              className={`inline-flex h-8 items-center gap-1.5 rounded-lg px-3 text-[12px] font-medium leading-[140%] transition ${
+                dateRange
                   ? 'bg-brand/10 text-brand ring-1 ring-brand/30'
                   : 'btn-mui-ink-tint bg-[#F4F4F4] text-heading'
               }`}
             >
-              {filter.label}
+              <CalendarIcon className="shrink-0 opacity-70" />
+              {dateRangeLabel}
+              <ChevronDownIcon className={`shrink-0 opacity-60 transition-transform ${pickerOpen ? 'rotate-180' : ''}`} />
             </button>
-          );
-        })}
 
-        {/* Month / date range picker */}
-        <div ref={pickerRef} className="relative">
-          <button
-            type="button"
-            onClick={() => setPickerOpen((o) => !o)}
-            className={`inline-flex h-8 items-center gap-1.5 rounded-lg px-3 text-[12px] font-medium leading-[140%] transition ${
-              dateRange
-                ? 'bg-brand/10 text-brand ring-1 ring-brand/30'
-                : 'btn-mui-ink-tint bg-[#F4F4F4] text-heading'
-            }`}
-          >
-            <CalendarIcon className="shrink-0 opacity-70" />
-            {dateRangeLabel}
-            <ChevronDownIcon className={`shrink-0 opacity-60 transition-transform ${pickerOpen ? 'rotate-180' : ''}`} />
-          </button>
+            {pickerOpen ? (
+              <DateRangePicker
+                value={dateRange}
+                onChange={handleDateRange}
+                onClose={() => setPickerOpen(false)}
+              />
+            ) : null}
+          </div>
+        </div>
 
-          {pickerOpen ? (
-            <DateRangePicker
-              value={dateRange}
-              onChange={handleDateRange}
-              onClose={() => setPickerOpen(false)}
-            />
-          ) : null}
+        {/* Batch list */}
+        <div className="mt-5 space-y-4 overflow-visible">
+          {visibleBatches.length === 0 ? (
+            <p className="py-8 text-center text-[14px] text-muted">No schedules found for the selected filter.</p>
+          ) : (
+            visibleBatches.map((batch) => (
+              <ScheduleCard
+                key={batch.id}
+                batch={batch}
+                quantity={quantities[batch.id] ?? 1}
+                onQuantityChange={(n) => setQuantities((prev) => ({ ...prev, [batch.id]: n }))}
+              />
+            ))
+          )}
         </div>
       </div>
-
-      {/* Batch list */}
-      <div className="mt-5 space-y-4 overflow-visible">
-        {visibleBatches.length === 0 ? (
-          <p className="py-8 text-center text-[14px] text-muted">No schedules found for the selected filter.</p>
-        ) : (
-          visibleBatches.map((batch) => (
-            <ScheduleCard
-              key={batch.id}
-              batch={batch}
-              quantity={quantities[batch.id] ?? 1}
-              onQuantityChange={(n) => setQuantities((prev) => ({ ...prev, [batch.id]: n }))}
-            />
-          ))
-        )}
-      </div>
-    </div>
+    </>
   );
 }

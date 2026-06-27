@@ -25,12 +25,10 @@ import CourseProgramRoadmapSection from './CourseProgramRoadmapSection';
 import CourseWebinarCtaSection from './CourseWebinarCtaSection';
 import CoursePrepComparisonSection from './CoursePrepComparisonSection';
 import CourseCareerTransformationsSection from './CourseCareerTransformationsSection';
-import CourseCareerAssuranceSection from './CourseCareerAssuranceSection';
 import CoursePricingSection from './CoursePricingSection';
 import CourseRelatedCoursesSection from './CourseRelatedCoursesSection';
 import CourseTrainingCitiesSection from './CourseTrainingCitiesSection';
 import CourseSchedulesSection from './CourseSchedulesSection';
-import { getCourseBatches } from '@/app/actions/courseActions';
 
 export default async function CourseDetailBodySection({
   courseUri,
@@ -66,10 +64,9 @@ export default async function CourseDetailBodySection({
 
   const navItems = isTechnical ? BOOTCAMP_NAV_ITEMS : COURSE_NAV_ITEMS;
   const locationOpts = { countryUri, cityUri };
-  const [details, learners, batches] = await Promise.all([
+  const [details, learners] = await Promise.all([
     getCourseDetails(courseUri, categoryUri, locationOpts),
     isTechnical ? getCourseLearners(courseUri, categoryUri, locationOpts) : Promise.resolve([]),
-    getCourseBatches(courseUri, categoryUri),
   ]);
 
   return (
@@ -130,16 +127,13 @@ export default async function CourseDetailBodySection({
               />
             ) : null}
 
-            {isTechnical ? (
-              <CourseCareerAssuranceSection />
-            ) : null}
-
             {courseUri && categoryUri ? (
               <div id="schedules">
                 <CourseSchedulesSection
                   courseUri={courseUri}
                   categoryUri={categoryUri}
                   courseName={courseDetails?.name ?? ''}
+                  variant={isTechnical ? 'technical' : 'default'}
                 />
               </div>
             ) : null}
