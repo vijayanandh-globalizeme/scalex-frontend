@@ -583,7 +583,7 @@ export default function CourseSchedulesSection({
   const dateRangeLabel = dateRange
     ? `${new Date(dateRange.from).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })} - ${new Date(dateRange.to).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}`
     : 'Month';
-console.log("plansData?.moneyBack: ",plansData?.moneyBack);
+    
   return (
     <>
       {emiBatch ? (
