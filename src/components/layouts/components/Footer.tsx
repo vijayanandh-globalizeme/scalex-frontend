@@ -13,11 +13,8 @@ const COLUMN_GROUPS: { title: string; links: { label: string; href: string }[] }
   {
     title: 'Company',
     links: [
-      { label: 'About us', href: '#' },
-      { label: 'Careers', href: '#' },
-      { label: 'Contact us', href: '#' },
-      { label: 'Corporate Training', href: '#' },
-      { label: 'Reviews', href: '#' },
+      { label: 'About us', href: 'about-us' },
+      { label: 'Contact us', href: 'contact-us' },
     ],
   },
   {
@@ -37,9 +34,9 @@ const COLUMN_GROUPS: { title: string; links: { label: string; href: string }[] }
   {
     title: 'Quick Links',
     links: [
-      { label: 'Privacy Policy', href: '#' },
-      { label: 'Terms and Conditions', href: '#' },
-      { label: 'Refund Policy', href: '#' },
+      { label: 'Privacy Policy', href: '/privacy-policy' },
+      { label: 'Terms and Conditions', href: '/terms-of-use' },
+      { label: 'Refund Policy', href: '/refund-policy' },
       { label: 'Sitemap', href: '#' },
     ],
   },
