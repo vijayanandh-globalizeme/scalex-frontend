@@ -251,17 +251,17 @@ function PlacementStageContent({ stage }: { stage: ApiRoadmap }) {
 function NextStageButton({ label, onClick }: { label: string; onClick: () => void }) {
   return (
     <div className="mt-10 flex justify-center">
-      <button
-        type="button"
+      <a
+        role="button"
         onClick={onClick}
-        className="inline-flex items-center gap-2 rounded-full border-2 border-[#FD022D] px-6 py-2.5 text-[14px] font-semibold text-[#FD022D] transition-colors hover:bg-[#FFF6F7]"
+        className="inline-flex cursor-pointer items-center gap-2 px-6 py-2.5 text-[14px] font-semibold text-[#788593]"
       >
         {label}
         <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden>
           <path d="M4 5L9 10L14 5" stroke="#FD022D" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
           <path d="M4 9L9 14L14 9" stroke="#FD022D" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
-      </button>
+      </a>
     </div>
   );
 }
