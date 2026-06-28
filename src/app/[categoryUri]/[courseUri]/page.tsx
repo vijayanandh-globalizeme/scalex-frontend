@@ -60,7 +60,7 @@ export default async function CourseDetailPage({ params }: PageProps) {
   if (!course) notFound();
 
   const settings   = layoutData?.settings ?? {};
-  const isTechnical = course.startedAt !== null;
+  const isTechnical = course.templateType === 'TECHNICAL' || course.templateType === 'BOOTCAMP';
 
   if (isTechnical) {
     const props = buildTechnicalCourseProps(course, categoryUri, courseUri, settings);

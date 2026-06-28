@@ -287,9 +287,14 @@ export default function TechnicalCourseHeroSection(course: TechnicalCourseConten
             </h1>
 
             <div className="mt-[28px] flex flex-wrap items-center gap-3">
-              <div className="inline-flex items-center gap-2 rounded-[8px] border border-[#1BA83A] bg-[#FCF9F3] px-4 py-2 shadow-[0_4px_4px_0_rgba(30,41,59,0.08),0_4px_4px_0_rgba(30,41,59,0.03)]">
-                <span className="text-[16px] font-semibold leading-[140%] text-[#0AB332]">Get Job.</span>{' '}
-                <span className="text-[16px] font-semibold leading-[140%] text-[#FC6E19]">Get Refunded.</span>
+              <div
+                className="inline-flex shadow-[0_4px_4px_0_rgba(30,41,59,0.08),0_4px_4px_0_rgba(30,41,59,0.03)]"
+                style={{ padding: 1.5, borderRadius: 10, background: 'linear-gradient(to right, #1BA83A, #FD8E0D)' }}
+              >
+                <div className="inline-flex items-center gap-2 rounded-[8px] bg-[#FCF9F3] px-4 py-2">
+                  <span className="text-[16px] font-semibold leading-[140%] text-[#0AB332]">Get Job.</span>{' '}
+                  <span className="text-[16px] font-semibold leading-[140%] text-[#FC6E19]">Get Refunded.</span>
+                </div>
               </div>
               {googleReview ? (
                 <div className="inline-flex items-center gap-2 rounded-[8px] border border-[#EBEBEB] bg-[#FBFBFB] px-4 py-2 shadow-[0_4px_4px_0_rgba(30,41,59,0.08),0_4px_4px_0_rgba(30,41,59,0.03)]">

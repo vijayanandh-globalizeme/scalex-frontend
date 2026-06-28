@@ -32,7 +32,7 @@ import CourseSchedulesSection from './CourseSchedulesSection';
 export default async function CourseDetailBodySection({
   courseUri,
   categoryUri,
-  isTechnical = false,
+  isTechnical: isTechnicalProp = false,
   phone,
   courseDetails,
   settings,
@@ -59,7 +59,11 @@ export default async function CourseDetailBodySection({
   const reviewsTitle      = d?.reviewsTitle         ?? null;
   const reviewVideoUrl    = d?.courseVideoUrl        ?? null;
   const startedAt    = courseDetails?.startedAt        ?? null;
-  const hasBootcamp    = courseDetails?.hasBootcamp        ?? false;
+  const templateType = courseDetails?.templateType     ?? null;
+  const isTechnicalFromDetails = templateType === 'TECHNICAL' || templateType === 'BOOTCAMP';
+  // When courseDetails is available derive from templateType, otherwise use the prop
+  const isTechnical  = courseDetails ? isTechnicalFromDetails : isTechnicalProp;
+  const hasBootcamp  = templateType === 'BOOTCAMP';
 
   const navItems = isTechnical ? BOOTCAMP_NAV_ITEMS : COURSE_NAV_ITEMS;
   const locationOpts = { countryUri, cityUri };

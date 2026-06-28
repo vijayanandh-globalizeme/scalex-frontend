@@ -13,7 +13,7 @@ export type ApiCourseOverview = {
   name: string;
   duration: string | null;
   categoryName: string;
-  hasBootcamp: boolean;
+  templateType: 'BASIC' | 'TECHNICAL' | 'BOOTCAMP' | null;
   isBestSeller: boolean;
   rankedContent: string | null;
   shortName: string;
