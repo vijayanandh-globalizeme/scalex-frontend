@@ -10,6 +10,7 @@ import { WhyScaleXSection, defaultWhyScaleXContent } from '@/components/why-scal
 import { GuidanceSection, defaultGuidanceContent } from '@/components/guidance';
 import { SITE_DESCRIPTION, SITE_NAME } from '@/lib/site';
 import { fetchLayout, type LayoutSettings } from '@/services/layoutApi';
+import LiveSessionsSection from '@/components/live-sessions/LiveSessionsSection';
 
 export const metadata: Metadata = {
   title: 'Professional Training & Certification Courses',
@@ -32,6 +33,7 @@ export default async function HomePage() {
       <TestimonialsSectionServer settings={settings} />
       <SuccessStoriesSectionServer />
       <AwardsSection {...defaultAwardsContent} />
+      <LiveSessionsSection />
       <WorkforceSection {...defaultWorkforceContent} />
       <MentorsSectionServer />
       <WhyScaleXSection {...defaultWhyScaleXContent} />

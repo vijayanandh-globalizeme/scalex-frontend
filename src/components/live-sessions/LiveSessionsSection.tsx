@@ -1,11 +1,15 @@
 'use client';
 
 import Image from 'next/image';
-import { useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useGsapScrollRevealStagger } from '@/hooks/useGsapScrollReveal';
 import { useGridColumns } from '@/hooks/useGridColumns';
+import { getWebinars, type Webinar } from '@/app/actions/webinarActions';
 
-export interface LiveSession {
+const HEADING = 'Upcoming Live Sessions';
+const SUBHEADING = 'Join our expert-led live webinars and accelerate your career growth.';
+
+interface LiveSession {
   id: string;
   title: string;
   date: string;
@@ -17,17 +21,37 @@ export interface LiveSession {
   href: string;
 }
 
-export interface LiveSessionsSectionProps {
-  heading: string;
-  subheading: string;
-  sessions: LiveSession[];
+function formatDate(iso: string): string {
+  if (!iso) return '';
+  const d = new Date(iso);
+  return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+}
+
+function formatTime(iso: string): string {
+  if (!iso) return '';
+  const d = new Date(iso);
+  return d.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
+}
+
+function mapWebinar(item: Webinar): LiveSession {
+  return {
+    id: item.id,
+    title: item.title,
+    date: formatDate(item.startedAt),
+    time: formatTime(item.startedAt),
+    learners: item.learnersLabel,
+    instructor: item.trainerName,
+    imageSrc: item.imageUrl,
+    imageAlt: item.title,
+    href: item.slug ? `/webinar/${item.slug}` : '#',
+  };
 }
 
 function CalendarIcon({ className }: { className?: string }) {
   return (
     <svg className={className} width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden>
-      <circle cx="8" cy="8" r="6.5" stroke="#7ABD56" strokeWidth="1.5" />
-      <path d="M8 4.5V8l2.5 1.5" stroke="#7ABD56" strokeWidth="1.5" strokeLinecap="round" />
+      <circle cx="8" cy="8" r="6.5" stroke="currentColor" strokeWidth="2" />
+      <path d="M8 4.5V8l2.5 1.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
     </svg>
   );
 }
@@ -37,11 +61,11 @@ function UsersIcon({ className }: { className?: string }) {
     <svg className={className} width="16" height="14" viewBox="0 0 23 16" fill="none" aria-hidden>
       <path
         d="M9.83 10.09c-1.29 1.12-2.02 2.55-2.02 3.83 0 .37.07.72.25 1.03H2.14c-.98 0-1.37-.39-1.37-1.09 0-2.13 2.19-4.71 5.69-4.71 1.33 0 2.47.37 3.37.94zM9.17 4.99c0 1.68-1.26 2.97-2.7 2.97S3.76 6.67 3.76 5c0-1.66 1.27-2.91 2.71-2.91 1.44 0 2.7 1.22 2.7 2.9z"
-        fill="#7ABD56"
+        fill="currentColor"
       />
       <path
         d="M15.41 7.79c1.67 0 3.11-1.49 3.11-3.42 0-1.91-1.45-3.32-3.11-3.32s-3.11 1.45-3.11 3.34c0 1.92 1.44 3.4 3.11 3.4zm-4.89 7.16h9.77c1.22 0 1.65-.35 1.65-1.03 0-2-2.51-4.75-6.54-4.75-4.02 0-6.53 2.75-6.53 4.75 0 .68.43 1.03 1.65 1.03z"
-        fill="#7ABD56"
+        fill="currentColor"
       />
     </svg>
   );
@@ -50,8 +74,8 @@ function UsersIcon({ className }: { className?: string }) {
 function PersonIcon({ className }: { className?: string }) {
   return (
     <svg className={className} width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden>
-      <circle cx="8" cy="5.5" r="2.75" stroke="#7ABD56" strokeWidth="1.5" />
-      <path d="M2.5 14c0-2.5 2.46-4 5.5-4s5.5 1.5 5.5 4" stroke="#7ABD56" strokeWidth="1.5" strokeLinecap="round" />
+      <circle cx="8" cy="5.5" r="2.75" stroke="currentColor" strokeWidth="2" />
+      <path d="M2.5 14c0-2.5 2.46-4 5.5-4s5.5 1.5 5.5 4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
     </svg>
   );
 }
@@ -67,30 +91,32 @@ function ArrowRightIcon({ className }: { className?: string }) {
 function SessionCard({ session }: { session: LiveSession }) {
   return (
     <article className="flex flex-col overflow-hidden rounded-2xl border border-zinc-100 bg-white shadow-[0_4px_4px_0_rgba(30,41,59,0.06)]">
-      <div className="relative aspect-[16/9] w-full">
-        <Image
-          src={session.imageSrc}
-          alt={session.imageAlt}
-          fill
-          sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-          className="object-cover"
-        />
-      </div>
+      {session.imageSrc && (
+        <div className="relative aspect-[16/9] w-full">
+          <Image
+            src={session.imageSrc}
+            alt={session.imageAlt}
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            className="object-cover"
+          />
+        </div>
+      )}
       <div className="flex flex-1 flex-col gap-3 p-5">
         <h3 className="text-[16px] font-bold leading-tight text-heading">{session.title}</h3>
         <ul className="flex flex-col gap-2 text-[12px] font-medium text-body">
           <li className="inline-flex items-center gap-2">
-            <CalendarIcon className="h-3.5 w-3.5" />
+            <CalendarIcon className="h-3.5 w-3.5 text-heading" />
             <span>
               {session.date} <span className="ml-2">{session.time}</span>
             </span>
           </li>
           <li className="inline-flex items-center gap-2">
-            <UsersIcon className="h-4 w-[18px]" />
+            <UsersIcon className="h-4 w-[18px] text-heading" />
             <span>{session.learners}</span>
           </li>
           <li className="inline-flex items-center gap-2">
-            <PersonIcon className="h-3.5 w-3.5" />
+            <PersonIcon className="h-3.5 w-3.5 text-heading" />
             <span>By {session.instructor}</span>
           </li>
         </ul>
@@ -106,14 +132,17 @@ function SessionCard({ session }: { session: LiveSession }) {
   );
 }
 
-export default function LiveSessionsSection({
-  heading,
-  subheading,
-  sessions,
-}: LiveSessionsSectionProps) {
+export default function LiveSessionsSection() {
+  const [sessions, setSessions] = useState<LiveSession[]>([]);
   const sectionRef = useRef<HTMLElement>(null);
   const rowRefs = useRef<(HTMLDivElement | null)[]>([]);
   const cols = useGridColumns();
+
+  useEffect(() => {
+    getWebinars(10).then((data) => {
+      setSessions(data.map(mapWebinar));
+    });
+  }, []);
 
   const sessionRows = useMemo(() => {
     const rows: LiveSession[][] = [];
@@ -150,10 +179,10 @@ export default function LiveSessionsSection({
             id="live-sessions-heading"
             className="text-[28px] font-bold leading-[140%] text-heading md:text-[34px]"
           >
-            {heading}
+            {HEADING}
           </h2>
           <p className="mt-3 text-[14px] font-medium leading-[140%] text-muted md:text-[15px]">
-            {subheading}
+            {SUBHEADING}
           </p>
         </header>
 
