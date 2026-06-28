@@ -273,7 +273,7 @@ export default function HeaderMobileMenu({
                   About Us
                 </Link>
                 <Link
-                  href="/contact"
+                  href="/contact-us"
                   onClick={closeMenu}
                   className="header-fluid-text block border-b border-zinc-100 py-4 text-[15px] font-semibold text-ink hover:text-brand"
                 >

@@ -117,7 +117,7 @@ const Header = ({ megaMenuCategories }: { megaMenuCategories: MegaMenuCategory[]
                   items={[...RESOURCES_ITEMS]}
                   triggerClassName={navLinkClass}
                 />
-                <Link href="/contact" className={`${navLinkClass} header-nav-parent-hover`}>
+                <Link href="/contact-us" className={`${navLinkClass} header-nav-parent-hover`}>
                   Contact Us
                 </Link>
               </nav>

@@ -36,7 +36,7 @@ export default function MobileBottomBar({ phone }: Props) {
             Talk to Advisor
           </a>
           <Link
-            href="/contact"
+            href="/contact-us"
             className="flex flex-1 items-center justify-center rounded-md border-2 border-ink px-3 py-2 text-[13px] font-semibold text-ink transition active:scale-95"
           >
             Request a callback

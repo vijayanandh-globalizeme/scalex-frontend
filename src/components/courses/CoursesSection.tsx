@@ -30,6 +30,7 @@ export interface Course {
   savePercent?: number;
   slotsLeft?: string;
   href: string;
+  isBestSeller?: boolean;
 }
 
 export interface CoursesSectionProps {
@@ -75,6 +76,7 @@ export function apiCourseToCard(c: ApiCourse): Course {
     originalPrice: originalPrice > price ? originalPrice : undefined,
     savePercent,
     href:          `/${c.category.uri}/${c.uri}`,
+    isBestSeller:  c.isBestSeller,
   };
 }
 
@@ -208,6 +210,14 @@ export function CourseCard({
           sizes="405px"
           className="object-cover"
         />
+        {course.isBestSeller && (
+          <span className="absolute top-0 right-0 inline-flex items-center gap-1 bg-brand px-3 py-1.5 text-[11px] font-bold uppercase tracking-widest text-white shadow-lg" style={{ borderBottomLeftRadius: '10px' }}>
+            <svg width="11" height="11" viewBox="0 0 16 16" fill="none" aria-hidden>
+              <path d="M8 0L9.8 5.6H16L11 8.9L12.9 14.5L8 11.2L3.1 14.5L5 8.9L0 5.6H6.2L8 0Z" fill="white"/>
+            </svg>
+            Best Seller
+          </span>
+        )}
       </div>
       <div className="flex flex-1 flex-col gap-3 p-4">
         {isCourseDetail ? (

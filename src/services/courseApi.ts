@@ -241,6 +241,7 @@ export type ApiCourse = {
   category: { id: string; name: string; uri: string };
   schemaRating: string | null;
   batch: ApiBatch | null;
+  isBestSeller: boolean;
 };
 
 type CoursesApiResponse = {
