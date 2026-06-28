@@ -73,9 +73,7 @@ function ReviewCard({ review, typeMap }: { review: ApiReview; typeMap: Map<strin
         >
           Read on
           {typeMeta?.logoSrc ? (
-            <span className="relative h-4 w-16 shrink-0">
-              <Image src={typeMeta.logoSrc} alt={typeMeta.logoAlt ?? ''} fill className="object-contain object-left" sizes="48px" />
-            </span>
+            <Image src={typeMeta.logoSrc} alt={typeMeta.logoAlt ?? ''} height={16} width={80} className="h-4 w-auto object-contain object-left shrink-0" />
           ) : (
             <span>{typeMeta?.label ?? ''}</span>
           )}

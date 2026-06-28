@@ -1,8 +1,10 @@
 'use client';
 
 import Image from 'next/image';
+import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import type { Reviewer } from '@/services/peopleApi';
+import { REVIEWS_TYPE } from '@/lib/courseDetailStatics';
 
 export type { Reviewer as SuccessStory };
 
@@ -128,16 +130,36 @@ function VideoThumbnail({
   );
 }
 
+const reviewTypeMap = new Map(REVIEWS_TYPE.map((t) => [t.id, t]));
+
 function TestimonialCardOnly({ story }: { story: Reviewer }) {
   const starFills = starsFromRating(story.rating ?? 0);
+  const typeMeta = reviewTypeMap.get(story.type);
   return (
     <article
       className="flex flex-col justify-between gap-4 rounded-2xl bg-white p-5 shadow-[0_10px_30px_-10px_rgba(15,23,42,0.18)] md:p-6"
       style={{ width: SLIDE_W, height: SLIDE_H, minWidth: SLIDE_W, maxWidth: SLIDE_W }}
     >
-      <p className="text-[13px] leading-[20px] text-body md:text-[14px] md:leading-[22px]">
-        {story.review}
-      </p>
+      <div className="relative flex-1 overflow-hidden">
+        <p className="text-[13px] leading-[20px] text-body md:text-[14px] md:leading-[22px] line-clamp-5">
+          {story.review}
+        </p>
+        {story.reviewUrl ? (
+          <Link
+            href={story.reviewUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="absolute right-0 bottom-0 inline-flex items-center gap-2 bg-white pl-2 text-[12px] font-medium text-heading transition hover:text-brand"
+          >
+            Read on
+            {typeMeta?.logoSrc ? (
+              <Image src={typeMeta.logoSrc} alt={typeMeta.logoAlt ?? ''} height={16} width={80} className="h-4 w-auto object-contain object-left shrink-0" />
+            ) : (
+              <span>{typeMeta?.label ?? ''}</span>
+            )}
+          </Link>
+        ) : null}
+      </div>
       <footer className="flex items-center gap-3 border-t border-zinc-100 pt-3">
         {story.avatarUrl ? (
           <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-full bg-zinc-100">

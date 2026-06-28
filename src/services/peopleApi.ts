@@ -48,6 +48,8 @@ export type Reviewer = {
   review: string;
   rating: number;
   avatarUrl: string;
+  type: string;
+  reviewUrl?: string;
 };
 
 type LearnersApiResponse = {
@@ -81,7 +83,7 @@ type TrainerApiItem = {
   role: string;
   linkedInProfile?: string;
   profileImage: ImageAsset | null;
-  workedWith: ImageAsset | null;
+  assocWith: ImageAsset | null;
 };
 
 export type Trainer = {
@@ -90,7 +92,7 @@ export type Trainer = {
   role: string;
   linkedInProfile?: string;
   profileImageUrl: string;
-  workedWithUrl: string;
+  assocWithUrl: string;
 };
 
 type TrainersApiResponse = {
@@ -107,7 +109,7 @@ export async function fetchTrainers(limit = 10): Promise<Trainer[]> {
     role: item.role,
     linkedInProfile: item.linkedInProfile,
     profileImageUrl: item.profileImage?.url ?? '',
-    workedWithUrl: item.workedWith?.url ?? '',
+    assocWithUrl: item.assocWith?.url ?? '',
   }));
 }
 
@@ -121,5 +123,7 @@ export async function fetchReviewers(limit = 10): Promise<Reviewer[]> {
     review: item.review,
     rating: Math.min(item.rating, 5),
     avatarUrl: item.avatar?.url ?? '',
+    type: item.type,
+    reviewUrl: item.reviewUrl,
   }));
 }

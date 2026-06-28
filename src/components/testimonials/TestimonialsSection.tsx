@@ -298,17 +298,13 @@ function TestimonialCard({
       {(testimonial.prevCompanyUrl || testimonial.currentCompanyUrl) ? (
         <footer className="mt-5 flex items-center gap-4">
           {testimonial.prevCompanyUrl ? (
-            <div className="relative h-7 w-16">
-              <Image src={testimonial.prevCompanyUrl} alt="Previous company" fill sizes="64px" className="object-contain object-left" />
-            </div>
+            <Image src={testimonial.prevCompanyUrl} alt="Previous company" height={28} width={120} className="h-7 w-auto object-contain object-left" />
           ) : null}
           {testimonial.prevCompanyUrl && testimonial.currentCompanyUrl ? (
-            <span className="text-brand">→</span>
+            <Image src="/images/arrow-right.svg" alt="to" height={20} width={20} className="h-5 w-5 shrink-0" />
           ) : null}
           {testimonial.currentCompanyUrl ? (
-            <div className="relative h-7 w-20">
-              <Image src={testimonial.currentCompanyUrl} alt="Current company" fill sizes="80px" className="object-contain object-left" />
-            </div>
+            <Image src={testimonial.currentCompanyUrl} alt="Current company" height={28} width={120} className="h-7 w-auto object-contain object-left" />
           ) : null}
         </footer>
       ) : null}

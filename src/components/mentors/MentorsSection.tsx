@@ -106,11 +106,11 @@ function MentorCard({ mentor }: { mentor: Trainer }) {
       <p className="mt-1 text-center text-[14px] font-medium leading-[140%] text-muted">
         {mentor.role}
       </p>
-      {mentor.workedWithUrl ? (
+      {mentor.assocWithUrl ? (
         <div className="mt-4 flex flex-wrap items-center justify-center gap-2 text-[12px] font-medium text-subtle">
-          <span>Worked with</span>
+          <span>Associated with</span>
           <div className="relative h-[16px] w-[68px] shrink-0">
-            <Image src={mentor.workedWithUrl} alt="Company" fill sizes="68px" className="object-contain object-right" />
+            <Image src={mentor.assocWithUrl} alt="Associated company" fill sizes="68px" className="object-contain object-right" />
           </div>
         </div>
       ) : null}
