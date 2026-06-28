@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { Fragment, useState } from 'react';
+import { Fragment, useRef, useState } from 'react';
 import type { ApiRoadmap, ApiOtherDetail } from '@/services/courseApi';
 import { COURSE_SECTION_CARD } from './courseSectionCard';
 import {
@@ -19,12 +19,6 @@ function getTheme(type: number): StageTheme {
   if (type === 3) return 'placement';
   return 'learning';
 }
-
-const STAGE_THEME: Record<StageTheme, { dot: string }> = {
-  learning:  { dot: '#FD022D' },
-  interview: { dot: '#E6A100' },
-  placement: { dot: '#388E0E' },
-};
 
 const LEARNING_GRADIENT = 'linear-gradient(180deg, #FD022D 0%, #FFB700 100%)';
 
@@ -252,78 +246,23 @@ function PlacementStageContent({ stage }: { stage: ApiRoadmap }) {
   );
 }
 
-// ─── Carousel nav (right side) ────────────────────────────────────────────────
+// ─── Scroll-to-next arrow button ──────────────────────────────────────────────
 
-function CarouselNav({
-  stages,
-  activeIndex,
-  onSelect,
-  onPrev,
-  onNext,
-}: {
-  stages: ApiRoadmap[];
-  activeIndex: number;
-  onSelect: (i: number) => void;
-  onPrev: () => void;
-  onNext: () => void;
-}) {
-  const theme = getTheme(stages[activeIndex]?.type ?? 1);
-  const color = theme === 'learning' ? '#FD022D' : theme === 'interview' ? '#E6A100' : '#388E0E';
-  const canPrev = activeIndex > 0;
-  const canNext = activeIndex < stages.length - 1;
-
+function NextStageButton({ label, onClick }: { label: string; onClick: () => void }) {
   return (
-    <aside className="absolute right-4 top-1/2 z-10 flex -translate-y-1/2 flex-col items-center gap-3" aria-label="Program roadmap navigation">
+    <div className="mt-10 flex justify-center">
       <button
         type="button"
-        onClick={onPrev}
-        disabled={!canPrev}
-        aria-label="Previous stage"
-        className="flex h-6 w-6 items-center justify-center transition-opacity disabled:opacity-30"
+        onClick={onClick}
+        className="inline-flex items-center gap-2 rounded-full border-2 border-[#FD022D] px-6 py-2.5 text-[14px] font-semibold text-[#FD022D] transition-colors hover:bg-[#FFF6F7]"
       >
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden>
-          <path d="M4 10L8 6L12 10" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-          <path d="M4 13L8 9L12 13" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+        {label}
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden>
+          <path d="M4 5L9 10L14 5" stroke="#FD022D" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+          <path d="M4 9L9 14L14 9" stroke="#FD022D" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
       </button>
-
-      {stages.map((stage, index) => {
-        const isActive = index === activeIndex;
-        const t = getTheme(stage.type);
-        return (
-          <button
-            key={stage.id}
-            type="button"
-            onClick={() => onSelect(index)}
-            className="flex h-6 w-6 items-center justify-center rounded-full transition-transform hover:scale-110"
-            aria-label={`Go to stage ${index + 1}`}
-            aria-current={isActive ? 'step' : undefined}
-          >
-            <span
-              className="block rounded-full transition-all duration-300"
-              style={{
-                width: isActive ? 10 : 8,
-                height: isActive ? 10 : 8,
-                backgroundColor: isActive ? STAGE_THEME[t].dot : '#D4D4D4',
-              }}
-            />
-          </button>
-        );
-      })}
-
-      <button
-        type="button"
-        onClick={onNext}
-        disabled={!canNext}
-        aria-label="Next stage"
-        className="flex h-6 w-6 items-center justify-center transition-opacity disabled:opacity-30"
-      >
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden>
-          <path d="M4 6L8 10L12 6" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-          <path d="M4 9L8 13L12 9" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
-      </button>
-    </aside>
+    </div>
   );
 }
 
@@ -336,51 +275,49 @@ export default function CourseProgramRoadmapSection({
   roadmap: ApiRoadmap[];
   content: ApiOtherDetail[];
 }) {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [fading, setFading] = useState(false);
+  const stageRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   if (!roadmap.length) return null;
 
-  const stage = roadmap[activeIndex];
-  const stageNumber = String(activeIndex + 1).padStart(2, '0');
-  const goTo = (i: number) => {
-    const target = Math.max(0, Math.min(roadmap.length - 1, i));
-    if (target === activeIndex) return;
-    setFading(true);
-    setTimeout(() => {
-      setActiveIndex(target);
-      setFading(false);
-    }, 200);
+  const scrollToStage = (index: number) => {
+    stageRefs.current[index]?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
   return (
-    <section id="roadmap" className={`relative scroll-mt-[116px] px-6 py-5 pr-10 md:px-8 md:py-6 md:pr-12 ${COURSE_SECTION_CARD}`} aria-labelledby="program-roadmap-heading">
-      <div
-        className="transition-opacity duration-200"
-        style={{ opacity: fading ? 0 : 1 }}
-      >
-      <ProgramRoadmapSectionHeader title={stage.title} description={stage.description} />
+    <section id="roadmap" className={`scroll-mt-[116px] px-6 py-5 md:px-8 md:py-6 ${COURSE_SECTION_CARD}`} aria-labelledby="program-roadmap-heading">
+      {roadmap.map((stage, index) => {
+        const stageNumber = String(index + 1).padStart(2, '0');
+        const isLast = index === roadmap.length - 1;
+        const nextStage = roadmap[index + 1];
 
-      <CarouselNav
-        stages={roadmap}
-        activeIndex={activeIndex}
-        onSelect={goTo}
-        onPrev={() => goTo(activeIndex - 1)}
-        onNext={() => goTo(activeIndex + 1)}
-      />
+        return (
+          <div
+            key={stage.id}
+            ref={(el) => { stageRefs.current[index] = el; }}
+            className={index > 0 ? 'mt-12 scroll-mt-[116px] border-t border-[#EBEBEB] pt-10' : ''}
+          >
+            <ProgramRoadmapSectionHeader title={stage.title} description={stage.description} />
 
-      <div className="flex flex-col gap-8 md:flex-row md:items-start md:gap-10 xl:gap-14">
-        <StageSidebar stage={stage} stageNumber={stageNumber} />
-        {stage.type === 1 ? (
-          <LearningStageContent stage={stage} otherDetails={content} />
-        ) : stage.type === 2 ? (
-          <InterviewStageContent stage={stage} />
-        ) : (
-          <PlacementStageContent stage={stage} />
-        )}
-      </div>
+            <div className="flex flex-col gap-8 md:flex-row md:items-start md:gap-10 xl:gap-14">
+              <StageSidebar stage={stage} stageNumber={stageNumber} />
+              {stage.type === 1 ? (
+                <LearningStageContent stage={stage} otherDetails={content} />
+              ) : stage.type === 2 ? (
+                <InterviewStageContent stage={stage} />
+              ) : (
+                <PlacementStageContent stage={stage} />
+              )}
+            </div>
 
-      </div>
+            {!isLast && nextStage && (
+              <NextStageButton
+                label={`${String(index + 2).padStart(2, '0')} - ${nextStage.sideTitle}`}
+                onClick={() => scrollToStage(index + 1)}
+              />
+            )}
+          </div>
+        );
+      })}
     </section>
   );
 }
