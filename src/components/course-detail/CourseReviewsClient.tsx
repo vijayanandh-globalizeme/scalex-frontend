@@ -228,8 +228,8 @@ export default function CourseReviewsClient({
       <div className="mt-5 pt-4 flex flex-col gap-4 md:flex-row md:gap-5">
         <VideoCard video={{ ...REVIEW_VIDEO_SECTION, videoUrl: videoUrl ?? REVIEW_VIDEO_SECTION.videoUrl }} />
 
-        <div className="min-w-0 flex-1 overflow-visible">
-          <CategoryCarouselTrack page={page} className="pt-5 pb-2">
+        <div className="min-w-0 flex-1 overflow-x-clip">
+          <CategoryCarouselTrack page={page} className="pb-2" clipX={false}>
             {pages.map((pageReviews, pageIndex) => (
               <div key={pageIndex} className="grid grid-cols-1 gap-4 overflow-visible md:grid-cols-2 md:gap-5">
                 {pageReviews.map((review) => (
