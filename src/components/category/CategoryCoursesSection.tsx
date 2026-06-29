@@ -32,6 +32,7 @@ export interface CategoryCoursesSectionProps {
   loadMoreStep?: number;
   viewMoreLabel?: string;
   currencySymbol?: string;
+  sectionClassName?: string;
 }
 
 export default function CategoryCoursesSection({
@@ -42,6 +43,7 @@ export default function CategoryCoursesSection({
   loadMoreStep = 6,
   viewMoreLabel = 'View More Courses',
   currencySymbol = '₹',
+  sectionClassName,
 }: CategoryCoursesSectionProps) {
   const [visibleCount, setVisibleCount] = useState(initialVisibleCount);
   const sectionRef = useRef<HTMLElement>(null);
@@ -78,7 +80,7 @@ export default function CategoryCoursesSection({
     <section
       ref={sectionRef}
       id="courses"
-      className="full-bleed relative z-0 overflow-visible bg-white pb-10 pt-32 md:pb-12 md:pt-40"
+      className={sectionClassName ?? "full-bleed relative z-0 overflow-visible bg-white pb-10 pt-32 md:pb-12 md:pt-40"}
       aria-labelledby="category-courses-heading"
     >
       <div className="site-container">

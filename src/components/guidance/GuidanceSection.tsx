@@ -306,7 +306,7 @@ export default function GuidanceSection({
 
   return (
     <section
-      className={`full-bleed relative z-10 overflow-visible bg-[#0D0D0D] pt-10 pb-12 ${className ?? ''}`}
+      className={`full-bleed relative z-10 overflow-visible bg-[#0D0D0D] pt-10 pb-0 ${className ?? ''}`}
       aria-labelledby="guidance-heading"
     >
       {content}
