@@ -46,7 +46,7 @@ export default function TechnicalCourseWebinarCountdown({
 }: {
   targetDate?: string | null;
 }) {
-  const [secondsLeft, setSecondsLeft] = useState(() => secondsUntil(targetDate));
+  const [secondsLeft, setSecondsLeft] = useState(0);
 
   useEffect(() => {
     setSecondsLeft(secondsUntil(targetDate));
