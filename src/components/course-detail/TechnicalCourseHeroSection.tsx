@@ -9,7 +9,6 @@ import type { HeroBadge } from '@/components/hero/HeroSection';
 import { useGsapScrollRevealStagger } from '@/hooks/useGsapScrollReveal';
 import type { TechnicalCourseContent } from '@/lib/technicalCourses';
 import CourseBrochureCta from './CourseBrochureCta';
-import CourseDownloadIcon from './CourseDownloadIcon';
 import TechnicalCourseWebinarCountdown from './TechnicalCourseWebinarCountdown';
 
 function HomeIcon({ className }: { className?: string }) {
@@ -29,6 +28,20 @@ function ArrowRightIcon({ className }: { className?: string }) {
   return (
     <svg className={className} width="18" height="15" viewBox="0 0 18 15" fill="currentColor" aria-hidden>
       <path d="M10.6333 15C10.8659 15 11.0694 14.9109 11.2633 14.7229L17.7092 8.16292C17.903 7.97492 18 7.74735 18 7.49999C18 7.25263 17.903 7.02506 17.7092 6.83707L11.2827 0.296834C11.0694 0.0791556 10.8659 0 10.6333 0C10.1583 0 9.78996 0.3562 9.78996 0.850923C9.78996 1.08839 9.86751 1.31596 10.0226 1.47428L12.1939 3.73021L16.2358 7.49999L12.1939 11.2697L10.0226 13.5257C9.86751 13.6741 9.78996 13.9116 9.78996 14.149C9.78996 14.6438 10.1583 15 10.6333 15ZM0.852987 8.3806H13.1147L16.2358 8.18271C16.6332 8.15303 16.9046 7.90566 16.9046 7.49999C16.9046 7.09432 16.6332 6.84696 16.2358 6.81728L13.1147 6.61938H0.852987C0.348949 6.61938 0 6.98548 0 7.49999C0 8.01451 0.348949 8.3806 0.852987 8.3806Z" />
+    </svg>
+  );
+}
+
+function EyeIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden>
+      <path
+        d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5z"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinejoin="round"
+      />
+      <circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="1.5" />
     </svg>
   );
 }
@@ -207,11 +220,11 @@ export default function TechnicalCourseHeroSection(course: TechnicalCourseConten
     reviews,
     learnersStat,
     primaryCta,
-    secondaryCta,
     heroBadges,
     collaboration,
     hiringPartners,
     startedAt,
+    brochureUrl,
   } = course;
 
   const sectionRef = useRef<HTMLElement>(null);
@@ -347,17 +360,28 @@ export default function TechnicalCourseHeroSection(course: TechnicalCourseConten
             <RankedContent rankedContent={rankedContent} rankingLine={rankingLine} />
 
             <div className="mt-[40px] flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:gap-4">
-              <Link href={primaryCta.href} className="btn-brand h-[54px] w-full cursor-pointer gap-2 px-6 sm:w-auto md:px-7">
-                {primaryCta.label}
-                <ArrowRightIcon className="btn-arrow-icon shrink-0" />
-              </Link>
-              <Link
-                href={secondaryCta.href}
-                className="btn-brand-outline inline-flex h-[54px] w-full cursor-pointer items-center justify-center gap-2 px-6 text-sm font-semibold sm:w-auto md:px-8 md:text-[15px]"
+              {startedAt ? (
+                <Link href={primaryCta.href} className="btn-brand h-[54px] w-full cursor-pointer gap-2 px-6 sm:w-auto md:px-7">
+                  Register for FREE Webinar
+                  <ArrowRightIcon className="btn-arrow-icon shrink-0" />
+                </Link>
+              ) : (
+                <CourseBrochureCta
+                  href={brochureUrl ?? undefined}
+                  openModal={!brochureUrl}
+                  className="btn-brand inline-flex h-[54px] w-full items-center justify-center gap-2 px-6 sm:w-auto md:px-7"
+                >
+                  Download Brochure
+                  <ArrowRightIcon className="btn-arrow-icon shrink-0" />
+                </CourseBrochureCta>
+              )}
+              <a
+                href="#schedules"
+                className="btn-brand-outline inline-flex h-[54px] w-full cursor-pointer items-center justify-center gap-[18px] px-6 text-sm font-semibold sm:w-auto md:px-8 md:text-[15px]"
               >
-                {secondaryCta.label}
-                <ArrowRightIcon className="btn-arrow-icon shrink-0" />
-              </Link>
+                View Schedules
+                <EyeIcon className="h-5 w-5 text-brand" />
+              </a>
             </div>
 
             <div className="mt-[38px]">
