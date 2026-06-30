@@ -152,81 +152,90 @@ export default function CoursePlanComparisonSection({
       ? 'grid-cols-[minmax(0,1fr)_260px_287px]'
       : 'grid-cols-[minmax(0,1fr)_260px_287px_287px]';
 
+  const scrollFeatures = features.length > 8;
+
   return (
     <div className={`${SECTION_CARD} overflow-hidden`}>
       <div className="overflow-x-auto">
-        <div className={`min-w-[600px] grid ${gridCols}`}>
-          {/* Title cell */}
-          <div className="self-start px-6 py-5 md:px-8 md:py-6">
-            <h2 className="max-w-[348px] text-[20px] font-semibold leading-[140%] text-heading">
-              <span className="block">{titleLine1}</span>
-              {elitePlan ? (
-                <span className="block">
-                  paying{' '}
-                  <span className="text-[#FD022D]">
-                    ₹{extraAmount.toLocaleString('en-IN')}
-                  </span>{' '}
-                  Extra
-                </span>
-              ) : null}
-            </h2>
-            <p className="mt-2 max-w-[348px] text-[14px] font-normal leading-[140%] text-muted">
-              {s.subtitle}
-            </p>
+        <div className={`min-w-[600px]`}>
+          {/* Header: title + plan cards + column labels — never scrolls */}
+          <div className={`grid ${gridCols}`}>
+            {/* Title cell */}
+            <div className="self-start px-6 py-5 md:px-8 md:py-6">
+              <h2 className="max-w-[348px] text-[20px] font-semibold leading-[140%] text-heading">
+                <span className="block">{titleLine1}</span>
+                {elitePlan ? (
+                  <span className="block">
+                    paying{' '}
+                    <span className="text-[#FD022D]">
+                      ₹{extraAmount.toLocaleString('en-IN')}
+                    </span>{' '}
+                    Extra
+                  </span>
+                ) : null}
+              </h2>
+              <p className="mt-2 max-w-[348px] text-[14px] font-normal leading-[140%] text-muted">
+                {s.subtitle}
+              </p>
+            </div>
+
+            {/* Plan card header cells */}
+            {activePlans.map((planInfo, idx) => {
+              const isElite = idx === activePlans.length - 1;
+              return (
+                <div
+                  key={planInfo.plan.planNumber}
+                  className={`flex items-end justify-center px-3 pb-0 pt-5 md:px-4 md:pt-6 ${isElite ? ELITE_COLUMN_BG : 'bg-white'}`}
+                >
+                  <PlanCard planInfo={planInfo} isElite={isElite} />
+                </div>
+              );
+            })}
+
+            {/* Column label row */}
+            <div className="bg-white px-5 pb-3 pt-10 text-[16px] font-semibold leading-normal text-heading uppercase">
+              {s.featuresColumnLabel}
+            </div>
+            {activePlans.map((planInfo, idx) => {
+              const isElite = idx === activePlans.length - 1;
+              return (
+                <div
+                  key={`label-${planInfo.plan.planNumber}`}
+                  className={`px-3 pb-3 pt-10 text-center text-[16px] font-semibold leading-normal text-heading uppercase ${isElite ? ELITE_COLUMN_BG : 'bg-white'}`}
+                >
+                  {planInfo.plan.name.toUpperCase()}
+                </div>
+              );
+            })}
           </div>
 
-          {/* Plan card header cells */}
-          {activePlans.map((planInfo, idx) => {
-            const isElite = idx === activePlans.length - 1;
-            return (
-              <div
-                key={planInfo.plan.planNumber}
-                className={`flex items-end justify-center px-3 pb-0 pt-5 md:px-4 md:pt-6 ${isElite ? ELITE_COLUMN_BG : 'bg-white'}`}
-              >
-                <PlanCard planInfo={planInfo} isElite={isElite} />
-              </div>
-            );
-          })}
-
-          {/* Column label row */}
-          <div className="bg-white px-5 pb-3 pt-10 text-[16px] font-semibold leading-normal text-heading uppercase">
-            {s.featuresColumnLabel}
+          {/* Feature rows — scrollable only when there are more than 8 */}
+          <div className={scrollFeatures ? 'max-h-[480px] overflow-y-auto' : ''}>
+            <div className={`grid ${gridCols}`}>
+              {features.map((feature, index) => {
+                const isLast = index === features.length - 1;
+                return (
+                  <React.Fragment key={feature.id}>
+                    <p className="border-t border-[#EBEBEB] bg-white px-5 py-4 text-[14px] font-normal leading-normal text-heading">
+                      {feature.title}
+                    </p>
+                    {activePlans.map((planInfo, idx) => {
+                      const isElite = idx === activePlans.length - 1;
+                      const included = featureValue(feature, planInfo.plan.planNumber);
+                      return (
+                        <div
+                          key={`${feature.id}-plan${planInfo.plan.planNumber}`}
+                          className={`flex items-center justify-center border-t border-[#EBEBEB] px-3 py-4 ${isElite ? ELITE_COLUMN_BG : 'bg-white'} ${isElite && isLast ? 'rounded-br-[20px]' : ''}`}
+                        >
+                          <FeatureStatusIcon included={included} />
+                        </div>
+                      );
+                    })}
+                  </React.Fragment>
+                );
+              })}
+            </div>
           </div>
-          {activePlans.map((planInfo, idx) => {
-            const isElite = idx === activePlans.length - 1;
-            return (
-              <div
-                key={`label-${planInfo.plan.planNumber}`}
-                className={`px-3 pb-3 pt-10 text-center text-[16px] font-semibold leading-normal text-heading uppercase ${isElite ? ELITE_COLUMN_BG : 'bg-white'}`}
-              >
-                {planInfo.plan.name.toUpperCase()}
-              </div>
-            );
-          })}
-
-          {/* Feature rows */}
-          {features.map((feature, index) => {
-            const isLast = index === features.length - 1;
-            return (
-              <React.Fragment key={feature.id}>
-                <p className="border-t border-[#EBEBEB] bg-white px-5 py-4 text-[14px] font-normal leading-normal text-heading">
-                  {feature.title}
-                </p>
-                {activePlans.map((planInfo, idx) => {
-                  const isElite = idx === activePlans.length - 1;
-                  const included = featureValue(feature, planInfo.plan.planNumber);
-                  return (
-                    <div
-                      key={`${feature.id}-plan${planInfo.plan.planNumber}`}
-                      className={`flex items-center justify-center border-t border-[#EBEBEB] px-3 py-4 ${isElite ? ELITE_COLUMN_BG : 'bg-white'} ${isElite && isLast ? 'rounded-br-[20px]' : ''}`}
-                    >
-                      <FeatureStatusIcon included={included} />
-                    </div>
-                  );
-                })}
-              </React.Fragment>
-            );
-          })}
         </div>
       </div>
     </div>
