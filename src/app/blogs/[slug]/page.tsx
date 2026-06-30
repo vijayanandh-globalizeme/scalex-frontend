@@ -231,9 +231,21 @@ function BlogCard({ blog }: { blog: typeof TRENDING_BLOGS[0] }) {
 
 function TrendingBlogsSection() {
   const [index, setIndex] = useState(0);
-  const perPage = 3;
+  const [perPage, setPerPage] = useState(3);
+
+  useEffect(() => {
+    const update = () => {
+      if (window.innerWidth < 768) setPerPage(1);
+      else if (window.innerWidth < 1024) setPerPage(2);
+      else setPerPage(3);
+    };
+    update();
+    window.addEventListener('resize', update);
+    return () => window.removeEventListener('resize', update);
+  }, []);
+
   const total = TRENDING_BLOGS.length;
-  const maxIndex = total - perPage;
+  const maxIndex = Math.max(0, total - perPage);
 
   const prev = () => setIndex((i) => Math.max(0, i - 1));
   const next = () => setIndex((i) => Math.min(maxIndex, i + 1));
@@ -243,7 +255,7 @@ function TrendingBlogsSection() {
       <div className="site-container">
         {/* Header */}
         <div className="mb-10 text-center">
-          <h2 className="text-[28px] font-extrabold text-heading md:text-[36px]">
+          <h2 className="text-[24px] font-extrabold text-heading md:text-[36px]">
             Trending Blogs that enhance your skills
           </h2>
           <p className="mt-2 text-[15px] text-muted">Find the right course that leaps your career</p>
@@ -340,7 +352,6 @@ export default function BlogDetailPage() {
         className="full-bleed relative"
         style={{
           background: 'linear-gradient(83deg, #0D0D0D -37.91%, #161A26 28%, #FF002C 212.06%)',
-          minHeight: '420px',
         }}
       >
         {/* Watermark */}
@@ -374,7 +385,7 @@ export default function BlogDetailPage() {
               </span>
 
               {/* Title */}
-              <h1 className="text-[28px] font-extrabold leading-[1.2] text-white md:text-[36px] lg:text-[40px]">
+              <h1 className="text-[22px] font-extrabold leading-[1.2] text-white md:text-[32px] lg:text-[40px]">
                 {BLOG.title}
               </h1>
 
@@ -399,7 +410,7 @@ export default function BlogDetailPage() {
                   </div>
                 </div>
 
-                <div className="flex items-center gap-4 text-[13px] text-white/60">
+                <div className="flex flex-wrap items-center gap-3 text-[13px] text-white/60">
                   <span className="flex items-center gap-1.5">
                     <CalendarIcon />
                     {BLOG.date}
@@ -436,7 +447,7 @@ export default function BlogDetailPage() {
           <div className="flex flex-col gap-8 lg:flex-row lg:items-start lg:gap-6">
 
             {/* ── LEFT SIDEBAR ─────────────────────────────────────────────────── */}
-            <aside className="w-full lg:w-[240px] shrink-0">
+            <aside className="hidden lg:block lg:w-[240px] shrink-0">
               <div className="sticky top-24 space-y-6">
                 {/* Table of Contents */}
                 <div className="rounded-2xl border border-zinc-100 bg-white shadow-sm overflow-hidden">
@@ -741,7 +752,7 @@ export default function BlogDetailPage() {
             </article>
 
             {/* ── RIGHT SIDEBAR ─────────────────────────────────────────────────── */}
-            <aside className="w-full lg:w-[240px] shrink-0">
+            <aside className="hidden lg:block lg:w-[240px] shrink-0">
               <div className="sticky top-24 space-y-5">
                 {/* Lead form */}
                 <div className="rounded-xl border border-zinc-100 bg-white p-5 shadow-sm">

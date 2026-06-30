@@ -92,8 +92,8 @@ export default function BlogsPage() {
     <>
       {/* Hero Section */}
       <section
-        className="full-bleed relative pt-10 md:pt-14 pb-10 md:pb-14"
-        style={{ background: 'linear-gradient(11deg, rgba(255, 201, 211, 0.15) -2.77%, #F5F6F8 90.42%)', height: '594px', zIndex: 10, position: 'relative' }}
+        className="full-bleed relative pt-8 md:pt-14 pb-8 md:pb-14"
+        style={{ background: 'linear-gradient(11deg, rgba(255, 201, 211, 0.15) -2.77%, #F5F6F8 90.42%)', minHeight: '594px', zIndex: 10, position: 'relative' }}
       >
         {/* Decorative ScaleX watermark */}
         <div className="pointer-events-none absolute right-0 top-1/4 z-0 hidden h-[340px] w-[300px] opacity-[0.07] md:block" aria-hidden>
@@ -174,7 +174,7 @@ export default function BlogsPage() {
                       alt={b.imageAlt}
                       width={460}
                       height={290}
-                      className="h-[290px] w-[460px] object-cover"
+                      className="h-[200px] w-full object-cover md:h-[290px] md:w-[460px]"
                     />
                   </div>
                   {/* Content */}
@@ -222,7 +222,7 @@ export default function BlogsPage() {
       </section>
 
       {/* All Blogs Section */}
-      <section className="full-bleed bg-white pb-12 md:pb-16 mt-[200px]">
+      <section className="full-bleed bg-white pb-12 md:pb-16 mt-[80px] md:mt-[200px]">
         <div className="site-container">
           {/* Header */}
           <div className="mb-6 text-center">
@@ -245,7 +245,7 @@ export default function BlogsPage() {
                 role="tab"
                 aria-selected={cat === activeCategory}
                 onClick={() => setActiveCategory(cat)}
-                className={`cursor-pointer whitespace-nowrap rounded-lg px-4 py-2.5 text-center text-[16px] font-medium leading-[140%] ${cat === activeCategory ? 'courses-tab-active' : 'btn-mui-brand-tint text-heading'}`}
+                className={`cursor-pointer whitespace-nowrap rounded-lg px-3 py-2 text-center text-[13px] font-medium leading-[140%] md:px-4 md:py-2.5 md:text-[16px] ${cat === activeCategory ? 'courses-tab-active' : 'btn-mui-brand-tint text-heading'}`}
               >
                 {cat}
               </button>
