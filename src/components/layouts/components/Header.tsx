@@ -20,7 +20,7 @@ const CERTIFICATION_PREP_ITEMS = [
 ] as const;
 
 const RESOURCES_ITEMS = [
-  { label: 'Blog & Articles', href: '#' },
+  { label: 'Blog & Articles', href: '/blogs' },
   { label: 'Free Study Guides', href: '#' },
   { label: 'Webinars & Events', href: '#' },
   { label: 'Career Resources', href: '#' },

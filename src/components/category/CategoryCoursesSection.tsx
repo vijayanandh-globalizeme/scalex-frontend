@@ -31,6 +31,12 @@ export interface CategoryCoursesSectionProps {
   categoryId: string;
   categoryName: string;
   currencySymbol?: string;
+  /** When set, caps total displayed courses and hides "View More Courses" once reached. */
+  maxCourses?: number;
+  /** How many courses to show before the first "View More Courses" click. Defaults to fetching a full batch (6) upfront. */
+  initialVisibleCount?: number;
+  /** How many additional courses "View More Courses" reveals per click. Defaults to a full fetch batch (6). */
+  loadMoreStep?: number;
 }
 
 function SkeletonCard() {
@@ -58,11 +64,15 @@ export default function CategoryCoursesSection({
   categoryId,
   categoryName,
   currencySymbol = '₹',
+  maxCourses,
+  initialVisibleCount,
+  loadMoreStep,
 }: CategoryCoursesSectionProps) {
   const [courses, setCourses] = useState<Course[]>([]);
+  const [visibleCount, setVisibleCount] = useState(initialVisibleCount ?? FETCH_LIMIT);
   const [loading, setLoading] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
-  const [hasMore, setHasMore] = useState(false);
+  const [hasMoreRemote, setHasMoreRemote] = useState(false);
   const offsetRef = useRef(0);
 
   const sectionRef = useRef<HTMLElement>(null);
@@ -73,6 +83,7 @@ export default function CategoryCoursesSection({
     let cancelled = false;
     setLoading(true);
     setCourses([]);
+    setVisibleCount(initialVisibleCount ?? FETCH_LIMIT);
     offsetRef.current = 0;
 
     getCourses({ categoryId, limit: FETCH_LIMIT, offset: 0 }).then((items) => {
@@ -80,31 +91,51 @@ export default function CategoryCoursesSection({
       const cards = items.map(apiCourseToCard);
       setCourses(cards);
       offsetRef.current = items.length;
-      setHasMore(items.length >= FETCH_LIMIT);
+      setHasMoreRemote(items.length >= FETCH_LIMIT);
       setLoading(false);
     });
 
     return () => { cancelled = true; };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [categoryId]);
 
   async function handleViewMore() {
     if (loadingMore) return;
+    const step = loadMoreStep ?? FETCH_LIMIT;
+    const target = Math.min(visibleCount + step, maxCourses ?? Infinity);
+
+    // Enough already fetched to satisfy this reveal — no network call needed.
+    if (target <= courses.length) {
+      setVisibleCount(target);
+      return;
+    }
+
     setLoadingMore(true);
     const items = await getCourses({ categoryId, limit: FETCH_LIMIT, offset: offsetRef.current });
     const cards = items.map(apiCourseToCard);
     setCourses((prev) => [...prev, ...cards]);
     offsetRef.current += items.length;
-    setHasMore(items.length >= FETCH_LIMIT);
+    setHasMoreRemote(items.length >= FETCH_LIMIT);
+    setVisibleCount(Math.min(target, offsetRef.current));
     setLoadingMore(false);
   }
 
+  const visibleCourses = useMemo(
+    () => courses.slice(0, Math.min(visibleCount, maxCourses ?? Infinity)),
+    [courses, visibleCount, maxCourses],
+  );
+
+  const hasMore =
+    (visibleCount < courses.length || hasMoreRemote) &&
+    (maxCourses === undefined || visibleCount < maxCourses);
+
   const courseRows = useMemo(() => {
     const rows: Course[][] = [];
-    for (let i = 0; i < courses.length; i += cols) {
-      rows.push(courses.slice(i, i + cols));
+    for (let i = 0; i < visibleCourses.length; i += cols) {
+      rows.push(visibleCourses.slice(i, i + cols));
     }
     return rows;
-  }, [courses, cols]);
+  }, [visibleCourses, cols]);
 
   rowRefs.current.length = courseRows.length;
 

@@ -27,7 +27,7 @@ const COLUMN_GROUPS: { title: string; links: { label: string; href: string }[] }
   {
     title: 'Resources',
     links: [
-      { label: 'Blogs', href: '#' },
+      { label: 'Blogs', href: '/blogs' },
       { label: 'Course Info', href: '#' },
     ],
   },

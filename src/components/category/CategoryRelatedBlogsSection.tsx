@@ -7,7 +7,7 @@ import {
   CategoryCarouselControls,
   CategoryCarouselTrack,
 } from '@/components/category/CategoryCarouselNav';
-import { getBlogs, type ApiBlog } from '@/app/actions/blogActions';
+import { getBlogs, type ApiBlogListItem } from '@/app/actions/blogActions';
 
 const FETCH_LIMIT = 6;
 const AUTHOR_AVATAR = '/images/Alex.png';
@@ -42,19 +42,19 @@ type BlogItem = {
   authorAvatar: string;
 };
 
-function apiBlogToItem(blog: ApiBlog, index: number): BlogItem {
+function apiBlogToItem(blog: ApiBlogListItem, index: number): BlogItem {
   return {
     id: blog.id,
     title: blog.title,
     excerpt: blog.shortDescription ?? '',
-    author: blog.trainer?.name ?? ' EdgeX Team',
+    author: blog.trainerName ?? ' EdgeX Team',
     date: blog.createdAt
       ? new Date(blog.createdAt).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })
       : '',
-    href: `/blog/${blog.uri}`,
+    href: `/blogs/${blog.uri}`,
     variant: VARIANT_CYCLE[index % VARIANT_CYCLE.length],
     imageSrc: blog.featureImage?.url ?? DEFAULT_BLOG_IMAGE,
-    authorAvatar: blog.trainer?.profileImage?.url ?? AUTHOR_AVATAR,
+    authorAvatar: blog.trainerAvatar?.url ?? AUTHOR_AVATAR,
   };
 }
 
@@ -187,7 +187,7 @@ export default function CategoryRelatedBlogsSection({ categoryId }: { categoryId
       return;
     }
     setLoading(true);
-    const { items, total } = await getBlogs({ limit: FETCH_LIMIT, offset: pageIndex * FETCH_LIMIT, categoryId });
+    const { items, total } = await getBlogs({ limit: FETCH_LIMIT, offset: pageIndex * FETCH_LIMIT, courseCategoryId: categoryId });
     const mapped = items.map((b, i) => apiBlogToItem(b, i));
     cache.current.set(pageIndex, mapped);
     setCurrentItems(mapped);

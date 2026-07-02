@@ -1,33 +1,151 @@
-import { get } from '@/services/http';
+import { get, post } from '@/services/http';
 
-export type ApiBlog = {
+// ── Types ────────────────────────────────────────────────────────────────
+
+export type ApiFile = { id: string; url: string; extension: string | null };
+
+export type ApiBlogListItem = {
+  id: string;
+  title: string;
+  uri: string;
+  shortDescription: string;
+  views: number;
+  readTimeMinutes: number;
+  createdAt: string;
+  categoryName: string | null;
+  featureImage: ApiFile | null;
+  trainerName: string | null;
+  trainerAvatar: ApiFile | null;
+};
+
+export type ApiBlogListResult = {
+  items: ApiBlogListItem[];
+  total: number;
+  limit: number;
+  offset: number;
+};
+
+export type ApiBlogRelatedResult = {
+  items: ApiBlogListItem[];
+};
+
+export type ApiBlogCategory = { id: string; name: string; uri: string };
+
+export type ApiBlogTocItem = { label: string; target: string };
+
+export type ApiBlogTrainer = {
+  name: string;
+  role: string;
+  about: string;
+  linkedInProfile: string;
+  articlesPublished: number;
+  avatar: ApiFile | null;
+};
+
+export type ApiBlogDetail = {
   id: string;
   title: string;
   shortDescription: string;
   uri: string;
+  readTimeMinutes: number;
+  popular: boolean;
+  views: number;
   createdAt: string;
-  featureImage: { id: string; url: string; extension: string } | null;
-  trainer: { id: string; name: string; profileImage: { id: string; url: string; extension: string } | null } | null;
+  featureImage: ApiFile | null;
+  category: { id: string; name: string; uri: string } | null;
+  courseCategory: { id: string; name: string; uri: string } | null;
+  trainer: ApiBlogTrainer | null;
+  content: {
+    tableTitle: string | null;
+    tableOfContents: ApiBlogTocItem[] | null;
+    content: string;
+  } | null;
+  seo: { metaTitle: string | null; metaDescription: string | null; metaKeywords: string | null } | null;
 };
 
-type BlogsApiResponse = {
-  success: boolean;
-  data: {
-    items: ApiBlog[];
-    total: number;
-    limit: number;
-    offset: number;
-  };
+export type BlogSortBy = 'createdAt' | 'views' | 'title' | 'readTimeMinutes' | 'popular';
+
+export type BlogListOptions = {
+  categoryUri?: string;
+  courseCategoryId?: string;
+  q?: string;
+  sortBy?: BlogSortBy;
+  sortOrder?: 'asc' | 'desc';
+  limit?: number;
+  offset?: number;
 };
 
-export async function fetchBlogs(options: { limit?: number; offset?: number; categoryId?: string } = {}): Promise<{ items: ApiBlog[]; total: number }> {
-  const { limit = 6, offset = 0, categoryId } = options;
+type BlogListApiResponse       = { success: boolean; data: ApiBlogListResult };
+type BlogRelatedApiResponse    = { success: boolean; data: ApiBlogRelatedResult };
+type BlogCategoriesApiResponse = { success: boolean; data: ApiBlogCategory[] };
+type BlogDetailApiResponse     = { success: boolean; data: ApiBlogDetail };
+
+function buildListParams(options: BlogListOptions): URLSearchParams {
   const params = new URLSearchParams();
-  params.set('limit', String(limit));
-  params.set('offset', String(offset));
-  if (categoryId) params.set('courseCategoryId', categoryId);
+  if (options.categoryUri)      params.set('categoryUri', options.categoryUri);
+  if (options.courseCategoryId) params.set('courseCategoryId', options.courseCategoryId);
+  if (options.q)                params.set('q', options.q);
+  if (options.sortBy)      params.set('sortBy', options.sortBy);
+  if (options.sortOrder)   params.set('sortOrder', options.sortOrder);
+  params.set('limit',  String(options.limit ?? 12));
+  params.set('offset', String(options.offset ?? 0));
+  return params;
+}
 
-  const json = await get<BlogsApiResponse>(`blogs?${params.toString()}`, { revalidate: 0 });
-  if (!json?.success) return { items: [], total: 0 };
-  return { items: json.data.items ?? [], total: json.data.total ?? 0 };
+// ── Blog list ────────────────────────────────────────────────────────────
+
+export async function fetchBlogs(options: BlogListOptions = {}): Promise<ApiBlogListResult> {
+  const params = buildListParams(options);
+  const json = await get<BlogListApiResponse>(`blogs?${params.toString()}`, { revalidate: 60 });
+  return json?.success
+    ? json.data
+    : { items: [], total: 0, limit: options.limit ?? 12, offset: options.offset ?? 0 };
+}
+
+// ── Trending blogs (backed by the same list endpoint, popular=true, max 10) ─
+
+export async function fetchTrendingBlogs(options: BlogListOptions = {}): Promise<ApiBlogListResult> {
+  const limit = options.limit ?? 10;
+  const params = buildListParams({ ...options, limit });
+  const json = await get<BlogListApiResponse>(`blogs/trending?${params.toString()}`, {
+    revalidate: 300,
+    tags: ['blogs-trending'],
+  });
+  return json?.success ? json.data : { items: [], total: 0, limit, offset: 0 };
+}
+
+// ── Blog categories ──────────────────────────────────────────────────────
+
+export async function fetchBlogCategories(): Promise<ApiBlogCategory[]> {
+  const json = await get<BlogCategoriesApiResponse>('blogs/categories', {
+    revalidate: 300,
+    tags: ['blog-categories'],
+  });
+  return json?.success ? (json.data ?? []) : [];
+}
+
+// ── Blog detail ──────────────────────────────────────────────────────────
+
+export async function fetchBlogByUri(uri: string): Promise<ApiBlogDetail | null> {
+  const json = await get<BlogDetailApiResponse>(`blogs/${uri}`, {
+    revalidate: 60,
+    tags: [`blog-${uri}`],
+  });
+  return json?.success ? json.data : null;
+}
+
+// Fire-and-forget — increments the blog's view count by 1.
+export async function incrementBlogView(uri: string): Promise<void> {
+  await post(`blogs/${uri}/view`, {});
+}
+
+// ── Related blogs (max 10) ──────────────────────────────────────────────
+
+export async function fetchRelatedBlogs(uri: string, limit = 10): Promise<ApiBlogListItem[]> {
+  const params = new URLSearchParams({ limit: String(limit) });
+  const json = await get<BlogRelatedApiResponse>(`blogs/${uri}/related?${params.toString()}`, {
+    revalidate: 300,
+    tags: [`blog-${uri}-related`],
+  });
+  return json?.success ? (json.data.items ?? []) : [];
 }
