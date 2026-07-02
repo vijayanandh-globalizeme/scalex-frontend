@@ -11,8 +11,8 @@ const SECTION_CARD =
 const ELITE_COLUMN_BG =
   'bg-[linear-gradient(90deg,rgba(255,239,242,0.5)_0%,rgba(255,255,255,0)_100%)]';
 
-function formatPrice(amount: number) {
-  return `₹${amount.toLocaleString('en-IN')}`;
+function formatPrice(amount: number, currencySymbol: string) {
+  return `${currencySymbol}${amount.toLocaleString('en-IN')}`;
 }
 
 function ArrowRightIcon({ className }: { className?: string }) {
@@ -63,7 +63,15 @@ function discountPercent(retail: number, selling: number) {
   return Math.round(((retail - selling) / retail) * 100);
 }
 
-function PlanCard({ planInfo, isElite }: { planInfo: ActivePlanInfo; isElite: boolean }) {
+function PlanCard({
+  planInfo,
+  isElite,
+  currencySymbol,
+}: {
+  planInfo: ActivePlanInfo;
+  isElite: boolean;
+  currencySymbol: string;
+}) {
   const { plan, retailPrice, sellingPrice } = planInfo;
   const pct = discountPercent(retailPrice, sellingPrice);
 
@@ -85,11 +93,11 @@ function PlanCard({ planInfo, isElite }: { planInfo: ActivePlanInfo; isElite: bo
       <p className="pr-12 text-[14px] font-medium leading-[140%] text-heading">{plan.name}</p>
       <div className="mt-2 flex flex-wrap items-baseline gap-1.5">
         <span className="text-[16px] font-semibold leading-[140%] text-heading">
-          {formatPrice(sellingPrice)}
+          {formatPrice(sellingPrice, currencySymbol)}
         </span>
         {retailPrice > sellingPrice ? (
           <span className="text-[12px] leading-normal text-muted line-through">
-            {formatPrice(retailPrice)}
+            {formatPrice(retailPrice, currencySymbol)}
           </span>
         ) : null}
       </div>
@@ -168,7 +176,7 @@ export default function CoursePlanComparisonSection({
                   <span className="block">
                     paying{' '}
                     <span className="text-[#FD022D]">
-                      ₹{extraAmount.toLocaleString('en-IN')}
+                      {batch.currencySymbol}{extraAmount.toLocaleString('en-IN')}
                     </span>{' '}
                     Extra
                   </span>
@@ -187,7 +195,7 @@ export default function CoursePlanComparisonSection({
                   key={planInfo.plan.planNumber}
                   className={`flex items-end justify-center px-3 pb-0 pt-5 md:px-4 md:pt-6 ${isElite ? ELITE_COLUMN_BG : 'bg-white'}`}
                 >
-                  <PlanCard planInfo={planInfo} isElite={isElite} />
+                  <PlanCard planInfo={planInfo} isElite={isElite} currencySymbol={batch.currencySymbol} />
                 </div>
               );
             })}

@@ -194,7 +194,7 @@ export default async function CourseDetailBodySection({
             ) : null}
 
 
-            <CourseTrainingCitiesSection courseUri={courseUri} categoryUri={categoryUri} />
+            <CourseTrainingCitiesSection courseUri={courseUri} categoryUri={categoryUri} shortName={courseDetails?.shortName} />
           </div>
           <CourseDetailSidebar sidebar={sidebar} />
 

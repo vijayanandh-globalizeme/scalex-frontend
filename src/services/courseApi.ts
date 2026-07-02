@@ -319,12 +319,8 @@ export async function fetchCourseBatches(
 // ── Course Locations ──────────────────────────────────────────────────────────
 
 export type ApiCourseLocation = {
-  countryId: string;
-  countryName: string;
-  countryUri: string;
-  cityId: string | null;
-  cityName: string | null;
-  cityUri: string | null;
+  labelName: string;
+  uri: string;
 };
 
 type CourseLocationsApiResponse = { success: boolean; data: { locations: ApiCourseLocation[] } };
