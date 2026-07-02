@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useId, useMemo, useState } from 'react';
 import {
   CategoryCarouselControls,
   CategoryCarouselTrack,
@@ -20,16 +20,32 @@ const REVIEW_CARD =
 const TAB_BAR_SCROLL =
   'inline-flex h-[52px] items-stretch gap-8 overflow-x-auto rounded-lg bg-[#FCFCFC] px-8 shadow-[0_4px_4px_0_rgba(30,41,59,0.08),4px_-4px_4px_0_rgba(30,41,59,0.03)] [-ms-overflow-style:none] [scrollbar-width:none] md:gap-10 [&::-webkit-scrollbar]:hidden';
 
-function StarRating({ count }: { count: number }) {
+const STAR_PATH =
+  'M3.01902 14.8627C3.30952 15.0888 3.67795 15.0111 4.11724 14.6932L7.86538 11.9453L11.6206 14.6932C12.0598 15.0111 12.4212 15.0888 12.7188 14.8627C13.0093 14.6437 13.073 14.2845 12.8959 13.7678L11.4151 9.37398L15.1986 6.66138C15.638 6.35057 15.8151 6.02562 15.7017 5.67242C15.5883 5.33335 15.2553 5.17087 14.7098 5.17087H10.0689L8.65889 0.784104C8.4889 0.261369 8.2338 0 7.86538 0C7.50399 0 7.24894 0.261369 7.0789 0.784104L5.66892 5.17087H1.02805C0.482481 5.17087 0.149473 5.33335 0.0361076 5.67242C-0.0843426 6.02562 0.099875 6.35057 0.539164 6.66138L4.32271 9.37398L2.84188 13.7678C2.66475 14.2845 2.72852 14.6437 3.01902 14.8627Z';
+
+function Star({ fraction, gradientId }: { fraction: number; gradientId: string }) {
+  // fraction === 0 or 1 doesn't need a gradient, but using one uniformly keeps this simple.
+  const pct = Math.round(fraction * 100);
   return (
-    <div className="flex items-center gap-0.5" aria-label={`${count} out of 5 stars`}>
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden>
+      <defs>
+        <linearGradient id={gradientId}>
+          <stop offset={`${pct}%`} stopColor="#F4AA1F" />
+          <stop offset={`${pct}%`} stopColor="#E2E8F0" />
+        </linearGradient>
+      </defs>
+      <path d={STAR_PATH} fill={`url(#${gradientId})`} />
+    </svg>
+  );
+}
+
+function StarRating({ rating }: { rating: number }) {
+  const uid = useId();
+  const clamped = Math.max(0, Math.min(5, rating));
+  return (
+    <div className="flex items-center gap-0.5" aria-label={`${clamped} out of 5 stars`}>
       {Array.from({ length: 5 }).map((_, index) => (
-        <svg key={index} width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden>
-          <path
-            d="M3.01902 14.8627C3.30952 15.0888 3.67795 15.0111 4.11724 14.6932L7.86538 11.9453L11.6206 14.6932C12.0598 15.0111 12.4212 15.0888 12.7188 14.8627C13.0093 14.6437 13.073 14.2845 12.8959 13.7678L11.4151 9.37398L15.1986 6.66138C15.638 6.35057 15.8151 6.02562 15.7017 5.67242C15.5883 5.33335 15.2553 5.17087 14.7098 5.17087H10.0689L8.65889 0.784104C8.4889 0.261369 8.2338 0 7.86538 0C7.50399 0 7.24894 0.261369 7.0789 0.784104L5.66892 5.17087H1.02805C0.482481 5.17087 0.149473 5.33335 0.0361076 5.67242C-0.0843426 6.02562 0.099875 6.35057 0.539164 6.66138L4.32271 9.37398L2.84188 13.7678C2.66475 14.2845 2.72852 14.6437 3.01902 14.8627Z"
-            fill={index < count ? '#F4AA1F' : '#E2E8F0'}
-          />
-        </svg>
+        <Star key={index} fraction={Math.max(0, Math.min(1, clamped - index))} gradientId={`${uid}-star-${index}`} />
       ))}
     </div>
   );
@@ -90,7 +106,7 @@ function ReviewCard({ review, typeMap }: { review: ApiReview; typeMap: Map<strin
             <p className="truncate text-[14px] font-medium leading-[20px] text-heading">{review.name}</p>
             <p className="mt-0.5 truncate text-[12px] font-normal leading-normal text-muted">{review.role}</p>
             <div className="mt-1.5">
-              <StarRating count={Math.round(review.rating)} />
+              <StarRating rating={review.rating} />
             </div>
           </div>
         </div>
