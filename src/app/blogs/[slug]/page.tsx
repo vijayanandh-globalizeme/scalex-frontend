@@ -230,6 +230,11 @@ export default function BlogDetailPage() {
   const [activeId, setActiveId] = useState('');
   const [copied, setCopied] = useState(false);
   const contentRef = useRef<HTMLDivElement>(null);
+  // How much of the content was already on-screen the moment this effect
+  // first ran — excluded as a baseline so the bar starts at 0% instead of
+  // jumping straight to "some progress" just because the article opens with
+  // a bit of text already visible above the fold.
+  const initialRevealRef = useRef<number | null>(null);
 
   const tocItems = (blog?.content?.tableOfContents ?? []).map((t) => ({
     label: t.label,
@@ -260,19 +265,36 @@ export default function BlogDetailPage() {
   }, [tocItems.length]);
 
   useEffect(() => {
+    initialRevealRef.current = null;
+
     const onScroll = () => {
       const el = contentRef.current;
       if (!el) {
         setReadProgress(0);
         return;
       }
+
       const contentTop = el.getBoundingClientRect().top + window.scrollY;
       const contentHeight = el.offsetHeight;
-      const progress = contentHeight > 0
-        ? ((window.scrollY - contentTop) / contentHeight) * 100
-        : 0;
+      const viewportHeight = window.innerHeight;
+
+      // Pixels of content revealed within the viewport so far: 0 when the
+      // content's top edge is still at the bottom of the viewport (nothing
+      // visible yet), contentHeight once its bottom edge reaches the bottom
+      // of the viewport (the whole thing has now been on screen) — based on
+      // visibility, not on scrollY having to reach the content's top edge.
+      const revealed = Math.min(contentHeight, Math.max(0, window.scrollY - contentTop + viewportHeight));
+
+      if (initialRevealRef.current === null) {
+        initialRevealRef.current = revealed;
+      }
+      const baseline  = initialRevealRef.current;
+      const remaining = contentHeight - baseline;
+
+      const progress = remaining > 0 ? ((revealed - baseline) / remaining) * 100 : 100;
       setReadProgress(Math.min(100, Math.max(0, Math.round(progress))));
     };
+
     window.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('resize', onScroll, { passive: true });
     onScroll();
