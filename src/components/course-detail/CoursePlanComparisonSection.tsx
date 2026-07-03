@@ -1,9 +1,9 @@
 'use client';
 
 import React from 'react';
+import Link from 'next/link';
 import type { ApiCoursePlanBatch, ApiCoursePlan, ApiCoursePlanFeature } from '@/services/courseApi';
 import { COURSE_PLAN_COMPARISON_STATIC } from '@/lib/courseDetailStatics';
-import CourseBrochureCta from './CourseBrochureCta';
 
 const SECTION_CARD =
   'rounded-[20px] border border-[#EBEBEB] bg-white shadow-[0_4px_4px_0_rgba(30,41,59,0.08),0_4px_4px_0_rgba(30,41,59,0.03)]';
@@ -67,13 +67,24 @@ function PlanCard({
   planInfo,
   isElite,
   currencySymbol,
+  batchId,
+  courseId,
 }: {
   planInfo: ActivePlanInfo;
   isElite: boolean;
   currencySymbol: string;
+  batchId: string;
+  courseId?: string | null;
 }) {
   const { plan, retailPrice, sellingPrice } = planInfo;
   const pct = discountPercent(retailPrice, sellingPrice);
+
+  const checkoutParams = new URLSearchParams({
+    batchId,
+    planNumber: String(plan.planNumber),
+  });
+  if (courseId) checkoutParams.set('courseId', courseId);
+  const checkoutHref = `/checkout?${checkoutParams.toString()}`;
 
   return (
     <div
@@ -101,8 +112,8 @@ function PlanCard({
           </span>
         ) : null}
       </div>
-      <CourseBrochureCta
-        openModal
+      <Link
+        href={checkoutHref}
         className={
           isElite
             ? 'btn-brand mt-3 inline-flex h-[40px] w-[139px] items-center justify-around gap-2 rounded-lg px-4 text-[12px] font-medium leading-[18px] text-white shadow-none'
@@ -111,7 +122,7 @@ function PlanCard({
       >
         {plan.btnName ?? 'Enroll Now'}
         <ArrowRightIcon className={`btn-arrow-icon shrink-0 ${isElite ? 'text-white' : 'text-brand'}`} />
-      </CourseBrochureCta>
+      </Link>
     </div>
   );
 }
@@ -125,10 +136,12 @@ export default function CoursePlanComparisonSection({
   plans,
   features,
   batch,
+  courseId = null,
 }: {
   plans: ApiCoursePlan[];
   features: ApiCoursePlanFeature[];
   batch: ApiCoursePlanBatch | null | undefined;
+  courseId?: string | null;
 }) {
   if (!batch) return null;
 
@@ -195,7 +208,13 @@ export default function CoursePlanComparisonSection({
                   key={planInfo.plan.planNumber}
                   className={`flex items-end justify-center px-3 pb-0 pt-5 md:px-4 md:pt-6 ${isElite ? ELITE_COLUMN_BG : 'bg-white'}`}
                 >
-                  <PlanCard planInfo={planInfo} isElite={isElite} currencySymbol={batch.currencySymbol} />
+                  <PlanCard
+                    planInfo={planInfo}
+                    isElite={isElite}
+                    currencySymbol={batch.currencySymbol}
+                    batchId={batch.id}
+                    courseId={courseId}
+                  />
                 </div>
               );
             })}

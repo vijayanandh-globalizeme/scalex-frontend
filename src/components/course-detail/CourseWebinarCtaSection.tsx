@@ -1,10 +1,10 @@
 'use client';
 
 import Image from 'next/image';
-import Link from 'next/link';
 import type { CSSProperties } from 'react';
 import { TECH_WEBINER } from '@/lib/courseDetailStatics';
 import TechnicalCourseWebinarCountdown from './TechnicalCourseWebinarCountdown';
+import CourseBrochureCta from './CourseBrochureCta';
 
 function ScaleXMark({ className }: { className?: string }) {
   return (
@@ -41,7 +41,13 @@ function ArrowRightIcon({ className }: { className?: string }) {
   );
 }
 
-export default function CourseWebinarCtaSection({ startedAt }: { startedAt?: string | null }) {
+export default function CourseWebinarCtaSection({
+  startedAt,
+  courseId = null,
+}: {
+  startedAt?: string | null;
+  courseId?: string | null;
+}) {
   const content = TECH_WEBINER;
   return (
     <section
@@ -78,13 +84,15 @@ export default function CourseWebinarCtaSection({ startedAt }: { startedAt?: str
               <span key={line} className="block">{line}</span>
             ))}
           </p>
-          <Link
-            href={content.ctaHref}
+          <CourseBrochureCta
+            openModal
+            type="webinar"
+            courseId={courseId}
             className="btn-brand mt-4 inline-flex h-10 w-full items-center justify-center gap-2 rounded-lg px-5 text-[14px] font-medium leading-[18px] text-white"
           >
             {content.ctaLabel}
             <ArrowRightIcon className="btn-arrow-icon shrink-0 text-white" />
-          </Link>
+          </CourseBrochureCta>
           <div className="mt-5">
             <p className="text-[14px] font-medium leading-normal text-[#E5E5E5]">
               {content.countdownLabel}
@@ -127,13 +135,15 @@ export default function CourseWebinarCtaSection({ startedAt }: { startedAt?: str
                 <span key={line} className="block">{line}</span>
               ))}
             </p>
-            <Link
-              href={content.ctaHref}
+            <CourseBrochureCta
+              openModal
+              type="webinar"
+              courseId={courseId}
               className="btn-brand mt-4 inline-flex h-10 w-fit items-center justify-center gap-2 rounded-lg px-5 text-[14px] font-medium leading-[18px] text-white"
             >
               {content.ctaLabel}
               <ArrowRightIcon className="btn-arrow-icon shrink-0 text-white" />
-            </Link>
+            </CourseBrochureCta>
             <div className="mt-5">
               <p className="text-[16px] font-medium leading-normal text-[#E5E5E5]">
                 {content.countdownLabel}

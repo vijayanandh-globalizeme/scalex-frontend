@@ -1,6 +1,6 @@
 import Image from 'next/image';
-import Link from 'next/link';
 import { EXPERT_CTA } from '@/lib/categoryPageSections';
+import { CourseBrochureCta } from '@/components/course-detail';
 
 export type ExpertCtaContent = {
   headingLines: string[];
@@ -106,13 +106,15 @@ function ExpertCtaCard({ content, headingId }: { content: ExpertCtaContent; head
               </span>
             ))}
           </h2>
-          <Link
-            href={cta.href}
+          <CourseBrochureCta
+            openModal
+            type="contact"
+            courseId={null}
             className="btn-brand mt-4 inline-flex h-10 items-center justify-center gap-2 px-5 text-[13px] font-semibold"
           >
             {cta.label}
             <ArrowRightIcon className="btn-arrow-icon shrink-0 text-white" />
-          </Link>
+          </CourseBrochureCta>
         </div>
       </div>
     </div>
@@ -162,13 +164,15 @@ function ExpertCtaFullBleed({ content, headingId }: { content: ExpertCtaContent;
                 {subheading}
               </p>
             ) : null}
-            <Link
-              href={cta.href}
+            <CourseBrochureCta
+              openModal
+              type="contact"
+              courseId={null}
               className="btn-brand mt-8 inline-flex h-[54px] items-center justify-center gap-3 px-8"
             >
               {cta.label}
               <PhoneIcon className="h-5 w-5 shrink-0" />
-            </Link>
+            </CourseBrochureCta>
           </div>
         </div>
       </div>

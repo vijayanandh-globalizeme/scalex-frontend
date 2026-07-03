@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import CourseLeadForm, { type CourseLeadFormProps } from './CourseLeadForm';
+import type { BrochureModalType } from './CourseBrochureModalContext';
 import styles from './CourseBrochureModal.module.css';
 
 const TRANSITION_MS = 350;
@@ -24,10 +25,14 @@ export default function CourseBrochureModal({
   isOpen,
   onClose,
   form,
+  leadType,
+  courseId,
 }: {
   isOpen: boolean;
   onClose: () => void;
   form: CourseLeadFormProps;
+  leadType?: BrochureModalType;
+  courseId?: string | null;
 }) {
   const [isMounted, setIsMounted] = useState(false);
   const [isAnimated, setIsAnimated] = useState(false);
@@ -54,11 +59,20 @@ export default function CourseBrochureModal({
       if (event.key === 'Escape') onClose();
     };
 
+    // Compensate for the scrollbar that `overflow: hidden` removes — otherwise the
+    // page reflows a few pixels wider and sticky elements (e.g. the course sidebar)
+    // visibly jump when the modal opens/closes.
+    const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+    const previousPaddingRight = document.body.style.paddingRight;
     document.body.style.overflow = 'hidden';
+    if (scrollbarWidth > 0) {
+      document.body.style.paddingRight = `${scrollbarWidth}px`;
+    }
     document.addEventListener('keydown', onKeyDown);
 
     return () => {
       document.body.style.overflow = '';
+      document.body.style.paddingRight = previousPaddingRight;
       document.removeEventListener('keydown', onKeyDown);
     };
   }, [isMounted, onClose]);
@@ -87,7 +101,13 @@ export default function CourseBrochureModal({
         >
           <CloseIcon />
         </button>
-        <CourseLeadForm {...form} showArrowDecor={false} titleId="course-brochure-modal-title" />
+        <CourseLeadForm
+          {...form}
+          showArrowDecor={false}
+          titleId="course-brochure-modal-title"
+          leadType={leadType}
+          courseId={courseId}
+        />
       </div>
     </div>,
     document.body,

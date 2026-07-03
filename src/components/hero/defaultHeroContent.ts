@@ -30,7 +30,7 @@ export const defaultHeroContent: HeroSectionProps = {
   headingYour: 'Your',
   headingAccent: 'Career Growth',
   subheading: 'Expert-led courses designed to help you thrive in the digital age',
-  primaryCta: { href: '/courses', label: 'Scale Your Expertise' },
+  primaryCta: { href: '#courses-heading', label: 'Scale Your Expertise' },
   secondaryCta: { href: '/contact', label: 'Get An Expert Callback' },
   trustedBy: {
     label: 'Trusted By',

@@ -1,13 +1,14 @@
-import Link from 'next/link';
 import { LogoMarquee } from '@/components/shared';
 import type { CoursePartnerLogo } from '@/lib/courses';
 import { COURSE_SECTION_CARD } from './courseSectionCard';
+import CourseBrochureCta from './CourseBrochureCta';
 
 export interface CourseEnterpriseCardProps {
   headingHighlight: string;
   headingRest: string;
   cta: { label: string; href: string };
   partners: CoursePartnerLogo[];
+  courseId?: string | null;
 }
 
 function ArrowRightIcon({ className }: { className?: string }) {
@@ -31,6 +32,7 @@ export function CourseEnterpriseCard({
   headingRest,
   cta,
   partners,
+  courseId = null,
 }: CourseEnterpriseCardProps) {
   const midpoint = Math.ceil(partners.length / 2);
   const firstRow = partners.slice(0, midpoint);
@@ -49,13 +51,15 @@ export function CourseEnterpriseCard({
           <span className="text-brand">{headingHighlight}</span>{' '}
           <span>{headingRest}</span>
         </h2>
-        <Link
-          href={cta.href}
+        <CourseBrochureCta
+          openModal
+          type="contact"
+          courseId={courseId}
           className="btn-brand-outline inline-flex h-[48px] shrink-0 items-center justify-center gap-2 self-start px-6 text-[14px] font-semibold md:self-auto"
         >
           {cta.label}
           <ArrowRightIcon className="btn-arrow-icon shrink-0 text-brand" />
-        </Link>
+        </CourseBrochureCta>
       </div>
 
       <div className="flex flex-col gap-[27px]">

@@ -49,6 +49,7 @@ export default async function CourseDetailBodySection({
   cityUri?: string;
 }) {
   const d = courseDetails?.details;
+  const courseId = courseDetails?.id ?? null;
 
   const syllabusUrl       = d?.syllabus?.url       ?? null;
   const courseContentTitle = d?.courseContentTitle  ?? null;
@@ -117,7 +118,7 @@ export default async function CourseDetailBodySection({
             ) : null}
 
             {!isTechnical ? (
-              <CourseBatchRequestBanner banner={UNLOCK_COURSE_BANNER} className="pb-6 md:pb-8" />
+              <CourseBatchRequestBanner banner={UNLOCK_COURSE_BANNER} className="pb-6 md:pb-8" courseId={courseId} />
             ) : null}
 
             {courseUri && categoryUri ? (
@@ -127,6 +128,7 @@ export default async function CourseDetailBodySection({
                   categoryUri={categoryUri}
                   courseName={courseDetails?.name ?? ''}
                   variant={isTechnical ? 'technical' : 'default'}
+                  courseId={courseId}
                 />
               </div>
             ) : null}
@@ -152,7 +154,7 @@ export default async function CourseDetailBodySection({
             ) : null}
 
             {isTechnical && startedAt ? (
-              <CourseWebinarCtaSection startedAt={startedAt} />
+              <CourseWebinarCtaSection startedAt={startedAt} courseId={courseId} />
             ) : null}
 
             {courseUri && categoryUri ? (
@@ -175,7 +177,7 @@ export default async function CourseDetailBodySection({
                 <CourseFaqsSection faqs={details.courseFaq} title={faqTitle} />
             ) : null}
 
-            <CourseBatchRequestBanner banner={EXPERTS_COURSE_BANNER} className="pb-6 md:pb-8" />
+            <CourseBatchRequestBanner banner={EXPERTS_COURSE_BANNER} className="pb-6 md:pb-8" courseId={courseId} />
 
             <WhyScaleXSection {...courseWhyScaleXContent} id="why-scalex" variant="embedded" />
             <AwardsSection

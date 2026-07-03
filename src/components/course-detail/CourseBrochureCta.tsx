@@ -2,17 +2,26 @@
 
 import Link from 'next/link';
 import type { ReactNode } from 'react';
-import { isBrochureModalHref, useCourseBrochureModal } from './CourseBrochureModalContext';
+import {
+  isBrochureModalHref,
+  useCourseBrochureModal,
+  type BrochureModalType,
+} from './CourseBrochureModalContext';
 
 export default function CourseBrochureCta({
   href,
   openModal = false,
+  type = 'contact',
+  courseId = null,
   className,
   children,
 }: {
   href?: string;
   /** Open contact popup even without a brochure/contact hash href (e.g. Enroll Now). */
   openModal?: boolean;
+  /** Lead type recorded when the modal opens from this CTA. */
+  type?: BrochureModalType;
+  courseId?: string | null;
   className?: string;
   children: ReactNode;
 }) {
@@ -20,7 +29,11 @@ export default function CourseBrochureCta({
 
   if (openModal || isBrochureModalHref(href)) {
     return (
-      <button type="button" onClick={openBrochureModal} className={`cursor-pointer ${className ?? ''}`}>
+      <button
+        type="button"
+        onClick={() => openBrochureModal({ type, courseId })}
+        className={`cursor-pointer ${className ?? ''}`}
+      >
         {children}
       </button>
     );

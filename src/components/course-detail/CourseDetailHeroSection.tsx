@@ -100,6 +100,7 @@ function RankedContent({ rankedContent, rankingLine }: { rankedContent?: string;
 }
 
 export default function CourseDetailHeroSection({
+  courseId,
   breadcrumbs,
   titlePrefix,
   titleAccent,
@@ -255,7 +256,7 @@ export default function CourseDetailHeroSection({
                 isBrochureCta ? (
                   <button
                     type="button"
-                    onClick={openBrochureModal}
+                    onClick={() => openBrochureModal({ type: 'contact', courseId })}
                     className="btn-brand h-[54px] w-full cursor-pointer gap-2 px-6 sm:w-auto md:px-7"
                   >
                     Download Brochure
@@ -301,7 +302,7 @@ export default function CourseDetailHeroSection({
             }}
             className="gsap-reveal-pending relative z-20 mb-[-125px] lg:col-span-2 lg:col-start-1 lg:row-start-2"
           >
-            <CourseEnterpriseCard {...enterprise} />
+            <CourseEnterpriseCard {...enterprise} courseId={courseId} />
           </div>
         </div>
       </div>

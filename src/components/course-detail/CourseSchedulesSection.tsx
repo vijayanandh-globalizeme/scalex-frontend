@@ -498,12 +498,14 @@ export default function CourseSchedulesSection({
   courseUri,
   categoryUri,
   courseName,
-  variant = 'default'
+  variant = 'default',
+  courseId = null,
 }: {
   courseUri: string;
   categoryUri: string;
   courseName: string;
   variant?: 'default' | 'technical';
+  courseId?: string | null;
 }) {
   const INITIAL_LIMIT = 3;
   const LOAD_MORE_LIMIT = 5;
@@ -588,7 +590,7 @@ export default function CourseSchedulesSection({
     <>
       {emiBatch ? (
         <div className="mt-8">
-          <CourseFeeSection batch={emiBatch} onEnroll={(b) => handleEnroll(b as ApiCourseBatch)} />
+          <CourseFeeSection batch={emiBatch} onEnroll={(b) => handleEnroll(b as ApiCourseBatch)} courseId={courseId} />
         </div>
       ) : null}
 
@@ -672,7 +674,7 @@ export default function CourseSchedulesSection({
                 />
                 {index === 1 ? (
                   <div className="mt-4">
-                    <CourseBatchRequestBanner banner={CUSTOMIZE_BATCH_BANNER} />
+                    <CourseBatchRequestBanner banner={CUSTOMIZE_BATCH_BANNER} courseId={courseId} />
                   </div>
                 ) : null}
               </div>
@@ -729,6 +731,7 @@ export default function CourseSchedulesSection({
                 plans={plansData.plans}
                 features={plansData.features}
                 batch={modalBatch}
+                courseId={courseId}
               />
             ) : (
               <div className="flex items-center justify-center py-16 text-[14px] text-muted">

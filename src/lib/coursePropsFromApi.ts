@@ -98,6 +98,7 @@ function buildBaseProps(
     ? `${scheduleBasePath}/schedule`
     : `/${categoryUri}/${courseUri}/schedule`;
   return {
+    courseId: course.id,
     breadcrumbs: [
       { label: course.categoryName, href: `/${categoryUri}` },
       { label: course.name,         href: `/${categoryUri}/${courseUri}` },

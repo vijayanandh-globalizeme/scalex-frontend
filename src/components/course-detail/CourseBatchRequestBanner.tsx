@@ -55,9 +55,11 @@ function BatchDecorIcon({ className }: { className?: string }) {
 export default function CourseBatchRequestBanner({
   banner,
   className,
+  courseId = null,
 }: {
   banner: CourseBatchRequestBannerContent;
   className?: string;
+  courseId?: string | null;
 }) {
   return (
     <div className={`relative overflow-visible pt-[18px] ${className ?? ''}`}>
@@ -83,6 +85,8 @@ export default function CourseBatchRequestBanner({
           </p>
           <CourseBrochureCta
             href={banner.ctaHref}
+            type="contact"
+            courseId={courseId}
             className="btn-brand mt-4 inline-flex h-10 w-full items-center justify-center gap-2 rounded-lg px-5 text-[14px] font-medium leading-[18px] text-white"
           >
             {banner.ctaLabel}
@@ -129,6 +133,8 @@ export default function CourseBatchRequestBanner({
           </p>
           <CourseBrochureCta
             href={banner.ctaHref}
+            type="contact"
+            courseId={courseId}
             className="btn-brand mt-4 inline-flex h-10 w-fit items-center justify-center gap-2 rounded-lg px-5 text-[14px] font-medium leading-[18px] text-white"
           >
             {banner.ctaLabel}

@@ -5,6 +5,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { useGsapScrollRevealStagger } from '@/hooks/useGsapScrollReveal';
 import { useGridColumns } from '@/hooks/useGridColumns';
 import { getWebinars, type Webinar } from '@/app/actions/webinarActions';
+import { useCourseBrochureModal } from '@/components/course-detail';
 
 const HEADING = 'Upcoming Live Sessions';
 const SUBHEADING = 'Join our expert-led live webinars and accelerate your career growth.';
@@ -18,7 +19,7 @@ interface LiveSession {
   instructor: string;
   imageSrc: string;
   imageAlt: string;
-  href: string;
+  courseId: string | null;
 }
 
 function formatDate(iso: string): string {
@@ -43,7 +44,7 @@ function mapWebinar(item: Webinar): LiveSession {
     instructor: item.trainerName,
     imageSrc: item.imageUrl,
     imageAlt: item.title,
-    href: item.slug ? `/webinar/${item.slug}` : '#',
+    courseId: item.courseId,
   };
 }
 
@@ -89,6 +90,7 @@ function ArrowRightIcon({ className }: { className?: string }) {
 }
 
 function SessionCard({ session }: { session: LiveSession }) {
+  const { openBrochureModal } = useCourseBrochureModal();
   return (
     <article className="flex flex-col overflow-hidden rounded-2xl border border-zinc-100 bg-white shadow-[0_4px_4px_0_rgba(30,41,59,0.06)]">
       {session.imageSrc && (
@@ -120,13 +122,14 @@ function SessionCard({ session }: { session: LiveSession }) {
             <span>By {session.instructor}</span>
           </li>
         </ul>
-        <a
-          href={session.href}
-          className="btn-accent-outline mt-2 inline-flex w-full items-center justify-center gap-2 py-3 text-[14px]"
+        <button
+          type="button"
+          onClick={() => openBrochureModal({ type: 'webinar', courseId: session.courseId })}
+          className="btn-accent-outline mt-2 inline-flex w-full cursor-pointer items-center justify-center gap-2 py-3 text-[14px]"
         >
           Register Now
           <ArrowRightIcon className="btn-arrow-icon h-4 w-4" />
-        </a>
+        </button>
       </div>
     </article>
   );

@@ -15,6 +15,8 @@ export interface CoursePartnerLogo {
 export interface CourseDetailContent {
   slug: string;
   categorySlug: string;
+  /** Real course UUID (API-backed routes only) — used to attribute leads from CTAs. */
+  courseId?: string | null;
   breadcrumbs: CourseBreadcrumb[];
   titlePrefix: string;
   titleAccent?: string;

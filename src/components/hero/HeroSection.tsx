@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { LogoMarquee, HeroMediaColumn } from '@/components/shared';
 import type { HeroBadge } from '@/components/shared';
 import { useGsapScrollReveal } from '@/hooks/useGsapScrollReveal';
+import { useCourseBrochureModal } from '@/components/course-detail';
 
 
 export interface HeroLogo {
@@ -111,6 +112,12 @@ export default function HeroSection(props: HeroSectionProps) {
   const mediaRef = useRef<HTMLDivElement>(null);
   useGsapScrollReveal(sectionRef, copyRef, { y: 40, duration: 0.7, delay: 0, start: 'top 95%' });
   useGsapScrollReveal(sectionRef, mediaRef, { y: 50, duration: 0.8, delay: 0.08, start: 'top 95%' });
+  const { openBrochureModal } = useCourseBrochureModal();
+
+  function scrollToId(id: string) {
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
 
   return (
     <section
@@ -158,17 +165,29 @@ export default function HeroSection(props: HeroSectionProps) {
             </p>
 
             <div className="mt-8 flex flex-wrap gap-3 sm:gap-4">
-              <Link href={primaryCta.href} className="btn-brand h-[54px] w-full justify-center gap-2 px-6 sm:w-auto md:px-7">
-                {primaryCta.label}
-                <ArrowRightIcon className="btn-arrow-icon shrink-0" />
-              </Link>
-              <Link
-                href={secondaryCta.href}
-                className="btn-brand-outline inline-flex h-[54px] w-full min-w-0 items-center justify-center gap-[18px] px-6 text-sm font-semibold sm:w-auto sm:min-w-[275px] md:text-[15px]"
+              {primaryCta.href.startsWith('#') ? (
+                <button
+                  type="button"
+                  onClick={() => scrollToId(primaryCta.href.slice(1))}
+                  className="btn-brand h-[54px] w-full cursor-pointer justify-center gap-2 px-6 sm:w-auto md:px-7"
+                >
+                  {primaryCta.label}
+                  <ArrowRightIcon className="btn-arrow-icon shrink-0" />
+                </button>
+              ) : (
+                <Link href={primaryCta.href} className="btn-brand h-[54px] w-full justify-center gap-2 px-6 sm:w-auto md:px-7">
+                  {primaryCta.label}
+                  <ArrowRightIcon className="btn-arrow-icon shrink-0" />
+                </Link>
+              )}
+              <button
+                type="button"
+                onClick={() => openBrochureModal({ type: 'contact', courseId: null })}
+                className="btn-brand-outline inline-flex h-[54px] w-full min-w-0 cursor-pointer items-center justify-center gap-[18px] px-6 text-sm font-semibold sm:w-auto sm:min-w-[275px] md:text-[15px]"
               >
                 {secondaryCta.label}
                 <PhoneIcon className="h-5 w-5" />
-              </Link>
+              </button>
             </div>
 
             <div className="mt-10 flex flex-col items-start gap-3 border-t border-zinc-200/80 pt-5 sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-3 sm:gap-y-3">

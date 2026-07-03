@@ -13,6 +13,9 @@ export interface CourseLeadFormProps {
   showArrowDecor?: boolean;
   /** Optional id for the title heading (dialog aria-labelledby). */
   titleId?: string;
+  /** Lead source context carried through from the CTA that opened this form (e.g. modal). */
+  leadType?: string;
+  courseId?: string | null;
 }
 
 const fieldClassName =
@@ -72,6 +75,8 @@ export default function CourseLeadForm({
   ctaLabel,
   showArrowDecor = true,
   titleId,
+  leadType,
+  courseId,
 }: CourseLeadFormProps) {
   const [agreed, setAgreed] = useState(true);
 
@@ -89,6 +94,8 @@ export default function CourseLeadForm({
         <h2 id={titleId} className="text-left text-[20px] font-medium leading-normal text-heading">
           {title}
         </h2>
+        {leadType ? <input type="hidden" name="leadType" value={leadType} /> : null}
+        {courseId ? <input type="hidden" name="courseId" value={courseId} /> : null}
 
         <div className="mt-5 grid grid-cols-1 gap-5">
           <input type="text" required placeholder="Full Name" className={fieldClassName} />

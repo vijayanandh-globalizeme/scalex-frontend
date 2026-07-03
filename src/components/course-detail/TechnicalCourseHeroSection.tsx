@@ -212,6 +212,7 @@ function RankedContent({ rankedContent, rankingLine }: { rankedContent?: string;
 
 export default function TechnicalCourseHeroSection(course: TechnicalCourseContent) {
   const {
+    courseId,
     breadcrumbs,
     heroTitle,
     featureRows,
@@ -219,7 +220,6 @@ export default function TechnicalCourseHeroSection(course: TechnicalCourseConten
     rankingLine,
     reviews,
     learnersStat,
-    primaryCta,
     heroBadges,
     collaboration,
     hiringPartners,
@@ -361,14 +361,21 @@ export default function TechnicalCourseHeroSection(course: TechnicalCourseConten
 
             <div className="mt-[40px] flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:gap-4">
               {startedAt ? (
-                <Link href={primaryCta.href} className="btn-brand h-[54px] w-full cursor-pointer gap-2 px-6 sm:w-auto md:px-7">
+                <CourseBrochureCta
+                  openModal
+                  type="webinar"
+                  courseId={courseId}
+                  className="btn-brand h-[54px] w-full cursor-pointer gap-2 px-6 sm:w-auto md:px-7"
+                >
                   Register for FREE Webinar
                   <ArrowRightIcon className="btn-arrow-icon shrink-0" />
-                </Link>
+                </CourseBrochureCta>
               ) : (
                 <CourseBrochureCta
                   href={brochureUrl ?? undefined}
                   openModal={!brochureUrl}
+                  type="contact"
+                  courseId={courseId}
                   className="btn-brand inline-flex h-[54px] w-full items-center justify-center gap-2 px-6 sm:w-auto md:px-7"
                 >
                   Download Brochure

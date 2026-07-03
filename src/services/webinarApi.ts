@@ -7,7 +7,7 @@ interface WebinarApiItem {
   learnersLabel: string;
   trainer?: { name?: string; profileImage?: { url?: string } };
   featureImage?: { url?: string };
-  course?: { uri?: string; categoryUri?: string };
+  course?: { id?: string; uri?: string; categoryUri?: string };
 }
 
 interface WebinarApiResponse {
@@ -28,6 +28,7 @@ export interface Webinar {
   trainerName: string;
   imageUrl: string;
   slug: string;
+  courseId: string | null;
 }
 
 export async function fetchWebinars(limit = 10): Promise<Webinar[]> {
@@ -41,5 +42,6 @@ export async function fetchWebinars(limit = 10): Promise<Webinar[]> {
     trainerName: item.trainer?.name ?? '',
     imageUrl: item.featureImage?.url ?? '',
     slug: item.course ? `${item.course.categoryUri}/${item.course.uri}` : '',
+    courseId: item.course?.id ?? null,
   }));
 }

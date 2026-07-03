@@ -21,8 +21,15 @@ export function isBrochureModalHref(href?: string) {
   );
 }
 
+export type BrochureModalType = 'contact' | 'webinar' | 'demo';
+
+export type OpenBrochureModalOptions = {
+  type?: BrochureModalType;
+  courseId?: string | null;
+};
+
 type CourseBrochureModalContextValue = {
-  openBrochureModal: () => void;
+  openBrochureModal: (options?: OpenBrochureModalOptions) => void;
   closeBrochureModal: () => void;
   isBrochureModalOpen: boolean;
 };
@@ -37,7 +44,14 @@ export function CourseBrochureModalProvider({
   children: ReactNode;
 }) {
   const [isOpen, setIsOpen] = useState(false);
-  const openBrochureModal = useCallback(() => setIsOpen(true), []);
+  const [leadType, setLeadType] = useState<BrochureModalType>('contact');
+  const [courseId, setCourseId] = useState<string | null>(null);
+
+  const openBrochureModal = useCallback((options?: OpenBrochureModalOptions) => {
+    setLeadType(options?.type ?? 'contact');
+    setCourseId(options?.courseId ?? null);
+    setIsOpen(true);
+  }, []);
   const closeBrochureModal = useCallback(() => setIsOpen(false), []);
 
   const value = useMemo(
@@ -52,7 +66,13 @@ export function CourseBrochureModalProvider({
   return (
     <CourseBrochureModalContext.Provider value={value}>
       {children}
-      <CourseBrochureModal isOpen={isOpen} onClose={closeBrochureModal} form={form} />
+      <CourseBrochureModal
+        isOpen={isOpen}
+        onClose={closeBrochureModal}
+        form={form}
+        leadType={leadType}
+        courseId={courseId}
+      />
     </CourseBrochureModalContext.Provider>
   );
 }

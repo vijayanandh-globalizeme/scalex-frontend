@@ -6,6 +6,7 @@ import { useParams } from 'next/navigation';
 import { useState, useEffect, useRef } from 'react';
 import { GuidanceSection, defaultGuidanceContent } from '@/components/guidance';
 import CategoryCoursesSection from '@/components/category/CategoryCoursesSection';
+import { useCourseBrochureModal } from '@/components/course-detail';
 import {
   getBlogByUri,
   getRelatedBlogs,
@@ -225,6 +226,7 @@ function TrendingBlogsSection({ blogs }: { blogs: TrendingBlogCardData[] }) {
 export default function BlogDetailPage() {
   const params = useParams<{ slug: string }>();
   const slug = typeof params?.slug === 'string' ? params.slug : '';
+  const { openBrochureModal } = useCourseBrochureModal();
 
   const [blog, setBlog] = useState<ApiBlogDetail | null>(null);
   const [loading, setLoading] = useState(true);
@@ -694,12 +696,13 @@ export default function BlogDetailPage() {
                     <p className="text-[11px] text-white/50 leading-relaxed mb-3">
                       Upon course completion, you will earn an expertise and certificate
                     </p>
-                    <Link
-                      href="/categories/agile-and-scrum"
-                      className="inline-flex items-center justify-center rounded-full bg-brand px-4 py-1.5 text-[12px] font-semibold text-white hover:bg-brand/90 transition-colors"
+                    <button
+                      type="button"
+                      onClick={() => openBrochureModal({ type: 'contact', courseId: null })}
+                      className="inline-flex cursor-pointer items-center justify-center rounded-full bg-brand px-4 py-1.5 text-[12px] font-semibold text-white hover:bg-brand/90 transition-colors"
                     >
                       Explore Now
-                    </Link>
+                    </button>
                   </div>
 
                   {/* Mentorship cross icon — behind person */}

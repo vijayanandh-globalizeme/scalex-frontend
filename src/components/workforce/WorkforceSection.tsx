@@ -1,8 +1,8 @@
 'use client';
 
-import Link from 'next/link';
 import type { ReactNode } from 'react';
 import { LogoMarquee } from '@/components/shared';
+import { useCourseBrochureModal } from '@/components/course-detail';
 
 export interface WorkforceStat {
   id: string;
@@ -192,6 +192,7 @@ export default function WorkforceSection({
   stats,
   partners,
 }: WorkforceSectionProps) {
+  const { openBrochureModal } = useCourseBrochureModal();
   return (
     <section
       className="full-bleed relative z-20 overflow-visible bg-[#0D0D0D] pt-16 pb-20 md:pt-20 md:pb-28 lg:pt-24 lg:pb-32"
@@ -261,13 +262,14 @@ export default function WorkforceSection({
               ))}
             </ul>
 
-            <Link
-              href={cta.href}
-              className="btn-mui-filled-dark mt-7 inline-flex h-[48px] items-center justify-center gap-2 rounded-lg px-6 text-[14px] font-semibold"
+            <button
+              type="button"
+              onClick={() => openBrochureModal({ type: 'demo', courseId: null })}
+              className="btn-mui-filled-dark mt-7 inline-flex h-[48px] cursor-pointer items-center justify-center gap-2 rounded-lg px-6 text-[14px] font-semibold"
             >
               {cta.label}
               <ArrowRightIcon className="btn-arrow-icon h-3.5 w-3.5" />
-            </Link>
+            </button>
           </div>
         </div>
 

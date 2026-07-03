@@ -3,6 +3,7 @@ import type { CourseFeePartnerLogo } from '@/lib/courseBody';
 import type { ApiCoursePlanBatch } from '@/services/courseApi';
 import { COURSE_FEE_STATIC } from '@/lib/courseDetailStatics';
 import { COURSE_SECTION_CARD } from './courseSectionCard';
+import CourseBrochureCta from './CourseBrochureCta';
 
 function PhoneIcon({ className }: { className?: string }) {
   return (
@@ -148,12 +149,12 @@ function PricingCard({
 
 export default function CourseFeeSection({
   batch,
-  advisorPhone,
   onEnroll,
+  courseId = null,
 }: {
   batch: ApiCoursePlanBatch;
-  advisorPhone?: string | null;
   onEnroll?: (batch: ApiCoursePlanBatch) => void;
+  courseId?: string | null;
 }) {
   if (!batch?.plan1HasEMI) return null;
 
@@ -167,8 +168,6 @@ export default function CourseFeeSection({
   const fullPrice = batch.plan1SellingPrice
     ? `${sym}${Number(batch.plan1SellingPrice).toLocaleString('en-IN')}`
     : null;
-
-  const phone = advisorPhone ?? '';
 
   return (
     <section
@@ -185,15 +184,15 @@ export default function CourseFeeSection({
             {s.subtitle}
           </p>
         </div>
-        {phone ? (
-          <a
-            href={`tel:${phone.replace(/[^\d+]/g, '')}`}
-            className="btn-brand-outline btn-brand-outline--flat inline-flex h-10 shrink-0 items-center justify-center gap-2 self-start rounded-lg px-5 text-[14px] font-semibold sm:self-auto"
-          >
-            {s.advisorCtaLabel}
-            <PhoneIcon className="text-brand" />
-          </a>
-        ) : null}
+        <CourseBrochureCta
+          openModal
+          type="contact"
+          courseId={courseId}
+          className="btn-brand-outline btn-brand-outline--flat inline-flex h-10 shrink-0 items-center justify-center gap-2 self-start rounded-lg px-5 text-[14px] font-semibold sm:self-auto"
+        >
+          {s.advisorCtaLabel}
+          <PhoneIcon className="text-brand" />
+        </CourseBrochureCta>
       </div>
 
       <div className="mt-10 flex flex-col gap-10 xl:flex-row xl:items-start xl:justify-between xl:gap-12">

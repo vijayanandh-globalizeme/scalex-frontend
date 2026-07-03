@@ -7,6 +7,7 @@ import type { HeroBadge } from '@/components/shared';
 import type { ApiCategoryDetail } from '@/services/categoryApi';
 import type { LayoutSettings } from '@/services/layoutApi';
 import { AVATAR_SRCS } from '@/lib/coursePropsFromApi';
+import { CourseBrochureCta } from '@/components/course-detail';
 
 export interface CategoryReview {
   id: string;
@@ -320,13 +321,15 @@ export default function CategoryHeroSection({ category, settings, heroBadges = [
                 Explore Courses
                 <ArrowRightIcon className="btn-arrow-icon shrink-0" />
               </Link>
-              <Link
-                href="/contact"
+              <CourseBrochureCta
+                openModal
+                type="contact"
+                courseId={null}
                 className="btn-brand-outline inline-flex h-[54px] w-full items-center justify-center gap-[18px] px-6 text-sm font-semibold sm:w-auto md:px-8 md:text-[15px]"
               >
                 Get Free Career Guidance
                 <PhoneIcon className="h-5 w-5 text-brand" />
-              </Link>
+              </CourseBrochureCta>
             </div>
           </div>
 
