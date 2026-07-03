@@ -1,12 +1,11 @@
 'use client';
 
 import Link from 'next/link';
-import { useMemo, useRef, useState } from 'react';
-import {
-  filterSearchSuggestions,
-  getAllSearchSuggestions,
-} from '@/lib/searchSuggestions';
-import type { MegaMenuCategory } from '@/lib/allCoursesMegaMenu';
+import { useEffect, useRef, useState } from 'react';
+import { getCourseSearch } from '@/app/actions/courseActions';
+import type { ApiCourseSearchItem } from '@/services/courseApi';
+
+const DEBOUNCE_MS = 400;
 
 function SearchIcon({ className }: { className?: string }) {
   return (
@@ -29,22 +28,54 @@ function SearchIcon({ className }: { className?: string }) {
 
 type HeaderSearchProps = {
   className?: string;
-  categories: MegaMenuCategory[];
 };
 
-export default function HeaderSearch({ className, categories }: HeaderSearchProps) {
-  const allSuggestions = useMemo(() => getAllSearchSuggestions(categories), [categories]);
+export default function HeaderSearch({ className }: HeaderSearchProps) {
   const [query, setQuery] = useState('');
+  const [results, setResults] = useState<ApiCourseSearchItem[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [hasSearched, setHasSearched] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const blurTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const debounceTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  // Guards against a slow, stale response overwriting the results of a newer query.
+  const requestIdRef = useRef(0);
 
-  const results = useMemo(
-    () => filterSearchSuggestions(allSuggestions, query),
-    [allSuggestions, query],
-  );
+  // Debounced fetch — only fires once typing pauses. setState only happens
+  // inside the timeout callback (deferred), never synchronously in the effect
+  // body, so this doesn't trigger cascading renders on every keystroke.
+  useEffect(() => {
+    const trimmed = query.trim();
+    if (!trimmed) return;
 
-  const showDropdown = isOpen && results.length > 0;
+    debounceTimerRef.current = setTimeout(() => {
+      const requestId = ++requestIdRef.current;
+      getCourseSearch(trimmed).then((items) => {
+        if (requestId !== requestIdRef.current) return; // a newer query has since fired
+        setResults(items);
+        setHasSearched(true);
+        setIsLoading(false);
+      });
+    }, DEBOUNCE_MS);
+
+    return () => {
+      if (debounceTimerRef.current) clearTimeout(debounceTimerRef.current);
+    };
+  }, [query]);
+
+  const showDropdown = isOpen && query.trim().length > 0;
+
+  const handleQueryChange = (value: string) => {
+    setQuery(value);
+    if (!value.trim()) {
+      setResults([]);
+      setHasSearched(false);
+      setIsLoading(false);
+      return;
+    }
+    setIsLoading(true);
+  };
 
   const handleFocus = () => {
     if (blurTimerRef.current) clearTimeout(blurTimerRef.current);
@@ -71,7 +102,7 @@ export default function HeaderSearch({ className, categories }: HeaderSearchProp
         <input
           type="search"
           value={query}
-          onChange={(e) => setQuery(e.target.value)}
+          onChange={(e) => handleQueryChange(e.target.value)}
           onFocus={handleFocus}
           onBlur={handleBlur}
           placeholder="Find your next course"
@@ -90,22 +121,31 @@ export default function HeaderSearch({ className, categories }: HeaderSearchProp
           role="listbox"
           className="absolute left-0 right-0 top-full z-50 mt-1 max-h-[280px] overflow-y-auto rounded-lg border border-zinc-100 bg-white py-1 shadow-[0_12px_40px_-8px_rgba(15,23,42,0.18)] ring-1 ring-zinc-900/5"
         >
-          {results.map((item) => (
-            <li
-              key={item.label}
-              role="option"
-              className="border-b border-zinc-100 last:border-b-0"
-            >
-              <Link
-                href={item.href}
-                onMouseDown={(e) => e.preventDefault()}
-                onClick={handleSuggestionClick}
-                className="btn-mui-nav-link header-fluid-text block px-4 py-3 font-normal text-ink"
+          {isLoading ? (
+            <li className="header-fluid-text px-4 py-3 text-zinc-400">Searching…</li>
+          ) : results.length > 0 ? (
+            results.map((item) => (
+              <li
+                key={`${item.categoryUri}-${item.courseUri}`}
+                role="option"
+                aria-selected={false}
+                className="border-b border-zinc-100 last:border-b-0"
               >
-                {item.label}
-              </Link>
+                <Link
+                  href={`/${item.categoryUri}/${item.courseUri}`}
+                  onMouseDown={(e) => e.preventDefault()}
+                  onClick={handleSuggestionClick}
+                  className="btn-mui-nav-link header-fluid-text block px-4 py-3 font-normal text-ink"
+                >
+                  {item.name}
+                </Link>
+              </li>
+            ))
+          ) : hasSearched ? (
+            <li className="header-fluid-text px-4 py-3 text-zinc-400">
+              No courses found for &ldquo;{query.trim()}&rdquo;
             </li>
-          ))}
+          ) : null}
         </ul>
       ) : null}
     </div>

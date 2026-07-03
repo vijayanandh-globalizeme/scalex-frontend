@@ -353,6 +353,22 @@ export async function fetchCourses(options: { categoryId?: string; limit?: numbe
   return json?.success ? (json.data.items ?? []) : [];
 }
 
+// ── Course Search (header type-ahead) ───────────────────────────────────────
+
+export type ApiCourseSearchItem = {
+  name: string;
+  courseUri: string;
+  categoryUri: string;
+};
+
+type CourseSearchApiResponse = { success: boolean; data: ApiCourseSearchItem[] };
+
+export async function searchCourses(q: string): Promise<ApiCourseSearchItem[]> {
+  const params = new URLSearchParams({ q });
+  const json = await get<CourseSearchApiResponse>(`course/search?${params.toString()}`, { revalidate: 0 });
+  return json?.success ? (json.data ?? []) : [];
+}
+
 // ── Course Plans ──────────────────────────────────────────────────────────────
 
 export type ApiCoursePlan = {

@@ -104,7 +104,7 @@ const Header = ({ megaMenuCategories }: { megaMenuCategories: MegaMenuCategory[]
                 <AllCoursesMegaMenu categories={megaMenuCategories} />
               </div>
 
-              <HeaderSearch className="header-desktop-bar__search min-w-0 shrink" categories={megaMenuCategories} />
+              <HeaderSearch className="header-desktop-bar__search min-w-0 shrink" />
             </div>
 
             <div className="header-desktop-bar__right flex shrink-0 items-center">

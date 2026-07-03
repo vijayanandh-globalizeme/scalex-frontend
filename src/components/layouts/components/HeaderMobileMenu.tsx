@@ -253,7 +253,7 @@ export default function HeaderMobileMenu({
             className={`header-mobile-drawer fixed inset-x-0 top-16 bottom-0 z-50 w-full overflow-y-auto bg-white shadow-2xl ${isPanelAnimated ? 'is-open' : ''}`}
           >
             <div className="px-5 py-4 sm:px-6">
-              <HeaderSearch className="mb-4 w-full" categories={categories} />
+              <HeaderSearch className="mb-4 w-full" />
 
               <nav aria-label="Mobile primary">
                 {/* Level 1 → Level 2 → Level 3 */}

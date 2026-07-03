@@ -1,11 +1,15 @@
 'use server';
 
-export type { ApiCourse, ApiCourseOverview, ApiCourseDetails, ApiTrainer, ApiReview, ApiLearner, ApiCoursePlansData, ApiCourseBatch, CourseBatchFilter } from '@/services/courseApi';
-import { fetchCourses, fetchRelatedCourses, fetchCourseLocations, fetchCourseOverview, fetchCourseDetails, fetchCourseTrainers, fetchCourseReviews, fetchCourseLearners, fetchCoursePlans, fetchCourseBatches } from '@/services/courseApi';
+export type { ApiCourse, ApiCourseOverview, ApiCourseDetails, ApiTrainer, ApiReview, ApiLearner, ApiCoursePlansData, ApiCourseBatch, CourseBatchFilter, ApiCourseSearchItem } from '@/services/courseApi';
+import { fetchCourses, searchCourses, fetchRelatedCourses, fetchCourseLocations, fetchCourseOverview, fetchCourseDetails, fetchCourseTrainers, fetchCourseReviews, fetchCourseLearners, fetchCoursePlans, fetchCourseBatches } from '@/services/courseApi';
 import type { CourseBatchFilter } from '@/services/courseApi';
 
 export async function getCourses(options: { categoryId?: string; limit?: number; offset?: number } = {}) {
   return fetchCourses(options);
+}
+
+export async function getCourseSearch(q: string) {
+  return searchCourses(q);
 }
 
 export async function getCourseOverview(
