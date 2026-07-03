@@ -24,8 +24,10 @@ function formatDate(iso: string) {
 
 // Matches the id the API stamps on the target heading tag when the blog is saved
 // (a slug of the label — see BlogService.slugify on the admin API).
+// tableOfContents is stored as unvalidated JSON (z.any() on the admin API), so
+// entries can arrive with a missing/non-string label — coerce defensively.
 function tocAnchorId(label: string) {
-  return label
+  return String(label ?? '')
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-|-$/g, '');
@@ -125,7 +127,9 @@ function BlogCard({ blog }: { blog: TrendingBlogCardData }) {
         <p className="text-[13px] text-muted line-clamp-2 flex-1">{blog.excerpt}</p>
         <div className="mt-4 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Image src={blog.author.avatarSrc} alt={blog.author.name} width={32} height={32} className="rounded-full object-cover" />
+            <div className="relative h-8 w-8 shrink-0 overflow-hidden rounded-full bg-zinc-100">
+              <Image src={blog.author.avatarSrc} alt={blog.author.name} fill className="object-cover" sizes="32px" />
+            </div>
             <div>
               <p className="text-[13px] font-semibold text-heading">{blog.author.name}</p>
               <p className="text-[11px] text-muted">{blog.author.date}</p>
@@ -236,11 +240,13 @@ export default function BlogDetailPage() {
   // a bit of text already visible above the fold.
   const initialRevealRef = useRef<number | null>(null);
 
-  const tocItems = (blog?.content?.tableOfContents ?? []).map((t) => ({
-    label: t.label,
-    id: tocAnchorId(t.label),
-    href: `#${tocAnchorId(t.label)}`,
-  }));
+  const tocItems = (blog?.content?.tableOfContents ?? [])
+    .filter((t) => t && typeof t.label === 'string' && t.label.trim())
+    .map((t) => ({
+      label: t.label,
+      id: tocAnchorId(t.label),
+      href: `#${tocAnchorId(t.label)}`,
+    }));
 
   useEffect(() => {
     if (!slug) return;
@@ -421,13 +427,15 @@ export default function BlogDetailPage() {
               <div className="mt-6 flex flex-wrap items-center gap-4">
                 {blog.trainer ? (
                   <div className="flex items-center gap-3">
-                    <Image
-                      src={blog.trainer.avatar?.url ?? DEFAULT_AUTHOR_AVATAR}
-                      alt={blog.trainer.name}
-                      width={40}
-                      height={40}
-                      className="rounded-full object-cover ring-2 ring-white/20"
-                    />
+                    <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-full bg-zinc-100 ring-2 ring-white/20">
+                      <Image
+                        src={blog.trainer.avatar?.url ?? DEFAULT_AUTHOR_AVATAR}
+                        alt={blog.trainer.name}
+                        fill
+                        className="object-cover"
+                        sizes="40px"
+                      />
+                    </div>
                     <div>
                       <p className="text-[14px] font-semibold text-white">{blog.trainer.name}</p>
                       <p className="text-[12px] text-white/50">{blog.trainer.role}</p>
@@ -620,13 +628,15 @@ export default function BlogDetailPage() {
                 <div className="mt-8 rounded-2xl bg-[#0D0D0D] p-5">
                   {/* Top row */}
                   <div className="flex items-center gap-3">
-                    <Image
-                      src={blog.trainer.avatar?.url ?? DEFAULT_AUTHOR_AVATAR}
-                      alt={blog.trainer.name}
-                      width={56}
-                      height={56}
-                      className="rounded-full object-cover shrink-0"
-                    />
+                    <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-full bg-zinc-800">
+                      <Image
+                        src={blog.trainer.avatar?.url ?? DEFAULT_AUTHOR_AVATAR}
+                        alt={blog.trainer.name}
+                        fill
+                        className="object-cover"
+                        sizes="56px"
+                      />
+                    </div>
                     <div className="flex-1 min-w-0">
                       <p className="text-[16px] font-bold text-white">{blog.trainer.name}</p>
                       <p className="text-[13px] text-white/50 mt-0.5">{blog.trainer.role} &nbsp;•&nbsp; {blog.trainer.articlesPublished} Articles Published</p>
@@ -655,8 +665,8 @@ export default function BlogDetailPage() {
                     <input type="text" placeholder="Full Name" className="w-full rounded-lg border border-zinc-200 px-3 py-2.5 text-[13px] text-heading placeholder-zinc-400 focus:border-brand focus:outline-none" />
                     <input type="email" placeholder="Email ID" className="w-full rounded-lg border border-zinc-200 px-3 py-2.5 text-[13px] text-heading placeholder-zinc-400 focus:border-brand focus:outline-none" />
                     <input type="tel" placeholder="Contact Number" className="w-full rounded-lg border border-zinc-200 px-3 py-2.5 text-[13px] text-heading placeholder-zinc-400 focus:border-brand focus:outline-none" />
-                    <select className="w-full rounded-lg border border-zinc-200 px-3 py-2.5 text-[13px] text-zinc-400 focus:border-brand focus:outline-none bg-white">
-                      <option value="" disabled selected>Purpose</option>
+                    <select defaultValue="" className="w-full rounded-lg border border-zinc-200 px-3 py-2.5 text-[13px] text-zinc-400 focus:border-brand focus:outline-none bg-white">
+                      <option value="" disabled>Purpose</option>
                       <option>Course Enquiry</option>
                       <option>Career Guidance</option>
                       <option>Corporate Training</option>
