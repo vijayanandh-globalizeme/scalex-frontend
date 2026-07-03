@@ -59,20 +59,29 @@ export default function CourseBrochureModal({
       if (event.key === 'Escape') onClose();
     };
 
-    // Compensate for the scrollbar that `overflow: hidden` removes — otherwise the
-    // page reflows a few pixels wider and sticky elements (e.g. the course sidebar)
-    // visibly jump when the modal opens/closes.
+    // `overflow: hidden` on body would disable `position: sticky` for every
+    // descendant (the course sidebar, CourseDetailStickyNav) — any ancestor
+    // with overflow other than `visible` breaks sticky positioning for its
+    // subtree. So instead of hiding overflow, freeze body in place at its
+    // current scroll offset; nothing scrolls, sticky elements stay untouched.
+    const { body } = document;
+    const scrollY = window.scrollY;
     const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
-    const previousPaddingRight = document.body.style.paddingRight;
-    document.body.style.overflow = 'hidden';
-    if (scrollbarWidth > 0) {
-      document.body.style.paddingRight = `${scrollbarWidth}px`;
-    }
+    const previous = { position: body.style.position, top: body.style.top, width: body.style.width };
+
+    body.style.position = 'fixed';
+    body.style.top = `-${scrollY}px`;
+    body.style.width = scrollbarWidth > 0 ? `calc(100% - ${scrollbarWidth}px)` : '100%';
+
     document.addEventListener('keydown', onKeyDown);
 
     return () => {
-      document.body.style.overflow = '';
-      document.body.style.paddingRight = previousPaddingRight;
+      body.style.position = previous.position;
+      body.style.top = previous.top;
+      body.style.width = previous.width;
+      // `html { scroll-behavior: smooth }` (globals.css) would otherwise animate
+      // this restore from 0 up to scrollY — force an instant jump instead.
+      window.scrollTo({ top: scrollY, left: 0, behavior: 'instant' });
       document.removeEventListener('keydown', onKeyDown);
     };
   }, [isMounted, onClose]);
