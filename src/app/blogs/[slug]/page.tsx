@@ -3,8 +3,11 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, type FormEvent } from 'react';
 import { GuidanceSection, defaultGuidanceContent } from '@/components/guidance';
+import { sendContact } from '@/app/actions/contactActions';
+import { useLeadSuccess } from '@/components/feedback/LeadSuccessProvider';
+import { useContactFieldErrors, fieldErrorClass } from '@/components/feedback/useContactFieldErrors';
 import CategoryCoursesSection from '@/components/category/CategoryCoursesSection';
 import { useCourseBrochureModal } from '@/components/course-detail';
 import {
@@ -218,6 +221,110 @@ function TrendingBlogsSection({ blogs }: { blogs: TrendingBlogCardData[] }) {
         </div>
       </div>
     </section>
+  );
+}
+
+// ─── Blog sidebar lead form ─────────────────────────────────────────────────────
+
+function BlogAssistForm() {
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
+  const [purpose, setPurpose] = useState('');
+  const [agreed, setAgreed] = useState(true);
+  const [status, setStatus] = useState<'idle' | 'submitting' | 'error'>('idle');
+  const [errorMessage, setErrorMessage] = useState('');
+  const { showLeadSuccess } = useLeadSuccess();
+  const { fieldErrors, setFieldErrors, clearFieldError } = useContactFieldErrors();
+
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    if (status === 'submitting') return;
+    setStatus('submitting');
+    setFieldErrors({});
+    const result = await sendContact({ name, email, phone, purpose });
+    if (result.success) {
+      setStatus('idle');
+      setName('');
+      setEmail('');
+      setPhone('');
+      setPurpose('');
+      showLeadSuccess();
+    } else {
+      setStatus('error');
+      setErrorMessage(result.message);
+      setFieldErrors(result.fieldErrors);
+    }
+  }
+
+  const inputCls =
+    'w-full rounded-lg border border-zinc-200 px-3 py-2.5 text-[13px] text-heading placeholder-zinc-400 focus:border-brand focus:outline-none';
+
+  return (
+    <div className="rounded-xl border border-zinc-100 bg-white p-5 shadow-sm">
+      <h3 className="text-[14px] font-bold text-heading mb-4">Let us assist you</h3>
+      <form className="space-y-3" onSubmit={handleSubmit}>
+        <div>
+          <input
+            type="text"
+            required
+            placeholder="Full Name"
+            value={name}
+            onChange={(e) => { setName(e.target.value); clearFieldError('name'); }}
+            className={`${inputCls} ${fieldErrorClass(!!fieldErrors.name)}`}
+          />
+          {fieldErrors.name ? <p className="mt-1 text-[11px] font-medium text-brand">{fieldErrors.name}</p> : null}
+        </div>
+        <div>
+          <input
+            type="email"
+            required
+            placeholder="Email ID"
+            value={email}
+            onChange={(e) => { setEmail(e.target.value); clearFieldError('email'); }}
+            className={`${inputCls} ${fieldErrorClass(!!fieldErrors.email)}`}
+          />
+          {fieldErrors.email ? <p className="mt-1 text-[11px] font-medium text-brand">{fieldErrors.email}</p> : null}
+        </div>
+        <div>
+          <input
+            type="tel"
+            required
+            placeholder="Contact Number"
+            value={phone}
+            onChange={(e) => { setPhone(e.target.value); clearFieldError('phone'); }}
+            className={`${inputCls} ${fieldErrorClass(!!fieldErrors.phone)}`}
+          />
+          {fieldErrors.phone ? <p className="mt-1 text-[11px] font-medium text-brand">{fieldErrors.phone}</p> : null}
+        </div>
+        <div>
+          <select
+            required
+            value={purpose}
+            onChange={(e) => { setPurpose(e.target.value); clearFieldError('purpose'); }}
+            className={`w-full rounded-lg border border-zinc-200 px-3 py-2.5 text-[13px] text-heading focus:border-brand focus:outline-none bg-white ${fieldErrorClass(!!fieldErrors.purpose)}`}
+          >
+            <option value="" disabled>Purpose</option>
+            <option>Course Enquiry</option>
+            <option>Career Guidance</option>
+            <option>Corporate Training</option>
+            <option>Other</option>
+          </select>
+          {fieldErrors.purpose ? <p className="mt-1 text-[11px] font-medium text-brand">{fieldErrors.purpose}</p> : null}
+        </div>
+        <label className="flex items-start gap-2 cursor-pointer">
+          <input type="checkbox" checked={agreed} onChange={(e) => setAgreed(e.target.checked)} className="mt-0.5 accent-brand" />
+          <span className="text-[11px] text-muted leading-relaxed">I agree to ScaleX&apos;s Terms &amp; Conditions &amp; Privacy Policy.</span>
+        </label>
+        <button type="submit" disabled={!agreed || status === 'submitting'} className="w-full rounded-lg bg-brand py-2.5 text-[13px] font-semibold text-white hover:bg-brand/90 transition-colors flex items-center justify-center gap-2 disabled:cursor-not-allowed disabled:opacity-60">
+          {status === 'submitting' ? 'Submitting…' : 'Talk To Us'}
+          <svg width="14" height="14" viewBox="0 0 18 15" fill="currentColor"><path d="M10.6333 15c.2326 0 .4361-.0891.63-.2771l6.4459-6.5599c.1938-.188.2908-.4156.2908-.663s-.097-.475-.2908-.663L11.2827.2968C11.0694.0792 10.8659 0 10.6333 0c-.475 0-.8434.3562-.8434.851 0 .2375.0775.465.2326.6234l2.1714 2.2559 4.0419 3.7698-4.0419 3.7697-2.1714 2.256c-.1551.1484-.2326.3859-.2326.6233 0 .495.3684.851.8434.851ZM.853 8.3806h12.2617l3.1211-.1979c.3974-.0297.6688-.277.6688-.6827 0-.4057-.2714-.6531-.6688-.6828l-3.1211-.1978H.853C.349 6.6194 0 6.9855 0 7.5c0 .5145.349.8806.853.8806Z"/></svg>
+        </button>
+        {status === 'error' && Object.keys(fieldErrors).length === 0 ? (
+          <p className="text-[12px] font-medium text-brand">{errorMessage || 'Something went wrong. Please try again.'}</p>
+        ) : null}
+      </form>
+    </div>
   );
 }
 
@@ -685,29 +792,7 @@ export default function BlogDetailPage() {
             <aside className="hidden lg:block lg:w-[240px] shrink-0">
               <div className="sticky top-24 space-y-5">
                 {/* Lead form */}
-                <div className="rounded-xl border border-zinc-100 bg-white p-5 shadow-sm">
-                  <h3 className="text-[14px] font-bold text-heading mb-4">Let us assist you</h3>
-                  <div className="space-y-3">
-                    <input type="text" placeholder="Full Name" className="w-full rounded-lg border border-zinc-200 px-3 py-2.5 text-[13px] text-heading placeholder-zinc-400 focus:border-brand focus:outline-none" />
-                    <input type="email" placeholder="Email ID" className="w-full rounded-lg border border-zinc-200 px-3 py-2.5 text-[13px] text-heading placeholder-zinc-400 focus:border-brand focus:outline-none" />
-                    <input type="tel" placeholder="Contact Number" className="w-full rounded-lg border border-zinc-200 px-3 py-2.5 text-[13px] text-heading placeholder-zinc-400 focus:border-brand focus:outline-none" />
-                    <select defaultValue="" className="w-full rounded-lg border border-zinc-200 px-3 py-2.5 text-[13px] text-zinc-400 focus:border-brand focus:outline-none bg-white">
-                      <option value="" disabled>Purpose</option>
-                      <option>Course Enquiry</option>
-                      <option>Career Guidance</option>
-                      <option>Corporate Training</option>
-                      <option>Other</option>
-                    </select>
-                    <label className="flex items-start gap-2 cursor-pointer">
-                      <input type="checkbox" className="mt-0.5 accent-brand" />
-                      <span className="text-[11px] text-muted leading-relaxed">I agree to ScaleX&apos;s Terms &amp; Conditions &amp; Privacy Policy.</span>
-                    </label>
-                    <button className="w-full rounded-lg bg-brand py-2.5 text-[13px] font-semibold text-white hover:bg-brand/90 transition-colors flex items-center justify-center gap-2">
-                      Talk To Us
-                      <svg width="14" height="14" viewBox="0 0 18 15" fill="currentColor"><path d="M10.6333 15c.2326 0 .4361-.0891.63-.2771l6.4459-6.5599c.1938-.188.2908-.4156.2908-.663s-.097-.475-.2908-.663L11.2827.2968C11.0694.0792 10.8659 0 10.6333 0c-.475 0-.8434.3562-.8434.851 0 .2375.0775.465.2326.6234l2.1714 2.2559 4.0419 3.7698-4.0419 3.7697-2.1714 2.256c-.1551.1484-.2326.3859-.2326.6233 0 .495.3684.851.8434.851ZM.853 8.3806h12.2617l3.1211-.1979c.3974-.0297.6688-.277.6688-.6827 0-.4057-.2714-.6531-.6688-.6828l-3.1211-.1978H.853C.349 6.6194 0 6.9855 0 7.5c0 .5145.349.8806.853.8806Z"/></svg>
-                    </button>
-                  </div>
-                </div>
+                <BlogAssistForm />
 
                 {/* Course card */}
                 <div className="relative overflow-hidden p-5" style={{ width: '246px', height: '180px', borderRadius: '20px', border: '1px solid #EBEBEB', background: '#0D0D0D', boxShadow: '0 4px 4px 0 rgba(30, 41, 59, 0.08), 0 4px 4px 0 rgba(30, 41, 59, 0.03)' }}>

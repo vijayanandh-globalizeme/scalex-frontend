@@ -3,6 +3,9 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { useState, type FormEvent } from 'react';
+import { sendContact } from '@/app/actions/contactActions';
+import { useLeadSuccess } from '@/components/feedback/LeadSuccessProvider';
+import { useContactFieldErrors, fieldErrorClass } from '@/components/feedback/useContactFieldErrors';
 import type { CourseBodyContent } from '@/lib/courseBody';
 import { COURSE_SECTION_CARD } from './courseSectionCard';
 import CourseBrochureCta from './CourseBrochureCta';
@@ -141,9 +144,34 @@ export default function CourseDetailSidebar({
   width?: string;
 }) {
   const [agreed, setAgreed] = useState(true);
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
+  const [purpose, setPurpose] = useState('');
+  const [status, setStatus] = useState<'idle' | 'submitting' | 'error'>('idle');
+  const [errorMessage, setErrorMessage] = useState('');
+  const { showLeadSuccess } = useLeadSuccess();
+  const { fieldErrors, setFieldErrors, clearFieldError } = useContactFieldErrors();
 
-  function handleSubmit(e: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    if (status === 'submitting') return;
+    setStatus('submitting');
+    setFieldErrors({});
+    const purposeLabel = sidebar.purposes.find((p) => p.id === purpose)?.label ?? purpose;
+    const result = await sendContact({ name, email, phone, purpose: purposeLabel });
+    if (result.success) {
+      setStatus('idle');
+      setName('');
+      setEmail('');
+      setPhone('');
+      setPurpose('');
+      showLeadSuccess();
+    } else {
+      setStatus('error');
+      setErrorMessage(result.message);
+      setFieldErrors(result.fieldErrors);
+    }
   }
 
   return (
@@ -156,19 +184,57 @@ export default function CourseDetailSidebar({
         >
           <h2 className="text-[16px] font-medium leading-normal text-heading">{sidebar.assistTitle}</h2>
           <div className="mt-4 grid gap-3">
-            <input type="text" required placeholder="Full Name" className={fieldClassName} />
-            <input type="email" required placeholder="Email ID" className={fieldClassName} />
-            <input type="tel" required placeholder="Contact Number" className={fieldClassName} />
-            <select required defaultValue="" className={fieldClassName}>
-              <option value="" disabled>
-                Purpose
-              </option>
-              {sidebar.purposes.map((p) => (
-                <option key={p.id} value={p.id}>
-                  {p.label}
+            <div>
+              <input
+                type="text"
+                required
+                placeholder="Full Name"
+                className={`${fieldClassName} ${fieldErrorClass(!!fieldErrors.name)}`}
+                value={name}
+                onChange={(e) => { setName(e.target.value); clearFieldError('name'); }}
+              />
+              {fieldErrors.name ? <p className="mt-1 text-[11px] font-medium text-brand">{fieldErrors.name}</p> : null}
+            </div>
+            <div>
+              <input
+                type="email"
+                required
+                placeholder="Email ID"
+                className={`${fieldClassName} ${fieldErrorClass(!!fieldErrors.email)}`}
+                value={email}
+                onChange={(e) => { setEmail(e.target.value); clearFieldError('email'); }}
+              />
+              {fieldErrors.email ? <p className="mt-1 text-[11px] font-medium text-brand">{fieldErrors.email}</p> : null}
+            </div>
+            <div>
+              <input
+                type="tel"
+                required
+                placeholder="Contact Number"
+                className={`${fieldClassName} ${fieldErrorClass(!!fieldErrors.phone)}`}
+                value={phone}
+                onChange={(e) => { setPhone(e.target.value); clearFieldError('phone'); }}
+              />
+              {fieldErrors.phone ? <p className="mt-1 text-[11px] font-medium text-brand">{fieldErrors.phone}</p> : null}
+            </div>
+            <div>
+              <select
+                required
+                value={purpose}
+                onChange={(e) => { setPurpose(e.target.value); clearFieldError('purpose'); }}
+                className={`${fieldClassName} ${fieldErrorClass(!!fieldErrors.purpose)}`}
+              >
+                <option value="" disabled>
+                  Purpose
                 </option>
-              ))}
-            </select>
+                {sidebar.purposes.map((p) => (
+                  <option key={p.id} value={p.id}>
+                    {p.label}
+                  </option>
+                ))}
+              </select>
+              {fieldErrors.purpose ? <p className="mt-1 text-[11px] font-medium text-brand">{fieldErrors.purpose}</p> : null}
+            </div>
           </div>
           <label className="mt-3 flex items-start gap-2 text-[12px] font-normal leading-4 text-heading">
             <button
@@ -193,12 +259,15 @@ export default function CourseDetailSidebar({
           </label>
           <button
             type="submit"
-            disabled={!agreed}
+            disabled={!agreed || status === 'submitting'}
             className="btn-brand mt-4 inline-flex h-10 w-full items-center justify-center gap-2 text-[13px] font-semibold disabled:cursor-not-allowed disabled:opacity-60"
           >
-            {sidebar.ctaLabel}
+            {status === 'submitting' ? 'Submitting…' : sidebar.ctaLabel}
             <ArrowRightIcon className="btn-arrow-icon shrink-0" />
           </button>
+          {status === 'error' && Object.keys(fieldErrors).length === 0 ? (
+            <p className="mt-3 text-center text-[12px] font-medium text-brand">{errorMessage || 'Something went wrong. Please try again.'}</p>
+          ) : null}
         </form>
 
         <div className={`scroll-mt-[116px] ${COURSE_SECTION_CARD} p-5`}>

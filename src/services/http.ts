@@ -60,3 +60,29 @@ export async function post<T>(path: string, body: unknown, options: FetchOptions
     return null;
   }
 }
+
+/**
+ * Like `post`, but returns the parsed JSON body even on a non-2xx response
+ * (e.g. a 422 validation error), so callers can read field-level `errors`.
+ */
+export async function postWithErrors<T>(
+  path: string,
+  body: unknown,
+  options: FetchOptions = {},
+): Promise<{ ok: boolean; status: number; data: T | null }> {
+  const { revalidate = 0, tags, headers } = options;
+
+  try {
+    const res = await fetch(getApiUrl(path), {
+      method: 'POST',
+      headers: buildHeaders(headers),
+      body: JSON.stringify(body),
+      next: tags ? { revalidate, tags } : { revalidate },
+    });
+
+    const data = (await res.json().catch(() => null)) as T | null;
+    return { ok: res.ok, status: res.status, data };
+  } catch {
+    return { ok: false, status: 0, data: null };
+  }
+}

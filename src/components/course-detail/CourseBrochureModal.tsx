@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
+import Image from 'next/image';
 import CourseLeadForm, { type CourseLeadFormProps } from './CourseLeadForm';
 import type { BrochureModalType } from './CourseBrochureModalContext';
 import styles from './CourseBrochureModal.module.css';
@@ -100,7 +101,7 @@ export default function CourseBrochureModal({
         role="dialog"
         aria-modal="true"
         aria-labelledby="course-brochure-modal-title"
-        className={`${styles.panel} relative z-10 w-full max-w-[528px] max-h-[min(90vh,640px)] overflow-y-auto ${isAnimated ? styles.isOpen : ''}`}
+        className={`${styles.panel} relative z-10 flex w-full max-w-[860px] max-h-[min(90vh,640px)] overflow-hidden rounded-[20px] bg-white shadow-[0_24px_60px_rgba(0,0,0,0.35)] ${isAnimated ? styles.isOpen : ''}`}
       >
         <button
           type="button"
@@ -110,13 +111,44 @@ export default function CourseBrochureModal({
         >
           <CloseIcon />
         </button>
-        <CourseLeadForm
-          {...form}
-          showArrowDecor={false}
-          titleId="course-brochure-modal-title"
-          leadType={leadType}
-          courseId={courseId}
-        />
+
+        {/* LHS — branded image panel (hidden on small screens) */}
+        <div
+          className="relative hidden w-[320px] shrink-0 overflow-hidden md:block"
+          style={{ background: 'linear-gradient(160deg, #0D0D0D 0%, #161A26 55%, #FF002C 220%)' }}
+        >
+          <div className="relative z-10 p-7">
+            <p className="text-[24px] font-extrabold leading-tight text-white">
+              Let&apos;s scale
+              <br />
+              your career
+            </p>
+            <p className="mt-3 text-[13px] leading-relaxed text-white/70">
+              Talk to our experts for a personalised roadmap, syllabus and pricing.
+            </p>
+          </div>
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[300px]">
+            <Image
+              src="/images/person-3.png"
+              alt="ScaleX course advisor"
+              fill
+              className="object-contain object-bottom"
+              sizes="320px"
+            />
+          </div>
+        </div>
+
+        {/* RHS — lead form */}
+        <div className="relative min-w-0 flex-1 overflow-y-auto">
+          <CourseLeadForm
+            {...form}
+            showArrowDecor={false}
+            bare
+            titleId="course-brochure-modal-title"
+            leadType={leadType}
+            courseId={courseId}
+          />
+        </div>
       </div>
     </div>,
     document.body,
