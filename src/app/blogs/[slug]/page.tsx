@@ -774,7 +774,7 @@ export default function BlogDetailPage() {
       ) : null}
 
       {/* ── Trending Blogs ───────────────────────────────────────────────────── */}
-      <TrendingBlogsSection blogs={trending.map(toTrendingBlogCard)} />
+      <TrendingBlogsSection blogs={trending.filter((t) => t.uri !== slug).map(toTrendingBlogCard)} />
 
       {/* ── Guidance ──────────────────────────────────────────────────────────── */}
       <GuidanceSection {...defaultGuidanceContent} />
