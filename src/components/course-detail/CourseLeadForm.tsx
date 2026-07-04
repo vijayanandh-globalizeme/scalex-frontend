@@ -5,6 +5,7 @@ import { useState, type FormEvent } from 'react';
 import { sendContact } from '@/app/actions/contactActions';
 import { useLeadSuccess } from '@/components/feedback/LeadSuccessProvider';
 import { useContactFieldErrors, fieldErrorClass } from '@/components/feedback/useContactFieldErrors';
+import { useCourseBrochureModal } from './CourseBrochureModalContext';
 
 export interface CourseLeadFormProps {
   title: string;
@@ -19,6 +20,12 @@ export interface CourseLeadFormProps {
   /** Lead source context carried through from the CTA that opened this form (e.g. modal). */
   leadType?: string;
   courseId?: string | null;
+  /**
+   * File to unlock after a successful submit (brochure/guide/syllabus).
+   * Held only in memory/closure — never rendered into the DOM — and opened
+   * via `window.open` once the lead has actually been captured.
+   */
+  downloadUrl?: string | null;
   /** Drop the form's own card chrome (border/rounding/shadow) — used inside the modal's right column. */
   bare?: boolean;
 }
@@ -82,6 +89,7 @@ export default function CourseLeadForm({
   titleId,
   leadType,
   courseId,
+  downloadUrl,
   bare = false,
 }: CourseLeadFormProps) {
   const [agreed, setAgreed] = useState(true);
@@ -92,6 +100,7 @@ export default function CourseLeadForm({
   const [status, setStatus] = useState<'idle' | 'submitting' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState('');
   const { showLeadSuccess } = useLeadSuccess();
+  const { closeBrochureModal } = useCourseBrochureModal();
   const { fieldErrors, setFieldErrors, clearFieldError } = useContactFieldErrors();
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
@@ -107,7 +116,16 @@ export default function CourseLeadForm({
       setEmail('');
       setPhone('');
       setPurpose('');
-      showLeadSuccess();
+      // Close the modal first so the success popup isn't layered on top of it.
+      closeBrochureModal();
+      if (downloadUrl) {
+        // Triggered only after a verified successful submit — the URL is never
+        // rendered as a link, so it never appears in the page's HTML source.
+        window.open(downloadUrl, '_blank', 'noopener,noreferrer');
+        showLeadSuccess('Thanks! Your download will begin shortly in a new tab.');
+      } else {
+        showLeadSuccess();
+      }
     } else {
       setStatus('error');
       setErrorMessage(result.message);

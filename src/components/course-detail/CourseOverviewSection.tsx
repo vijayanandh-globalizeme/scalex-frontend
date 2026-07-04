@@ -34,10 +34,12 @@ export default function CourseOverviewSection({
   overview,
   careerTabs = [],
   variant = 'default',
+  courseId = null,
 }: {
   overview: ApiCourseOverviewSection;
   careerTabs?: ApiOtherDetail[];
   variant?: 'default' | 'technical';
+  courseId?: string | null;
 }) {
   const isTechnical = variant === 'technical';
 
@@ -71,7 +73,9 @@ export default function CourseOverviewSection({
           </h2>
           {overview.guide ? (
             <CourseBrochureCta
-              href={overview.guide.url}
+              openModal
+              courseId={courseId}
+              downloadUrl={overview.guide.url}
               className={
                 isTechnical
                   ? 'btn-brand-outline inline-flex h-10 shrink-0 items-center justify-center gap-2 self-start px-5 text-[14px] font-semibold sm:self-auto'

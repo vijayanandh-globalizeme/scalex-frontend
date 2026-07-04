@@ -52,6 +52,7 @@ export default async function CourseDetailBodySection({
   const courseId = courseDetails?.id ?? null;
 
   const syllabusUrl       = d?.syllabus?.url       ?? null;
+  const brochureUrl       = d?.brochure?.url       ?? null;
   const courseContentTitle = d?.courseContentTitle  ?? null;
   const faqTitle          = d?.faqTitle             ?? null;
   const aboutTitle        = d?.aboutTitle           ?? null;
@@ -85,6 +86,7 @@ export default async function CourseDetailBodySection({
                 overview={details.overview}
                 careerTabs={details.otherDetails.filter((d) => d.type === 'OVERVIEW')}
                 variant={isTechnical ? 'technical' : 'default'}
+                courseId={courseId}
               />
             ) : null}
 
@@ -93,6 +95,7 @@ export default async function CourseDetailBodySection({
                 courseContent={details.courseContent}
                 syllabusUrl={syllabusUrl}
                 title={courseContentTitle}
+                courseId={courseId}
               />
             ) : null}
             
@@ -198,7 +201,7 @@ export default async function CourseDetailBodySection({
 
             <CourseTrainingCitiesSection courseUri={courseUri} categoryUri={categoryUri} shortName={courseDetails?.shortName} />
           </div>
-          <CourseDetailSidebar sidebar={sidebar} />
+          <CourseDetailSidebar sidebar={sidebar} courseId={courseId} brochureUrl={brochureUrl} />
 
 
         </div>

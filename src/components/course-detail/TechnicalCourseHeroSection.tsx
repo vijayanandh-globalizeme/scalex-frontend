@@ -372,10 +372,10 @@ export default function TechnicalCourseHeroSection(course: TechnicalCourseConten
                 </CourseBrochureCta>
               ) : (
                 <CourseBrochureCta
-                  href={brochureUrl ?? undefined}
-                  openModal={!brochureUrl}
+                  openModal
                   type="contact"
                   courseId={courseId}
+                  downloadUrl={brochureUrl}
                   className="btn-brand inline-flex h-[54px] w-full items-center justify-center gap-2 px-6 sm:w-auto md:px-7"
                 >
                   Download Brochure
@@ -384,6 +384,10 @@ export default function TechnicalCourseHeroSection(course: TechnicalCourseConten
               )}
               <a
                 href="#schedules"
+                onClick={(e) => {
+                  e.preventDefault();
+                  document.getElementById('schedules')?.scrollIntoView({ block: 'start' });
+                }}
                 className="btn-brand-outline inline-flex h-[54px] w-full cursor-pointer items-center justify-center gap-[18px] px-6 text-sm font-semibold sm:w-auto md:px-8 md:text-[15px]"
               >
                 View Schedules

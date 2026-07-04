@@ -137,11 +137,14 @@ export default function CoursePlanComparisonSection({
   features,
   batch,
   courseId = null,
+  quantity = 1,
 }: {
   plans: ApiCoursePlan[];
   features: ApiCoursePlanFeature[];
   batch: ApiCoursePlanBatch | null | undefined;
   courseId?: string | null;
+  /** Seat count from the schedule card's quantity stepper — scales every plan's price. */
+  quantity?: number;
 }) {
   if (!batch) return null;
 
@@ -154,7 +157,7 @@ export default function CoursePlanComparisonSection({
     const retail = n === 1 ? batch.plan1RetailPrice : n === 2 ? batch.plan2RetailPrice : batch.plan3RetailPrice;
     const selling = n === 1 ? batch.plan1SellingPrice : n === 2 ? batch.plan2SellingPrice : batch.plan3SellingPrice;
     if (retail !== null && selling !== null) {
-      activePlans.push({ plan, retailPrice: Number(retail), sellingPrice: Number(selling) });
+      activePlans.push({ plan, retailPrice: Number(retail) * quantity, sellingPrice: Number(selling) * quantity });
     }
   }
 

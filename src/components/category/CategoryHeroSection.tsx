@@ -2,7 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import CategoryCollaborationCard from './CategoryCollaborationCard';
 import CategoryTitleUnderline from './CategoryTitleUnderline';
-import { HeroMediaColumn } from '@/components/shared';
+import { HeroMediaColumn, ScrollToAnchor } from '@/components/shared';
 import type { HeroBadge } from '@/components/shared';
 import type { ApiCategoryDetail } from '@/services/categoryApi';
 import type { LayoutSettings } from '@/services/layoutApi';
@@ -317,10 +317,10 @@ export default function CategoryHeroSection({ category, settings, heroBadges = [
             )}
 
             <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:gap-4 lg:mt-6">
-              <Link href="#courses" className="btn-brand h-[54px] w-full gap-2 px-6 sm:w-auto md:px-7">
+              <ScrollToAnchor targetId="courses" className="btn-brand h-[54px] w-full gap-2 px-6 sm:w-auto md:px-7">
                 Explore Courses
                 <ArrowRightIcon className="btn-arrow-icon shrink-0" />
-              </Link>
+              </ScrollToAnchor>
               <CourseBrochureCta
                 openModal
                 type="contact"

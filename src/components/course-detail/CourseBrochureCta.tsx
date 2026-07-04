@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import type { ReactNode } from 'react';
+import type { CSSProperties, ReactNode } from 'react';
 import {
   isBrochureModalHref,
   useCourseBrochureModal,
@@ -13,7 +13,9 @@ export default function CourseBrochureCta({
   openModal = false,
   type = 'contact',
   courseId = null,
+  downloadUrl = null,
   className,
+  style,
   children,
 }: {
   href?: string;
@@ -22,7 +24,10 @@ export default function CourseBrochureCta({
   /** Lead type recorded when the modal opens from this CTA. */
   type?: BrochureModalType;
   courseId?: string | null;
+  /** File (brochure/guide/syllabus) to unlock after a successful submit. */
+  downloadUrl?: string | null;
   className?: string;
+  style?: CSSProperties;
   children: ReactNode;
 }) {
   const { openBrochureModal } = useCourseBrochureModal();
@@ -31,8 +36,9 @@ export default function CourseBrochureCta({
     return (
       <button
         type="button"
-        onClick={() => openBrochureModal({ type, courseId })}
+        onClick={() => openBrochureModal({ type, courseId, downloadUrl })}
         className={`cursor-pointer ${className ?? ''}`}
+        style={style}
       >
         {children}
       </button>
@@ -41,14 +47,14 @@ export default function CourseBrochureCta({
 
   if (href?.startsWith('/')) {
     return (
-      <Link href={href} className={className}>
+      <Link href={href} className={className} style={style}>
         {children}
       </Link>
     );
   }
 
   return (
-    <a href={href} className={className}>
+    <a href={href} className={className} style={style}>
       {children}
     </a>
   );

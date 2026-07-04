@@ -4,6 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRef } from 'react';
 import { useGsapScrollReveal } from '@/hooks/useGsapScrollReveal';
+import { CourseBrochureCta } from '@/components/course-detail';
 
 export default function AboutHero() {
   const heroRef = useRef<HTMLDivElement>(null);
@@ -58,12 +59,18 @@ export default function AboutHero() {
           </p>
 
           <div className="mt-8 flex justify-center">
-            <Link href="/contact" className="btn-brand inline-flex h-[54px] items-center gap-3 px-8" style={{ fontSize: '16px', fontWeight: 600, fontFamily: 'Inter' }}>
+            <CourseBrochureCta
+              openModal
+              type="contact"
+              courseId={null}
+              className="btn-brand inline-flex h-[54px] items-center gap-3 px-8"
+              style={{ fontSize: '16px', fontWeight: 600, fontFamily: 'Inter' }}
+            >
               Partner With Us
               <svg width="18" height="15" viewBox="0 0 18 15" fill="none" aria-hidden className="btn-arrow-icon shrink-0">
                 <path d="M10.6333 15C10.8659 15 11.0694 14.9109 11.2633 14.7229L17.7092 8.16292C17.903 7.97492 18 7.74735 18 7.49999C18 7.25263 17.903 7.02506 17.7092 6.83707L11.2827 0.296834C11.0694 0.0791556 10.8659 0 10.6333 0C10.1583 0 9.78996 0.3562 9.78996 0.850923C9.78996 1.08839 9.86751 1.31596 10.0226 1.47428L12.1939 3.73021L16.2358 7.49999L12.1939 11.2697L10.0226 13.5257C9.86751 13.6741 9.78996 13.9116 9.78996 14.149C9.78996 14.6438 10.1583 15 10.6333 15ZM0.852987 8.3806H13.1147L16.2358 8.18271C16.6332 8.15303 16.9046 7.90566 16.9046 7.49999C16.9046 7.09432 16.6332 6.84696 16.2358 6.81728L13.1147 6.61938H0.852987C0.348949 6.61938 0 6.98548 0 7.49999C0 8.01451 0.348949 8.3806 0.852987 8.3806Z" fill="white" />
               </svg>
-            </Link>
+            </CourseBrochureCta>
           </div>
         </div>
 

@@ -136,10 +136,14 @@ function ArrowRightIcon({ className }: { className?: string }) {
 
 export default function CourseDetailSidebar({
   sidebar,
+  courseId = null,
+  brochureUrl = null,
   stickyTop = 'calc(4rem + 4.5rem)',
   width = 'w-[246px]',
 }: {
   sidebar: CourseBodyContent['sidebar'];
+  courseId?: string | null;
+  brochureUrl?: string | null;
   stickyTop?: string;
   width?: string;
 }) {
@@ -275,7 +279,9 @@ export default function CourseDetailSidebar({
             {sidebar.brochureText}
           </p>
           <CourseBrochureCta
-            href="#brochure"
+            openModal
+            courseId={courseId}
+            downloadUrl={brochureUrl}
             className="btn-brand-outline mt-4 inline-flex h-10 w-full items-center justify-center gap-2 text-[13px] font-semibold"
           >
             {sidebar.brochureCtaLabel}

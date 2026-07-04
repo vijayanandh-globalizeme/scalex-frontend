@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import type { ApiCourseDetails } from '@/services/courseApi';
 import { COURSE_CONTENT_TITLE, COURSE_CONTENT_SYLLABUS_LABEL } from '@/lib/courseDetailStatics';
+import CourseBrochureCta from './CourseBrochureCta';
 import {
   COURSE_INNER_CARD,
   COURSE_ROW_DIVIDER_FULL,
@@ -49,10 +50,12 @@ export default function CourseContentSection({
   courseContent,
   syllabusUrl,
   title,
+  courseId = null,
 }: {
   courseContent: ApiModule[];
   syllabusUrl?: string | null;
   title?: string | null;
+  courseId?: string | null;
 }) {
   const [openModuleId, setOpenModuleId] = useState(courseContent[0]?.id ?? '');
   const [showAll, setShowAll] = useState(false);
@@ -65,15 +68,15 @@ export default function CourseContentSection({
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <h2 className="text-[34px] font-bold leading-[140%] text-heading">{title ?? COURSE_CONTENT_TITLE}</h2>
         {syllabusUrl ? (
-          <a
-            href={syllabusUrl}
-            target="_blank"
-            rel="noopener noreferrer"
+          <CourseBrochureCta
+            openModal
+            courseId={courseId}
+            downloadUrl={syllabusUrl}
             className="btn-brand-outline inline-flex h-10 shrink-0 items-center justify-center gap-2 self-start px-5 text-[13px] font-semibold sm:self-auto"
           >
             {COURSE_CONTENT_SYLLABUS_LABEL}
             <DownloadIcon className="btn-download-icon shrink-0" />
-          </a>
+          </CourseBrochureCta>
         ) : null}
       </div>
 

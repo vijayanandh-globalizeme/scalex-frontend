@@ -28,12 +28,14 @@ export default function CourseBrochureModal({
   form,
   leadType,
   courseId,
+  downloadUrl,
 }: {
   isOpen: boolean;
   onClose: () => void;
   form: CourseLeadFormProps;
   leadType?: BrochureModalType;
   courseId?: string | null;
+  downloadUrl?: string | null;
 }) {
   const [isMounted, setIsMounted] = useState(false);
   const [isAnimated, setIsAnimated] = useState(false);
@@ -147,6 +149,7 @@ export default function CourseBrochureModal({
             titleId="course-brochure-modal-title"
             leadType={leadType}
             courseId={courseId}
+            downloadUrl={downloadUrl}
           />
         </div>
       </div>

@@ -1,9 +1,12 @@
+'use client';
+
 import Image from 'next/image';
 import type { CourseFeePartnerLogo } from '@/lib/courseBody';
 import type { ApiCoursePlanBatch } from '@/services/courseApi';
 import { COURSE_FEE_STATIC } from '@/lib/courseDetailStatics';
 import { COURSE_SECTION_CARD } from './courseSectionCard';
 import CourseBrochureCta from './CourseBrochureCta';
+import { useCourseBrochureModal } from './CourseBrochureModalContext';
 
 function PhoneIcon({ className }: { className?: string }) {
   return (
@@ -92,6 +95,7 @@ function PricingCard({
   highlighted,
   badge,
   isEmi,
+  courseId = null,
   onEnroll,
 }: {
   label: string;
@@ -102,8 +106,15 @@ function PricingCard({
   highlighted?: boolean;
   badge?: string;
   isEmi?: boolean;
+  courseId?: string | null;
+  /** Ignored when isEmi — the EMI card always opens the brochure modal instead. */
   onEnroll?: () => void;
 }) {
+  const { openBrochureModal } = useCourseBrochureModal();
+  // EMI plan → capture a lead via the brochure modal.
+  // Full-price plan → open the plan comparison modal (via the parent's onEnroll).
+  const onClickEnroll = isEmi ? () => openBrochureModal({ type: 'contact', courseId }) : onEnroll;
+
   return (
     <div
       className={`relative flex w-full min-w-0 flex-col rounded-[20px] border bg-white p-5 shadow-[0_4px_4px_0_rgba(30,41,59,0.08),0_4px_4px_0_rgba(30,41,59,0.03)] sm:w-[232px] ${
@@ -127,7 +138,7 @@ function PricingCard({
       {isEmi ? (
         <button
           type="button"
-          onClick={onEnroll}
+          onClick={onClickEnroll}
           className="btn-brand-outline btn-brand-outline--flat mt-5 inline-flex h-[40px] w-full items-center justify-center gap-2 rounded-lg bg-white px-4 text-[12px] font-medium leading-[18px]"
         >
           {enrollLabel}
@@ -136,7 +147,7 @@ function PricingCard({
       ) : (
         <button
           type="button"
-          onClick={onEnroll}
+          onClick={onClickEnroll}
           className="btn-brand-outline btn-brand-outline--flat mt-5 inline-flex h-[40px] w-full items-center justify-center gap-2 rounded-lg bg-white px-4 text-[12px] font-medium leading-[18px]"
         >
           {enrollLabel}
@@ -230,7 +241,7 @@ export default function CourseFeeSection({
               highlighted
               badge="Popular"
               isEmi
-              onEnroll={() => onEnroll?.(batch)}
+              courseId={courseId}
             />
           ) : null}
           {fullPrice ? (

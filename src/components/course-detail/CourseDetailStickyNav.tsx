@@ -158,10 +158,6 @@ export default function CourseDetailStickyNav({
       top: Math.max(0, top),
       behavior: 'smooth',
     });
-
-    const url = new URL(window.location.href);
-    url.hash = targetId;
-    window.history.replaceState(null, '', url.toString());
   }
 
   return (

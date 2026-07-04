@@ -6,7 +6,8 @@ import { useRef } from 'react';
 import CategoryTitleUnderline from '@/components/category/CategoryTitleUnderline';
 import type { CourseDetailContent } from '@/lib/courses';
 import { useGsapScrollRevealStagger } from '@/hooks/useGsapScrollReveal';
-import { isBrochureModalHref, useCourseBrochureModal } from './CourseBrochureModalContext';
+import { useCourseBrochureModal } from './CourseBrochureModalContext';
+import { ScrollToAnchor } from '@/components/shared';
 import CourseLeadForm from './CourseLeadForm';
 import CourseLicensedPartnerStrip from './CourseLicensedPartnerStrip';
 import { CourseEnterpriseCard } from './CourseEnterpriseSection';
@@ -110,7 +111,6 @@ export default function CourseDetailHeroSection({
   brochureUrl,
   reviews,
   learnersStat,
-  primaryCta,
   secondaryCta,
   form,
   licensedPartner,
@@ -119,7 +119,6 @@ export default function CourseDetailHeroSection({
   const sectionRef = useRef<HTMLElement>(null);
   const rowRefs = useRef<(HTMLDivElement | null)[]>([]);
   const { openBrochureModal } = useCourseBrochureModal();
-  const isBrochureCta = isBrochureModalHref(primaryCta.href);
 
   rowRefs.current.length = 3;
 
@@ -253,34 +252,32 @@ export default function CourseDetailHeroSection({
 
             <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:gap-[30px]">
               {brochureUrl ? (
-                isBrochureCta ? (
-                  <button
-                    type="button"
-                    onClick={() => openBrochureModal({ type: 'contact', courseId })}
-                    className="btn-brand h-[54px] w-full cursor-pointer gap-2 px-6 sm:w-auto md:px-7"
-                  >
-                    Download Brochure
-                    <ArrowRightIcon className="btn-arrow-icon shrink-0" />
-                  </button>
-                ) : (
-                  <a
-                    href={brochureUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="btn-brand inline-flex h-[54px] w-full items-center justify-center gap-2 px-6 sm:w-auto md:px-7"
-                  >
-                    Download Brochure
-                    <ArrowRightIcon className="btn-arrow-icon shrink-0" />
-                  </a>
-                )
+                <button
+                  type="button"
+                  onClick={() => openBrochureModal({ type: 'contact', courseId, downloadUrl: brochureUrl })}
+                  className="btn-brand h-[54px] w-full cursor-pointer gap-2 px-6 sm:w-auto md:px-7"
+                >
+                  Download Brochure
+                  <ArrowRightIcon className="btn-arrow-icon shrink-0" />
+                </button>
               ) : null}
-              <Link
-                href={secondaryCta.href}
-                className="btn-brand-outline inline-flex h-[54px] w-full items-center justify-center gap-[18px] px-6 text-sm font-semibold sm:w-auto md:px-8 md:text-[15px]"
-              >
-                {secondaryCta.label}
-                <EyeIcon className="h-5 w-5 text-brand" />
-              </Link>
+              {secondaryCta.href.startsWith('#') ? (
+                <ScrollToAnchor
+                  targetId={secondaryCta.href.slice(1)}
+                  className="btn-brand-outline inline-flex h-[54px] w-full items-center justify-center gap-[18px] px-6 text-sm font-semibold sm:w-auto md:px-8 md:text-[15px]"
+                >
+                  {secondaryCta.label}
+                  <EyeIcon className="h-5 w-5 text-brand" />
+                </ScrollToAnchor>
+              ) : (
+                <Link
+                  href={secondaryCta.href}
+                  className="btn-brand-outline inline-flex h-[54px] w-full items-center justify-center gap-[18px] px-6 text-sm font-semibold sm:w-auto md:px-8 md:text-[15px]"
+                >
+                  {secondaryCta.label}
+                  <EyeIcon className="h-5 w-5 text-brand" />
+                </Link>
+              )}
             </div>
           </div>
 

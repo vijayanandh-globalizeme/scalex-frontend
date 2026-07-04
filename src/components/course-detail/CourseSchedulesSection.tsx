@@ -359,11 +359,11 @@ function ScheduleCard({ batch, quantity, onQuantityChange, onEnroll }: {
   batch: ApiCourseBatch;
   quantity: number;
   onQuantityChange: (n: number) => void;
-  onEnroll?: (batch: ApiCourseBatch) => void;
+  onEnroll?: (batch: ApiCourseBatch, quantity: number) => void;
 }) {
   const sym = batch.currencySymbol;
-  const retail = Number(batch.plan1RetailPrice ?? 0);
-  const selling = Number(batch.plan1SellingPrice ?? 0);
+  const retail = Number(batch.plan1RetailPrice ?? 0) * quantity;
+  const selling = Number(batch.plan1SellingPrice ?? 0) * quantity;
   const pct = discountPct(retail, selling);
 
   const startLabel = formatDate(batch.startDate);
@@ -452,7 +452,7 @@ function ScheduleCard({ batch, quantity, onQuantityChange, onEnroll }: {
             </div>
             <button
               type="button"
-              onClick={() => onEnroll?.(batch)}
+              onClick={() => onEnroll?.(batch, quantity)}
               className="btn-brand mt-3 inline-flex w-[139px] items-center justify-center gap-[11px] px-4 py-[11px] text-[14px] font-medium leading-[18px]"
             >
               Enroll Now
@@ -520,6 +520,7 @@ export default function CourseSchedulesSection({
   const [pickerOpen, setPickerOpen] = useState(false);
   const [enrollModalOpen, setEnrollModalOpen] = useState(false);
   const [enrollBatch, setEnrollBatch] = useState<ApiCourseBatch | null>(null);
+  const [enrollQuantity, setEnrollQuantity] = useState(1);
   const [plansData, setPlansData] = useState<ApiCoursePlansData | null>(null);
   const pickerRef = useRef<HTMLDivElement>(null);
 
@@ -547,8 +548,9 @@ export default function CourseSchedulesSection({
     });
   }
 
-  function handleEnroll(batch: ApiCourseBatch) {
+  function handleEnroll(batch: ApiCourseBatch, quantity: number = 1) {
     setEnrollBatch(batch);
+    setEnrollQuantity(quantity);
     setEnrollModalOpen(true);
   }
 
@@ -732,6 +734,7 @@ export default function CourseSchedulesSection({
                 features={plansData.features}
                 batch={modalBatch}
                 courseId={courseId}
+                quantity={enrollQuantity}
               />
             ) : (
               <div className="flex items-center justify-center py-16 text-[14px] text-muted">
