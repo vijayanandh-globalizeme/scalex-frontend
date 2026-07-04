@@ -314,19 +314,43 @@ export default function BlogDetailPage() {
 
   useEffect(() => {
     if (!tocItems.length) return;
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) setActiveId(entry.target.id);
-        });
-      },
-      { rootMargin: '-20% 0px -70% 0px', threshold: 0 }
-    );
-    tocItems.forEach(({ id }) => {
-      const el = document.getElementById(id);
-      if (el) observer.observe(el);
-    });
-    return () => observer.disconnect();
+
+    // The heading is "active" once its top edge scrolls past this line near the
+    // top of the viewport — matches the scroll offset used by the click handler
+    // so clicking an item and manually scrolling to it agree.
+    const OFFSET = 110;
+
+    const ids = tocItems.map((t) => t.id);
+
+    const updateActive = () => {
+      let current = ids[0];
+      for (const id of ids) {
+        const el = document.getElementById(id);
+        if (!el) continue;
+        // getBoundingClientRect().top is relative to the viewport top.
+        if (el.getBoundingClientRect().top - OFFSET <= 0) {
+          current = id; // this heading has reached (or passed) the top line
+        } else {
+          break; // headings are in document order — the rest are still below
+        }
+      }
+
+      // Once the page is scrolled to the very bottom, force the last item active
+      // even if its heading never quite reaches the top line (short final section).
+      if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2) {
+        current = ids[ids.length - 1];
+      }
+
+      setActiveId((prev) => (prev === current ? prev : current));
+    };
+
+    window.addEventListener('scroll', updateActive, { passive: true });
+    window.addEventListener('resize', updateActive, { passive: true });
+    updateActive();
+    return () => {
+      window.removeEventListener('scroll', updateActive);
+      window.removeEventListener('resize', updateActive);
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [blog?.content?.content, tocItems.length]);
 
