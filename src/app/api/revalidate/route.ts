@@ -27,10 +27,19 @@ export async function POST(req: NextRequest) {
 
   const flushed: string[] = [];
 
+  // Next 16's revalidateTag takes a cache-life profile as its 2nd arg. Named
+  // profiles like 'default'/'max' have a non-zero (often infinite) `expire`, so
+  // the cache handler only marks tagged entries *stale* — the first request
+  // after this call still serves the old data and revalidates in the background
+  // (updates lag by one request). Passing an inline profile with `expire: 0`
+  // forces immediate *expiration* instead, so the very next request is a cache
+  // miss and refetches fresh data straight away.
+  const EXPIRE_NOW = { expire: 0 } as const;
+
   // Flush by explicit tag list
   if (body.tags?.length) {
     for (const tag of body.tags) {
-      revalidateTag(tag, 'default');
+      revalidateTag(tag, EXPIRE_NOW);
       flushed.push(tag);
     }
   }
@@ -49,7 +58,7 @@ export async function POST(req: NextRequest) {
       `course-${uri}-plans`,
     ];
     for (const tag of courseTags) {
-      revalidateTag(tag, 'default');
+      revalidateTag(tag, EXPIRE_NOW);
       flushed.push(tag);
     }
   }
