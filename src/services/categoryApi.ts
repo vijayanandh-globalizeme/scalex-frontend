@@ -31,3 +31,17 @@ export async function fetchAllCategories(): Promise<ApiCategoryItem[]> {
   const json = await get<CategoryListResponse>('course-categories', { revalidate: 300 });
   return json?.success ? (json.data ?? []) : [];
 }
+
+// ── Sitemap (every active category) ────────────────────────────────────────
+
+export type ApiSitemapCategory = {
+  uri: string;
+  updatedAt: string;
+};
+
+type SitemapCategoriesResponse = { success: boolean; data: ApiSitemapCategory[] };
+
+export async function fetchSitemapCategories(): Promise<ApiSitemapCategory[]> {
+  const json = await get<SitemapCategoriesResponse>('course-categories/sitemap', { revalidate: 3600 });
+  return json?.success ? (json.data ?? []) : [];
+}

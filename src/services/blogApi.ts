@@ -149,3 +149,17 @@ export async function fetchRelatedBlogs(uri: string, limit = 10): Promise<ApiBlo
   });
   return json?.success ? (json.data.items ?? []) : [];
 }
+
+// ── Sitemap (every active blog) ────────────────────────────────────────────
+
+export type ApiSitemapBlog = {
+  uri: string;
+  updatedAt: string;
+};
+
+type SitemapBlogsApiResponse = { success: boolean; data: ApiSitemapBlog[] };
+
+export async function fetchSitemapBlogs(): Promise<ApiSitemapBlog[]> {
+  const json = await get<SitemapBlogsApiResponse>('blogs/sitemap', { revalidate: 3600 });
+  return json?.success ? (json.data ?? []) : [];
+}

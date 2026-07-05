@@ -428,3 +428,18 @@ export async function fetchCoursePlans(
   );
   return json?.success ? (json.data ?? null) : null;
 }
+
+// ── Sitemap (every publicly-visible course, incl. country/city clones) ────────
+
+export type ApiSitemapCourse = {
+  uri: string;
+  categoryUri: string;
+  updatedAt: string;
+};
+
+type SitemapCoursesApiResponse = { success: boolean; data: ApiSitemapCourse[] };
+
+export async function fetchSitemapCourses(): Promise<ApiSitemapCourse[]> {
+  const json = await get<SitemapCoursesApiResponse>('courses/sitemap', { revalidate: 3600 });
+  return json?.success ? (json.data ?? []) : [];
+}

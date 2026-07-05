@@ -36,7 +36,7 @@ const COLUMN_GROUPS: { title: string; links: { label: string; href: string }[] }
       { label: 'Privacy Policy', href: '/privacy-policy' },
       { label: 'Terms and Conditions', href: '/terms-of-use' },
       { label: 'Refund Policy', href: '/refund-policy' },
-      { label: 'Sitemap', href: '#' },
+      { label: 'Sitemap', href: '/sitemap.xml' },
     ],
   },
 ];
