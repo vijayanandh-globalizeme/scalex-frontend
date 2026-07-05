@@ -5,26 +5,7 @@ import HeaderMobileMenu from './HeaderMobileMenu';
 import HeaderSearch from './HeaderSearch';
 import NavDropdown from './NavDropdown';
 import type { MegaMenuCategory } from '@/lib/allCoursesMegaMenu';
-
-const INTERVIEW_PREP_ITEMS = [
-  { label: 'DevOps With Placement', href: '#' },
-  { label: 'Data Science With Placement', href: '#' },
-  { label: 'Automation Testing With Placement', href: '#' },
-] as const;
-
-const CERTIFICATION_PREP_ITEMS = [
-  { label: 'PMP Certification Training', href: '#' },
-  { label: 'AWS Solutions Architect', href: '#' },
-  { label: 'Scrum Master Certification', href: '#' },
-  { label: 'Six Sigma Green Belt', href: '#' },
-] as const;
-
-const RESOURCES_ITEMS = [
-  { label: 'Blog & Articles', href: '/blogs' },
-  { label: 'Free Study Guides', href: '#' },
-  { label: 'Webinars & Events', href: '#' },
-  { label: 'Career Resources', href: '#' },
-] as const;
+import type { OtherMenu } from '@/services/layoutApi';
 
 function SignInArrow({ className }: { className?: string }) {
   return (
@@ -55,7 +36,19 @@ function SignInArrow({ className }: { className?: string }) {
 const navLinkClass =
   'header-fluid-text flex h-10 items-center gap-1 px-1.5 py-0 font-normal not-italic tracking-[-0.16px] whitespace-nowrap max-[1399px]:px-1.5 min-[1400px]:px-2.5';
 
-const Header = ({ megaMenuCategories }: { megaMenuCategories: MegaMenuCategory[] }) => {
+// Static (non admin-managed) nav — always shown alongside the admin-configured "Other Menus".
+const RESOURCES_ITEMS = [
+  { label: 'Blog', href: '/blogs' },
+  { label: 'About Us', href: '/about-us' },
+] as const;
+
+const Header = ({
+  megaMenuCategories,
+  otherMenus,
+}: {
+  megaMenuCategories: MegaMenuCategory[];
+  otherMenus: OtherMenu[];
+}) => {
   return (
     <header className="sticky top-0 z-50 border-b border-zinc-100 bg-white">
       <div className="site-container">
@@ -72,12 +65,7 @@ const Header = ({ megaMenuCategories }: { megaMenuCategories: MegaMenuCategory[]
               priority
             />
           </Link>
-          <HeaderMobileMenu
-            categories={megaMenuCategories}
-            interviewPrepItems={INTERVIEW_PREP_ITEMS}
-            certificationPrepItems={CERTIFICATION_PREP_ITEMS}
-            resourcesItems={RESOURCES_ITEMS}
-          />
+          <HeaderMobileMenu categories={megaMenuCategories} otherMenus={otherMenus} />
         </div>
 
         {/* Desktop: single row (1200px+) — gaps shrink between 1200–1399px */}
@@ -112,6 +100,14 @@ const Header = ({ megaMenuCategories }: { megaMenuCategories: MegaMenuCategory[]
                 className="flex min-w-0 flex-nowrap items-center gap-x-1 min-[1400px]:gap-x-2"
                 aria-label="Primary"
               >
+                {otherMenus.map((menu) => (
+                  <NavDropdown
+                    key={menu.title}
+                    label={menu.title}
+                    items={menu.items}
+                    triggerClassName={navLinkClass}
+                  />
+                ))}
                 <NavDropdown
                   label="Resources"
                   items={[...RESOURCES_ITEMS]}

@@ -9,7 +9,7 @@ import {
 } from '@/components/course-detail';
 import { getCourseOverview } from '@/app/actions/courseActions';
 import { buildCourseDetailProps, buildTechnicalCourseProps } from '@/lib/coursePropsFromApi';
-import { fetchLayout } from '@/services/layoutApi';
+import { fetchSetting } from '@/services/layoutApi';
 import { SITE_NAME } from '@/lib/site';
 
 type PageProps = {
@@ -52,14 +52,14 @@ const DEFAULT_FORM = {
 export default async function CourseDetailPage({ params }: PageProps) {
   const { categoryUri, courseUri } = await params;
 
-  const [course, layoutData] = await Promise.all([
+  const [course, settingsData] = await Promise.all([
     getCourseOverview(courseUri, categoryUri),
-    fetchLayout(),
+    fetchSetting(),
   ]);
 
   if (!course) notFound();
 
-  const settings   = layoutData?.settings ?? {};
+  const settings   = settingsData ?? {};
   const isTechnical = course.templateType === 'TECHNICAL' || course.templateType === 'BOOTCAMP';
 
   if (isTechnical) {

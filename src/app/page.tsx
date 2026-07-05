@@ -9,8 +9,12 @@ import MentorsSectionServer from '@/components/mentors/MentorsSectionServer';
 import { WhyScaleXSection, defaultWhyScaleXContent } from '@/components/why-scalex';
 import { GuidanceSection, defaultGuidanceContent } from '@/components/guidance';
 import { SITE_DESCRIPTION, SITE_NAME } from '@/lib/site';
-import { fetchLayout, type LayoutSettings } from '@/services/layoutApi';
+import { fetchSetting, type LayoutSettings } from '@/services/layoutApi';
+import { fetchAllCategories } from '@/services/categoryApi';
+import type { MegaMenuCategory } from '@/lib/allCoursesMegaMenu';
 import LiveSessionsSection from '@/components/live-sessions/LiveSessionsSection';
+
+const TOP_CATEGORIES_COUNT = 6;
 
 export const metadata: Metadata = {
   title: 'Professional Training & Certification Courses',
@@ -22,9 +26,15 @@ export const metadata: Metadata = {
 };
 
 export default async function HomePage() {
-  const layoutData = await fetchLayout();
-  const settings: LayoutSettings | undefined = layoutData?.settings;
-  const categories = layoutData?.categories ?? [];
+  const [allCategories, settingsData] = await Promise.all([fetchAllCategories(), fetchSetting()]);
+  const settings: LayoutSettings | undefined = settingsData ?? undefined;
+  const categories: MegaMenuCategory[] = allCategories.slice(0, TOP_CATEGORIES_COUNT).map((cat) => ({
+    id: cat.id,
+    slug: cat.uri,
+    label: cat.name,
+    href: `/${cat.uri}`,
+    courses: [],
+  }));
 
   return (
     <>

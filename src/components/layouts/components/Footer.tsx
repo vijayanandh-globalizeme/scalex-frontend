@@ -1,8 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { SITE_NAME } from '@/lib/site';
-import type { LayoutSettings } from '@/services/layoutApi';
-import type { MegaMenuCategory } from '@/lib/allCoursesMegaMenu';
+import type { LayoutSettings, FooterMenu } from '@/services/layoutApi';
 import FooterDisclaimer from './FooterDisclaimer';
 import MobileBottomBar from './MobileBottomBar';
 
@@ -198,10 +197,10 @@ function CourseGridSection({ title, items, showTopBorder }: { title: string; ite
 
 const Footer = ({
   settings = {},
-  categories = [],
+  footerMenu = { categories: [], courses: [] },
 }: {
   settings?: LayoutSettings;
-  categories?: MegaMenuCategory[];
+  footerMenu?: FooterMenu;
 }) => {
   const socialIcons = getSocialIcons(settings);
   const whatsAppHref = toWhatsAppHref(settings.CONTACT_WHATSAPP_NO);
@@ -210,22 +209,8 @@ const Footer = ({
   const email = settings.CONTACT_EMAIL ?? '';
   const currentYear = new Date().getFullYear();
 
-  const topCategories: GridItem[] = categories.map((cat) => ({
-    label: cat.label,
-    href: cat.href,
-  }));
-
-  const topCourses: GridItem[] = categories
-    .flatMap((cat) =>
-      cat.courses.map((course) => ({
-        label: course.label,
-        href: course.href,
-        priority: course.priority ?? 999,
-      })),
-    )
-    .sort((a, b) => a.priority - b.priority)
-    .slice(0, 10)
-    .map(({ label, href }) => ({ label, href }));
+  const topCategories: GridItem[] = footerMenu.categories;
+  const topCourses: GridItem[] = footerMenu.courses;
 
   return (
     <>

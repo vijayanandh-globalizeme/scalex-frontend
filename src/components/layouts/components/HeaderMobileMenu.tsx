@@ -5,14 +5,13 @@ import { useEffect, useState } from 'react';
 import HeaderSearch from './HeaderSearch';
 import type { NavDropdownItem } from './NavDropdown';
 import type { MegaMenuCategory } from '@/lib/allCoursesMegaMenu';
+import type { OtherMenu } from '@/services/layoutApi';
 
 const MENU_TRANSITION_MS = 450;
 
 type HeaderMobileMenuProps = {
   categories: MegaMenuCategory[];
-  interviewPrepItems: readonly NavDropdownItem[];
-  certificationPrepItems: readonly NavDropdownItem[];
-  resourcesItems: readonly NavDropdownItem[];
+  otherMenus: OtherMenu[];
 };
 
 function MenuIcon() {
@@ -186,9 +185,7 @@ function MobileNavSection({
 
 export default function HeaderMobileMenu({
   categories,
-  interviewPrepItems,
-  certificationPrepItems,
-  resourcesItems,
+  otherMenus,
 }: HeaderMobileMenuProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [isPanelMounted, setIsPanelMounted] = useState(false);
@@ -260,13 +257,13 @@ export default function HeaderMobileMenu({
                 <AllCoursesSection categories={categories} onNavigate={closeMenu} />
 
                 {/* Level 1 → Level 2 */}
-                <MobileNavSection label="Interview Prep" items={interviewPrepItems} onNavigate={closeMenu} />
-                <MobileNavSection label="Certification Prep" items={certificationPrepItems} onNavigate={closeMenu} />
-                <MobileNavSection label="Resources" items={resourcesItems} onNavigate={closeMenu} />
+                {otherMenus.map((menu) => (
+                  <MobileNavSection key={menu.title} label={menu.title} items={menu.items} onNavigate={closeMenu} />
+                ))}
 
                 {/* Level 1 — direct links */}
                 <Link
-                  href="/about"
+                  href="/about-us"
                   onClick={closeMenu}
                   className="header-fluid-text block border-b border-zinc-100 py-4 text-[15px] font-semibold text-ink hover:text-brand"
                 >

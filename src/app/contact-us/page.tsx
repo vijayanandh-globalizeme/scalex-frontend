@@ -1,9 +1,8 @@
-import { fetchLayout } from '@/services/layoutApi';
+import { fetchSetting } from '@/services/layoutApi';
 import ContactPageClient from './ContactPageClient';
 
 export default async function ContactPage() {
-  const layout = await fetchLayout();
-  const s = layout?.settings ?? {};
+  const s = (await fetchSetting()) ?? {};
 
   return (
     <ContactPageClient

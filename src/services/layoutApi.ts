@@ -1,3 +1,4 @@
+import { cache } from 'react';
 import { get } from '@/services/http';
 import type { MegaMenuCategory } from '@/lib/allCoursesMegaMenu';
 
@@ -27,8 +28,25 @@ export type LayoutSettings = {
   SWTICH_UP_REVIEW?: ReviewEntry;
 };
 
+export type OtherMenuItem = {
+  label: string;
+  href: string;
+};
+
+export type OtherMenu = {
+  title: string;
+  items: OtherMenuItem[];
+};
+
+export type FooterMenu = {
+  categories: { label: string; href: string }[];
+  courses: { label: string; href: string }[];
+};
+
 export type LayoutData = {
-  categories: MegaMenuCategory[];
+  megaMenu: MegaMenuCategory[];
+  otherMenus: OtherMenu[];
+  footer: FooterMenu;
   settings: LayoutSettings;
 };
 
@@ -39,13 +57,29 @@ type ApiCategory = {
   courses: { id: string; name: string; uri: string; priority?: number }[];
 };
 
+type ApiOtherMenu = {
+  title: string;
+  items: { label: string; url: string }[];
+};
+
+type ApiFooterMenu = {
+  categories: { id: string; name: string; uri: string }[];
+  courses: { id: string; name: string; uri: string; categoryUri: string }[];
+};
 
 type LayoutApiResponse = {
   success: boolean;
   data: {
-    categories: ApiCategory[];
+    megaMenu: ApiCategory[];
+    otherMenus: ApiOtherMenu[];
+    footer: ApiFooterMenu;
     settings: LayoutSettings;
   };
+};
+
+type SettingsApiResponse = {
+  success: boolean;
+  data: LayoutSettings;
 };
 
 function toMegaMenuCategories(apiCategories: ApiCategory[]): MegaMenuCategory[] {
@@ -62,11 +96,36 @@ function toMegaMenuCategories(apiCategories: ApiCategory[]): MegaMenuCategory[] 
   }));
 }
 
-export async function fetchLayout(): Promise<LayoutData | null> {
+function toOtherMenus(apiOtherMenus: ApiOtherMenu[]): OtherMenu[] {
+  return apiOtherMenus.map((menu) => ({
+    title: menu.title,
+    items: menu.items.map((item) => ({ label: item.label, href: item.url })),
+  }));
+}
+
+function toFooterMenu(apiFooter: ApiFooterMenu | undefined): FooterMenu {
+  return {
+    categories: (apiFooter?.categories ?? []).map((cat) => ({ label: cat.name, href: `/${cat.uri}` })),
+    courses: (apiFooter?.courses ?? []).map((course) => ({
+      label: course.name,
+      href: `/${course.categoryUri}/${course.uri}`,
+    })),
+  };
+}
+
+export const fetchLayout = cache(async (): Promise<LayoutData | null> => {
   const json = await get<LayoutApiResponse>('layout');
   if (!json?.success) return null;
   return {
-    categories: toMegaMenuCategories(json.data.categories ?? []),
+    megaMenu: toMegaMenuCategories(json.data.megaMenu ?? []),
+    otherMenus: toOtherMenus(json.data.otherMenus ?? []),
+    footer: toFooterMenu(json.data.footer),
     settings: json.data.settings ?? {},
   };
-}
+});
+
+export const fetchSetting = cache(async (): Promise<LayoutSettings | null> => {
+  const json = await get<SettingsApiResponse>('layout/settings');
+  if (!json?.success) return null;
+  return json.data ?? {};
+});

@@ -1,8 +1,7 @@
-import { fetchLayout } from '@/services/layoutApi';
+import { fetchSetting } from '@/services/layoutApi';
 import { ReviewPlatformRow } from './TestimonialsSection';
 
 export default async function ReviewPlatformRowServer() {
-  const layoutData = await fetchLayout();
-  const settings = layoutData?.settings;
-  return <ReviewPlatformRow settings={settings} />;
+  const settings = await fetchSetting();
+  return <ReviewPlatformRow settings={settings ?? undefined} />;
 }

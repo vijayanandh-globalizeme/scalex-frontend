@@ -10,7 +10,7 @@ import {
 import { GuidanceSection, defaultGuidanceContent } from '@/components/guidance';
 import { WhyScaleXSection, defaultWhyScaleXContent } from '@/components/why-scalex';
 import { fetchCategoryByUri } from '@/services/categoryApi';
-import { fetchLayout } from '@/services/layoutApi';
+import { fetchSetting } from '@/services/layoutApi';
 import { defaultHeroBadges, defaultHeroContent } from '@/components/hero/defaultHeroContent';
 import { SITE_NAME } from '@/lib/site';
 
@@ -41,14 +41,14 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 export default async function CategoryPage({ params }: PageProps) {
   const { categoryUri } = await params;
 
-  const [category, layoutData] = await Promise.all([
+  const [category, settingsData] = await Promise.all([
     fetchCategoryByUri(categoryUri),
-    fetchLayout(),
+    fetchSetting(),
   ]);
 
   if (!category) notFound();
 
-  const settings = layoutData?.settings ?? {};
+  const settings = settingsData ?? {};
 
   return (
     <>

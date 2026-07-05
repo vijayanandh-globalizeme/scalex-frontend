@@ -351,7 +351,6 @@ export default function CoursesSection({
   }, [loadCourses, initialVisibleCount]);
 
   function handleTabClick(tab: CourseTab) {
-    console.log('[CoursesSection] tab click', { id: tab.id, categoryId: tab.categoryId });
     setActiveTabId(tab.id);
     setVisibleCount(initialVisibleCount);
     loadCourses(tab.categoryId);
