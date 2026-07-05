@@ -21,8 +21,8 @@ export const defaultGuidanceContent: GuidanceSectionProps = {
     { id: 'upskill-team', label: 'Upskill My Team' },
     { id: 'other', label: 'Other' },
   ],
-  termsHref: '/terms',
-  privacyHref: '/privacy',
+  termsHref: '/terms-of-use',
+  privacyHref: '/privacy-policy',
   ctaLabel: 'Scale Your Career',
   decorativeArrow: { src: '/images/big-aerox.png', alt: '' },
 };

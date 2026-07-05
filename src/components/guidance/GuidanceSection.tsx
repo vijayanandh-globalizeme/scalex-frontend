@@ -82,7 +82,7 @@ function GuidanceForm({
   ctaLabel: string;
   embedded: boolean;
 }) {
-  const [agreed, setAgreed] = useState(true);
+  const [agreed, setAgreed] = useState(false);
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
@@ -217,11 +217,11 @@ function GuidanceForm({
         </button>
         <span>
           I agree to ScaleX&apos;s{' '}
-          <Link href={termsHref} className="text-link underline">
+          <Link href={termsHref} target="_blank" rel="noopener noreferrer" className="text-link hover:underline active:underline">
             Terms &amp; Conditions
           </Link>{' '}
           and{' '}
-          <Link href={privacyHref} className="text-link underline">
+          <Link href={privacyHref} target="_blank" rel="noopener noreferrer" className="text-link hover:underline active:underline">
             Privacy Policy.
           </Link>
         </span>

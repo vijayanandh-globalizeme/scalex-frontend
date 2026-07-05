@@ -231,7 +231,7 @@ function BlogAssistForm() {
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [purpose, setPurpose] = useState('');
-  const [agreed, setAgreed] = useState(true);
+  const [agreed, setAgreed] = useState(false);
   const [status, setStatus] = useState<'idle' | 'submitting' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState('');
   const { showLeadSuccess } = useLeadSuccess();
@@ -314,7 +314,16 @@ function BlogAssistForm() {
         </div>
         <label className="flex items-start gap-2 cursor-pointer">
           <input type="checkbox" checked={agreed} onChange={(e) => setAgreed(e.target.checked)} className="mt-0.5 accent-brand" />
-          <span className="text-[11px] text-muted leading-relaxed">I agree to ScaleX&apos;s Terms &amp; Conditions &amp; Privacy Policy.</span>
+          <span className="text-[11px] text-muted leading-relaxed">
+            I agree to ScaleX&apos;s{' '}
+            <Link href="/terms-of-use" target="_blank" rel="noopener noreferrer" className="hover:underline active:underline">
+              Terms &amp; Conditions
+            </Link>{' '}
+            &amp;{' '}
+            <Link href="/privacy-policy" target="_blank" rel="noopener noreferrer" className="hover:underline active:underline">
+              Privacy Policy.
+            </Link>
+          </span>
         </label>
         <button type="submit" disabled={!agreed || status === 'submitting'} className="w-full rounded-lg bg-brand py-2.5 text-[13px] font-semibold text-white hover:bg-brand/90 transition-colors flex items-center justify-center gap-2 disabled:cursor-not-allowed disabled:opacity-60">
           {status === 'submitting' ? 'Submitting…' : 'Talk To Us'}

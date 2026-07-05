@@ -3,8 +3,18 @@
 import Link from 'next/link';
 import { useState, type FormEvent } from 'react';
 import { COURSE_SECTION_CARD } from '@/components/course-detail/courseSectionCard';
+import { sendContact } from '@/app/actions/contactActions';
+import { useLeadSuccess } from '@/components/feedback/LeadSuccessProvider';
+import { useContactFieldErrors, fieldErrorClass } from '@/components/feedback/useContactFieldErrors';
 
 // ── Sidebar contact form ──────────────────────────────────────────────────────
+
+const PURPOSES = [
+  { id: 'career-growth', label: 'Career Growth'    },
+  { id: 'certification', label: 'Get Certified'    },
+  { id: 'upskill-team',  label: 'Upskill My Team'  },
+  { id: 'other',         label: 'Other'            },
+];
 
 const fieldClassName =
   'h-10 w-full rounded-lg border border-[#6E6E6E] bg-white px-3 text-[13px] text-heading placeholder:text-placeholder focus:border-brand focus:outline-none';
@@ -35,10 +45,35 @@ function ArrowRightIcon({ className }: { className?: string }) {
 }
 
 function LegalSidebar() {
-  const [agreed, setAgreed] = useState(true);
+  const [agreed, setAgreed] = useState(false);
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
+  const [purpose, setPurpose] = useState('');
+  const [status, setStatus] = useState<'idle' | 'submitting' | 'error'>('idle');
+  const [errorMessage, setErrorMessage] = useState('');
+  const { showLeadSuccess } = useLeadSuccess();
+  const { fieldErrors, setFieldErrors, clearFieldError } = useContactFieldErrors();
 
-  function handleSubmit(e: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    if (status === 'submitting') return;
+    setStatus('submitting');
+    setFieldErrors({});
+    const purposeLabel = PURPOSES.find((p) => p.id === purpose)?.label ?? purpose;
+    const result = await sendContact({ name, email, phone, purpose: purposeLabel });
+    if (result.success) {
+      setStatus('idle');
+      setName('');
+      setEmail('');
+      setPhone('');
+      setPurpose('');
+      showLeadSuccess();
+    } else {
+      setStatus('error');
+      setErrorMessage(result.message);
+      setFieldErrors(result.fieldErrors);
+    }
   }
 
   return (
@@ -50,16 +85,53 @@ function LegalSidebar() {
         <form onSubmit={handleSubmit} className={`${COURSE_SECTION_CARD} p-5`}>
           <h2 className="text-[16px] font-medium leading-normal text-heading">Let us assist you</h2>
           <div className="mt-4 grid gap-3">
-            <input type="text" required placeholder="Full Name" className={fieldClassName} />
-            <input type="email" required placeholder="Email ID" className={fieldClassName} />
-            <input type="tel" required placeholder="Contact Number" className={fieldClassName} />
-            <select required defaultValue="" className={fieldClassName}>
-              <option value="" disabled>Purpose</option>
-              <option value="career-growth">Career Growth</option>
-              <option value="certification">Get Certified</option>
-              <option value="upskill-team">Upskill My Team</option>
-              <option value="other">Other</option>
-            </select>
+            <div>
+              <input
+                type="text"
+                required
+                placeholder="Full Name"
+                className={`${fieldClassName} ${fieldErrorClass(!!fieldErrors.name)}`}
+                value={name}
+                onChange={(e) => { setName(e.target.value); clearFieldError('name'); }}
+              />
+              {fieldErrors.name ? <p className="mt-1 text-[11px] font-medium text-brand">{fieldErrors.name}</p> : null}
+            </div>
+            <div>
+              <input
+                type="email"
+                required
+                placeholder="Email ID"
+                className={`${fieldClassName} ${fieldErrorClass(!!fieldErrors.email)}`}
+                value={email}
+                onChange={(e) => { setEmail(e.target.value); clearFieldError('email'); }}
+              />
+              {fieldErrors.email ? <p className="mt-1 text-[11px] font-medium text-brand">{fieldErrors.email}</p> : null}
+            </div>
+            <div>
+              <input
+                type="tel"
+                required
+                placeholder="Contact Number"
+                className={`${fieldClassName} ${fieldErrorClass(!!fieldErrors.phone)}`}
+                value={phone}
+                onChange={(e) => { setPhone(e.target.value); clearFieldError('phone'); }}
+              />
+              {fieldErrors.phone ? <p className="mt-1 text-[11px] font-medium text-brand">{fieldErrors.phone}</p> : null}
+            </div>
+            <div>
+              <select
+                required
+                value={purpose}
+                onChange={(e) => { setPurpose(e.target.value); clearFieldError('purpose'); }}
+                className={`${fieldClassName} ${fieldErrorClass(!!fieldErrors.purpose)}`}
+              >
+                <option value="" disabled>Purpose</option>
+                {PURPOSES.map((p) => (
+                  <option key={p.id} value={p.id}>{p.label}</option>
+                ))}
+              </select>
+              {fieldErrors.purpose ? <p className="mt-1 text-[11px] font-medium text-brand">{fieldErrors.purpose}</p> : null}
+            </div>
           </div>
           <label className="mt-3 flex items-start gap-2 text-[12px] font-normal leading-4 text-heading">
             <button
@@ -73,19 +145,22 @@ function LegalSidebar() {
             </button>
             <span>
               I agree to ScaleX&apos;s{' '}
-              <Link href="/terms-of-use" className="underline">Terms &amp; Conditions</Link>{' '}
+              <Link href="/terms-of-use" target="_blank" rel="noopener noreferrer" className="hover:underline active:underline">Terms &amp; Conditions</Link>{' '}
               &amp;{' '}
-              <Link href="/privacy-policy" className="underline">Privacy Policy.</Link>
+              <Link href="/privacy-policy" target="_blank" rel="noopener noreferrer" className="hover:underline active:underline">Privacy Policy.</Link>
             </span>
           </label>
           <button
             type="submit"
-            disabled={!agreed}
+            disabled={!agreed || status === 'submitting'}
             className="btn-brand mt-4 inline-flex h-10 w-full items-center justify-center gap-2 text-[13px] font-semibold disabled:cursor-not-allowed disabled:opacity-60"
           >
-            Talk To Us
+            {status === 'submitting' ? 'Submitting…' : 'Talk To Us'}
             <ArrowRightIcon className="btn-arrow-icon shrink-0" />
           </button>
+          {status === 'error' && Object.keys(fieldErrors).length === 0 ? (
+            <p className="mt-3 text-center text-[12px] font-medium text-brand">{errorMessage || 'Something went wrong. Please try again.'}</p>
+          ) : null}
         </form>
 
         {/* Quick links card */}

@@ -147,7 +147,7 @@ export default function CourseDetailSidebar({
   stickyTop?: string;
   width?: string;
 }) {
-  const [agreed, setAgreed] = useState(true);
+  const [agreed, setAgreed] = useState(false);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
@@ -252,11 +252,11 @@ export default function CourseDetailSidebar({
             </button>
             <span>
               I agree to ScaleX&apos;s{' '}
-              <Link href={sidebar.termsHref} className="underline">
+              <Link href={sidebar.termsHref} target="_blank" rel="noopener noreferrer" className="hover:underline active:underline">
                 Terms &amp; Conditions
               </Link>{' '}
               &amp;{' '}
-              <Link href={sidebar.privacyHref} className="underline">
+              <Link href={sidebar.privacyHref} target="_blank" rel="noopener noreferrer" className="hover:underline active:underline">
                 Privacy Policy.
               </Link>
             </span>
