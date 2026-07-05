@@ -7,7 +7,6 @@ export const revalidate = 3600;
 // have their own dedicated sitemap since they can number in the thousands.
 const STATIC_PATHS: { path: string; priority: number }[] = [
   { path: '', priority: 1.0 },
-  { path: '/courses', priority: 0.9 },
   { path: '/blogs', priority: 0.8 },
   { path: '/about-us', priority: 0.6 },
   { path: '/contact-us', priority: 0.6 },
