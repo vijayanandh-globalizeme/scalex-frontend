@@ -209,20 +209,32 @@ export default function HeaderMobileMenu({
   }, [isOpen]);
 
   useEffect(() => {
-    if (!isPanelMounted) return undefined;
+    const shouldLockScroll = isOpen || isPanelMounted;
+    if (!shouldLockScroll) return undefined;
 
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') closeMenu();
     };
 
-    document.body.style.overflow = 'hidden';
+    const { body } = document;
+    const scrollY = window.scrollY;
+    const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+    const previous = { position: body.style.position, top: body.style.top, width: body.style.width };
+
+    body.style.position = 'fixed';
+    body.style.top = `-${scrollY}px`;
+    body.style.width = scrollbarWidth > 0 ? `calc(100% - ${scrollbarWidth}px)` : '100%';
+
     document.addEventListener('keydown', onKeyDown);
 
     return () => {
-      document.body.style.overflow = '';
+      body.style.position = previous.position;
+      body.style.top = previous.top;
+      body.style.width = previous.width;
+      window.scrollTo({ top: scrollY, left: 0, behavior: 'instant' });
       document.removeEventListener('keydown', onKeyDown);
     };
-  }, [isPanelMounted]);
+  }, [isOpen, isPanelMounted]);
 
   return (
     <>
