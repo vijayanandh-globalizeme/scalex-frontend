@@ -92,7 +92,7 @@ function ArrowRightIcon({ className }: { className?: string }) {
 function SessionCard({ session }: { session: LiveSession }) {
   const { openBrochureModal } = useCourseBrochureModal();
   return (
-    <article className="flex flex-col overflow-hidden rounded-2xl border border-zinc-100 bg-white shadow-[0_4px_4px_0_rgba(30,41,59,0.06)]">
+    <article className="flex flex-col overflow-hidden rounded-2xl border border-zinc-100 bg-white shadow-[0_4px_4px_0_rgba(30,41,59,0.03),0_4px_4px_0_rgba(30,41,59,0.06)] transition hover:shadow-lg">
       {session.imageSrc && (
         <div className="relative aspect-[16/9] w-full">
           <Image
@@ -173,7 +173,7 @@ export default function LiveSessionsSection() {
   return (
     <section
       ref={sectionRef}
-      className="full-bleed relative bg-surface py-14 md:py-16 lg:py-20"
+      className="full-bleed relative bg-surface pb-14 pt-0 md:pb-16 lg:pb-20"
       aria-labelledby="live-sessions-heading"
     >
       <div className="site-container relative z-10">

@@ -383,24 +383,17 @@ export default function CoursesSection({
 
   rowRefs.current.length = courseRows.length;
 
-  // Mark section as seen once it scrolls into view so tab-switch rows skip GSAP
-  useEffect(() => {
-    const el = sectionRef.current;
-    if (!el) return;
-    const obs = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting) {
-        sectionSeenRef.current = true;
-        obs.disconnect();
-      }
-    }, { threshold: 0.1 });
-    obs.observe(el);
-    return () => obs.disconnect();
-  }, []);
-
   useGsapScrollRevealStagger(
     sectionRef,
     rowRefs,
-    { y: 40, duration: 0.8, delay: 0.1, ease: 'power2.out', start: 'top 88%' },
+    {
+      y: 40,
+      duration: 0.8,
+      delay: 0.1,
+      ease: 'power2.out',
+      start: 'top 88%',
+      skipRevealed: true,
+    },
     [activeTabId, cols, isLoading],
   );
 
@@ -425,10 +418,18 @@ export default function CoursesSection({
 
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (prefersReducedMotion) {
+      newRows.forEach((row) => {
+        row.classList.remove('gsap-reveal-pending');
+        row.classList.add('gsap-reveal-done');
+      });
       expandStartHeightRef.current = null;
       expandStartRowRef.current = null;
       return undefined;
     }
+
+    newRows.forEach((row) => {
+      row.classList.remove('gsap-reveal-pending', 'gsap-reveal-done');
+    });
 
     const endHeight = container.scrollHeight;
     gsap.set(newRows, { autoAlpha: 0, y: 24 });
@@ -437,8 +438,9 @@ export default function CoursesSection({
       onComplete: () => {
         gsap.set(container, { clearProps: 'height,overflow' });
         newRows.forEach((row) => {
+          row.classList.remove('gsap-reveal-pending');
           row.classList.add('gsap-reveal-done');
-          gsap.set(row, { clearProps: 'transform' });
+          gsap.set(row, { clearProps: 'all' });
         });
         expandStartHeightRef.current = null;
         expandStartRowRef.current = null;
@@ -459,6 +461,7 @@ export default function CoursesSection({
 
     return () => {
       tween.kill();
+      gsap.set(container, { clearProps: 'height,overflow' });
     };
   }, [visibleCount, courseRows.length, isLoading]);
 
@@ -537,7 +540,7 @@ export default function CoursesSection({
               <div
                 key={`${activeTabId}-row-${rowIndex}`}
                 ref={(el) => { rowRefs.current[rowIndex] = el; }}
-                className="gsap-reveal-pending grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 [&+&]:mt-6"
+                className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 [&+&]:mt-6"
               >
                 {rowCourses.map((course) => (
                   <CourseCard key={`${activeTabId}-${course.id}`} course={course} currencySymbol={currencySymbol} />

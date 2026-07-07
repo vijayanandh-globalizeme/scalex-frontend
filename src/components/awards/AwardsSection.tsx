@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { CategoryCarouselControls } from '@/components/category/CategoryCarouselNav';
 
 export interface AwardCard {
@@ -39,6 +39,8 @@ const VARIANT_STYLES: Record<AwardCard['variant'], { bg: string }> = {
   orange: { bg: 'bg-[#CB3D4D]' },
   red: { bg: 'bg-[#4899C2]' },
 };
+
+const GAP_PX = 24;
 
 function ArrowRightIcon({ className }: { className?: string }) {
   return (
@@ -82,7 +84,7 @@ function AwardCardItem({ card, embedded = false }: { card: AwardCard; embedded?:
   const styles = VARIANT_STYLES[card.variant];
   return (
     <article
-      className={`relative h-[169px] w-full rounded-[16px] ${card.backgroundColor ? '' : styles.bg} px-5 pb-5 pt-12 text-white shadow-[0_10px_24px_-10px_rgba(15,23,42,0.25)] ${embedded ? '' : 'max-w-[412px]'}`}
+      className={`relative h-[169px] w-full rounded-[16px] ${card.backgroundColor ? '' : styles.bg} px-5 pb-5 pt-12 text-white shadow-[0_10px_24px_-10px_rgba(15,23,42,0.25)]`}
       style={card.backgroundColor ? { backgroundColor: card.backgroundColor } : undefined}
     >
       <div
@@ -128,31 +130,40 @@ function AwardCardItem({ card, embedded = false }: { card: AwardCard; embedded?:
 }
 
 function CarouselControls({
+  page,
+  totalPages,
   onPrev,
   onNext,
   prevLabel,
   nextLabel,
 }: {
+  page: number;
+  totalPages: number;
   onPrev: () => void;
   onNext: () => void;
   prevLabel: string;
   nextLabel: string;
 }) {
+  const canGoPrev = page > 0;
+  const canGoNext = page < totalPages - 1;
+
   return (
     <div className="flex justify-end gap-3">
       <button
         type="button"
         onClick={onPrev}
+        disabled={!canGoPrev}
         aria-label={prevLabel}
-        className="btn-mui-brand-tint flex h-10 w-10 items-center justify-center rounded-full border border-accent bg-white text-accent"
+        className="btn-mui-brand-tint flex h-10 w-10 items-center justify-center rounded-full border border-accent bg-white text-accent disabled:cursor-not-allowed disabled:opacity-40"
       >
         <ArrowRightIcon className="btn-arrow-icon h-3.5 w-3.5 rotate-180" />
       </button>
       <button
         type="button"
         onClick={onNext}
+        disabled={!canGoNext}
         aria-label={nextLabel}
-        className="btn-mui-icon-filled flex h-10 w-10 items-center justify-center rounded-full"
+        className="btn-mui-icon-filled flex h-10 w-10 items-center justify-center rounded-full disabled:cursor-not-allowed disabled:opacity-40"
       >
         <ArrowRightIcon className="btn-arrow-icon h-3.5 w-3.5" />
       </button>
@@ -174,6 +185,8 @@ export default function AwardsSection({
 }: AwardsSectionProps) {
   const [index, setIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
+  const viewportRef = useRef<HTMLDivElement>(null);
+  const [slideMetrics, setSlideMetrics] = useState({ cardWidth: 0, step: 0 });
   const total = cards.length;
   const isEmbedded = variant === 'embedded';
 
@@ -186,26 +199,50 @@ export default function AwardsSection({
     return () => window.removeEventListener('resize', compute);
   }, [visibleCount]);
 
-  const maxIndex = Math.max(0, total - perView);
+  useEffect(() => {
+    const viewport = viewportRef.current;
+    if (!viewport) return undefined;
 
-  const goPrev = () =>
-    setIndex((i) => (isEmbedded ? Math.max(0, i - 1) : i <= 0 ? maxIndex : i - 1));
-  const goNext = () =>
-    setIndex((i) => (isEmbedded ? Math.min(maxIndex, i + 1) : i >= maxIndex ? 0 : i + 1));
+    const update = () => {
+      const width = viewport.clientWidth;
+      if (width <= 0) return;
+      const gap = perView === 1 ? 0 : GAP_PX;
+      const cardWidth = (width - gap * Math.max(0, perView - 1)) / perView;
+      setSlideMetrics({ cardWidth, step: cardWidth + gap });
+    };
+
+    update();
+    const observer = new ResizeObserver(update);
+    observer.observe(viewport);
+    window.addEventListener('resize', update);
+    return () => {
+      observer.disconnect();
+      window.removeEventListener('resize', update);
+    };
+  }, [perView]);
+
+  const maxIndex = Math.max(0, total - perView);
+  const canNavigateDesktop = total > visibleCount;
+  const canNavigateMobile = total > 1;
+
+  useEffect(() => {
+    setIndex((i) => Math.min(i, maxIndex));
+  }, [maxIndex]);
+
+  const goPrev = () => setIndex((i) => Math.max(0, i - 1));
+  const goNext = () => setIndex((i) => Math.min(maxIndex, i + 1));
 
   useEffect(() => {
     if (!autoplay || maxIndex === 0 || isPaused || isEmbedded) return;
     const timerId = window.setInterval(() => {
-      setIndex((i) => (i >= maxIndex ? 0 : i + 1));
+      setIndex((i) => Math.min(i + 1, maxIndex));
     }, autoplayIntervalMs);
     return () => window.clearInterval(timerId);
   }, [autoplay, autoplayIntervalMs, isEmbedded, maxIndex, isPaused]);
 
-  const slidePct = 100 / perView;
-  const showControls = total > perView;
-
   const carousel = (
     <div
+      ref={viewportRef}
       className={`relative overflow-hidden pt-14 ${isEmbedded ? 'mt-6' : 'mt-10 md:mt-12'}`}
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
@@ -213,17 +250,24 @@ export default function AwardsSection({
       <div
         className="flex transition-transform duration-500 ease-out will-change-transform"
         style={{
-          transform: `translateX(-${index * slidePct}%)`,
-          gap: perView === 1 ? 0 : 24,
+          gap: perView === 1 ? 0 : GAP_PX,
+          transform:
+            slideMetrics.step > 0
+              ? `translate3d(-${index * slideMetrics.step}px, 0, 0)`
+              : undefined,
         }}
       >
         {cards.map((card) => (
           <div
             key={card.id}
             className="shrink-0"
-            style={{
-              width: `calc(${slidePct}% - ${(24 * (perView - 1)) / perView}px)`,
-            }}
+            style={
+              slideMetrics.cardWidth > 0
+                ? { width: slideMetrics.cardWidth }
+                : {
+                    flex: `0 0 calc((100% - ${(perView - 1) * GAP_PX}px) / ${perView})`,
+                  }
+            }
           >
             <AwardCardItem card={card} embedded={isEmbedded} />
           </div>
@@ -243,7 +287,7 @@ export default function AwardsSection({
           <h2 id={headingId} className="text-[34px] font-bold leading-tight text-heading">
             {heading}
           </h2>
-          {showControls ? (
+          {maxIndex > 0 ? (
             <CategoryCarouselControls
               page={index}
               totalPages={maxIndex + 1}
@@ -287,9 +331,24 @@ export default function AwardsSection({
 
         {carousel}
 
-        {showControls ? (
-          <div className="mt-6 pb-20">
+        {canNavigateMobile ? (
+          <div className="mt-6 pb-20 md:hidden">
             <CarouselControls
+              page={index}
+              totalPages={maxIndex + 1}
+              onPrev={goPrev}
+              onNext={goNext}
+              prevLabel="Previous awards"
+              nextLabel="Next awards"
+            />
+          </div>
+        ) : null}
+
+        {canNavigateDesktop ? (
+          <div className="mt-6 hidden pb-20 md:block">
+            <CarouselControls
+              page={index}
+              totalPages={maxIndex + 1}
               onPrev={goPrev}
               onNext={goNext}
               prevLabel="Previous awards"
