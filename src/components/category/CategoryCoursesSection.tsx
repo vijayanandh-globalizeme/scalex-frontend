@@ -142,7 +142,16 @@ export default function CategoryCoursesSection({
   useGsapScrollRevealStagger(
     sectionRef,
     rowRefs,
-    { y: 40, duration: 0.8, delay: 0.1, ease: 'power2.out', start: 'top 88%' },
+    {
+      y: 40,
+      duration: 0.8,
+      delay: 0.1,
+      ease: 'power2.out',
+      start: 'top 88%',
+      skipRevealed: true,
+      expandDuration: 0.55,
+      expandStagger: 0.08,
+    },
     [courseRows.length, cols],
   );
 

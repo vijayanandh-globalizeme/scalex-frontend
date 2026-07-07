@@ -2,7 +2,8 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import gsap from 'gsap';
 import { useGsapScrollReveal, useGsapScrollRevealStagger } from '@/hooks/useGsapScrollReveal';
 import { useGridColumns } from '@/hooks/useGridColumns';
 import type { MegaMenuCategory } from '@/lib/allCoursesMegaMenu';
@@ -322,10 +323,12 @@ export default function CoursesSection({
   const [isLoading, setIsLoading]       = useState<boolean>(true);
 
   const sectionRef     = useRef<HTMLElement>(null);
+  const gridContainerRef = useRef<HTMLDivElement>(null);
   const rowRefs        = useRef<(HTMLDivElement | null)[]>([]);
   const headerRef      = useRef<HTMLElement>(null);
-  const sectionSeenRef = useRef<boolean>(false);
   const courseCache    = useRef<Map<string, Course[]>>(new Map());
+  const expandStartHeightRef = useRef<number | null>(null);
+  const expandStartRowRef = useRef<number | null>(null);
   const cols           = useGridColumns();
 
   const loadCourses = useCallback(async (categoryId?: string) => {
@@ -351,9 +354,20 @@ export default function CoursesSection({
   }, [loadCourses, initialVisibleCount]);
 
   function handleTabClick(tab: CourseTab) {
+    expandStartHeightRef.current = null;
+    expandStartRowRef.current = null;
     setActiveTabId(tab.id);
     setVisibleCount(initialVisibleCount);
     loadCourses(tab.categoryId);
+  }
+
+  function handleViewMore() {
+    const container = gridContainerRef.current;
+    if (container) {
+      expandStartHeightRef.current = container.offsetHeight;
+      expandStartRowRef.current = courseRows.length;
+    }
+    setVisibleCount((c) => c + loadMoreStep);
   }
 
   const visibleCourses = courses.slice(0, visibleCount);
@@ -387,8 +401,66 @@ export default function CoursesSection({
     sectionRef,
     rowRefs,
     { y: 40, duration: 0.8, delay: 0.1, ease: 'power2.out', start: 'top 88%' },
-    [activeTabId, courseRows.length, cols],
+    [activeTabId, cols, isLoading],
   );
+
+  useLayoutEffect(() => {
+    const startHeight = expandStartHeightRef.current;
+    const startRow = expandStartRowRef.current;
+    if (startHeight == null || startRow == null || isLoading) return undefined;
+
+    const container = gridContainerRef.current;
+    if (!container) {
+      expandStartHeightRef.current = null;
+      expandStartRowRef.current = null;
+      return undefined;
+    }
+
+    const newRows = rowRefs.current.slice(startRow).filter(Boolean) as HTMLDivElement[];
+    if (newRows.length === 0) {
+      expandStartHeightRef.current = null;
+      expandStartRowRef.current = null;
+      return undefined;
+    }
+
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReducedMotion) {
+      expandStartHeightRef.current = null;
+      expandStartRowRef.current = null;
+      return undefined;
+    }
+
+    const endHeight = container.scrollHeight;
+    gsap.set(newRows, { autoAlpha: 0, y: 24 });
+
+    const tween = gsap.timeline({
+      onComplete: () => {
+        gsap.set(container, { clearProps: 'height,overflow' });
+        newRows.forEach((row) => {
+          row.classList.add('gsap-reveal-done');
+          gsap.set(row, { clearProps: 'transform' });
+        });
+        expandStartHeightRef.current = null;
+        expandStartRowRef.current = null;
+      },
+    });
+
+    tween.fromTo(
+      container,
+      { height: startHeight, overflow: 'hidden' },
+      { height: endHeight, duration: 0.5, ease: 'power2.out' },
+      0,
+    );
+    tween.to(
+      newRows,
+      { autoAlpha: 1, y: 0, duration: 0.45, stagger: 0.08, ease: 'power2.out' },
+      0.05,
+    );
+
+    return () => {
+      tween.kill();
+    };
+  }, [visibleCount, courseRows.length, isLoading]);
 
   useGsapScrollReveal(sectionRef, headerRef, {
     y: 40, duration: 1.2, delay: 0.1, start: 'top 88%',
@@ -438,7 +510,7 @@ export default function CoursesSection({
           })}
         </div>
 
-        <div className="mt-8 md:mt-10">
+        <div ref={gridContainerRef} className="mt-8 md:mt-10">
           {isLoading ? (
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
               {Array.from({ length: initialVisibleCount }).map((_, i) => (
@@ -465,7 +537,7 @@ export default function CoursesSection({
               <div
                 key={`${activeTabId}-row-${rowIndex}`}
                 ref={(el) => { rowRefs.current[rowIndex] = el; }}
-                className={`grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 [&+&]:mt-6${sectionSeenRef.current ? '' : ' gsap-reveal-pending'}`}
+                className="gsap-reveal-pending grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 [&+&]:mt-6"
               >
                 {rowCourses.map((course) => (
                   <CourseCard key={`${activeTabId}-${course.id}`} course={course} currencySymbol={currencySymbol} />
@@ -483,7 +555,7 @@ export default function CoursesSection({
           <div className="mt-10 flex justify-center">
             <button
               type="button"
-              onClick={() => setVisibleCount((c) => c + loadMoreStep)}
+              onClick={handleViewMore}
               className="inline-flex items-center gap-2 text-[14px] font-semibold text-brand underline-offset-4 transition hover:underline"
             >
               {viewMoreLabel}
