@@ -329,7 +329,13 @@ export default function GuidanceSection({
             </ul>
           </div>
 
-          <div className={isEmbedded ? 'relative w-full' : 'relative z-20 mb-[-40px] w-full self-start'}>
+          <div
+            className={
+              isEmbedded
+                ? 'relative w-full'
+                : 'relative z-20 mb-[-40px] w-full translate-y-[10%] self-start'
+            }
+          >
             <GuidanceForm
               formTitle={formTitle}
               purposes={purposes}
