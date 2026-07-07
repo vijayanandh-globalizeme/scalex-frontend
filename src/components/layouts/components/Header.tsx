@@ -120,7 +120,7 @@ const Header = ({
 
               <Link
                 href="#"
-                className="btn-brand-outline btn-brand-outline-hover-fill header-fluid-text flex h-10 shrink-0 items-center gap-1.5 px-3 py-0 shadow-none min-[1400px]:gap-2 min-[1400px]:px-4"
+                className="btn-brand-outline btn-brand-outline-hover-fill header-fluid-text flex h-10 shrink-0 items-center gap-1.5 px-3 py-0 min-[1400px]:gap-2 min-[1400px]:px-4"
               >
                 Sign In
                 <SignInArrow className="btn-arrow-icon shrink-0 text-current" />

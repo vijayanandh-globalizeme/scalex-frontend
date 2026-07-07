@@ -55,7 +55,7 @@ function ChevronRight({ className }: { className?: string }) {
 }
 
 const triggerClass =
-  'btn-brand-outline btn-brand-outline-hover-fill header-fluid-text flex h-[40px] w-[133px] shrink-0 items-center justify-center gap-1 cursor-pointer shadow-none';
+  'btn-brand-outline btn-brand-outline-hover-fill header-fluid-text flex h-[40px] w-[133px] shrink-0 items-center justify-center gap-1 cursor-pointer';
 
 type MegaMenuPanelProps = {
   categories: MegaMenuCategory[];

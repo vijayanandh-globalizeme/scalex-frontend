@@ -230,6 +230,7 @@ body {
     .btn-brand,
     .btn-brand-outline,
     .btn-brand-outline--flat,
+    .btn-brand-outline-hover-fill,
     .header-nav-parent-hover,
     .btn-accent-outline,
     .btn-mui-brand-tint,
@@ -348,6 +349,22 @@ body {
 
   .btn-brand-outline--flat {
     box-shadow: inset 0 0 0 100vmax rgba(253, 2, 45, 0);
+  }
+
+  /* Header outline buttons — flat, same light brand tint hover as hero secondary CTA */
+  .btn-brand-outline.btn-brand-outline-hover-fill {
+    box-shadow: inset 0 0 0 100vmax rgba(253, 2, 45, 0);
+  }
+
+  a.btn-brand-outline.btn-brand-outline-hover-fill:hover,
+  button.btn-brand-outline.btn-brand-outline-hover-fill:hover,
+  .btn-brand-outline.btn-brand-outline-hover-fill:focus-visible {
+    box-shadow: inset 0 0 0 100vmax rgba(253, 2, 45, 0.08);
+  }
+
+  a.btn-brand-outline.btn-brand-outline-hover-fill:active,
+  button.btn-brand-outline.btn-brand-outline-hover-fill:active {
+    box-shadow: inset 0 0 0 100vmax rgba(253, 2, 45, 0.12);
   }
 
   a.btn-brand-outline:hover,
