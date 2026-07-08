@@ -178,7 +178,7 @@ export default function WorkforceSection({
           <div className="text-white min-[1100px]:ml-auto min-[1100px]:w-full min-[1100px]:max-w-[560px] min-[1100px]:justify-self-end">
             <h2
               id="workforce-heading"
-              className="text-[28px] font-extrabold leading-tight md:text-[34px] lg:text-[36px]"
+              className="section-heading font-extrabold leading-tight md:text-[34px] lg:text-[36px]"
             >
               {headingBefore}
               <span className="mx-2 inline-block align-middle whitespace-nowrap" aria-label={brandLogo.alt}>
@@ -213,10 +213,14 @@ export default function WorkforceSection({
         {/* Bottom: hiring partners strip (overlaps next section by half) */}
         {partners.length > 0 ? (
           <div className="relative z-50 mt-1 md:mt-10 mb-[-72px] translate-y-1/2 rounded-2xl bg-white px-6 py-8 shadow-[0_10px_30px_-10px_rgba(15,23,42,0.25)] md:mt-12 md:mb-[-130px] md:px-10 md:py-10">
-            <LogoMarquee
-              logos={partners.map((p) => ({ id: p.id, src: p.logoSrc, alt: p.logoAlt }))}
-              ariaLabel="Hiring partners"
-            />
+            <div className="w-full min-w-0 overflow-hidden">
+              <LogoMarquee
+                logos={partners.map((p) => ({ id: p.id, src: p.logoSrc, alt: p.logoAlt }))}
+                size="sm"
+                largeOnMobile
+                ariaLabel="Hiring partners"
+              />
+            </div>
           </div>
         ) : null}
       </div>

@@ -1,8 +1,11 @@
 .marquee {
+  position: relative;
   overflow: hidden;
+  overflow-x: clip;
   width: 100%;
   max-width: 100%;
   min-width: 0;
+  touch-action: pan-y;
   -webkit-mask-image: linear-gradient(
     to right,
     transparent,
@@ -58,16 +61,19 @@
 .track {
   display: flex;
   width: max-content;
-  animation: logo-marquee-scroll 40s linear infinite;
   will-change: transform;
 }
 
-.marquee:hover .track {
+.trackLoopReady {
+  animation: logo-marquee-scroll 40s linear infinite;
+}
+
+.marquee:hover .trackLoopReady {
   animation-play-state: paused;
 }
 
-.trackReverse {
-  animation-direction: reverse;
+.trackReverse.trackLoopReady {
+  animation-name: logo-marquee-scroll-reverse;
 }
 
 @keyframes logo-marquee-scroll {
@@ -75,7 +81,16 @@
     transform: translate3d(0, 0, 0);
   }
   to {
-    transform: translate3d(-50%, 0, 0);
+    transform: translate3d(calc(var(--loop-distance) * -1), 0, 0);
+  }
+}
+
+@keyframes logo-marquee-scroll-reverse {
+  from {
+    transform: translate3d(calc(var(--loop-distance) * -1), 0, 0);
+  }
+  to {
+    transform: translate3d(0, 0, 0);
   }
 }
 

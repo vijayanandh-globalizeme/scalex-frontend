@@ -12,7 +12,7 @@ import CourseBatchRequestBanner from '@/components/course-detail/CourseBatchRequ
 import type { ApiTrainer } from '@/services/courseApi';
 
 const TRAINER_CARD =
-  'relative flex h-full flex-col rounded-[20px] border border-[#EBEBEB] bg-white px-5 pb-5 pt-12 text-center shadow-[0_4px_14px_-4px_rgba(30,41,59,0.08),0_4px_4px_0_rgba(30,41,59,0.03)]';
+  'relative flex h-full cursor-pointer flex-col rounded-[20px] border border-[#EBEBEB] bg-white px-5 pb-5 pt-12 text-center shadow-[0_4px_14px_-4px_rgba(30,41,59,0.08),0_4px_4px_0_rgba(30,41,59,0.03)] transition-shadow duration-200 hover:shadow-[0_8px_20px_-6px_rgba(30,41,59,0.16)]';
 
 function BriefcaseIcon() {
   return (
@@ -49,17 +49,17 @@ function TrainerCard({ trainer }: { trainer: ApiTrainer }) {
       <p className="mt-3 line-clamp-4 text-[14px] font-normal leading-normal text-muted">{trainer.about}</p>
 
       <div className="mt-4 border-t border-[#EBEBEB] pt-4">
-        <div className="flex items-center justify-between gap-3">
+        <div className="flex flex-col items-center gap-2">
           <p className="text-[12px] font-normal leading-normal text-muted uppercase">Associated with</p>
           {trainer.assocWith ? (
-            <div className="relative flex h-7 min-w-[80px] items-center justify-end">
+            <div className="relative flex h-9 min-w-[106px] items-center justify-center">
               <Image
                 src={trainer.assocWith.url}
                 alt={trainer.name}
-                width={80}
-                height={24}
-                className="h-auto max-h-6 w-auto max-w-full object-contain"
-                sizes="80px"
+                width={106}
+                height={35}
+                className="h-auto max-h-9 w-auto max-w-full object-contain"
+                sizes="106px"
               />
             </div>
           ) : null}
@@ -121,7 +121,7 @@ export default function CourseTrainersCarousel({
     <div id="trainers" className="scroll-mt-[116px] mb-0">
       <div className="py-5 md:py-6">
         <div className="flex items-center justify-between gap-4">
-          <h2 className="text-[34px] font-bold leading-[140%] text-heading">{title}</h2>
+          <h2 className="section-heading text-heading">{title}</h2>
           {totalPages > 1 ? (
             <CategoryCarouselControls
               page={page}

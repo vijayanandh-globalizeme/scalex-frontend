@@ -66,7 +66,7 @@ export default function CourseContentSection({
   return (
     <div id="course-content" className={`scroll-mt-[116px] ${COURSE_SECTION_CARD} px-6 py-5 md:px-8 md:py-6`}>
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <h2 className="text-[34px] font-bold leading-[140%] text-heading">{title ?? COURSE_CONTENT_TITLE}</h2>
+        <h2 className="section-heading text-heading">{title ?? COURSE_CONTENT_TITLE}</h2>
         {syllabusUrl ? (
           <CourseBrochureCta
             openModal
@@ -107,12 +107,14 @@ export default function CourseContentSection({
                 className={`grid transition-all duration-200 ease-in-out ${isOpen ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'}`}
               >
                 <div className="overflow-hidden">
-                  <div className="flex gap-3 px-5 pb-5 md:px-6">
-                    <span className="h-4 w-4 shrink-0" aria-hidden />
-                    <div
-                      className="min-w-0 flex-1 rounded-lg bg-[#F8F9FB] p-5 md:p-6 [&_h3]:mb-2 [&_h3]:mt-4 [&_h3]:text-[13px] [&_h3]:font-semibold [&_h3]:text-heading [&_h3:first-child]:mt-0 [&_p]:text-[13px] [&_p]:leading-relaxed [&_p]:text-muted"
-                      dangerouslySetInnerHTML={{ __html: module.content.replaceAll('&nbsp;', ' ') }}
-                    />
+                  <div className="px-5 pb-5 md:px-6">
+                    <div className="md:flex md:gap-3">
+                      <span className="hidden h-4 w-4 shrink-0 md:block" aria-hidden />
+                      <div
+                        className="w-full min-w-0 rounded-lg bg-[#F8F9FB] p-5 md:flex-1 md:p-6 [&_h3]:mb-2 [&_h3]:mt-4 [&_h3]:text-[13px] [&_h3]:font-semibold [&_h3]:text-heading [&_h3:first-child]:mt-0 [&_p]:text-[13px] [&_p]:leading-relaxed [&_p]:text-muted"
+                        dangerouslySetInnerHTML={{ __html: module.content.replaceAll('&nbsp;', ' ') }}
+                      />
+                    </div>
                   </div>
                 </div>
               </div>

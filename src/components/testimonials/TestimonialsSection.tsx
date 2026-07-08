@@ -356,7 +356,7 @@ export default function TestimonialsSection({
         <div className="grid items-start gap-10 lg:grid-cols-[1fr_1.1fr_1fr]">
           {/* Left: heading & subheading */}
           <div className="text-white lg:self-center">
-            <h2 id="stories-heading" className="text-[28px] font-extrabold leading-tight md:text-[34px]">
+            <h2 id="stories-heading" className="section-heading font-extrabold leading-tight">
               {heading.split(',').map((line, i, arr) => (
                 <span key={i} className="block">
                   {line.trim()}

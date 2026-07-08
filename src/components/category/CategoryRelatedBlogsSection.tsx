@@ -2,29 +2,40 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { useEffect, useRef, useState, useTransition } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import {
   CategoryCarouselControls,
   CategoryCarouselTrack,
+  chunkPages,
 } from '@/components/category/CategoryCarouselNav';
 import { getBlogs, type ApiBlogListItem } from '@/app/actions/blogActions';
 
 const FETCH_LIMIT = 6;
+const MOBILE_SLIDE_SIZE = 2;
 const AUTHOR_AVATAR = '/images/Alex.png';
 const DEFAULT_BLOG_IMAGE = '/images/course/course-1.png';
 const BLOG_CARD_WIDTH = 'max-w-[412px] w-full';
-const SOLID_CARD_HEIGHT = 'h-[196px]';
+const BLOG_IMAGE_H = 170;
+const BLOG_IMAGE_OVERFLOW_PX = Math.round(BLOG_IMAGE_H * 0.1);
+const MOBILE_BLOG_IMAGE_H = 100;
+const MOBILE_BLOG_IMAGE_OVERFLOW_PX = Math.round(MOBILE_BLOG_IMAGE_H * 0.1);
+const SOLID_CARD_HEIGHT = 'min-h-[196px]';
+const CARD_SHADOW =
+  'cursor-pointer shadow-[0_4px_4px_0_rgba(30,41,59,0.11),0_4px_4px_0_rgba(30,41,59,0.03)] transition-shadow duration-200 hover:shadow-[0_8px_20px_-6px_rgba(30,41,59,0.16)]';
 
-type BlogVariant = 'default' | 'solid-red' | 'solid-tan' | 'solid-teal' | 'image-middle';
+type BlogVariant = 'default' | 'solid-red' | 'solid-tan' | 'solid-teal';
 
+/** Matches screenshot: white / solid / white per row, 3-column masonry. */
 const VARIANT_CYCLE: BlogVariant[] = [
-  'image-middle', 'solid-red', 'default',
-  'solid-tan', 'image-middle', 'solid-teal',
+  'default',
+  'solid-red',
+  'default',
+  'solid-tan',
+  'default',
+  'solid-teal',
 ];
 
-const SOLID_BG: Record<BlogVariant, string | undefined> = {
-  default: undefined,
-  'image-middle': undefined,
+const SOLID_BG: Record<Exclude<BlogVariant, 'default'>, string> = {
   'solid-red': '#CB3D4D',
   'solid-tan': '#BB9255',
   'solid-teal': '#4899C2',
@@ -47,7 +58,7 @@ function apiBlogToItem(blog: ApiBlogListItem, index: number): BlogItem {
     id: blog.id,
     title: blog.title,
     excerpt: blog.shortDescription ?? '',
-    author: blog.trainerName ?? ' EdgeX Team',
+    author: blog.trainerName ?? 'EdgeX Team',
     date: blog.createdAt
       ? new Date(blog.createdAt).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })
       : '',
@@ -71,18 +82,22 @@ function ArrowRightSmall({ className }: { className?: string }) {
 
 function BlogCardFooter({ blog, isSolid, compact = false }: { blog: BlogItem; isSolid: boolean; compact?: boolean }) {
   return (
-    <div className={`mt-auto flex items-center justify-between gap-2 border-t ${compact ? 'pt-3' : 'pt-4'} ${isSolid ? 'border-white/25' : 'border-zinc-100'}`}>
+    <div
+      className={`mt-auto flex items-center justify-between gap-2 border-t ${compact ? 'pt-3' : 'pt-4'} ${isSolid ? 'border-white/25' : 'border-zinc-100'}`}
+    >
       <div className="flex min-w-0 items-center gap-2">
-        <span className={`relative shrink-0 overflow-hidden rounded-full ${compact ? 'h-8 w-8' : 'h-9 w-9'} ${isSolid ? 'ring-2 ring-white/30' : 'ring-1 ring-zinc-200'}`}>
+        <span
+          className={`relative shrink-0 overflow-hidden rounded-full ${compact ? 'h-8 w-8' : 'h-9 w-9'} ${isSolid ? 'ring-2 ring-white/30' : 'ring-1 ring-zinc-200'}`}
+        >
           <Image src={blog.authorAvatar} alt="" fill sizes="36px" loading="eager" className="object-cover" />
         </span>
         <span className="min-w-0">
-          <span className={`block truncate text-[11px] font-bold tracking-wide ${isSolid ? 'text-white' : 'text-heading'}`}>
+          <span
+            className={`block truncate text-[11px] font-bold uppercase tracking-wide ${isSolid ? 'text-white' : 'text-heading'}`}
+          >
             {blog.author}
           </span>
-          <span className={`text-[11px] font-medium ${isSolid ? 'text-white/75' : 'text-muted'}`}>
-            {blog.date}
-          </span>
+          <span className={`text-[11px] font-medium ${isSolid ? 'text-white/75' : 'text-muted'}`}>{blog.date}</span>
         </span>
       </div>
       <Link
@@ -96,47 +111,90 @@ function BlogCardFooter({ blog, isSolid, compact = false }: { blog: BlogItem; is
   );
 }
 
-function BlogCard({ blog }: { blog: BlogItem }) {
-  const isSolid = blog.variant.startsWith('solid-');
-  const bg = SOLID_BG[blog.variant];
-
-  if (blog.variant === 'image-middle') {
-    return (
-      <article className={`flex flex-col overflow-hidden rounded-2xl border border-zinc-100/80 bg-white p-6 shadow-[0_4px_14px_-4px_rgba(30,41,59,0.12)] ${BLOG_CARD_WIDTH}`}>
-        <div className="relative h-[170px] w-full overflow-hidden rounded-xl">
-          <Image src={blog.imageSrc} alt="" fill sizes="(max-width: 1024px) 33vw, 400px" loading="eager" className="object-cover" />
-        </div>
-        <h3 className="mt-5 text-[17px] font-bold leading-snug text-heading">{blog.title}</h3>
-        <p className="mt-3 flex-1 line-clamp-4 text-[14px] leading-relaxed text-muted">{blog.excerpt}</p>
-        <BlogCardFooter blog={blog} isSolid={false} />
-      </article>
-    );
-  }
-
-  if (isSolid && bg) {
-    return (
-      <article
-        className={`flex ${SOLID_CARD_HEIGHT} ${BLOG_CARD_WIDTH} flex-col overflow-hidden rounded-[16px] p-5 shadow-[0_4px_14px_-4px_rgba(30,41,59,0.12)]`}
-        style={{ backgroundColor: bg }}
-      >
-        <div className="min-h-0 flex-1">
-          <h3 className="line-clamp-2 text-[15px] font-bold leading-snug text-white">{blog.title}</h3>
-          <p className="mt-2 line-clamp-2 text-[13px] leading-relaxed text-white/90">{blog.excerpt}</p>
-        </div>
-        <BlogCardFooter blog={blog} isSolid compact />
-      </article>
-    );
-  }
+function WhiteBlogCard({ blog, mobile = false }: { blog: BlogItem; mobile?: boolean }) {
+  const imageH = mobile ? MOBILE_BLOG_IMAGE_H : BLOG_IMAGE_H;
+  const imageOverflow = mobile ? MOBILE_BLOG_IMAGE_OVERFLOW_PX : BLOG_IMAGE_OVERFLOW_PX;
+  const widthClass = mobile ? 'w-full' : BLOG_CARD_WIDTH;
 
   return (
-    <article className={`flex flex-col overflow-hidden rounded-2xl border border-zinc-100/80 bg-white p-6 shadow-[0_4px_14px_-4px_rgba(30,41,59,0.12)] ${BLOG_CARD_WIDTH}`}>
-      <div className="relative h-[170px] w-full overflow-hidden rounded-xl">
-        <Image src={blog.imageSrc} alt="" fill sizes="(max-width: 1024px) 33vw, 400px" loading="eager" className="object-cover" />
+    <article className={`overflow-visible ${widthClass}`}>
+      <div
+        className={`flex flex-col overflow-visible rounded-2xl border border-zinc-100 bg-white pt-0 ${CARD_SHADOW} ${
+          mobile ? 'px-3 pb-4' : 'px-4 pb-6'
+        }`}
+      >
+        <div
+          className={`relative z-10 w-full overflow-hidden rounded-2xl ${mobile ? 'mb-3' : 'mb-4'}`}
+          style={{
+            height: imageH,
+            marginTop: -imageOverflow,
+          }}
+        >
+          <Image
+            src={blog.imageSrc}
+            alt=""
+            fill
+            sizes={mobile ? '45vw' : '(max-width: 1024px) 90vw, 412px'}
+            loading="eager"
+            className="object-cover"
+          />
+        </div>
+        <h3 className={`font-bold leading-snug text-heading ${mobile ? 'line-clamp-2 text-[14px]' : 'text-[17px]'}`}>
+          {blog.title}
+        </h3>
+        <p
+          className={`flex-1 text-muted ${mobile ? 'mt-2 line-clamp-2 text-[12px] leading-relaxed' : 'mt-3 line-clamp-4 text-[14px] leading-relaxed'}`}
+        >
+          {blog.excerpt}
+        </p>
+        <BlogCardFooter blog={blog} isSolid={false} compact={mobile} />
       </div>
-      <h3 className="mt-5 text-[17px] font-bold leading-snug text-heading">{blog.title}</h3>
-      <p className="mt-3 flex-1 text-[14px] leading-relaxed text-muted">{blog.excerpt}</p>
-      <BlogCardFooter blog={blog} isSolid={false} />
     </article>
+  );
+}
+
+function SolidBlogCard({ blog, bg, mobile = false }: { blog: BlogItem; bg: string; mobile?: boolean }) {
+  const widthClass = mobile ? 'w-full' : BLOG_CARD_WIDTH;
+
+  return (
+    <article
+      className={`flex flex-col overflow-visible rounded-2xl ${CARD_SHADOW} ${widthClass} ${
+        mobile ? 'min-h-[168px] p-3' : `${SOLID_CARD_HEIGHT} p-5`
+      }`}
+      style={{ backgroundColor: bg }}
+    >
+      <div className="min-h-0 flex-1">
+        <h3 className={`line-clamp-2 font-bold leading-snug text-white ${mobile ? 'text-[13px]' : 'text-[15px]'}`}>
+          {blog.title}
+        </h3>
+        <p
+          className={`line-clamp-2 leading-relaxed text-white/90 ${mobile ? 'mt-1.5 text-[11px]' : 'mt-2 text-[13px]'}`}
+        >
+          {blog.excerpt}
+        </p>
+      </div>
+      <BlogCardFooter blog={blog} isSolid compact />
+    </article>
+  );
+}
+
+function BlogCard({ blog, mobile = false }: { blog: BlogItem; mobile?: boolean }) {
+  if (blog.variant === 'default') {
+    return <WhiteBlogCard blog={blog} mobile={mobile} />;
+  }
+
+  return <SolidBlogCard blog={blog} bg={SOLID_BG[blog.variant]} mobile={mobile} />;
+}
+
+function BlogMobileGrid({ items }: { items: BlogItem[] }) {
+  return (
+    <div className="grid grid-cols-1 gap-6 overflow-visible">
+      {items.map((blog) => (
+        <div key={blog.id} className="min-w-0 overflow-visible">
+          <BlogCard blog={blog} />
+        </div>
+      ))}
+    </div>
   );
 }
 
@@ -148,24 +206,50 @@ function BlogMasonryGrid({ items }: { items: BlogItem[] }) {
   ].filter((col) => col.some(Boolean));
 
   return (
-    <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 lg:items-start">
+    <div className="grid grid-cols-1 gap-6 overflow-visible md:grid-cols-2 lg:grid-cols-3 lg:items-start lg:gap-8">
       {columns.map((column, colIndex) => (
-        <div key={colIndex} className={`flex flex-col gap-6 ${BLOG_CARD_WIDTH} mx-auto lg:mx-0`}>
-          {column.map((blog) => (blog ? <BlogCard key={blog.id} blog={blog} /> : null))}
+        <div
+          key={colIndex}
+          className={`flex flex-col gap-6 lg:gap-8 ${BLOG_CARD_WIDTH} mx-auto lg:mx-0`}
+          style={colIndex === 1 ? undefined : { paddingTop: BLOG_IMAGE_OVERFLOW_PX }}
+        >
+          {column.map((blog, blogIndex) =>
+            blog ? (
+              <div
+                key={blog.id}
+                className="overflow-visible"
+                style={
+                  colIndex === 1 && blogIndex === 1 && blog.variant === 'default'
+                    ? { paddingTop: 20 }
+                    : blog.variant === 'default' && blogIndex > 0
+                      ? { marginTop: -BLOG_IMAGE_OVERFLOW_PX }
+                      : undefined
+                }
+              >
+                <BlogCard blog={blog} />
+              </div>
+            ) : null,
+          )}
         </div>
       ))}
     </div>
   );
 }
 
-function SkeletonCard() {
+function SkeletonCard({ mobile = false }: { mobile?: boolean }) {
+  const imageH = mobile ? MOBILE_BLOG_IMAGE_H : BLOG_IMAGE_H;
+  const imageOverflow = mobile ? MOBILE_BLOG_IMAGE_OVERFLOW_PX : BLOG_IMAGE_OVERFLOW_PX;
+
   return (
-    <div className="animate-pulse rounded-2xl bg-surface-raised">
-      <div className="h-[170px] rounded-t-2xl bg-muted/20" />
-      <div className="space-y-3 p-6">
+    <div className="animate-pulse overflow-visible">
+      <div className={`overflow-visible rounded-2xl bg-surface-raised pt-0 ${mobile ? 'px-3 pb-4' : 'px-4 pb-6'}`}>
+        <div
+          className={`mb-4 w-full rounded-2xl bg-muted/20 ${mobile ? 'mb-3' : ''}`}
+          style={{ height: imageH, marginTop: -imageOverflow }}
+        />
         <div className="h-4 w-4/5 rounded bg-muted/20" />
         <div className="h-4 w-2/3 rounded bg-muted/20" />
-        <div className="h-4 w-1/2 rounded bg-muted/20" />
+        {!mobile ? <div className="h-4 w-1/2 rounded bg-muted/20" /> : null}
       </div>
     </div>
   );
@@ -173,44 +257,106 @@ function SkeletonCard() {
 
 export default function CategoryRelatedBlogsSection({ categoryId }: { categoryId?: string }) {
   const [loading, setLoading] = useState(true);
+  const [pageFetching, setPageFetching] = useState(false);
   const [page, setPage] = useState(0);
+  const [mobileSlide, setMobileSlide] = useState(0);
+  const [isMobile, setIsMobile] = useState(true);
   const [totalPages, setTotalPages] = useState(0);
   const [currentItems, setCurrentItems] = useState<BlogItem[]>([]);
-  const [, startTransition] = useTransition();
 
-  // page index → items; persists until page refresh
   const cache = useRef<Map<number, BlogItem[]>>(new Map());
 
-  async function loadPage(pageIndex: number) {
+  useEffect(() => {
+    const md = window.matchMedia('(min-width: 768px)');
+    const update = () => setIsMobile(!md.matches);
+    update();
+    md.addEventListener('change', update);
+    return () => md.removeEventListener('change', update);
+  }, []);
+
+  const mobilePages = useMemo(
+    () => chunkPages(currentItems, MOBILE_SLIDE_SIZE),
+    [currentItems],
+  );
+
+  async function fetchBlogPage(pageIndex: number): Promise<BlogItem[]> {
     if (cache.current.has(pageIndex)) {
-      setCurrentItems(cache.current.get(pageIndex)!);
-      return;
+      return cache.current.get(pageIndex)!;
     }
-    setLoading(true);
-    const { items, total } = await getBlogs({ limit: FETCH_LIMIT, offset: pageIndex * FETCH_LIMIT, courseCategoryId: categoryId });
-    const mapped = items.map((b, i) => apiBlogToItem(b, i));
+
+    const { items, total } = await getBlogs({
+      limit: FETCH_LIMIT,
+      offset: pageIndex * FETCH_LIMIT,
+      courseCategoryId: categoryId,
+    });
+    const mapped = items.map((b, i) => apiBlogToItem(b, pageIndex * FETCH_LIMIT + i));
     cache.current.set(pageIndex, mapped);
-    setCurrentItems(mapped);
-    setTotalPages(Math.ceil(total / FETCH_LIMIT));
-    setLoading(false);
+    setTotalPages(total > 0 ? Math.ceil(total / FETCH_LIMIT) : 0);
+    return mapped;
+  }
+
+  async function switchBatch(apiPage: number, slide: number | 'last' = 0) {
+    const isFirstLoad = currentItems.length === 0;
+    if (isFirstLoad) {
+      setLoading(true);
+    } else {
+      setPageFetching(true);
+    }
+
+    try {
+      const items = await fetchBlogPage(apiPage);
+      const slideCount = chunkPages(items, MOBILE_SLIDE_SIZE).length;
+      const slideIndex = slide === 'last' ? Math.max(0, slideCount - 1) : slide;
+
+      setPage(apiPage);
+      setCurrentItems(items);
+      setMobileSlide(slideIndex);
+    } finally {
+      setLoading(false);
+      setPageFetching(false);
+    }
   }
 
   useEffect(() => {
-    loadPage(0);
+    void switchBatch(0, 0);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  function goToPage(next: number) {
-    startTransition(() => {
-      setPage(next);
-      loadPage(next);
-    });
+  useEffect(() => {
+    setMobileSlide((current) => Math.min(current, Math.max(0, mobilePages.length - 1)));
+  }, [mobilePages.length, page]);
+
+  function handleNext() {
+    if (isMobile && mobileSlide < mobilePages.length - 1) {
+      setMobileSlide((current) => current + 1);
+      return;
+    }
+    if (page < totalPages - 1) {
+      void switchBatch(page + 1, 0);
+    }
   }
 
-  const isEmpty = !loading && currentItems.length === 0;
+  function handlePrev() {
+    if (isMobile && mobileSlide > 0) {
+      setMobileSlide((current) => current - 1);
+      return;
+    }
+    if (page > 0) {
+      void switchBatch(page - 1, 'last');
+    }
+  }
+
+  const isEmpty = !loading && !pageFetching && currentItems.length === 0;
+  const canGoPrev = isMobile ? mobileSlide > 0 || page > 0 : page > 0;
+  const canGoNext = isMobile
+    ? mobileSlide < mobilePages.length - 1 || page < totalPages - 1
+    : page < totalPages - 1;
+  const showControls = !loading && !pageFetching && !isEmpty && (isMobile ? canGoPrev || canGoNext : totalPages > 1);
+  const carouselPage = isMobile ? mobileSlide : page;
+  const carouselTotalPages = isMobile ? mobilePages.length : totalPages;
 
   return (
-    <section className="full-bleed bg-surface pb-14 md:pb-20" aria-labelledby="related-blogs-heading">
+    <section className="full-bleed overflow-visible bg-surface pb-14 md:pb-20" aria-labelledby="related-blogs-heading">
       <div className="site-container">
         <header className="mx-auto max-w-3xl text-center">
           <h2
@@ -224,27 +370,59 @@ export default function CategoryRelatedBlogsSection({ categoryId }: { categoryId
           </p>
         </header>
 
-        <div className="mt-10 md:mt-12">
-          {loading ? (
-            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {Array.from({ length: FETCH_LIMIT }).map((_, i) => <SkeletonCard key={i} />)}
-            </div>
+        <div
+          className="mt-10 overflow-visible md:mt-12"
+          style={{ paddingTop: BLOG_IMAGE_OVERFLOW_PX }}
+        >
+          {loading && currentItems.length === 0 ? (
+            isMobile ? (
+              <div className="grid grid-cols-1 gap-6">
+                {Array.from({ length: MOBILE_SLIDE_SIZE }).map((_, i) => (
+                  <SkeletonCard key={i} />
+                ))}
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+                {Array.from({ length: FETCH_LIMIT }).map((_, i) => (
+                  <SkeletonCard key={i} />
+                ))}
+              </div>
+            )
           ) : isEmpty ? (
             <p className="py-16 text-center text-[15px] text-muted">No blogs found.</p>
+          ) : isMobile ? (
+            pageFetching ? (
+              <div className="grid grid-cols-1 gap-6">
+                {Array.from({ length: MOBILE_SLIDE_SIZE }).map((_, i) => (
+                  <SkeletonCard key={i} />
+                ))}
+              </div>
+            ) : (
+              <CategoryCarouselTrack
+                key={`related-blogs-mobile-${page}`}
+                page={mobileSlide}
+                clipX={false}
+                slideGap={16}
+              >
+                {mobilePages.map((slideItems, slideIndex) => (
+                  <BlogMobileGrid key={`${page}-${slideIndex}`} items={slideItems} />
+                ))}
+              </CategoryCarouselTrack>
+            )
           ) : (
-            <CategoryCarouselTrack page={page}>
-              {[<BlogMasonryGrid key="blogs" items={currentItems} />]}
-            </CategoryCarouselTrack>
+            <BlogMasonryGrid items={currentItems} />
           )}
         </div>
 
-        {!loading && !isEmpty && totalPages > 1 && (
+        {showControls && (
           <div className="mt-10">
             <CategoryCarouselControls
-              page={page}
-              totalPages={totalPages}
-              onPrev={() => goToPage(Math.max(0, page - 1))}
-              onNext={() => goToPage(Math.min(totalPages - 1, page + 1))}
+              page={carouselPage}
+              totalPages={carouselTotalPages}
+              onPrev={handlePrev}
+              onNext={handleNext}
+              canGoPrev={canGoPrev}
+              canGoNext={canGoNext}
               prevLabel="Previous blogs"
               nextLabel="Next blogs"
             />

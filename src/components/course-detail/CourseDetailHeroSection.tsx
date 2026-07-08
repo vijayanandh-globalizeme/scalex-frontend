@@ -138,7 +138,7 @@ export default function CourseDetailHeroSection({
   return (
     <section
       ref={sectionRef}
-      className="full-bleed relative overflow-x-hidden pb-0 pt-8 md:pt-10 lg:min-h-[782px] lg:overflow-visible"
+      className="full-bleed relative overflow-x-clip overflow-y-visible pb-6 pt-8 md:overflow-x-hidden md:pb-0 md:pt-10 lg:min-h-[782px] lg:overflow-visible"
       aria-labelledby="course-hero-heading"
     >
       <div className="category-hero-bg pointer-events-none absolute inset-0" aria-hidden />
@@ -297,7 +297,7 @@ export default function CourseDetailHeroSection({
             ref={(el) => {
               rowRefs.current[2] = el;
             }}
-            className="gsap-reveal-pending relative z-20 mb-[-125px] lg:col-span-2 lg:col-start-1 lg:row-start-2"
+            className="gsap-reveal-pending relative z-20 overflow-visible pb-6 lg:mb-[-125px] lg:col-span-2 lg:col-start-1 lg:row-start-2"
           >
             <CourseEnterpriseCard {...enterprise} courseId={courseId} />
           </div>

@@ -24,7 +24,7 @@ export default async function CourseTrainingCitiesSection({
 
   return (
     <div className="relative overflow-hidden rounded-[20px] border border-[#DCDCDC] bg-[linear-gradient(79deg,#FFF_76.22%,#FFD3D3_108.27%)] px-6 py-5 md:px-8 md:py-6">
-      <h2 className="text-[34px] font-bold leading-[140%] text-heading">{`${shortName} ${title} `}</h2>
+      <h2 className="section-heading text-heading">{`${shortName} ${title} `}</h2>
       <div className="mt-5 flex flex-wrap gap-2.5 md:gap-3">
         {items.map((item) => (
           <Link

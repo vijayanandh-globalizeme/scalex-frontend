@@ -1,6 +1,7 @@
 'use client';
 
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import gsap from 'gsap';
 import { CourseCard, apiCourseToCard, type Course } from '@/components/courses/CoursesSection';
 import { useGsapScrollRevealStagger } from '@/hooks/useGsapScrollReveal';
 import { useGridColumns } from '@/hooks/useGridColumns';
@@ -76,8 +77,19 @@ export default function CategoryCoursesSection({
   const offsetRef = useRef(0);
 
   const sectionRef = useRef<HTMLElement>(null);
+  const gridContainerRef = useRef<HTMLDivElement>(null);
   const rowRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const expandStartHeightRef = useRef<number | null>(null);
+  const expandStartRowRef = useRef<number | null>(null);
   const cols = useGridColumns();
+
+  function captureExpandStart() {
+    const container = gridContainerRef.current;
+    if (container) {
+      expandStartHeightRef.current = container.offsetHeight;
+      expandStartRowRef.current = courseRows.length;
+    }
+  }
 
   useEffect(() => {
     let cancelled = false;
@@ -106,10 +118,12 @@ export default function CategoryCoursesSection({
 
     // Enough already fetched to satisfy this reveal — no network call needed.
     if (target <= courses.length) {
+      captureExpandStart();
       setVisibleCount(target);
       return;
     }
 
+    captureExpandStart();
     setLoadingMore(true);
     const items = await getCourses({ categoryId, limit: FETCH_LIMIT, offset: offsetRef.current });
     const cards = items.map(apiCourseToCard);
@@ -149,11 +163,77 @@ export default function CategoryCoursesSection({
       ease: 'power2.out',
       start: 'top 88%',
       skipRevealed: true,
-      expandDuration: 0.55,
-      expandStagger: 0.08,
     },
-    [courseRows.length, cols],
+    [categoryId, cols, loading],
   );
+
+  useLayoutEffect(() => {
+    const startHeight = expandStartHeightRef.current;
+    const startRow = expandStartRowRef.current;
+    if (startHeight == null || startRow == null || loading) return undefined;
+
+    const container = gridContainerRef.current;
+    if (!container) {
+      expandStartHeightRef.current = null;
+      expandStartRowRef.current = null;
+      return undefined;
+    }
+
+    const newRows = rowRefs.current.slice(startRow).filter(Boolean) as HTMLDivElement[];
+    if (newRows.length === 0) {
+      expandStartHeightRef.current = null;
+      expandStartRowRef.current = null;
+      return undefined;
+    }
+
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReducedMotion) {
+      newRows.forEach((row) => {
+        row.classList.remove('gsap-reveal-pending');
+        row.classList.add('gsap-reveal-done');
+      });
+      expandStartHeightRef.current = null;
+      expandStartRowRef.current = null;
+      return undefined;
+    }
+
+    newRows.forEach((row) => {
+      row.classList.remove('gsap-reveal-pending', 'gsap-reveal-done');
+    });
+
+    const endHeight = container.scrollHeight;
+    gsap.set(newRows, { autoAlpha: 0, y: 24 });
+
+    const tween = gsap.timeline({
+      onComplete: () => {
+        gsap.set(container, { clearProps: 'height,overflow' });
+        newRows.forEach((row) => {
+          row.classList.remove('gsap-reveal-pending');
+          row.classList.add('gsap-reveal-done');
+          gsap.set(row, { clearProps: 'all' });
+        });
+        expandStartHeightRef.current = null;
+        expandStartRowRef.current = null;
+      },
+    });
+
+    tween.fromTo(
+      container,
+      { height: startHeight, overflow: 'hidden' },
+      { height: endHeight, duration: 0.5, ease: 'power2.out' },
+      0,
+    );
+    tween.to(
+      newRows,
+      { autoAlpha: 1, y: 0, duration: 0.45, stagger: 0.08, ease: 'power2.out' },
+      0.05,
+    );
+
+    return () => {
+      tween.kill();
+      gsap.set(container, { clearProps: 'height,overflow' });
+    };
+  }, [visibleCount, courseRows.length, loading]);
 
   return (
     <section
@@ -166,7 +246,7 @@ export default function CategoryCoursesSection({
         <header className="mx-auto mt-6 max-w-4xl text-center md:mt-8 lg:mt-10">
           <h2
             id="category-courses-heading"
-            className="text-center text-[24px] font-bold leading-[1.4] text-heading md:text-[34px]"
+            className="section-heading text-center text-heading"
           >
             Explore all {categoryName} courses
           </h2>
@@ -175,7 +255,7 @@ export default function CategoryCoursesSection({
           </p>
         </header>
 
-        <div className="mt-10 pb-4 md:mt-12 md:pb-6">
+        <div ref={gridContainerRef} className="mt-10 pb-4 md:mt-12 md:pb-6">
           {loading ? (
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
               {Array.from({ length: FETCH_LIMIT }).map((_, i) => (

@@ -65,8 +65,8 @@ export default function CourseOverviewSection({
           <h2
             className={
               isTechnical
-                ? 'text-[32px] font-bold leading-normal text-[#1E293B]'
-                : 'text-[34px] font-bold leading-[140%] text-heading'
+                ? 'section-heading text-[#1E293B] md:text-[32px]'
+                : 'section-heading text-heading'
             }
           >
             {overview.title}

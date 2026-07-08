@@ -202,7 +202,7 @@ export function CourseCard({
   const isCourseDetail = variant === 'courseDetail';
 
   return (
-    <article className="mx-auto flex w-full max-w-[405px] flex-col overflow-hidden rounded-2xl border border-zinc-100 bg-white shadow-[0_4px_4px_0_rgba(30,41,59,0.03),0_4px_4px_0_rgba(30,41,59,0.06)] transition hover:shadow-lg">
+    <article className="mx-auto flex w-full max-w-[405px] cursor-pointer flex-col overflow-hidden rounded-2xl border border-zinc-100 bg-white shadow-[0_4px_4px_0_rgba(30,41,59,0.03),0_4px_4px_0_rgba(30,41,59,0.06)] transition hover:shadow-lg">
       <div className="relative h-[181px] w-full">
         <Image
           src={course.imageSrc}
@@ -480,7 +480,7 @@ export default function CoursesSection({
         <header ref={headerRef} className="gsap-reveal-pending mx-auto max-w-3xl text-center">
           <h2
             id="courses-heading"
-            className="text-[28px] font-bold leading-[140%] text-heading md:text-[34px]"
+            className="section-heading text-heading"
           >
             {heading}
           </h2>

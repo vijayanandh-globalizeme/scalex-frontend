@@ -180,7 +180,7 @@ export default function LiveSessionsSection() {
         <header className="mx-auto text-center">
           <h2
             id="live-sessions-heading"
-            className="text-[28px] font-bold leading-[140%] text-heading md:text-[34px]"
+            className="section-heading text-heading"
           >
             {HEADING}
           </h2>

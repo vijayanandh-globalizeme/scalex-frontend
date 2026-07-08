@@ -15,7 +15,7 @@ import { REVIEWS_TYPE, REVIEW_VIDEO_SECTION } from '@/lib/courseDetailStatics';
 const SECTION_CARD = 'rounded-[20px] bg-transparent';
 
 const REVIEW_CARD =
-  'relative flex h-full min-h-[282px] min-w-0 flex-col overflow-visible rounded-[20px] border border-[#EBEBEB] bg-white px-5 pb-5 pt-6 shadow-[0_4px_4px_0_rgba(30,41,59,0.08),0_4px_4px_0_rgba(30,41,59,0.03)]';
+  'relative flex h-full min-h-[282px] min-w-0 cursor-pointer flex-col overflow-visible rounded-[20px] border border-[#EBEBEB] bg-white px-5 pb-5 pt-6 shadow-[0_4px_4px_0_rgba(30,41,59,0.08),0_4px_4px_0_rgba(30,41,59,0.03)] transition-shadow duration-200 hover:shadow-[0_8px_20px_-6px_rgba(30,41,59,0.16)]';
 
 const TAB_BAR_SCROLL =
   'inline-flex h-[52px] items-stretch gap-8 overflow-x-auto rounded-lg bg-[#FCFCFC] px-8 shadow-[0_4px_4px_0_rgba(30,41,59,0.08),4px_-4px_4px_0_rgba(30,41,59,0.03)] [-ms-overflow-style:none] [scrollbar-width:none] md:gap-10 [&::-webkit-scrollbar]:hidden';
@@ -201,7 +201,7 @@ export default function CourseReviewsClient({
 
   return (
     <div id="reviews" className={`scroll-mt-[116px] py-5 md:py-6 ${SECTION_CARD}`}>
-      <h2 className="text-[34px] font-bold leading-[140%] text-heading">{title}</h2>
+      <h2 className="section-heading text-heading">{title}</h2>
 
       <div className="mt-7 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="min-w-0" role="tablist" aria-label="Review platforms">

@@ -1,7 +1,6 @@
 'use client';
 
-import type { ReactNode } from 'react';
-import { Children } from 'react';
+import { Children, useLayoutEffect, useRef, useState, type ReactNode } from 'react';
 
 const ARROW_PATH =
   'M19.0888 23C19.244 23 19.3796 22.9347 19.5089 22.7968L23.8061 17.9861C23.9354 17.8483 24 17.6814 24 17.5C24 17.3186 23.9354 17.1517 23.8061 17.0139L19.5218 12.2177C19.3796 12.058 19.244 12 19.0888 12C18.7722 12 18.5266 12.2612 18.5266 12.624C18.5266 12.7982 18.5783 12.965 18.6818 13.0811L20.1293 14.7355L22.8239 17.5L20.1293 20.2645L18.6818 21.9188C18.5783 22.0277 18.5266 22.2019 18.5266 22.3759C18.5266 22.7388 18.7722 23 19.0888 23ZM12.5687 18.1458H20.7431L22.8239 18.0007C23.0888 17.9789 23.2697 17.7975 23.2697 17.5C23.2697 17.2025 23.0888 17.0211 22.8239 16.9993L20.7431 16.8542H12.5687C12.2326 16.8542 12 17.1227 12 17.5C12 17.8773 12.2326 18.1458 12.5687 18.1458Z';
@@ -49,6 +48,8 @@ export function CategoryCarouselControls({
   onNext,
   prevLabel = 'Previous',
   nextLabel = 'Next',
+  canGoPrev: canGoPrevOverride,
+  canGoNext: canGoNextOverride,
 }: {
   page: number;
   totalPages: number;
@@ -56,9 +57,11 @@ export function CategoryCarouselControls({
   onNext: () => void;
   prevLabel?: string;
   nextLabel?: string;
+  canGoPrev?: boolean;
+  canGoNext?: boolean;
 }) {
-  const canGoPrev = page > 0;
-  const canGoNext = page < totalPages - 1;
+  const canGoPrev = canGoPrevOverride ?? page > 0;
+  const canGoNext = canGoNextOverride ?? page < totalPages - 1;
 
   const prevVariant = canGoPrev && !canGoNext ? 'filled' : 'outline';
   const nextVariant = canGoNext ? 'filled' : 'outline';
@@ -100,31 +103,75 @@ export function CategoryCarouselTrack({
   children,
   className,
   clipX = true,
+  slideGap = 0,
 }: {
   page: number;
   children: ReactNode[];
   className?: string;
   clipX?: boolean;
+  /** Horizontal gap between slides in px (e.g. matches grid gap when paging). */
+  slideGap?: number;
 }) {
   const slides = Children.toArray(children);
   const slideCount = slides.length;
   const safePage = slideCount > 0 ? Math.min(Math.max(page, 0), slideCount - 1) : 0;
   const slideWidthPercent = slideCount > 0 ? 100 / slideCount : 100;
+  const viewportRef = useRef<HTMLDivElement>(null);
+  const [viewportWidth, setViewportWidth] = useState(0);
+
+  const useGapLayout = slideGap > 0 && slideCount > 1;
+
+  useLayoutEffect(() => {
+    if (!useGapLayout) {
+      setViewportWidth(0);
+      return undefined;
+    }
+
+    const el = viewportRef.current;
+    if (!el) return undefined;
+
+    const update = () => setViewportWidth(el.offsetWidth);
+    update();
+
+    const ro = new ResizeObserver(update);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, [useGapLayout]);
+
+  const translateX = useGapLayout && viewportWidth > 0
+    ? safePage * (viewportWidth + slideGap)
+    : null;
 
   return (
-    <div className={`w-full min-w-0 ${clipX ? 'overflow-hidden' : 'overflow-visible'} ${className ?? ''}`}>
+    <div
+      ref={useGapLayout ? viewportRef : undefined}
+      className={`w-full min-w-0 ${
+        clipX ? 'overflow-x-hidden overflow-y-visible' : 'overflow-visible'
+      } ${className ?? ''}`}
+    >
       <div
-        className="flex overflow-visible will-change-transform transition-transform duration-500 ease-in-out motion-reduce:transition-none"
-        style={{
-          width: `${slideCount * 100}%`,
-          transform: `translate3d(-${safePage * slideWidthPercent}%, 0, 0)`,
-        }}
+        className="flex items-start overflow-visible will-change-transform transition-transform duration-500 ease-in-out motion-reduce:transition-none"
+        style={
+          translateX != null
+            ? { transform: `translate3d(-${translateX}px, 0, 0)` }
+            : {
+                width: `${slideCount * 100}%`,
+                transform: `translate3d(-${safePage * slideWidthPercent}%, 0, 0)`,
+              }
+        }
       >
         {slides.map((slide, index) => (
           <div
             key={index}
-            className="shrink-0 grow-0 overflow-visible"
-            style={{ width: `${slideWidthPercent}%` }}
+            className="box-border shrink-0 grow-0 overflow-visible"
+            style={
+              useGapLayout
+                ? {
+                    flex: `0 0 ${viewportWidth > 0 ? `${viewportWidth}px` : '100%'}`,
+                    marginRight: index < slideCount - 1 ? slideGap : 0,
+                  }
+                : { flex: `0 0 ${slideWidthPercent}%` }
+            }
           >
             {slide}
           </div>

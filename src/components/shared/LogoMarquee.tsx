@@ -1,4 +1,7 @@
+'use client';
+
 import Image from 'next/image';
+import { useLayoutEffect, useMemo, useRef, useState, type CSSProperties } from 'react';
 import styles from './LogoMarquee.module.css';
 
 export interface LogoMarqueeItem {
@@ -30,6 +33,49 @@ const desktopImageSizes: Record<LogoMarqueeSize, { width: number; height: number
   md: { width: 160, height: 36 },
 };
 
+const TRACK_GAP_CLASS = 'items-center gap-6 md:gap-14 lg:gap-16';
+
+function duplicateLogos(logos: LogoMarqueeItem[], copies: number) {
+  return Array.from({ length: copies }, () => logos).flat();
+}
+
+function LogoSlot({
+  logo,
+  box,
+  img,
+  desktopImg,
+  responsiveMobileDimensions,
+}: {
+  logo: LogoMarqueeItem;
+  box: string;
+  img: (typeof imageSizes)['md'];
+  desktopImg: (typeof desktopImageSizes)['md'];
+  responsiveMobileDimensions: boolean;
+}) {
+  return (
+    <div className={`flex shrink-0 items-center justify-center ${box}`}>
+      {logo.src ? (
+        <Image
+          src={logo.src}
+          alt={logo.alt}
+          width={responsiveMobileDimensions ? img.width : desktopImg.width}
+          height={responsiveMobileDimensions ? img.height : desktopImg.height}
+          className={
+            responsiveMobileDimensions
+              ? 'h-full w-full object-contain md:h-auto md:max-h-full md:w-auto md:max-w-full'
+              : 'h-auto max-h-full w-auto max-w-full object-contain'
+          }
+          sizes={img.sizes}
+        />
+      ) : (
+        <span className="text-center text-[11px] font-semibold uppercase tracking-wide text-zinc-500 md:text-xs">
+          {logo.alt}
+        </span>
+      )}
+    </div>
+  );
+}
+
 export default function LogoMarquee({
   logos,
   ariaLabel = 'Partner logos',
@@ -46,43 +92,87 @@ export default function LogoMarquee({
   /** Larger logo slots on mobile (~2 visible); marquee on all breakpoints. */
   largeOnMobile?: boolean;
 }) {
-  if (logos.length === 0) return null;
+  const viewportRef = useRef<HTMLDivElement>(null);
+  const measureRef = useRef<HTMLDivElement>(null);
+  const [copies, setCopies] = useState(2);
+  const [loopPx, setLoopPx] = useState(0);
 
   const box = largeOnMobile ? largeMobileSizeClasses[size] : sizeClasses[size];
   const img = imageSizes[size];
   const desktopImg = desktopImageSizes[size];
-  const marqueeLogos = [...logos, ...logos];
-  const marqueeClass = largeOnMobile ? `${styles.marquee} ${styles.marqueeLargeMobile}` : styles.marquee;
+  const responsiveMobileDimensions = largeOnMobile;
+  const marqueeClass = responsiveMobileDimensions
+    ? `${styles.marquee} ${styles.marqueeLargeMobile}`
+    : styles.marquee;
+
+  const marqueeLogos = useMemo(() => duplicateLogos(logos, copies), [logos, copies]);
+
+  useLayoutEffect(() => {
+    const viewport = viewportRef.current;
+    const measure = measureRef.current;
+    if (!viewport || !measure || logos.length === 0) return undefined;
+
+    const update = () => {
+      const viewportWidth = viewport.offsetWidth;
+      const singleSetWidth = measure.scrollWidth;
+      if (viewportWidth === 0 || singleSetWidth === 0) return;
+
+      const minTrackWidth = viewportWidth * 2;
+      const neededCopies = Math.max(2, Math.ceil(minTrackWidth / singleSetWidth));
+      setCopies((current) => (current === neededCopies ? current : neededCopies));
+      setLoopPx(singleSetWidth);
+    };
+
+    update();
+    const ro = new ResizeObserver(update);
+    ro.observe(viewport);
+    return () => ro.disconnect();
+  }, [logos, size, largeOnMobile]);
+
+  if (logos.length === 0) return null;
+
+  const trackStyle = loopPx > 0
+    ? ({ '--loop-distance': `${loopPx}px` } as CSSProperties)
+    : undefined;
+
+  const trackClass = [
+    styles.track,
+    loopPx > 0 ? styles.trackLoopReady : '',
+    reverse ? styles.trackReverse : '',
+    TRACK_GAP_CLASS,
+  ]
+    .filter(Boolean)
+    .join(' ');
 
   return (
-    <div className={`${marqueeClass} ${className}`} aria-label={ariaLabel}>
+    <div ref={viewportRef} className={`${marqueeClass} ${className}`} aria-label={ariaLabel}>
       <div
-        className={`${styles.track} ${reverse ? styles.trackReverse : ''} items-center gap-6 md:gap-14 lg:gap-16`}
+        ref={measureRef}
+        className={`pointer-events-none absolute flex opacity-0 ${TRACK_GAP_CLASS}`}
+        aria-hidden
       >
+        {logos.map((logo) => (
+          <LogoSlot
+            key={`measure-${logo.id ?? logo.alt}`}
+            logo={logo}
+            box={box}
+            img={img}
+            desktopImg={desktopImg}
+            responsiveMobileDimensions={responsiveMobileDimensions}
+          />
+        ))}
+      </div>
+
+      <div className={trackClass} style={trackStyle}>
         {marqueeLogos.map((logo, index) => (
-          <div
+          <LogoSlot
             key={`${logo.id ?? logo.alt}-${index}`}
-            className={`flex shrink-0 items-center justify-center ${box}`}
-          >
-            {logo.src ? (
-              <Image
-                src={logo.src}
-                alt={logo.alt}
-                width={largeOnMobile ? img.width : desktopImg.width}
-                height={largeOnMobile ? img.height : desktopImg.height}
-                className={
-                  largeOnMobile
-                    ? 'h-full w-full object-contain md:h-auto md:max-h-full md:w-auto md:max-w-full'
-                    : 'h-auto max-h-full w-auto max-w-full object-contain'
-                }
-                sizes={img.sizes}
-              />
-            ) : (
-              <span className="text-center text-[11px] font-semibold uppercase tracking-wide text-zinc-500 md:text-xs">
-                {logo.alt}
-              </span>
-            )}
-          </div>
+            logo={logo}
+            box={box}
+            img={img}
+            desktopImg={desktopImg}
+            responsiveMobileDimensions={responsiveMobileDimensions}
+          />
         ))}
       </div>
     </div>

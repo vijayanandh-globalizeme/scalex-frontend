@@ -107,10 +107,16 @@ function MentorCard({ mentor }: { mentor: Trainer }) {
         {mentor.role}
       </p>
       {mentor.assocWithUrl ? (
-        <div className="mt-4 flex flex-wrap items-center justify-center gap-2 text-[12px] font-medium text-subtle">
+        <div className="mt-4 flex w-full flex-col items-center gap-2 text-[12px] font-medium text-subtle">
           <span>Associated with</span>
-          <div className="relative h-[16px] w-[68px] shrink-0">
-            <Image src={mentor.assocWithUrl} alt="Associated company" fill sizes="68px" className="object-contain object-right" />
+          <div className="relative h-[24px] w-[97px]">
+            <Image
+              src={mentor.assocWithUrl}
+              alt="Associated company"
+              fill
+              sizes="97px"
+              className="object-contain object-center"
+            />
           </div>
         </div>
       ) : null}
@@ -133,7 +139,7 @@ export default function MentorsSection({
         <header className="w-full text-center">
           <h2
             id="mentors-heading"
-            className="text-center text-[34px] font-bold leading-[140%] text-heading"
+            className="section-heading text-center text-heading"
           >
             {heading}
           </h2>

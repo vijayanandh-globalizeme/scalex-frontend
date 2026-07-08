@@ -293,7 +293,7 @@ export default function AwardsSection({
         aria-labelledby={headingId}
       >
         <div className="flex items-center justify-between gap-4">
-          <h2 id={headingId} className="text-[34px] font-bold leading-tight text-heading">
+          <h2 id={headingId} className="section-heading leading-tight text-heading">
             {heading}
           </h2>
           {maxIndex > 0 ? (
@@ -327,7 +327,7 @@ export default function AwardsSection({
         <header className="mx-auto text-center">
           <h2
             id={headingId}
-            className="text-[28px] font-bold leading-[140%] text-heading md:text-[34px]"
+            className="section-heading text-heading"
           >
             {heading}
           </h2>

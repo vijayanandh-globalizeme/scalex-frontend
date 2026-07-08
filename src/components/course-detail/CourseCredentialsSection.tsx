@@ -112,7 +112,7 @@ export default function CourseCredentialsSection({
 
   return (
     <div className={`${COURSE_SECTION_CARD} px-6 py-5 md:px-8 md:py-6`}>
-      <h2 className="text-[34px] font-bold leading-[140%] text-heading">{credentials.title}</h2>
+      <h2 className="section-heading text-heading">{credentials.title}</h2>
       <p className="mt-2 max-w-[864px] text-[18px] font-medium leading-[140%] text-muted">
         {credentials.description}
       </p>

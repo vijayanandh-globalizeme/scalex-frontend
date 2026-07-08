@@ -11,6 +11,22 @@ body {
   overflow-x: clip;
 }
 
+@layer base {
+  button:not(:disabled),
+  input[type='button']:not(:disabled),
+  input[type='submit']:not(:disabled),
+  input[type='reset']:not(:disabled) {
+    cursor: pointer;
+  }
+
+  button:disabled,
+  input[type='button']:disabled,
+  input[type='submit']:disabled,
+  input[type='reset']:disabled {
+    cursor: not-allowed;
+  }
+}
+
 /*
  * Design tokens — change values here to update the whole site.
  * Use Tailwind utilities: text-brand, bg-surface, border-accent, etc.
@@ -77,6 +93,11 @@ body {
     max-width: 100vw;
     margin-left: calc(50% - 50vw);
     margin-right: calc(50% - 50vw);
+  }
+
+  /* Shared section h2 — 28px mobile, 34px desktop */
+  .section-heading {
+    @apply text-[28px] font-bold leading-[140%] md:text-[34px];
   }
 
   .course-detail-sticky-nav {

@@ -290,7 +290,7 @@ function DateRangePicker({
 // ── Schedule Card ─────────────────────────────────────────────────────────────
 
 const SCHEDULE_CARD =
-  'relative overflow-hidden rounded-[20px] border border-[#EBEBEB] bg-white shadow-[0_4px_4px_0_rgba(30,41,59,0.08),0_4px_4px_0_rgba(30,41,59,0.03)]';
+  'relative cursor-pointer overflow-hidden rounded-[20px] border border-[#EBEBEB] bg-white shadow-[0_4px_4px_0_rgba(30,41,59,0.08),0_4px_4px_0_rgba(30,41,59,0.03)] transition-shadow duration-200 hover:shadow-[0_8px_20px_-6px_rgba(30,41,59,0.16)]';
 
 function formatDate(iso: string) {
   return new Date(iso).toLocaleDateString('en-US', {
@@ -319,15 +319,23 @@ function discountPct(retail: number, selling: number) {
   return retail > selling ? Math.round(((retail - selling) / retail) * 100) : 0;
 }
 
-function MetaItem({ icon, title, subtitle }: { icon: ReactNode; title: string; subtitle: string }) {
+function MetaItem({
+  icon,
+  title,
+  subtitle,
+}: {
+  icon: ReactNode;
+  title: string;
+  subtitle: string;
+}) {
   return (
-    <div className="flex min-w-0 items-start gap-2.5">
-      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#FFF6F7]">
+    <div className="flex min-w-0 items-start gap-1.5 md:gap-2.5">
+      <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg bg-[#FFF6F7] md:h-8 md:w-8">
         {icon}
       </span>
       <div className="min-w-0">
-        <p className="text-[13px] font-semibold text-heading">{title}</p>
-        <p className="mt-0.5 text-[12px] text-muted">{subtitle}</p>
+        <p className="truncate text-[11px] font-semibold text-heading md:text-[13px]">{title}</p>
+        <p className="truncate text-[10px] text-muted md:mt-0.5 md:text-[12px]">{subtitle}</p>
       </div>
     </div>
   );
@@ -335,10 +343,26 @@ function MetaItem({ icon, title, subtitle }: { icon: ReactNode; title: string; s
 
 function QuantityStepper({ value, onChange }: { value: number; onChange: (n: number) => void }) {
   return (
-    <div className="inline-flex shrink-0 items-center overflow-hidden rounded-lg border border-[#EBEBEB] bg-white">
-      <button type="button" onClick={() => onChange(Math.max(1, value - 1))} className="btn-mui-ink-tint flex h-8 w-8 items-center justify-center text-[16px] text-brand" aria-label="Decrease">−</button>
-      <span className="flex h-8 min-w-8 items-center justify-center border-x border-zinc-200 px-1 text-[13px] font-medium text-heading">{value}</span>
-      <button type="button" onClick={() => onChange(value + 1)} className="btn-mui-ink-tint flex h-8 w-8 items-center justify-center text-[16px] text-brand" aria-label="Increase">+</button>
+    <div className="mt-5 inline-flex w-fit max-w-fit shrink-0 grow-0 items-stretch overflow-hidden rounded-md border border-[#EBEBEB] bg-white md:rounded-lg">
+      <button
+        type="button"
+        onClick={() => onChange(Math.max(1, value - 1))}
+        className="btn-mui-ink-tint flex h-7 w-7 shrink-0 grow-0 basis-7 items-center justify-center p-0 text-[13px] leading-none text-brand md:h-8 md:w-8 md:basis-8 md:text-[16px]"
+        aria-label="Decrease"
+      >
+        −
+      </button>
+      <span className="flex h-7 w-7 shrink-0 grow-0 basis-7 items-center justify-center border-x border-zinc-200 text-[12px] font-medium leading-none text-heading md:h-8 md:w-8 md:basis-8 md:text-[13px]">
+        {value}
+      </span>
+      <button
+        type="button"
+        onClick={() => onChange(value + 1)}
+        className="btn-mui-ink-tint flex h-7 w-7 shrink-0 grow-0 basis-7 items-center justify-center p-0 text-[13px] leading-none text-brand md:h-8 md:w-8 md:basis-8 md:text-[16px]"
+        aria-label="Increase"
+      >
+        +
+      </button>
     </div>
   );
 }
@@ -377,73 +401,87 @@ function ScheduleCard({ batch, quantity, onQuantityChange, onEnroll }: {
   return (
     <article className={SCHEDULE_CARD}>
       {batch.isTrending ? (
-        <span className="absolute top-3 right-4 rounded-lg bg-[#FFF6F7] px-2 py-0.5 text-[10px] font-medium text-brand">Trending</span>
+        <span className="absolute top-2 right-3 rounded-lg bg-[#FFF6F7] px-2 py-0.5 text-[10px] font-medium text-brand max-md:top-1.5 max-md:right-2 max-md:text-[9px]">
+          Trending
+        </span>
       ) : null}
       <span className="absolute inset-y-0 left-0 w-1 rounded-l-[20px] bg-brand" aria-hidden />
       <div className="flex flex-col xl:flex-row">
         <div className="min-w-0 flex-1">
-          <div className="flex flex-col gap-4 border-b border-zinc-100 py-4 pr-4 pl-[30px] sm:flex-row sm:items-start sm:justify-between md:py-5 md:pr-5">
-            <div className="min-w-0">
-              <span className="inline-flex items-center gap-1.5 rounded-lg bg-[#FFF6F7] px-2 py-1 text-[12px] font-medium leading-[140%] text-brand">
+          <div className="flex items-start justify-between gap-2 border-b border-zinc-100 py-3 pr-3 pl-[22px] md:py-5 md:pr-5 md:pl-[30px]">
+            <div className="min-w-0 flex-1 pr-2">
+              <span className="inline-flex items-center gap-1.5 rounded-lg bg-[#FFF6F7] px-2 py-0.5 text-[11px] font-medium leading-[140%] text-brand max-md:py-0.5 max-md:text-[10px]">
                 <span className="h-1.5 w-1.5 rounded-full bg-brand" aria-hidden />
                 {batch.venue.toUpperCase()}
               </span>
-              <p className="mt-3 text-[24px] font-semibold text-heading">{dateRange}</p>
-              <p className="mt-1.5 flex items-center gap-1.5 text-[14px] font-medium text-muted">
+              <p className="mt-2 text-[24px] font-semibold text-heading max-md:mt-1.5 max-md:text-[16px] max-md:leading-tight">
+                {dateRange}
+              </p>
+              <p className="mt-1 flex items-center gap-1.5 text-[14px] font-medium text-muted max-md:mt-0.5 max-md:text-[11px]">
                 <ClockIcon className="shrink-0 text-brand" />
-                {timeLabel}
+                <span className="truncate">{timeLabel}</span>
               </p>
             </div>
             <QuantityStepper value={quantity} onChange={onQuantityChange} />
           </div>
 
-          <div className="flex flex-col gap-4 py-4 pr-4 pl-[35px] sm:flex-row sm:gap-0 md:py-5 md:pr-5">
-            <div className="flex-1">
-              <MetaItem icon={<CalendarIcon className="text-brand" />} title={dayLabel} subtitle={`${batch.noOfSessions} Sessions`} />
-            </div>
-            <div className="hidden sm:block w-px self-stretch bg-zinc-100 mx-3" aria-hidden />
-            <div className="flex-1">
+          <div className="grid grid-cols-2 gap-x-3 gap-y-2.5 py-3 pr-3 pl-[22px] md:flex md:flex-row md:gap-0 md:py-5 md:pr-5 md:pl-[35px]">
+            <div className="min-w-0 md:flex-1">
               <MetaItem
-                icon={<TimeOfDayIcon tod={tod} className="text-brand" />}
+                icon={<CalendarIcon className="text-brand max-md:h-3 max-md:w-3" />}
+                title={dayLabel}
+                subtitle={`${batch.noOfSessions} Sessions`}
+              />
+            </div>
+            <div className="hidden md:block w-px self-stretch bg-zinc-100 mx-3" aria-hidden />
+            <div className="min-w-0 md:flex-1">
+              <MetaItem
+                icon={<TimeOfDayIcon tod={tod} className="text-brand max-md:h-3 max-md:w-3" />}
                 title={todMeta.title}
                 subtitle={todMeta.subtitle}
               />
             </div>
-            <div className="hidden sm:block w-px self-stretch bg-zinc-100 mx-3" aria-hidden />
-            <div className="flex-1">
-              <MetaItem icon={<PersonIcon className="text-brand" />} title={batch.trainerName} subtitle="Certified Trainer" />
+            <div className="hidden md:block w-px self-stretch bg-zinc-100 mx-3" aria-hidden />
+            <div className="min-w-0 md:flex-1">
+              <MetaItem
+                icon={<PersonIcon className="text-brand max-md:h-3 max-md:w-3" />}
+                title={batch.trainerName}
+                subtitle="Certified Trainer"
+              />
             </div>
           </div>
         </div>
 
-        <div className="flex shrink-0 flex-col justify-between border-t border-zinc-100 bg-[linear-gradient(90deg,#FFF_76.35%,#FFF7F8_99.67%)] p-4 xl:w-[216px] xl:rounded-r-[20px] xl:border-t-0 xl:border-l xl:p-5">
-          <div>
+        <div className="flex shrink-0 flex-col justify-between border-t border-zinc-100 bg-[linear-gradient(90deg,#FFF_76.35%,#FFF7F8_99.67%)] p-4 max-md:flex-row max-md:items-center max-md:gap-3 max-md:py-3 max-md:pr-3 max-md:pl-[22px] xl:w-[216px] xl:flex-col xl:rounded-r-[20px] xl:border-t-0 xl:border-l xl:p-5">
+          <div className="min-w-0 max-md:flex-1">
             {pct > 0 ? (
-              <span className="inline-flex rounded-lg border border-brand bg-white px-2 py-[5px] text-[10px] font-normal leading-[140%] text-brand">
+              <span className="inline-flex rounded-lg border border-brand bg-white px-2 py-[5px] text-[10px] font-normal leading-[140%] text-brand max-md:px-1.5 max-md:py-0.5 max-md:text-[9px]">
                 {pct}% Off
               </span>
             ) : null}
-            <div className="mt-3 flex flex-wrap items-baseline gap-2">
+            <div className="mt-3 flex flex-wrap items-baseline gap-2 max-md:mt-1.5 max-md:gap-1">
               <span className="inline-flex items-baseline gap-1">
-                <span className="text-[14px] font-medium leading-[18px] text-brand">{sym}</span>
-                <span className="text-[24px] font-semibold leading-[18px] text-heading">
+                <span className="text-[14px] font-medium leading-[18px] text-brand max-md:text-[11px]">{sym}</span>
+                <span className="text-[24px] font-semibold leading-[18px] text-heading max-md:text-[15px] max-md:leading-none">
                   {selling.toLocaleString('en-IN')}
                 </span>
               </span>
               {retail > selling ? (
-                <span className="text-[13px] text-muted line-through">{sym} {retail.toLocaleString('en-IN')}</span>
+                <span className="text-[13px] text-muted line-through max-md:text-[10px]">
+                  {sym} {retail.toLocaleString('en-IN')}
+                </span>
               ) : null}
             </div>
             {batch.label ? (
-              <p className="mt-3 inline-flex items-center gap-1.5 rounded-lg bg-[#F5F6F8] px-2.5 py-1 text-[12px] font-normal leading-[140%] text-heading">
-                <SlotsIcon className="shrink-0" />
-                {batch.label}
+              <p className="mt-3 inline-flex max-w-full items-center gap-1.5 rounded-lg bg-[#F5F6F8] px-2.5 py-1 text-[12px] font-normal leading-[140%] text-heading max-md:mt-1.5 max-md:px-1.5 max-md:py-0.5 max-md:text-[9px]">
+                <SlotsIcon className="shrink-0 max-md:h-2 max-md:w-2" />
+                <span className="truncate">{batch.label}</span>
               </p>
             ) : null}
           </div>
 
-          <div className="mt-4">
-            <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-center text-[10px] text-muted">
+          <div className="max-md:shrink-0 xl:mt-4">
+            <div className="hidden flex-wrap items-center gap-x-2 gap-y-1 text-center text-[10px] text-muted sm:flex">
               <span>Secure<br />Payment</span>
               <span className="text-zinc-300" aria-hidden>|</span>
               <span>Easy<br />Refund</span>
@@ -453,10 +491,10 @@ function ScheduleCard({ batch, quantity, onQuantityChange, onEnroll }: {
             <button
               type="button"
               onClick={() => onEnroll?.(batch, quantity)}
-              className="btn-brand mt-3 inline-flex w-[139px] items-center justify-center gap-[11px] px-4 py-[11px] text-[14px] font-medium leading-[18px]"
+              className="btn-brand mt-3 inline-flex w-[139px] items-center justify-center gap-[11px] px-4 py-[11px] text-[14px] font-medium leading-[18px] max-md:mt-0 max-md:w-auto max-md:gap-1 max-md:px-3 max-md:py-2 max-md:text-[11px]"
             >
               Enroll Now
-              <ArrowRightIcon className="btn-arrow-icon shrink-0 text-white" />
+              <ArrowRightIcon className="btn-arrow-icon shrink-0 text-white max-md:h-3 max-md:w-3" />
             </button>
           </div>
         </div>

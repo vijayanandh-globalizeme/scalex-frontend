@@ -126,21 +126,21 @@ function ExpertCtaFullBleed({ content, headingId }: { content: ExpertCtaContent;
 
   return (
     <section
-      className="category-expert-heading full-bleed relative z-20 overflow-visible bg-[#0D0D0D] pb-[100px] md:pb-0"
+      className="category-expert-heading full-bleed relative z-20 overflow-visible bg-[#0D0D0D] pb-[50px] md:pb-0"
       aria-labelledby={headingId}
     >
       <div className="site-container relative overflow-visible">
         <div className="grid items-center gap-[35px] overflow-visible lg:grid-cols-[minmax(0,3.5fr)_minmax(0,7fr)] lg:gap-12">
           <div className="relative mx-auto flex min-w-0 w-full items-center justify-center overflow-visible lg:mx-0 lg:justify-start">
-            <ExpertDecorIcon className="pointer-events-none absolute bottom-0 right-[calc(var(--spacing)*6)] z-0 h-auto w-[290px]" />
+            <ExpertDecorIcon className="pointer-events-none absolute bottom-0 right-[calc(var(--spacing)*6)] z-0 h-auto w-[200px] lg:w-[290px]" />
 
-            <div className="relative z-10 lg:-mt-10 overflow-visible">
-              <div className="relative mx-auto h-[400px] w-[300px]">
+            <div className="relative z-10 overflow-visible lg:-mt-10">
+              <div className="relative mx-auto h-[260px] w-[195px] lg:h-[400px] lg:w-[300px]">
                 <Image
                   src={image.src}
                   alt={image.alt}
                   fill
-                  sizes="300px"
+                  sizes="(max-width: 1023px) 195px, 300px"
                   className="object-contain object-bottom"
                   priority
                 />

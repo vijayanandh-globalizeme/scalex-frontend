@@ -127,7 +127,7 @@ function StageSidebar({ stage, stageNumber }: { stage: ApiRoadmap; stageNumber: 
 function ProgramRoadmapSectionHeader({ title, description }: { title: string; description?: string }) {
   return (
     <div className="mb-8">
-      <h2 id="program-roadmap-heading" className="text-[34px] font-bold leading-[140%] text-[#1E293B]" style={{ fontFamily: 'Inter' }}>{title}</h2>
+      <h2 id="program-roadmap-heading" className="section-heading text-[#1E293B]" style={{ fontFamily: 'Inter' }}>{title}</h2>
       {description ? (
         <p className="mt-1 max-w-3xl text-[18px] font-medium leading-[140%] text-[#788593]" style={{ fontFamily: 'Inter' }}>{description}</p>
       ) : null}

@@ -35,7 +35,7 @@ export default function CoursePrepComparisonSection() {
   return (
     <section className="relative scroll-mt-[116px] pt-[22px]">
       <div className="rounded-[20px] border border-[#EBEBEB] bg-white shadow-[0_4px_4px_0_rgba(30,41,59,0.08),0_4px_4px_0_rgba(30,41,59,0.03)] p-6 md:p-8">
-        <h2 className="text-[24px] font-bold leading-[140%] text-[#1E293B] md:text-[28px]">
+        <h2 className="section-heading text-[#1E293B]">
           {content.heading}
         </h2>
 

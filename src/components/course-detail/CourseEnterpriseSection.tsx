@@ -40,7 +40,7 @@ export function CourseEnterpriseCard({
 
   return (
     <div
-      className={`relative z-10 flex w-full flex-col justify-between ${COURSE_SECTION_CARD} px-5 py-6 md:h-[285px] md:px-[68px] md:py-8`}
+      className={`relative z-10 flex w-full min-w-0 flex-col justify-between overflow-visible ${COURSE_SECTION_CARD} px-5 py-6 md:h-[285px] md:px-[68px] md:py-8`}
       aria-labelledby="course-enterprise-heading"
     >
       <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between md:gap-6">
@@ -62,15 +62,20 @@ export function CourseEnterpriseCard({
         </CourseBrochureCta>
       </div>
 
-      <div className="flex flex-col gap-[27px]">
+      <div className="mt-5 flex min-w-0 flex-col gap-[27px] overflow-x-clip md:mt-0">
         {firstRow.length > 0 ? (
-          <LogoMarquee logos={toMarqueeLogos(firstRow)} ariaLabel="Enterprise training partners" />
+          <LogoMarquee
+            logos={toMarqueeLogos(firstRow)}
+            ariaLabel="Enterprise training partners"
+            largeOnMobile
+          />
         ) : null}
         {secondRow.length > 0 ? (
           <LogoMarquee
             logos={toMarqueeLogos(secondRow)}
             reverse
             ariaLabel="Enterprise training partners"
+            largeOnMobile
           />
         ) : null}
       </div>

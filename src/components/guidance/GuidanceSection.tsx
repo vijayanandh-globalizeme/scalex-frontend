@@ -128,7 +128,7 @@ function GuidanceForm({
     <form
       onSubmit={handleSubmit}
       className={`w-full rounded-lg bg-white p-6 ${FORM_SHADOW} ${
-        embedded ? '' : 'mx-auto max-w-[696px] md:p-8 lg:w-[695.792px]'
+        embedded ? '' : 'md:mx-auto md:max-w-[696px] md:p-8 lg:w-[695.792px]'
       }`}
     >
       <h3 className="text-[20px] font-medium leading-normal text-heading">{formTitle}</h3>
@@ -333,7 +333,7 @@ export default function GuidanceSection({
             className={
               isEmbedded
                 ? 'relative w-full'
-                : 'relative z-20 mb-[-40px] w-full translate-y-[10%] self-start'
+                : 'relative z-20 w-full self-start md:mb-[-40px] md:translate-y-[10%]'
             }
           >
             <GuidanceForm

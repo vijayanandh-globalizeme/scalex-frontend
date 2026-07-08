@@ -180,11 +180,10 @@ export default function CourseDetailSidebar({
 
   return (
     <aside className={`hidden ${width} shrink-0 overflow-visible lg:block`} aria-label="Course assistance">
-      <div className="sticky z-30 flex max-h-[calc(100dvh-4.5rem)] flex-col overflow-visible" style={{ top: stickyTop }}>
-        <div className="min-h-0 flex-1 overflow-y-auto overflow-x-visible overscroll-contain space-y-5">
+      <div className="sticky z-30 flex flex-col overflow-visible" style={{ top: stickyTop }}>
         <form
           onSubmit={handleSubmit}
-          className={`${COURSE_SECTION_CARD} p-5`}
+          className={`shrink-0 ${COURSE_SECTION_CARD} p-5`}
         >
           <h2 className="text-[16px] font-medium leading-normal text-heading">{sidebar.assistTitle}</h2>
           <div className="mt-4 grid gap-3">
@@ -274,7 +273,7 @@ export default function CourseDetailSidebar({
           ) : null}
         </form>
 
-        <div className={`scroll-mt-[116px] ${COURSE_SECTION_CARD} p-5`}>
+        <div className={`scroll-mt-[116px] mt-5 shrink-0 ${COURSE_SECTION_CARD} p-5`}>
           <p className="text-center text-[16px] font-medium leading-normal text-heading">
             {sidebar.brochureText}
           </p>
@@ -287,7 +286,6 @@ export default function CourseDetailSidebar({
             {sidebar.brochureCtaLabel}
             <CourseDownloadIcon className="btn-download-icon shrink-0" />
           </CourseBrochureCta>
-        </div>
         </div>
 
         <div className="relative z-50 -ml-[44px] mt-[50px] overflow-visible pl-[44px]">

@@ -67,13 +67,13 @@ export default function CourseSkillsToolsSection({
     >
       {skillsTools ? (
         <>
-          <h2 id="skills-tools-heading" className="text-[32px] font-bold leading-normal text-[#1E293B]">
+          <h2 id="skills-tools-heading" className="section-heading text-[#1E293B] md:text-[32px]">
             {skillsTools.title}
           </h2>
           <p className="mt-1 text-[14px] font-normal leading-[150%] text-[#788593]">{skillsTools.description}</p>
         </>
       ) : (
-        <h2 id="skills-tools-heading" className="text-[32px] font-bold leading-normal text-[#1E293B]">
+        <h2 id="skills-tools-heading" className="section-heading text-[#1E293B] md:text-[32px]">
           {SKILLS_TOOLS_SKILLS_TITLE}
         </h2>
       )}

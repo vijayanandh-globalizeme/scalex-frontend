@@ -37,9 +37,9 @@ export default function CourseRelatedCoursesCarousel({
   }, [totalPages]);
 
   return (
-    <div className="mt-[80px]">
+    <div className="mt-[80px] overflow-visible">
       <div className="flex items-center justify-between gap-4">
-        <h2 className="text-[34px] font-bold leading-[140%] text-heading">{title}</h2>
+        <h2 className="section-heading text-heading">{title}</h2>
         {totalPages > 1 ? (
           <CategoryCarouselControls
             page={page}
@@ -52,11 +52,11 @@ export default function CourseRelatedCoursesCarousel({
         ) : null}
       </div>
 
-      <CategoryCarouselTrack page={page} className="mt-6">
+      <CategoryCarouselTrack page={page} className="mt-6 pb-6">
         {pages.map((pageCourses, pageIndex) => (
           <div
             key={pageIndex}
-            className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3 xl:gap-6"
+            className="grid grid-cols-1 gap-5 overflow-visible md:grid-cols-2 xl:grid-cols-3 xl:gap-6"
           >
             {pageCourses.map((course) => (
               <CourseCard

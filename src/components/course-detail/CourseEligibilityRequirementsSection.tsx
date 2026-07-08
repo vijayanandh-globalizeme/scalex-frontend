@@ -82,7 +82,7 @@ export default function CourseEligibilityRequirementsSection({
       id="eligibility"
       className={`scroll-mt-[116px] overflow-visible px-6 py-5 md:px-8 md:py-6 ${SECTION_CARD}`}
     >
-      <h2 className="text-[34px] font-bold leading-[140%] text-heading">{title}</h2>
+      <h2 className="section-heading text-heading">{title}</h2>
       <p className="mt-2 max-w-[720px] text-[14px] font-normal leading-normal text-muted">
         {description}
       </p>
@@ -107,7 +107,7 @@ export default function CourseEligibilityRequirementsSection({
       </div>
 
       <div className="relative mt-8 min-h-[200px] overflow-visible rounded-[20px] border border-[#DCDCDC] bg-[linear-gradient(79deg,#FFF_49.08%,#FFD3D3_108.27%)] py-6 pl-6 pr-[10px] md:py-7 md:pl-8 md:pr-[10px]">
-        <div className="relative z-10 max-w-[calc(100%-140px)] sm:max-w-[calc(100%-180px)] md:max-w-[calc(100%-220px)]">
+        <div className="relative z-10 w-full max-w-full md:max-w-[calc(100%-220px)]">
           <h3 className="text-[20px] font-semibold leading-[140%] text-heading">{subTitle}</h3>
           <div className="mt-4 grid gap-x-10 gap-y-2.5 sm:grid-cols-2">
             {roleColumns.map((column, colIndex) => (

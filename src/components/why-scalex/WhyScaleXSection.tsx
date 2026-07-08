@@ -83,20 +83,18 @@ export default function WhyScaleXSection({
     <header className={`w-full ${isEmbedded ? 'text-left' : 'text-center'}`}>
       <h2
         id={headingId}
-        className={`inline-flex flex-wrap items-center gap-x-2 text-heading ${
-          isEmbedded
-            ? 'text-[34px] font-bold leading-[140%]'
-            : 'justify-center text-center text-[34px] font-bold leading-[140%]'
+        className={`section-heading inline-flex flex-wrap items-center gap-x-2 text-heading ${
+          isEmbedded ? 'text-left' : 'justify-center text-center'
         }`}
       >
-        <span>{headingBefore}</span>
-        <span className="inline-flex items-center">
+        <span className="shrink-0">{headingBefore}</span>
+        <span className="inline-flex shrink-0 items-center">
           <Image
             src={brandLogo.src}
             alt={brandLogo.alt}
             width={162}
             height={62}
-            className="h-[62px] w-[162px] object-contain"
+            className="h-10 w-auto max-w-[120px] object-contain object-left md:h-[62px] md:w-[162px] md:max-w-none"
           />
         </span>
         {headingAfter ? <span>{headingAfter}</span> : null}
@@ -233,7 +231,7 @@ export default function WhyScaleXSection({
   return (
     <section
       id={id}
-      className={`full-bleed relative bg-surface py-16 md:py-20 lg:py-24 ${className ?? ''}`}
+      className={`full-bleed relative bg-surface pt-8 pb-8 md:pt-20 md:pb-12 lg:pt-24 lg:pb-16 ${className ?? ''}`}
       aria-labelledby={headingId}
     >
       <div className="site-container relative z-10">

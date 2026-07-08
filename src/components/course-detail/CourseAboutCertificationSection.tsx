@@ -12,7 +12,7 @@ export default function CourseAboutCertificationSection({
   return (
     <div className={`mt-[80px] ${COURSE_SECTION_CARD} px-6 py-5 md:px-8 md:py-6`}>
       {title ? (
-        <h2 className="text-[34px] font-bold leading-[140%] text-heading">{title}</h2>
+        <h2 className="section-heading text-heading">{title}</h2>
       ) : null}
 
       {content ? (

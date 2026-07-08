@@ -188,7 +188,7 @@ export default function CourseFeeSection({
     >
       <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
         <div>
-          <h2 id="course-fee-heading" className="text-[34px] font-bold leading-[140%] text-[#1E293B]">
+          <h2 id="course-fee-heading" className="section-heading text-[#1E293B]">
             {s.title}
           </h2>
           <p className="mt-1 max-w-2xl text-[18px] font-medium leading-[140%] text-[#788593]">

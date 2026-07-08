@@ -282,7 +282,7 @@ export default function SuccessStoriesSection({
         <header className="relative mx-auto max-w-3xl text-center">
           <h2
             id="success-stories-heading"
-            className="text-[28px] font-bold leading-[140%] text-heading md:text-[34px]"
+            className="section-heading text-heading"
           >
             {heading}
           </h2>
@@ -319,7 +319,7 @@ export default function SuccessStoriesSection({
           ) : null}
 
           <div
-            className="relative flex items-start pt-14"
+            className="relative flex items-center pt-14"
             onMouseEnter={() => setIsPaused(true)}
             onMouseLeave={() => setIsPaused(false)}
           >
@@ -336,7 +336,7 @@ export default function SuccessStoriesSection({
 
             {/* Right: testimonial slider — first card overlaps onto the video */}
             <div
-              className="relative z-10 shrink-0 overflow-x-hidden overflow-y-visible"
+              className="relative z-10 flex shrink-0 items-center overflow-x-hidden overflow-y-visible"
               style={{
                 width:
                   VISIBLE_SLIDES * SLIDE_W +

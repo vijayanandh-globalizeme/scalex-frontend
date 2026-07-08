@@ -57,7 +57,7 @@ export default function CourseFaqsSection({ faqs, title }: { faqs: FaqGroup[]; t
 
   return (
     <div id="faqs" className={`scroll-mt-[116px] ${COURSE_SECTION_CARD} px-6 py-5 md:px-8 md:py-6`}>
-      <h2 className="text-[34px] font-bold leading-[140%] text-heading">{title ?? COURSE_FAQ_TITLE}</h2>
+      <h2 className="section-heading text-heading">{title ?? COURSE_FAQ_TITLE}</h2>
 
       {/* Category tabs */}
       <div className="mt-5" role="tablist" aria-label={COURSE_FAQ_TITLE}>
@@ -111,7 +111,7 @@ export default function CourseFaqsSection({ faqs, title }: { faqs: FaqGroup[]; t
                 <div className="overflow-hidden">
                   <div className="px-5 pb-5 md:px-6">
                     <div
-                      className="ml-[5%] w-[95%] rounded-lg bg-[#F8F9FB] p-5 md:p-6 [&_h3]:mb-2 [&_h3]:mt-4 [&_h3]:text-[13px] [&_h3]:font-semibold [&_h3]:text-heading [&_h3:first-child]:mt-0 [&_p]:text-[13px] [&_p]:leading-relaxed [&_p]:text-muted"
+                      className="w-full rounded-lg bg-[#F8F9FB] p-5 md:ml-[5%] md:w-[95%] md:p-6 [&_h3]:mb-2 [&_h3]:mt-4 [&_h3]:text-[13px] [&_h3]:font-semibold [&_h3]:text-heading [&_h3:first-child]:mt-0 [&_p]:text-[13px] [&_p]:leading-relaxed [&_p]:text-muted"
                       dangerouslySetInnerHTML={{ __html: item.content.replaceAll('&nbsp;', ' ') }}
                     />
                   </div>
