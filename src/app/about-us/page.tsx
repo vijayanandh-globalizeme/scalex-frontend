@@ -196,7 +196,7 @@ export default function AboutPage() {
       </div>
 
       <div className="site-container py-6">
-        <div className="rounded-2xl border border-zinc-100 bg-white px-6 py-6 shadow-sm md:px-10">
+        <div className="rounded-2xl border border-zinc-100 bg-white px-0 py-6 shadow-sm md:px-10">
           <ReviewPlatformRowServer />
         </div>
       </div>

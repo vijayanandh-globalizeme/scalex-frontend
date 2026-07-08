@@ -258,13 +258,13 @@ export default function CourseReviewsClient({
       </div>
 
       {platformRatings.length > 0 ? (
-        <div className="mt-5 flex flex-col overflow-hidden rounded-[20px] border border-[#EBEBEB] bg-white shadow-[0_4px_4px_0_rgba(30,41,59,0.08),0_4px_4px_0_rgba(30,41,59,0.03)] sm:flex-row">
+        <div className="mt-5 grid grid-cols-2 overflow-hidden rounded-[20px] border border-[#EBEBEB] bg-white shadow-[0_4px_4px_0_rgba(30,41,59,0.08),0_4px_4px_0_rgba(30,41,59,0.03)] sm:flex sm:flex-row">
           {platformRatings.map((platform) => (
             <div key={platform.id} className="flex flex-1 flex-col items-center justify-center gap-2 px-4 py-4 sm:px-5">
               <span className="relative h-5 w-[72px] shrink-0">
                 <Image src={platform.logoSrc} alt={platform.logoAlt} fill className="object-contain object-center" sizes="72px" />
               </span>
-              <div className="flex min-w-0 items-center justify-center gap-2">
+              <div className="flex min-w-0 flex-col items-center justify-center gap-1 text-center">
                 <span className="flex items-center gap-1 text-[13px] font-semibold leading-normal text-heading">
                   <PlatformStarIcon />
                   {platform.rating}

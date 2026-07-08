@@ -14,9 +14,20 @@ const sizeClasses: Record<LogoMarqueeSize, string> = {
   md: 'h-9 min-w-[100px] max-w-[160px] px-3',
 };
 
+/** ~2 large logos visible per mobile viewport; desktop marquee sizes unchanged. */
+const largeMobileSizeClasses: Record<LogoMarqueeSize, string> = {
+  sm: 'h-6 w-[56px] min-w-[56px] max-w-[56px] md:h-[30px] md:w-auto md:min-w-[60px] md:max-w-[130px] md:px-2',
+  md: 'h-[26px] w-[65px] min-w-[65px] max-w-[65px] md:h-9 md:w-auto md:min-w-[100px] md:max-w-[160px] md:px-3',
+};
+
 const imageSizes: Record<LogoMarqueeSize, { width: number; height: number; sizes: string }> = {
-  sm: { width: 130, height: 30, sizes: '130px' },
-  md: { width: 160, height: 36, sizes: '160px' },
+  sm: { width: 56, height: 24, sizes: '(max-width: 767px) 56px, 130px' },
+  md: { width: 65, height: 26, sizes: '(max-width: 767px) 65px, 160px' },
+};
+
+const desktopImageSizes: Record<LogoMarqueeSize, { width: number; height: number }> = {
+  sm: { width: 130, height: 30 },
+  md: { width: 160, height: 36 },
 };
 
 export default function LogoMarquee({
@@ -25,23 +36,28 @@ export default function LogoMarquee({
   size = 'md',
   reverse = false,
   className = '',
+  largeOnMobile = false,
 }: {
   logos: LogoMarqueeItem[];
   ariaLabel?: string;
   size?: LogoMarqueeSize;
   reverse?: boolean;
   className?: string;
+  /** Larger logo slots on mobile (~2 visible); marquee on all breakpoints. */
+  largeOnMobile?: boolean;
 }) {
   if (logos.length === 0) return null;
 
-  const marqueeLogos = [...logos, ...logos];
-  const box = sizeClasses[size];
+  const box = largeOnMobile ? largeMobileSizeClasses[size] : sizeClasses[size];
   const img = imageSizes[size];
+  const desktopImg = desktopImageSizes[size];
+  const marqueeLogos = [...logos, ...logos];
+  const marqueeClass = largeOnMobile ? `${styles.marquee} ${styles.marqueeLargeMobile}` : styles.marquee;
 
   return (
-    <div className={`${styles.marquee} ${className}`} aria-label={ariaLabel}>
+    <div className={`${marqueeClass} ${className}`} aria-label={ariaLabel}>
       <div
-        className={`${styles.track} ${reverse ? styles.trackReverse : ''} flex w-max items-center gap-10 md:gap-14 lg:gap-16`}
+        className={`${styles.track} ${reverse ? styles.trackReverse : ''} items-center gap-6 md:gap-14 lg:gap-16`}
       >
         {marqueeLogos.map((logo, index) => (
           <div
@@ -52,9 +68,13 @@ export default function LogoMarquee({
               <Image
                 src={logo.src}
                 alt={logo.alt}
-                width={img.width}
-                height={img.height}
-                className="h-auto max-h-full w-auto max-w-full object-contain"
+                width={largeOnMobile ? img.width : desktopImg.width}
+                height={largeOnMobile ? img.height : desktopImg.height}
+                className={
+                  largeOnMobile
+                    ? 'h-full w-full object-contain md:h-auto md:max-h-full md:w-auto md:max-w-full'
+                    : 'h-auto max-h-full w-auto max-w-full object-contain'
+                }
                 sizes={img.sizes}
               />
             ) : (

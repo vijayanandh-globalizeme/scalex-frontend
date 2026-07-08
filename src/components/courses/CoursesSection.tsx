@@ -540,7 +540,7 @@ export default function CoursesSection({
               <div
                 key={`${activeTabId}-row-${rowIndex}`}
                 ref={(el) => { rowRefs.current[rowIndex] = el; }}
-                className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 [&+&]:mt-6"
+                className="gsap-reveal-pending grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 [&+&]:mt-6"
               >
                 {rowCourses.map((course) => (
                   <CourseCard key={`${activeTabId}-${course.id}`} course={course} currencySymbol={currencySymbol} />

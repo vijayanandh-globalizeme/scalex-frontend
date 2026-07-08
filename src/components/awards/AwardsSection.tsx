@@ -204,11 +204,14 @@ export default function AwardsSection({
     if (!viewport) return undefined;
 
     const update = () => {
-      const width = viewport.clientWidth;
+      const width = Math.round(viewport.clientWidth);
       if (width <= 0) return;
-      const gap = perView === 1 ? 0 : GAP_PX;
-      const cardWidth = (width - gap * Math.max(0, perView - 1)) / perView;
-      setSlideMetrics({ cardWidth, step: cardWidth + gap });
+      if (perView === 1) {
+        setSlideMetrics({ cardWidth: width, step: width + GAP_PX });
+        return;
+      }
+      const cardWidth = (width - GAP_PX * Math.max(0, perView - 1)) / perView;
+      setSlideMetrics({ cardWidth, step: cardWidth + GAP_PX });
     };
 
     update();
@@ -257,13 +260,19 @@ export default function AwardsSection({
               : undefined,
         }}
       >
-        {cards.map((card) => (
+        {cards.map((card, cardIndex) => (
           <div
             key={card.id}
-            className="shrink-0"
+            className="box-border shrink-0"
             style={
               slideMetrics.cardWidth > 0
-                ? { width: slideMetrics.cardWidth }
+                ? {
+                    width: slideMetrics.cardWidth,
+                    flex: `0 0 ${slideMetrics.cardWidth}px`,
+                    ...(perView === 1 && cardIndex < cards.length - 1
+                      ? { marginRight: GAP_PX }
+                      : {}),
+                  }
                 : {
                     flex: `0 0 calc((100% - ${(perView - 1) * GAP_PX}px) / ${perView})`,
                   }

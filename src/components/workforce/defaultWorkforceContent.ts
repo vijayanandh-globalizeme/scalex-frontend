@@ -2,7 +2,7 @@ import type { WorkforceSectionProps } from './WorkforceSection';
 
 export const defaultWorkforceContent: WorkforceSectionProps = {
   headingBefore: 'Future-Proof Your Workforce with',
-  brandLogo: { alt: ' EdgeX ' },
+  brandLogo: { alt: 'Edge X' },
   headingAfter: 'Hiring Partners',
   subheading:
     'Empower your team with industry-leading skills and custom learning pathways designed to drive innovation and measurable growth.',

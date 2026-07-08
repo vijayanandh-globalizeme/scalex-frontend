@@ -199,6 +199,7 @@ export default function HeroSection(props: HeroSectionProps) {
                   logos={trustedBy.logos}
                   size="sm"
                   reverse
+                  largeOnMobile
                   ariaLabel="Trusted by partners"
                 />
               </div>
@@ -224,11 +225,14 @@ export default function HeroSection(props: HeroSectionProps) {
               </span>
               {collaboration.lineAfter}
             </p>
-            <LogoMarquee
-              logos={collaboration.logos}
-              className="py-5"
-              ariaLabel="Certifying body partners"
-            />
+            <div className="w-full min-w-0 overflow-hidden py-5">
+              <LogoMarquee
+                logos={collaboration.logos}
+                size="md"
+                largeOnMobile
+                ariaLabel="Certifying body partners"
+              />
+            </div>
           </div>
         </div>
       </div>

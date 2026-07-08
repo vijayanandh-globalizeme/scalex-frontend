@@ -1,5 +1,8 @@
 .marquee {
   overflow: hidden;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
   -webkit-mask-image: linear-gradient(
     to right,
     transparent,
@@ -16,7 +19,45 @@
   );
 }
 
+.marqueeLargeMobile {
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent,
+    black 2%,
+    black 98%,
+    transparent
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    black 2%,
+    black 98%,
+    transparent
+  );
+}
+
+@media (min-width: 768px) {
+  .marqueeLargeMobile {
+    -webkit-mask-image: linear-gradient(
+      to right,
+      transparent,
+      black 6%,
+      black 94%,
+      transparent
+    );
+    mask-image: linear-gradient(
+      to right,
+      transparent,
+      black 6%,
+      black 94%,
+      transparent
+    );
+  }
+}
+
 .track {
+  display: flex;
+  width: max-content;
   animation: logo-marquee-scroll 40s linear infinite;
   will-change: transform;
 }

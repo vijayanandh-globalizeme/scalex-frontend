@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import type { Reviewer } from '@/services/peopleApi';
 import { REVIEWS_TYPE } from '@/lib/courseDetailStatics';
 
@@ -132,16 +132,18 @@ function VideoThumbnail({
 
 const reviewTypeMap = new Map(REVIEWS_TYPE.map((t) => [t.id, t]));
 
-function TestimonialCardOnly({ story }: { story: Reviewer }) {
+function TestimonialCardOnly({ story, mobile = false }: { story: Reviewer; mobile?: boolean }) {
   const starFills = starsFromRating(story.rating ?? 0);
   const typeMeta = reviewTypeMap.get(story.type);
   return (
     <article
-      className="flex flex-col justify-between gap-4 rounded-2xl bg-white p-5 shadow-[0_10px_30px_-10px_rgba(15,23,42,0.18)] md:p-6"
-      style={{ width: SLIDE_W, height: SLIDE_H, minWidth: SLIDE_W, maxWidth: SLIDE_W }}
+      className={`flex flex-col justify-between gap-4 rounded-2xl bg-white p-5 shadow-[0_10px_30px_-10px_rgba(15,23,42,0.18)] md:p-6 ${
+        mobile ? 'h-auto w-full' : 'min-h-[280px]'
+      }`}
+      style={mobile ? undefined : { width: SLIDE_W, minWidth: SLIDE_W, maxWidth: SLIDE_W }}
     >
-      <div className="relative flex-1 overflow-hidden">
-        <p className="text-[13px] leading-[20px] text-body md:text-[14px] md:leading-[22px] line-clamp-5">
+      <div className="flex flex-col gap-2">
+        <p className="text-[13px] leading-[20px] text-body md:text-[14px] md:leading-[22px]">
           {story.review}
         </p>
         {story.reviewUrl ? (
@@ -149,7 +151,7 @@ function TestimonialCardOnly({ story }: { story: Reviewer }) {
             href={story.reviewUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="absolute right-0 bottom-0 inline-flex items-center gap-2 bg-white pl-2 text-[12px] font-medium text-heading transition hover:text-brand"
+            className="inline-flex items-center gap-2 self-start text-[12px] font-medium text-heading transition hover:text-brand"
           >
             Read on
             {typeMeta?.logoSrc ? (
@@ -196,7 +198,11 @@ export default function SuccessStoriesSection({
 }: SuccessStoriesSectionProps) {
   const [index, setIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
+  const mobileViewportRef = useRef<HTMLDivElement>(null);
+  const [mobileSlideWidth, setMobileSlideWidth] = useState(0);
   const total = stories.length;
+  const canNavigateDesktop = total > VISIBLE_SLIDES;
+  const canNavigateMobile = total > 1;
 
   // Natural size of the side-by-side block (video + 2-card slider)
   const blockWidth =
@@ -223,17 +229,49 @@ export default function SuccessStoriesSection({
   }, [blockWidth]);
 
   const stepPx = SLIDE_W + SLIDE_GAP;
+  const mobileStepPx = mobileSlideWidth > 0 ? mobileSlideWidth + SLIDE_GAP : 0;
+
+  useEffect(() => {
+    const viewport = mobileViewportRef.current;
+    if (!viewport) return undefined;
+
+    const update = () => {
+      const width = Math.round(viewport.clientWidth);
+      if (width > 0) setMobileSlideWidth(width);
+    };
+    update();
+    const observer = new ResizeObserver(update);
+    observer.observe(viewport);
+    window.addEventListener('resize', update);
+    return () => {
+      observer.disconnect();
+      window.removeEventListener('resize', update);
+    };
+  }, []);
 
   const goPrev = () => setIndex((i) => (i - 1 + total) % total);
   const goNext = () => setIndex((i) => (i + 1) % total);
 
   useEffect(() => {
-    if (!autoplay || total <= 1 || isPaused) return;
+    if (!canNavigateDesktop) setIndex(0);
+  }, [canNavigateDesktop]);
+
+  useEffect(() => {
+    if (!autoplay || isPaused) return;
+
+    const canAutoplay = () => {
+      const isDesktop = window.matchMedia('(min-width: 1024px)').matches;
+      return isDesktop ? canNavigateDesktop : canNavigateMobile;
+    };
+
+    if (!canAutoplay()) return;
+
     const id = window.setInterval(() => {
+      if (!canAutoplay()) return;
       setIndex((i) => (i + 1) % total);
     }, autoplayIntervalMs);
     return () => window.clearInterval(id);
-  }, [autoplay, autoplayIntervalMs, total, isPaused]);
+  }, [autoplay, autoplayIntervalMs, total, isPaused, canNavigateDesktop, canNavigateMobile]);
 
   return (
     <section
@@ -255,11 +293,11 @@ export default function SuccessStoriesSection({
 
         {/* lg+: video left + testimonial slider right, scaled to fit the container */}
         <div
-          className="relative mt-10 hidden w-full overflow-hidden md:mt-12 lg:block"
-          style={{ height: blockHeight * scale }}
+          className="relative mt-10 hidden w-full overflow-x-hidden overflow-y-visible md:mt-12 lg:block"
+          style={{ minHeight: blockHeight * scale }}
         >
          <div className="w-fit origin-top-left" style={{ transform: `scale(${scale})` }}>
-          {total > 1 ? (
+          {canNavigateDesktop ? (
             <div className="absolute right-0 top-4 z-30 flex items-center gap-3">
               <button
                 type="button"
@@ -281,7 +319,7 @@ export default function SuccessStoriesSection({
           ) : null}
 
           <div
-            className="relative flex items-center pt-14"
+            className="relative flex items-start pt-14"
             onMouseEnter={() => setIsPaused(true)}
             onMouseLeave={() => setIsPaused(false)}
           >
@@ -298,19 +336,19 @@ export default function SuccessStoriesSection({
 
             {/* Right: testimonial slider — first card overlaps onto the video */}
             <div
-              className="relative z-10 shrink-0 overflow-hidden"
+              className="relative z-10 shrink-0 overflow-x-hidden overflow-y-visible"
               style={{
                 width:
                   VISIBLE_SLIDES * SLIDE_W +
                   (VISIBLE_SLIDES - 1) * SLIDE_GAP +
                   SLIDE_GAP +
                   SLIDE_PEEK,
-                height: SLIDE_H,
+                minHeight: SLIDE_H,
                 marginLeft: -SLIDE_OVERLAP,
               }}
             >
               <div
-                className="flex transition-transform duration-500 ease-out will-change-transform"
+                className="flex items-stretch transition-transform duration-500 ease-out will-change-transform"
                 style={{
                   transform: `translateX(-${index * stepPx}px)`,
                   gap: SLIDE_GAP,
@@ -329,50 +367,67 @@ export default function SuccessStoriesSection({
 
         {/* Below lg: stacked video + 422px testimonial slider (no horizontal overflow) */}
         <div
-          className="relative mx-auto mt-10 lg:hidden md:mt-12"
+          className="relative mt-10 w-full lg:hidden md:mt-12"
           onMouseEnter={() => setIsPaused(true)}
           onMouseLeave={() => setIsPaused(false)}
         >
-          {total > 1 ? (
-            <div className="mb-4 flex justify-end gap-3">
-              <button
-                type="button"
-                onClick={goPrev}
-                aria-label="Previous story"
-                className="btn-mui-brand-tint flex h-10 w-10 items-center justify-center rounded-full border border-accent bg-white text-accent"
-              >
-                <ArrowRightIcon className="btn-arrow-icon h-3.5 w-3.5 rotate-180" />
-              </button>
-              <button
-                type="button"
-                onClick={goNext}
-                aria-label="Next story"
-                className="btn-mui-icon-filled flex h-10 w-10 items-center justify-center rounded-full"
-              >
-                <ArrowRightIcon className="btn-arrow-icon h-3.5 w-3.5" />
-              </button>
+          <div className="mx-auto flex w-full flex-col items-center gap-6">
+            <div className="w-full max-w-[432px]">
+              <VideoThumbnail
+                src={featureMedia.src}
+                alt={featureMedia.alt}
+                videoUrl={featureMedia.videoUrl}
+                width={VIDEO_W}
+                height={VIDEO_H}
+                responsive
+              />
             </div>
-          ) : null}
-          <div className="mx-auto flex w-full max-w-[422px] flex-col items-center gap-6">
-            <VideoThumbnail
-              src={featureMedia.src}
-              alt={featureMedia.alt}
-              videoUrl={featureMedia.videoUrl}
-              width={VIDEO_W}
-              height={VIDEO_H}
-              responsive
-            />
-            <div className="w-full max-w-[422px] overflow-hidden" style={{ height: SLIDE_H }}>
+            {canNavigateMobile ? (
+              <div className="flex w-full max-w-[432px] justify-end gap-3">
+                <button
+                  type="button"
+                  onClick={goPrev}
+                  aria-label="Previous story"
+                  className="btn-mui-brand-tint flex h-10 w-10 items-center justify-center rounded-full border border-accent bg-white text-accent"
+                >
+                  <ArrowRightIcon className="btn-arrow-icon h-3.5 w-3.5 rotate-180" />
+                </button>
+                <button
+                  type="button"
+                  onClick={goNext}
+                  aria-label="Next story"
+                  className="btn-mui-icon-filled flex h-10 w-10 items-center justify-center rounded-full"
+                >
+                  <ArrowRightIcon className="btn-arrow-icon h-3.5 w-3.5" />
+                </button>
+              </div>
+            ) : null}
+            <div ref={mobileViewportRef} className="w-full overflow-hidden">
               <div
-                className="flex h-full transition-transform duration-500 ease-out will-change-transform"
+                className="flex items-stretch transition-transform duration-500 ease-out will-change-transform"
                 style={{
-                  transform: `translateX(-${index * stepPx}px)`,
-                  gap: SLIDE_GAP,
+                  transform:
+                    mobileStepPx > 0
+                      ? `translate3d(-${index * mobileStepPx}px, 0, 0)`
+                      : undefined,
                 }}
               >
-                {stories.map((story) => (
-                  <div key={story.id} className="shrink-0">
-                    <TestimonialCardOnly story={story} />
+                {stories.map((story, storyIndex) => (
+                  <div
+                    key={story.id}
+                    className="box-border shrink-0"
+                    style={
+                      mobileSlideWidth > 0
+                        ? {
+                            width: mobileSlideWidth,
+                            flex: `0 0 ${mobileSlideWidth}px`,
+                            marginRight:
+                              storyIndex < stories.length - 1 ? SLIDE_GAP : 0,
+                          }
+                        : { flex: '0 0 100%', width: '100%' }
+                    }
+                  >
+                    <TestimonialCardOnly story={story} mobile />
                   </div>
                 ))}
               </div>
