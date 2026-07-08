@@ -163,8 +163,8 @@ export default function ContactPageClient({
 
             {/* Right: India Map */}
             <div ref={heroRightRef} className="gsap-reveal-pending relative flex items-center justify-center">
-              <div className="relative w-full rounded-2xl border border-zinc-100 bg-white p-6 shadow-[0_4px_24px_0_rgba(30,41,59,0.08)]" style={{ maxWidth: '700px', height: '652px', marginTop: '-35px' }}>
-                <div className="relative rounded-xl mt-5" style={{ maxWidth: '547px', height: '700px', margin: '-50px auto 0', paddingLeft: '20px', paddingRight: '20px' }}>
+              <div className="relative w-full max-w-[700px] md:rounded-2xl md:border md:border-zinc-100 md:bg-white md:p-6 md:shadow-[0_4px_24px_0_rgba(30,41,59,0.08)] md:h-[652px]">
+                <div className="relative mx-auto aspect-[547/700] w-full max-w-[547px] md:mt-5 md:px-5">
                   <Image
                     src="/images/map.png"
                     alt="India map showing EdgeX Learning presence"
@@ -193,7 +193,7 @@ export default function ContactPageClient({
                   </div>
                 </div>
 
-                <div className="absolute bottom-7 right-4">
+                <div className="absolute bottom-7 right-4 max-md:hidden">
                   <span className="rounded-full bg-red-50 px-4 py-1.5 text-[13px] font-semibold text-brand">
                     Our Presence in India
                   </span>

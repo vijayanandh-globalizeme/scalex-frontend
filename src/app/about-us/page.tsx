@@ -115,7 +115,7 @@ export default function AboutPage() {
       </section>
 
       {/* What Drives Us Every Day */}
-      <section className="full-bleed bg-surface py-16 md:py-20">
+      <section className="full-bleed bg-surface pt-10 pb-16 md:py-20">
         <div className="site-container">
           <h2 className="mb-10 text-center" style={{ color: '#1E293B', fontFamily: 'Inter', fontSize: '36px', fontWeight: 700 }}>
             What Drives Us Every Day
@@ -136,24 +136,27 @@ export default function AboutPage() {
             <p className="mb-6 text-center text-[22px] font-semibold leading-normal text-heading md:text-[28px]">
               In Collaboration with{' '}<span className="font-semibold text-brand">World-Class</span>{' '}Certifying Bodies
             </p>
-            <LogoMarquee
-              logos={[
-                { alt: 'Google', src: '/images/hero/google.png' },
-                { alt: 'IBM', src: '/images/hero/ibm.png' },
-                { alt: 'Infosys', src: '/images/hero/infosys.png' },
-                { alt: 'Stanford', src: '/images/hero/stanford.png' },
-                { alt: 'Deloitte' },
-                { alt: 'TCS', src: '/images/hero/tcs.png' },
-              ]}
-              className="py-5"
-              ariaLabel="Certifying body partners"
-            />
+            <div className="w-full min-w-0 overflow-hidden py-5">
+              <LogoMarquee
+                logos={[
+                  { alt: 'Google', src: '/images/hero/google.png' },
+                  { alt: 'IBM', src: '/images/hero/ibm.png' },
+                  { alt: 'Infosys', src: '/images/hero/infosys.png' },
+                  { alt: 'Stanford', src: '/images/hero/stanford.png' },
+                  { alt: 'Deloitte' },
+                  { alt: 'TCS', src: '/images/hero/tcs.png' },
+                ]}
+                size="md"
+                largeOnMobile
+                ariaLabel="Certifying body partners"
+              />
+            </div>
           </div>
         </div>
       </section>
 
       {/* The Minds Behind Scale X Learning */}
-      <section className="full-bleed bg-surface py-16 md:py-20">
+      <section className="full-bleed bg-surface pt-10 pb-16 md:py-20">
         <div className="site-container">
           <div className="mb-10 text-center">
             <h2 style={{ color: '#1E293B', fontFamily: 'Inter', fontSize: '36px', fontWeight: 700 }}>The Minds Behind Scale X Learning</h2>
@@ -191,9 +194,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <div className="[&>section]:bg-white">
-        <SuccessStoriesSectionServer />
-      </div>
+      <SuccessStoriesSectionServer />
 
       <div className="site-container py-6">
         <div className="rounded-2xl border border-zinc-100 bg-white px-0 py-6 shadow-sm md:px-10">
@@ -202,7 +203,7 @@ export default function AboutPage() {
       </div>
 
       {/* Scale X Learning in the News */}
-      <section className="full-bleed bg-surface py-16 md:py-20">
+      <section className="full-bleed bg-surface pt-10 pb-16 md:py-20">
         <div className="site-container">
           <h2 className="mb-10 text-center" style={{ color: '#1E293B', fontFamily: 'Inter', fontSize: '36px', fontWeight: 700 }}>
             Scale X Learning in the News

@@ -14,12 +14,12 @@ export default function AboutHero() {
   useGsapScrollReveal(heroRef, heroImagesRef, { y: 50, duration: 1.4, delay: 0.3, start: 'top 95%' });
 
   return (
-    <section ref={heroRef} className="full-bleed relative overflow-x-clip overflow-y-visible pb-0" style={{ paddingTop: '75px' }}>
+    <section ref={heroRef} className="full-bleed relative overflow-x-clip overflow-y-visible pb-12 pt-[55px] md:pb-20 md:pt-[75px] lg:pb-24">
       <div className="category-hero-bg pointer-events-none absolute inset-0" aria-hidden />
 
       <div className="site-container relative z-10">
         {/* Breadcrumb */}
-        <nav className="mb-10 flex items-center gap-2 text-sm text-muted" aria-label="Breadcrumb">
+        <nav className="mb-6 flex items-center gap-2 text-sm text-muted md:mb-10" aria-label="Breadcrumb">
           <Link href="/" className="flex items-center gap-1 hover:text-brand transition-colors">
             <svg width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden>
               <path d="M2.5 7.5L10 1.667L17.5 7.5V17.5H13.333V12.5H6.667V17.5H2.5V7.5Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
@@ -54,11 +54,11 @@ export default function AboutHero() {
             </span>
           </div>
 
-          <p className="mx-auto mt-6 max-w-2xl" style={{ color: '#788593', fontFamily: 'Inter', fontSize: '17px', fontWeight: 400, lineHeight: '26px' }}>
+          <p className="mx-auto mt-4 max-w-2xl md:mt-6" style={{ color: '#788593', fontFamily: 'Inter', fontSize: '17px', fontWeight: 400, lineHeight: '26px' }}>
             Helping learners and professionals gain industry-relevant skills, certifications, and practical expertise to accelerate career growth and long-term success.
           </p>
 
-          <div className="mt-8 flex justify-center">
+          <div className="mt-6 flex justify-center md:mt-8">
             <CourseBrochureCta
               openModal
               type="contact"
@@ -75,23 +75,23 @@ export default function AboutHero() {
         </div>
 
         {/* Image grid */}
-        <div ref={heroImagesRef} className="gsap-reveal-pending mt-14 grid grid-cols-3 gap-4 pb-0">
-          <div className="flex flex-col gap-4">
-            <div className="relative h-[220px] overflow-hidden rounded-2xl">
+        <div ref={heroImagesRef} className="gsap-reveal-pending mt-6 grid grid-cols-3 gap-2 pb-[50px] md:mt-10 md:gap-4 md:pb-0">
+          <div className="flex flex-col gap-2 md:gap-4">
+            <div className="relative h-[140px] overflow-hidden rounded-2xl md:h-[220px]">
               <Image src="/images/about-left.png" alt="Professional" fill className="object-cover" />
             </div>
-            <div className="relative h-[220px] overflow-hidden rounded-2xl">
+            <div className="relative h-[140px] overflow-hidden rounded-2xl md:h-[220px]">
               <Image src="/images/about-left-1.png" alt="Professional" fill className="object-cover" />
             </div>
           </div>
-          <div className="relative overflow-hidden rounded-2xl" style={{ height: '460px' }}>
+          <div className="relative h-[296px] overflow-hidden rounded-2xl md:h-[460px]">
             <Image src="/images/about-center.png" alt="Professional leader" fill className="object-cover" />
           </div>
-          <div className="flex flex-col gap-4">
-            <div className="relative h-[220px] overflow-hidden rounded-2xl">
+          <div className="flex flex-col gap-2 md:gap-4">
+            <div className="relative h-[140px] overflow-hidden rounded-2xl md:h-[220px]">
               <Image src="/images/about-right.png" alt="Professional" fill className="object-cover" />
             </div>
-            <div className="relative h-[220px] overflow-hidden rounded-2xl">
+            <div className="relative h-[140px] overflow-hidden rounded-2xl md:h-[220px]">
               <Image src="/images/about-right-1.png" alt="Professional" fill className="object-cover" />
             </div>
           </div>
