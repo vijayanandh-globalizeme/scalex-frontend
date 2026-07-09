@@ -165,10 +165,15 @@ function TrendingBlogsSection({ blogs }: { blogs: TrendingBlogCardData[] }) {
     return () => window.removeEventListener('resize', update);
   }, []);
 
-  if (blogs.length === 0) return null;
-
   const total = blogs.length;
   const maxIndex = Math.max(0, total - perPage);
+  const canNavigate = total > perPage;
+
+  useEffect(() => {
+    setIndex((i) => Math.min(i, maxIndex));
+  }, [maxIndex]);
+
+  if (blogs.length === 0) return null;
 
   const prev = () => setIndex((i) => Math.max(0, i - 1));
   const next = () => setIndex((i) => Math.min(maxIndex, i + 1));
@@ -198,27 +203,28 @@ function TrendingBlogsSection({ blogs }: { blogs: TrendingBlogCardData[] }) {
           </div>
         </div>
 
-        {/* Prev / Next */}
-        <div className="mt-8 flex justify-end gap-3">
-          <button
-            onClick={prev}
-            disabled={index === 0}
-            className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-brand text-brand disabled:opacity-30 hover:bg-brand hover:text-white transition-colors"
-          >
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-              <path d="M15 18l-6-6 6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          </button>
-          <button
-            onClick={next}
-            disabled={index >= maxIndex}
-            className="flex h-10 w-10 items-center justify-center rounded-full bg-brand text-white disabled:opacity-30 hover:bg-brand/90 transition-colors"
-          >
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-              <path d="M9 18l6-6-6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          </button>
-        </div>
+        {canNavigate ? (
+          <div className="mt-8 flex justify-end gap-3">
+            <button
+              onClick={prev}
+              disabled={index === 0}
+              className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-brand text-brand disabled:opacity-30 hover:bg-brand hover:text-white transition-colors"
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                <path d="M15 18l-6-6 6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </button>
+            <button
+              onClick={next}
+              disabled={index >= maxIndex}
+              className="flex h-10 w-10 items-center justify-center rounded-full bg-brand text-white disabled:opacity-30 hover:bg-brand/90 transition-colors"
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                <path d="M9 18l6-6-6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </button>
+          </div>
+        ) : null}
       </div>
     </section>
   );
