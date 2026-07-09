@@ -63,6 +63,10 @@ export function CategoryCarouselControls({
   const canGoPrev = canGoPrevOverride ?? page > 0;
   const canGoNext = canGoNextOverride ?? page < totalPages - 1;
 
+  if (totalPages <= 1 || (!canGoPrev && !canGoNext)) {
+    return null;
+  }
+
   const prevVariant = canGoPrev && !canGoNext ? 'filled' : 'outline';
   const nextVariant = canGoNext ? 'filled' : 'outline';
 

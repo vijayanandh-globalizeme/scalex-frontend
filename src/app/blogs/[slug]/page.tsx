@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
-import { useState, useEffect, useRef, type FormEvent } from 'react';
+import { useState, useEffect, useRef, useId, type FormEvent } from 'react';
 import { GuidanceSection, defaultGuidanceContent } from '@/components/guidance';
 import { sendContact } from '@/app/actions/contactActions';
 import { useLeadSuccess } from '@/components/feedback/LeadSuccessProvider';
@@ -115,21 +115,21 @@ function BlogCard({ blog }: { blog: TrendingBlogCardData }) {
   return (
     <Link
       href={blog.href}
-      className="interactive-card flex w-full flex-col overflow-hidden rounded-2xl bg-white"
+      className="interactive-card flex h-full w-full flex-col rounded-2xl bg-white"
       style={{ minWidth: 0 }}
     >
-      <div className="interactive-card-media relative h-[200px] shrink-0 overflow-hidden">
+      <div className="interactive-card-media relative h-[200px] shrink-0 overflow-hidden rounded-t-2xl">
         <Image src={blog.imageSrc} alt={blog.title} fill className="object-cover" />
       </div>
-      <div className="flex flex-col flex-1 p-5">
-        <div className="flex flex-wrap items-center gap-2 mb-3">
+      <div className="flex flex-1 flex-col p-5">
+        <div className="mb-3 flex flex-wrap items-center gap-2">
           <span className="rounded-full bg-[#FFF0F3] px-3 py-1 text-[12px] font-semibold text-brand">{blog.category}</span>
           <span className="flex items-center gap-1 text-[12px] text-muted"><EyeIcon /> {blog.views}</span>
           <span className="flex items-center gap-1 text-[12px] text-muted"><ClockIcon /> {blog.readTime}</span>
         </div>
-        <h3 className="interactive-card-title mb-2 line-clamp-2 text-[15px] font-bold leading-snug text-heading">{blog.title}</h3>
-        <p className="text-[13px] text-muted line-clamp-2 flex-1">{blog.excerpt}</p>
-        <div className="mt-4 flex items-center justify-between">
+        <h3 className="interactive-card-title mb-2 line-clamp-2 min-h-[2.75rem] text-[15px] font-bold leading-snug text-heading">{blog.title}</h3>
+        <p className="line-clamp-2 min-h-[2.5rem] flex-1 text-[13px] leading-snug text-muted">{blog.excerpt}</p>
+        <div className="mt-4 flex items-center justify-between border-t border-zinc-100 pt-4">
           <div className="flex items-center gap-2">
             <div className="relative h-8 w-8 shrink-0 overflow-hidden rounded-full bg-zinc-100">
               <Image src={blog.author.avatarSrc} alt={blog.author.name} fill className="object-cover" sizes="32px" />
@@ -189,17 +189,19 @@ function TrendingBlogsSection({ blogs }: { blogs: TrendingBlogCardData[] }) {
           <p className="mt-2 text-[15px] text-muted">Find the right course that leaps your career</p>
         </div>
 
-        {/* Slider track */}
-        <div className="overflow-hidden">
+        {/* Slider track — outer padding for shadows; inner clip for slide overflow */}
+        <div className="px-3 py-6">
+          <div className="overflow-x-clip">
           <div
-            className="flex gap-6 transition-transform duration-500 ease-in-out"
+            className="flex items-stretch gap-6 transition-transform duration-500 ease-in-out"
             style={{ transform: `translateX(calc(-${index} * (100% / ${perPage} + (${perPage - 1} * 1.5rem / ${perPage}))))` }}
           >
             {blogs.map((blog) => (
-              <div key={blog.id} className="shrink-0" style={{ width: `calc((100% - ${(perPage - 1) * 24}px) / ${perPage})` }}>
+              <div key={blog.id} className="flex shrink-0 self-stretch" style={{ width: `calc((100% - ${(perPage - 1) * 24}px) / ${perPage})` }}>
                 <BlogCard blog={blog} />
               </div>
             ))}
+          </div>
           </div>
         </div>
 
@@ -343,6 +345,99 @@ function BlogAssistForm() {
   );
 }
 
+// ─── Blog sidebar cards ─────────────────────────────────────────────────────────
+
+type BlogShareHandlers = {
+  onWhatsApp: () => void;
+  onInstagram: () => void | Promise<void>;
+  onFacebook: () => void;
+  onTwitter: () => void;
+};
+
+function BlogShareCard({ onWhatsApp, onInstagram, onFacebook, onTwitter }: BlogShareHandlers) {
+  const [copied, setCopied] = useState(false);
+  const igGradId = useId();
+
+  async function handleInstagramClick() {
+    await onInstagram();
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  }
+
+  return (
+    <div className="rounded-2xl border border-zinc-100 bg-white p-4 shadow-sm">
+      <p className="text-[14px] font-bold text-heading mb-4">Share This Article</p>
+      <div className="flex items-center justify-between">
+        <button type="button" onClick={onWhatsApp} className="hover:scale-110 transition-transform" aria-label="Share on WhatsApp">
+          <svg width="32" height="32" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="22" cy="22" r="22" fill="#25D366"/>
+            <path d="M30.5 13.5A11.9 11.9 0 0022 10C15.37 10 10 15.37 10 22c0 2.12.56 4.18 1.62 6L10 34l6.18-1.6A12 12 0 0022 34c6.63 0 12-5.37 12-12 0-3.2-1.25-6.22-3.5-8.5zm-8.5 18.4a9.93 9.93 0 01-5.07-1.38l-.36-.22-3.74.98 1-3.65-.24-.38A9.94 9.94 0 0112 22c0-5.52 4.48-10 10-10s10 4.48 10 10-4.48 10-10 10zm5.48-7.48c-.3-.15-1.77-.87-2.04-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.49-1.76-1.66-2.06-.17-.3-.02-.46.13-.6.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.67-1.62-.92-2.22-.24-.58-.49-.5-.67-.51-.17-.01-.37-.01-.57-.01-.2 0-.52.07-.8.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.88 1.21 3.07c.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.7.63.71.23 1.36.2 1.87.12.57-.09 1.76-.72 2.01-1.41.25-.7.25-1.29.17-1.41-.07-.12-.27-.2-.57-.35z" fill="white"/>
+          </svg>
+        </button>
+        <button type="button" onClick={handleInstagramClick} className="relative hover:scale-110 transition-transform" aria-label="Copy link to share on Instagram">
+          <svg width="32" height="32" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="22" cy="22" r="22" fill={`url(#${igGradId})`}/>
+            <defs>
+              <radialGradient id={igGradId} cx="30%" cy="107%" r="150%">
+                <stop offset="0%" stopColor="#fdf497"/>
+                <stop offset="5%" stopColor="#fdf497"/>
+                <stop offset="45%" stopColor="#fd5949"/>
+                <stop offset="60%" stopColor="#d6249f"/>
+                <stop offset="90%" stopColor="#285AEB"/>
+              </radialGradient>
+            </defs>
+            <rect x="13" y="13" width="18" height="18" rx="5" stroke="white" strokeWidth="1.5" fill="none"/>
+            <circle cx="22" cy="22" r="4" stroke="white" strokeWidth="1.5" fill="none"/>
+            <circle cx="27.5" cy="16.5" r="1" fill="white"/>
+          </svg>
+          {copied ? (
+            <span className="absolute -top-8 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-md bg-heading px-2 py-1 text-[10px] font-medium text-white">
+              Link copied!
+            </span>
+          ) : null}
+        </button>
+        <button type="button" onClick={onFacebook} className="hover:scale-110 transition-transform" aria-label="Share on Facebook">
+          <svg width="32" height="32" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="22" cy="22" r="22" fill="#1877F2"/>
+            <path d="M28 14h-3a5 5 0 00-5 5v3h-3v4h3v8h4v-8h3l1-4h-4v-3a1 1 0 011-1h3v-4z" fill="white"/>
+          </svg>
+        </button>
+        <button type="button" onClick={onTwitter} className="hover:scale-110 transition-transform" aria-label="Share on X">
+          <svg width="32" height="32" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="22" cy="22" r="22" fill="#0F0F0F"/>
+            <path d="M24.2 20.7L31 13h-1.6l-5.9 6.8L18.8 13H13l7.1 10.3L13 31h1.6l6.2-7.2 5 7.2H32L24.2 20.7zm-2.2 2.6l-.7-1L15.2 14.2h2.4l4.6 6.6.7 1 6 8.6h-2.4l-4.5-6.6-.02-.03z" fill="white"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function BlogRelatedArticlesCard({ articles }: { articles: ApiBlogListItem[] }) {
+  if (articles.length === 0) return null;
+
+  return (
+    <div className="rounded-2xl border border-zinc-100 bg-white shadow-sm overflow-hidden">
+      <div className="flex items-center gap-2 px-4 py-3 border-b border-zinc-100">
+        <span className="text-[16px]">📚</span>
+        <h3 className="text-[14px] font-bold text-heading">Related Articles</h3>
+      </div>
+      <div className="divide-y divide-zinc-100">
+        {articles.slice(0, 3).map((r) => (
+          <Link key={r.id} href={`/blogs/${r.uri}`} className="block px-4 py-3 group hover:bg-zinc-50 transition-colors">
+            <span className="inline-block rounded-full bg-[#FFF0F3] px-3 py-1 mb-2" style={{ color: '#1E293B', fontFamily: 'Inter', fontSize: '9px', fontWeight: 500, lineHeight: 'normal' }}>
+              {r.categoryName ?? 'Blog'}
+            </span>
+            <p className="group-hover:text-brand transition-colors line-clamp-2" style={{ color: '#1E293B', fontFamily: 'Inter', fontSize: '12px', fontWeight: 600, lineHeight: 'normal' }}>
+              {r.title}
+            </p>
+          </Link>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
 export default function BlogDetailPage() {
@@ -356,7 +451,6 @@ export default function BlogDetailPage() {
   const [trending, setTrending] = useState<ApiBlogListItem[]>([]);
   const [readProgress, setReadProgress] = useState(0);
   const [activeId, setActiveId] = useState('');
-  const [copied, setCopied] = useState(false);
   const contentRef = useRef<HTMLDivElement>(null);
   // How much of the content was already on-screen the moment this effect
   // first ran — excluded as a baseline so the bar starts at 0% instead of
@@ -498,8 +592,6 @@ export default function BlogDetailPage() {
   async function copyLinkForInstagram() {
     try {
       await navigator.clipboard.writeText(currentUrl());
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
     } catch {
       // clipboard not available — nothing more we can do
     }
@@ -684,80 +776,13 @@ export default function BlogDetailPage() {
                   </div>
                 ) : null}
 
-                {/* Social share */}
-                <div className="rounded-2xl border border-zinc-100 bg-white p-4 shadow-sm">
-                  <p className="text-[14px] font-bold text-heading mb-4">Share This Article</p>
-                  <div className="flex items-center justify-between">
-                    {/* WhatsApp */}
-                    <button type="button" onClick={shareOnWhatsApp} className="hover:scale-110 transition-transform" aria-label="Share on WhatsApp">
-                      <svg width="32" height="32" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <circle cx="22" cy="22" r="22" fill="#25D366"/>
-                        <path d="M30.5 13.5A11.9 11.9 0 0022 10C15.37 10 10 15.37 10 22c0 2.12.56 4.18 1.62 6L10 34l6.18-1.6A12 12 0 0022 34c6.63 0 12-5.37 12-12 0-3.2-1.25-6.22-3.5-8.5zm-8.5 18.4a9.93 9.93 0 01-5.07-1.38l-.36-.22-3.74.98 1-3.65-.24-.38A9.94 9.94 0 0112 22c0-5.52 4.48-10 10-10s10 4.48 10 10-4.48 10-10 10zm5.48-7.48c-.3-.15-1.77-.87-2.04-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.49-1.76-1.66-2.06-.17-.3-.02-.46.13-.6.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.67-1.62-.92-2.22-.24-.58-.49-.5-.67-.51-.17-.01-.37-.01-.57-.01-.2 0-.52.07-.8.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.88 1.21 3.07c.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.7.63.71.23 1.36.2 1.87.12.57-.09 1.76-.72 2.01-1.41.25-.7.25-1.29.17-1.41-.07-.12-.27-.2-.57-.35z" fill="white"/>
-                      </svg>
-                    </button>
-                    {/* Instagram — no web share intent, copies the link instead */}
-                    <button type="button" onClick={copyLinkForInstagram} className="relative hover:scale-110 transition-transform" aria-label="Copy link to share on Instagram">
-                      <svg width="32" height="32" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <circle cx="22" cy="22" r="22" fill="url(#ig-grad)"/>
-                        <defs>
-                          <radialGradient id="ig-grad" cx="30%" cy="107%" r="150%">
-                            <stop offset="0%" stopColor="#fdf497"/>
-                            <stop offset="5%" stopColor="#fdf497"/>
-                            <stop offset="45%" stopColor="#fd5949"/>
-                            <stop offset="60%" stopColor="#d6249f"/>
-                            <stop offset="90%" stopColor="#285AEB"/>
-                          </radialGradient>
-                        </defs>
-                        <rect x="13" y="13" width="18" height="18" rx="5" stroke="white" strokeWidth="1.5" fill="none"/>
-                        <circle cx="22" cy="22" r="4" stroke="white" strokeWidth="1.5" fill="none"/>
-                        <circle cx="27.5" cy="16.5" r="1" fill="white"/>
-                      </svg>
-                      {copied ? (
-                        <span className="absolute -top-8 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-md bg-heading px-2 py-1 text-[10px] font-medium text-white">
-                          Link copied!
-                        </span>
-                      ) : null}
-                    </button>
-                    {/* Facebook */}
-                    <button type="button" onClick={shareOnFacebook} className="hover:scale-110 transition-transform" aria-label="Share on Facebook">
-                      <svg width="32" height="32" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <circle cx="22" cy="22" r="22" fill="#1877F2"/>
-                        <path d="M28 14h-3a5 5 0 00-5 5v3h-3v4h3v8h4v-8h3l1-4h-4v-3a1 1 0 011-1h3v-4z" fill="white"/>
-                      </svg>
-                    </button>
-                    {/* X / Twitter */}
-                    <button type="button" onClick={shareOnTwitter} className="hover:scale-110 transition-transform" aria-label="Share on X">
-                      <svg width="32" height="32" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <circle cx="22" cy="22" r="22" fill="#0F0F0F"/>
-                        <path d="M24.2 20.7L31 13h-1.6l-5.9 6.8L18.8 13H13l7.1 10.3L13 31h1.6l6.2-7.2 5 7.2H32L24.2 20.7zm-2.2 2.6l-.7-1L15.2 14.2h2.4l4.6 6.6.7 1 6 8.6h-2.4l-4.5-6.6-.02-.03z" fill="white"/>
-                      </svg>
-                    </button>
-                  </div>
-                </div>
-
-                {/* Related Articles */}
-                {related.length > 0 ? (
-                  <div className="rounded-2xl border border-zinc-100 bg-white shadow-sm overflow-hidden">
-                    {/* Header */}
-                    <div className="flex items-center gap-2 px-4 py-3 border-b border-zinc-100">
-                      <span className="text-[16px]">📚</span>
-                      <h3 className="text-[14px] font-bold text-heading">Related Articles</h3>
-                    </div>
-                    {/* Items */}
-                    <div className="divide-y divide-zinc-100">
-                      {related.slice(0, 3).map((r) => (
-                        <Link key={r.id} href={`/blogs/${r.uri}`} className="block px-4 py-3 group hover:bg-zinc-50 transition-colors">
-                          <span className="inline-block rounded-full bg-[#FFF0F3] px-3 py-1 mb-2" style={{ color: '#1E293B', fontFamily: 'Inter', fontSize: '9px', fontWeight: 500, lineHeight: 'normal' }}>
-                            {r.categoryName ?? 'Blog'}
-                          </span>
-                          <p className="group-hover:text-brand transition-colors line-clamp-2" style={{ color: '#1E293B', fontFamily: 'Inter', fontSize: '12px', fontWeight: 600, lineHeight: 'normal' }}>
-                            {r.title}
-                          </p>
-                        </Link>
-                      ))}
-                    </div>
-                  </div>
-                ) : null}
+                <BlogShareCard
+                  onWhatsApp={shareOnWhatsApp}
+                  onInstagram={copyLinkForInstagram}
+                  onFacebook={shareOnFacebook}
+                  onTwitter={shareOnTwitter}
+                />
+                <BlogRelatedArticlesCard articles={related} />
               </div>
             </aside>
 
@@ -801,6 +826,17 @@ export default function BlogDetailPage() {
                   </p>
                 </div>
               ) : null}
+
+              {/* Mobile-only share & related */}
+              <div className="mt-8 space-y-6 lg:hidden">
+                <BlogShareCard
+                  onWhatsApp={shareOnWhatsApp}
+                  onInstagram={copyLinkForInstagram}
+                  onFacebook={shareOnFacebook}
+                  onTwitter={shareOnTwitter}
+                />
+                <BlogRelatedArticlesCard articles={related} />
+              </div>
             </article>
 
             {/* ── RIGHT SIDEBAR ─────────────────────────────────────────────────── */}

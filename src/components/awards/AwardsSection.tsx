@@ -147,6 +147,10 @@ function CarouselControls({
   const canGoPrev = page > 0;
   const canGoNext = page < totalPages - 1;
 
+  if (totalPages <= 1 || (!canGoPrev && !canGoNext)) {
+    return null;
+  }
+
   return (
     <div className="flex justify-end gap-3">
       <button

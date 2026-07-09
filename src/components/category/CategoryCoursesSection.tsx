@@ -239,23 +239,23 @@ export default function CategoryCoursesSection({
     <section
       ref={sectionRef}
       id="courses"
-      className="full-bleed relative z-0 overflow-visible bg-white pb-10 pt-32 md:pb-12 md:pt-40"
+      className="full-bleed relative z-0 overflow-visible bg-white pb-10 pt-20 md:pb-12 md:pt-40"
       aria-labelledby="category-courses-heading"
     >
       <div className="site-container">
-        <header className="mx-auto mt-6 max-w-4xl text-center md:mt-8 lg:mt-10">
+        <header className="mx-auto mt-0 max-w-4xl text-center md:mt-8 lg:mt-10">
           <h2
             id="category-courses-heading"
             className="section-heading text-center text-heading"
           >
             Explore all {categoryName} courses
           </h2>
-          <p className="mt-3 text-[16px] font-medium leading-[140%] text-muted md:text-[18px]">
+          <p className="mt-2 text-[16px] font-medium leading-[140%] text-muted md:mt-3 md:text-[18px]">
             Find the right course that leaps your career
           </p>
         </header>
 
-        <div ref={gridContainerRef} className="mt-10 pb-4 md:mt-12 md:pb-6">
+        <div ref={gridContainerRef} className="mt-6 pb-4 md:mt-12 md:pb-6">
           {loading ? (
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
               {Array.from({ length: FETCH_LIMIT }).map((_, i) => (

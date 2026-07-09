@@ -318,15 +318,16 @@ export default function BlogsPage() {
                 </div>
               </div>
 
-              {/* Slider controls */}
-              <div className="mt-4 flex items-center justify-end gap-3">
-                <button type="button" onClick={() => setHeroPage((p) => Math.max(0, p - 1))} disabled={heroPage === 0} aria-label="Previous blog" className="disabled:opacity-40">
-                  <CarouselNavIcon direction="prev" variant="outline" size={36} />
-                </button>
-                <button type="button" onClick={() => setHeroPage((p) => Math.min(totalHero - 1, p + 1))} disabled={heroPage === totalHero - 1} aria-label="Next blog" className="disabled:opacity-40">
-                  <CarouselNavIcon direction="next" variant="filled" size={36} />
-                </button>
-              </div>
+              {totalHero > 1 ? (
+                <div className="mt-4 flex items-center justify-end gap-3">
+                  <button type="button" onClick={() => setHeroPage((p) => Math.max(0, p - 1))} disabled={heroPage === 0} aria-label="Previous blog" className="disabled:opacity-40">
+                    <CarouselNavIcon direction="prev" variant="outline" size={36} />
+                  </button>
+                  <button type="button" onClick={() => setHeroPage((p) => Math.min(totalHero - 1, p + 1))} disabled={heroPage === totalHero - 1} aria-label="Next blog" className="disabled:opacity-40">
+                    <CarouselNavIcon direction="next" variant="filled" size={36} />
+                  </button>
+                </div>
+              ) : null}
             </>
           ) : null}
         </div>

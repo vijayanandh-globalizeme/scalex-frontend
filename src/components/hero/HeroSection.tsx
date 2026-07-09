@@ -122,7 +122,7 @@ export default function HeroSection(props: HeroSectionProps) {
   return (
     <section
       ref={sectionRef}
-      className="full-bleed relative overflow-x-clip overflow-y-visible bg-surface pb-8 pt-[30px] md:pb-10 md:pt-36 lg:pb-12 lg:pt-44"
+      className="full-bleed relative overflow-x-clip overflow-y-visible bg-surface pb-8 pt-4 md:pb-10 md:pt-24 lg:pb-12 lg:pt-32"
       aria-labelledby="hero-heading"
     >
       {/* Decorative background (non-content) */}
