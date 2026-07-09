@@ -160,7 +160,7 @@ function RoleTransitionCard({
       };
 
   return (
-    <div className="box-border flex shrink-0 flex-col items-center px-2 py-3" style={boxStyle}>
+    <div className="interactive-card box-border flex shrink-0 flex-col items-center px-2 py-3" style={boxStyle}>
       <span
         className={
           isAfter
@@ -171,7 +171,7 @@ function RoleTransitionCard({
         {isAfter ? 'After' : 'Before'}
       </span>
       <p
-        className="mt-2 whitespace-pre-line text-center text-[14px] font-medium leading-[140%] text-[#000]"
+        className="interactive-card-title mt-2 whitespace-pre-line text-center text-[14px] font-medium leading-[140%] text-[#000]"
       >
         {role}
       </p>
@@ -258,7 +258,7 @@ function TransformationStoryCard({ story }: { story: CareerTransformationStory }
 
       {/* Card */}
       <div
-        className="relative z-0 flex min-h-[210px] w-full flex-1 overflow-visible rounded-[20px] border border-[#DCDCDC] shadow-[0_4px_4px_0_rgba(30,41,59,0.08),0_4px_4px_0_rgba(30,41,59,0.03)]"
+        className="interactive-card relative z-0 flex min-h-[210px] w-full flex-1 overflow-visible rounded-[20px] border border-[#DCDCDC]"
         style={{ background: 'linear-gradient(259deg, #FFF 64.75%, #FFD3D3 108.27%)' }}
       >
         {/* Person image — mobile */}

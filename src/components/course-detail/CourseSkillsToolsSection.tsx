@@ -6,7 +6,7 @@ import { SKILLS_TOOLS_SKILLS_TITLE, SKILLS_TOOLS_TOOLS_TITLE } from '@/lib/cours
 type ApiSkillsTools = NonNullable<ApiCourseDetails['skillsTools']>;
 
 const SKILL_TOOL_CARD =
-  'flex min-h-[72px] flex-col justify-center rounded-[12px] border border-[#EBEBEB] bg-white px-2 py-2 shadow-[0_4px_4px_0_rgba(30,41,59,0.08),0_4px_4px_0_rgba(30,41,59,0.03)]';
+  'interactive-card flex min-h-[72px] flex-col justify-center rounded-[12px] border border-[#EBEBEB] bg-white px-2 py-2';
 
 function parseSkills(raw: string): { name: string; category: string }[] {
   return raw
@@ -22,7 +22,7 @@ function parseSkills(raw: string): { name: string; category: string }[] {
 function SkillCard({ name, category }: { name: string; category: string }) {
   return (
     <div className={SKILL_TOOL_CARD}>
-      <p className="text-[14px] font-bold leading-[140%] text-[#1E293B]">{name}</p>
+      <p className="interactive-card-title text-[14px] font-bold leading-[140%] text-[#1E293B]">{name}</p>
       <p className="mt-1 text-[12px] font-normal leading-[140%] text-[#788593]">{category}</p>
     </div>
   );
@@ -32,7 +32,7 @@ function ToolCard({ tool }: { tool: ApiOtherDetail }) {
   return (
     <div className={`${SKILL_TOOL_CARD} items-center`}>
       {tool.file ? (
-        <div className="relative h-20 w-full">
+        <div className="interactive-card-media relative h-20 w-full">
           <Image
             src={tool.file.url}
             alt={tool.title}
@@ -42,7 +42,7 @@ function ToolCard({ tool }: { tool: ApiOtherDetail }) {
           />
         </div>
       ) : (
-        <p className="text-center text-[12px] font-semibold leading-[140%] text-[#1E293B]">{tool.title}</p>
+        <p className="interactive-card-title text-center text-[12px] font-semibold leading-[140%] text-[#1E293B]">{tool.title}</p>
       )}
     </div>
   );

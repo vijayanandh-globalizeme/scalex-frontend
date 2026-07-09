@@ -55,11 +55,11 @@ function CategoryCard({ item }: { item: ExploreCategoryItem }) {
     <Link
       href={item.href}
       prefetch
-      className="group flex w-full items-center gap-4 rounded-xl border border-zinc-200/90 bg-white p-5 shadow-[0_4px_14px_-4px_rgba(30,41,59,0.12)] transition hover:-translate-y-0.5 hover:shadow-[0_8px_20px_-6px_rgba(30,41,59,0.16)]"
+      className="interactive-card group flex w-full items-center gap-4 rounded-xl border border-zinc-200/90 bg-white p-5"
     >
       <CategoryIcon fill={item.iconBg} icon={item.icon} />
       <span className="min-w-0 flex-1">
-        <span className="block text-[15px] font-bold leading-snug text-heading">{item.label}</span>
+        <span className="interactive-card-title block text-[15px] font-bold leading-snug text-heading">{item.label}</span>
         <span className="mt-1.5 inline-flex items-center gap-1 text-[13px] font-medium text-muted transition group-hover:text-subtle">
           Explore
           <ExploreArrowIcon className="btn-arrow-icon shrink-0" />

@@ -290,7 +290,7 @@ function DateRangePicker({
 // ── Schedule Card ─────────────────────────────────────────────────────────────
 
 const SCHEDULE_CARD =
-  'relative cursor-pointer overflow-hidden rounded-[20px] border border-[#EBEBEB] bg-white shadow-[0_4px_4px_0_rgba(30,41,59,0.08),0_4px_4px_0_rgba(30,41,59,0.03)] transition-shadow duration-200 hover:shadow-[0_8px_20px_-6px_rgba(30,41,59,0.16)]';
+  'interactive-card relative overflow-hidden rounded-[20px] border border-[#EBEBEB] bg-white';
 
 function formatDate(iso: string) {
   return new Date(iso).toLocaleDateString('en-US', {
@@ -414,7 +414,7 @@ function ScheduleCard({ batch, quantity, onQuantityChange, onEnroll }: {
                 <span className="h-1.5 w-1.5 rounded-full bg-brand" aria-hidden />
                 {batch.venue.toUpperCase()}
               </span>
-              <p className="mt-2 text-[24px] font-semibold text-heading max-md:mt-1.5 max-md:text-[16px] max-md:leading-tight">
+              <p className="interactive-card-title mt-2 text-[24px] font-semibold text-heading max-md:mt-1.5 max-md:text-[16px] max-md:leading-tight">
                 {dateRange}
               </p>
               <p className="mt-1 flex items-center gap-1.5 text-[14px] font-medium text-muted max-md:mt-0.5 max-md:text-[11px]">

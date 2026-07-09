@@ -268,7 +268,7 @@ function TestimonialCard({
     direction === 'next' ? 'animate-slide-in-right' : 'animate-slide-in-left';
   return (
     <article
-      className={`${animationClass} relative mt-8 w-full max-w-[520px] rounded-2xl bg-white p-6 shadow-[0_20px_40px_-10px_rgba(15,23,42,0.25)] md:mt-12 md:p-7`}
+      className={`${animationClass} interactive-card relative mt-8 w-full max-w-[520px] rounded-2xl bg-white p-6 md:mt-12 md:p-7`}
     >
       <header className="flex items-start justify-between gap-4">
         <div className="flex items-center gap-3">
@@ -284,7 +284,7 @@ function TestimonialCard({
             </div>
           ) : null}
           <div>
-            <p className="text-[15px] font-bold text-heading">{testimonial.name}</p>
+            <p className="interactive-card-title text-[15px] font-bold text-heading">{testimonial.name}</p>
             <p className="text-[12px] font-medium text-subtle">{testimonial.currentRole}</p>
           </div>
         </div>

@@ -263,15 +263,19 @@ export default function BlogsPage() {
           {/* Featured slider card */}
           {totalHero > 0 ? (
             <>
-              <div className="relative overflow-hidden rounded-2xl border border-[#E2E8F0] bg-white shadow-[0_4px_24px_0_rgba(30,41,59,0.08)]" style={{ position: 'relative', zIndex: 20 }}>
-                <div
-                  className="flex transition-transform duration-500 ease-in-out"
-                  style={{ transform: `translateX(-${heroPage * 100}%)` }}
-                >
-                  {heroBlogs.map((b) => (
-                    <div key={b.id} className="flex w-full shrink-0 flex-col md:flex-row">
-                      {/* Image */}
-                      <div className="shrink-0 overflow-hidden">
+              <div className="interactive-card relative rounded-2xl border border-[#E2E8F0] bg-white" style={{ position: 'relative', zIndex: 20 }}>
+                <div className="overflow-hidden rounded-2xl">
+                  <div
+                    className="flex transition-transform duration-500 ease-in-out"
+                    style={{ transform: `translateX(-${heroPage * 100}%)` }}
+                  >
+                    {heroBlogs.map((b) => (
+                      <Link
+                        key={b.id}
+                        href={b.href}
+                        className="flex w-full shrink-0 flex-col bg-white md:flex-row"
+                      >
+                      <div className="interactive-card-media shrink-0 overflow-hidden">
                         <Image
                           src={b.imageSrc}
                           alt={b.imageAlt}
@@ -280,7 +284,6 @@ export default function BlogsPage() {
                           className="h-[200px] w-full object-cover md:h-[290px] md:w-[460px]"
                         />
                       </div>
-                      {/* Content */}
                       <div className="flex min-w-0 flex-1 flex-col justify-between p-6 md:p-8">
                         <div>
                           <div className="flex items-center gap-2">
@@ -288,7 +291,7 @@ export default function BlogsPage() {
                             <span className="text-[#CBD5E1]">•</span>
                             <span className="text-[11px] font-semibold uppercase tracking-widest text-muted">{b.readTime}</span>
                           </div>
-                          <h2 className="mt-3 text-[18px] font-bold leading-[1.4] text-heading md:text-[22px]">{b.title}</h2>
+                          <h2 className="interactive-card-title mt-3 text-[18px] font-bold leading-[1.4] text-heading md:text-[22px]">{b.title}</h2>
                           <p className="mt-3 line-clamp-3 text-[14px] leading-[1.6] text-muted">{b.excerpt}</p>
                         </div>
                         <div className="mt-6 flex flex-wrap items-center justify-between gap-4">
@@ -301,14 +304,17 @@ export default function BlogsPage() {
                               <p className="text-[12px] text-muted">{b.date} · {b.publication}</p>
                             </div>
                           </div>
-                          <Link href={b.href} className="inline-flex items-center gap-1.5 text-[13px] font-semibold text-brand transition hover:underline">
+                          <span className="inline-flex items-center gap-2 text-[13px] font-semibold text-brand">
                             Read Article
-                            <ArrowRightIcon />
-                          </Link>
+                            <span className="interactive-card-action">
+                              <ArrowRightIcon />
+                            </span>
+                          </span>
                         </div>
                       </div>
-                    </div>
+                    </Link>
                   ))}
+                  </div>
                 </div>
               </div>
 
@@ -404,9 +410,9 @@ export default function BlogsPage() {
             ) : items.length === 0 ? (
               <p className="col-span-3 py-10 text-center text-[14px] text-muted">No blogs available in this category yet.</p>
             ) : items.map((b) => (
-              <Link key={b.id} href={`/blogs/${b.uri}`} className="group flex flex-col overflow-hidden rounded-2xl border border-[#E2E8F0] bg-white shadow-sm transition-shadow hover:shadow-md">
-                <div className="relative h-[200px] w-full overflow-hidden">
-                  <Image src={b.featureImage?.url ?? DEFAULT_BLOG_IMAGE} alt={b.title} fill className="object-cover transition-transform duration-300 group-hover:scale-105" sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw" />
+              <Link key={b.id} href={`/blogs/${b.uri}`} className="interactive-card flex flex-col overflow-hidden rounded-2xl border border-[#E2E8F0] bg-white">
+                <div className="interactive-card-media relative h-[200px] w-full">
+                  <Image src={b.featureImage?.url ?? DEFAULT_BLOG_IMAGE} alt={b.title} fill className="object-cover" sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw" />
                 </div>
                 <div className="flex flex-1 flex-col justify-between p-5">
                   <div>
@@ -421,7 +427,7 @@ export default function BlogsPage() {
                         {b.readTimeMinutes} MIN READ
                       </span>
                     </div>
-                    <h3 className="line-clamp-2 text-[15px] font-bold leading-snug text-heading transition-colors group-hover:text-brand">{b.title}</h3>
+                    <h3 className="interactive-card-title line-clamp-2 text-[15px] font-bold leading-snug text-heading">{b.title}</h3>
                     <p className="mt-2 line-clamp-3 text-[13px] leading-[1.6] text-muted">{b.shortDescription}</p>
                   </div>
                   <div className="mt-4 flex items-center justify-between">
@@ -434,7 +440,7 @@ export default function BlogsPage() {
                         <p className="text-[11px] text-muted">{formatDate(b.createdAt)}</p>
                       </div>
                     </div>
-                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#FFF0F3] text-brand transition-colors group-hover:bg-brand group-hover:text-white">
+                    <span className="interactive-card-action">
                       <ArrowRightIcon />
                     </span>
                   </div>

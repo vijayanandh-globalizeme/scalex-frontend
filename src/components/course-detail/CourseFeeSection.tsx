@@ -117,7 +117,7 @@ function PricingCard({
 
   return (
     <div
-      className={`relative flex w-full min-w-0 flex-col rounded-[20px] border bg-white p-5 shadow-[0_4px_4px_0_rgba(30,41,59,0.08),0_4px_4px_0_rgba(30,41,59,0.03)] sm:w-[232px] ${
+      className={`interactive-card relative flex w-full min-w-0 flex-col rounded-[20px] border bg-white p-5 sm:w-[232px] ${
         highlighted ? 'border-[#FD022D]' : 'border-[#EBEBEB]'
       }`}
       style={highlighted ? { background: 'linear-gradient(180deg, #FFF6F7 0%, #FFFFFF 28%)' } : undefined}
@@ -127,7 +127,7 @@ function PricingCard({
           {badge}
         </span>
       ) : null}
-      <p className="pr-16 text-[14px] font-medium leading-[140%] text-[#788593]">{label}</p>
+      <p className="interactive-card-title pr-16 text-[14px] font-medium leading-[140%] text-[#788593]">{label}</p>
       <div className="mt-2 flex flex-wrap items-baseline gap-1">
         <span className="text-[24px] font-bold leading-[140%] text-[#1E293B]">{price}</span>
         {priceSuffix ? (

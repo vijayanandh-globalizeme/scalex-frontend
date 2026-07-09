@@ -202,8 +202,8 @@ export function CourseCard({
   const isCourseDetail = variant === 'courseDetail';
 
   return (
-    <article className="mx-auto flex w-full max-w-[405px] cursor-pointer flex-col overflow-hidden rounded-2xl border border-zinc-100 bg-white shadow-[0_4px_4px_0_rgba(30,41,59,0.03),0_4px_4px_0_rgba(30,41,59,0.06)] transition hover:shadow-lg">
-      <div className="relative h-[181px] w-full">
+    <article className="interactive-card mx-auto flex w-full max-w-[405px] flex-col overflow-hidden rounded-2xl border border-zinc-100 bg-white">
+      <div className="interactive-card-media relative h-[181px] w-full">
         <Image
           src={course.imageSrc}
           alt={course.imageAlt}
@@ -222,10 +222,10 @@ export function CourseCard({
       </div>
       <div className="flex flex-1 flex-col gap-3 p-4">
         {isCourseDetail ? (
-          <h3 className="w-full text-[16px] font-bold leading-tight text-heading">{course.title}</h3>
+          <h3 className="interactive-card-title w-full text-[16px] font-bold leading-tight text-heading">{course.title}</h3>
         ) : (
           <div className="flex items-center justify-between gap-3">
-            <h3 className="text-[16px] font-bold leading-tight text-heading">{course.title}</h3>
+            <h3 className="interactive-card-title text-[16px] font-bold leading-tight text-heading">{course.title}</h3>
             <span className="shrink-0 rounded-[26px] border-[0.5px] border-border-tag bg-[#FFDEE4] px-3 py-1 text-[11px] font-semibold text-heading">
               {course.categoryLabel}
             </span>

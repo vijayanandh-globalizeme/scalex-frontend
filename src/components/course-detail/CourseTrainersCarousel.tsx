@@ -12,7 +12,7 @@ import CourseBatchRequestBanner from '@/components/course-detail/CourseBatchRequ
 import type { ApiTrainer } from '@/services/courseApi';
 
 const TRAINER_CARD =
-  'relative flex h-full cursor-pointer flex-col rounded-[20px] border border-[#EBEBEB] bg-white px-5 pb-5 pt-12 text-center shadow-[0_4px_14px_-4px_rgba(30,41,59,0.08),0_4px_4px_0_rgba(30,41,59,0.03)] transition-shadow duration-200 hover:shadow-[0_8px_20px_-6px_rgba(30,41,59,0.16)]';
+  'interactive-card relative flex h-full flex-col rounded-[20px] border border-[#EBEBEB] bg-white px-5 pb-5 pt-12 text-center';
 
 function BriefcaseIcon() {
   return (
@@ -33,7 +33,7 @@ function TrainerCard({ trainer }: { trainer: ApiTrainer }) {
 
   return (
     <article className={TRAINER_CARD}>
-      <div className="absolute top-0 left-1/2 h-[72px] w-[72px] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-full border-[3px] border-[#FFF6F7] bg-zinc-100">
+      <div className="interactive-card-media absolute top-0 left-1/2 h-[72px] w-[72px] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-full border-[3px] border-[#FFF6F7] bg-zinc-100">
         <Image
           src={trainer.avatar?.url ?? '/images/avatar-placeholder.png'}
           alt={trainer.name}
@@ -44,7 +44,7 @@ function TrainerCard({ trainer }: { trainer: ApiTrainer }) {
         />
       </div>
 
-      <h3 className="text-[20px] font-semibold leading-normal text-heading">{trainer.name}</h3>
+      <h3 className="interactive-card-title text-[20px] font-semibold leading-normal text-heading">{trainer.name}</h3>
       <p className="mt-1 text-[14px] font-medium leading-normal text-[#FD022D]">{trainer.role}</p>
       <p className="mt-3 line-clamp-4 text-[14px] font-normal leading-normal text-muted">{trainer.about}</p>
 

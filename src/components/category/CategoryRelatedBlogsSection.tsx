@@ -20,9 +20,6 @@ const BLOG_IMAGE_OVERFLOW_PX = Math.round(BLOG_IMAGE_H * 0.1);
 const MOBILE_BLOG_IMAGE_H = 100;
 const MOBILE_BLOG_IMAGE_OVERFLOW_PX = Math.round(MOBILE_BLOG_IMAGE_H * 0.1);
 const SOLID_CARD_HEIGHT = 'min-h-[196px]';
-const CARD_SHADOW =
-  'cursor-pointer shadow-[0_4px_4px_0_rgba(30,41,59,0.11),0_4px_4px_0_rgba(30,41,59,0.03)] transition-shadow duration-200 hover:shadow-[0_8px_20px_-6px_rgba(30,41,59,0.16)]';
-
 type BlogVariant = 'default' | 'solid-red' | 'solid-tan' | 'solid-teal';
 
 /** Matches screenshot: white / solid / white per row, 3-column masonry. */
@@ -119,12 +116,12 @@ function WhiteBlogCard({ blog, mobile = false }: { blog: BlogItem; mobile?: bool
   return (
     <article className={`overflow-visible ${widthClass}`}>
       <div
-        className={`flex flex-col overflow-visible rounded-2xl border border-zinc-100 bg-white pt-0 ${CARD_SHADOW} ${
+        className={`interactive-card flex flex-col overflow-visible rounded-2xl border border-zinc-100 bg-white pt-0 ${
           mobile ? 'px-3 pb-4' : 'px-4 pb-6'
         }`}
       >
         <div
-          className={`relative z-10 w-full overflow-hidden rounded-2xl ${mobile ? 'mb-3' : 'mb-4'}`}
+          className={`interactive-card-media relative z-10 w-full overflow-hidden rounded-2xl ${mobile ? 'mb-3' : 'mb-4'}`}
           style={{
             height: imageH,
             marginTop: -imageOverflow,
@@ -139,7 +136,7 @@ function WhiteBlogCard({ blog, mobile = false }: { blog: BlogItem; mobile?: bool
             className="object-cover"
           />
         </div>
-        <h3 className={`font-bold leading-snug text-heading ${mobile ? 'line-clamp-2 text-[14px]' : 'text-[17px]'}`}>
+        <h3 className={`interactive-card-title font-bold leading-snug text-heading ${mobile ? 'line-clamp-2 text-[14px]' : 'text-[17px]'}`}>
           {blog.title}
         </h3>
         <p
@@ -158,13 +155,13 @@ function SolidBlogCard({ blog, bg, mobile = false }: { blog: BlogItem; bg: strin
 
   return (
     <article
-      className={`flex flex-col overflow-visible rounded-2xl ${CARD_SHADOW} ${widthClass} ${
+      className={`interactive-card flex flex-col overflow-visible rounded-2xl ${widthClass} ${
         mobile ? 'min-h-[168px] p-3' : `${SOLID_CARD_HEIGHT} p-5`
       }`}
       style={{ backgroundColor: bg }}
     >
       <div className="min-h-0 flex-1">
-        <h3 className={`line-clamp-2 font-bold leading-snug text-white ${mobile ? 'text-[13px]' : 'text-[15px]'}`}>
+        <h3 className={`interactive-card-title line-clamp-2 font-bold leading-snug text-white ${mobile ? 'text-[13px]' : 'text-[15px]'}`}>
           {blog.title}
         </h3>
         <p

@@ -88,7 +88,7 @@ function PlanCard({
 
   return (
     <div
-      className={`relative flex w-[232px] flex-col rounded-[20px] border bg-white p-4 shadow-[0_4px_4px_0_rgba(30,41,59,0.08),0_4px_4px_0_rgba(30,41,59,0.03)] ${
+      className={`interactive-card relative flex w-[232px] flex-col rounded-[20px] border bg-white p-4 ${
         isElite ? 'border-[#FD022D]' : 'border-[#EBEBEB]'
       }`}
     >
@@ -101,7 +101,7 @@ function PlanCard({
           {pct}% Off
         </span>
       ) : null}
-      <p className="pr-12 text-[14px] font-medium leading-[140%] text-heading">{plan.name}</p>
+      <p className="interactive-card-title pr-12 text-[14px] font-medium leading-[140%] text-heading">{plan.name}</p>
       <div className="mt-2 flex flex-wrap items-baseline gap-1.5">
         <span className="text-[16px] font-semibold leading-[140%] text-heading">
           {formatPrice(sellingPrice, currencySymbol)}

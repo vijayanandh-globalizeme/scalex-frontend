@@ -115,11 +115,11 @@ function BlogCard({ blog }: { blog: TrendingBlogCardData }) {
   return (
     <Link
       href={blog.href}
-      className="group flex w-full flex-col rounded-2xl bg-white overflow-hidden shadow-sm hover:shadow-md transition-shadow"
+      className="interactive-card flex w-full flex-col overflow-hidden rounded-2xl bg-white"
       style={{ minWidth: 0 }}
     >
-      <div className="relative h-[200px] overflow-hidden shrink-0">
-        <Image src={blog.imageSrc} alt={blog.title} fill className="object-cover group-hover:scale-105 transition-transform duration-300" />
+      <div className="interactive-card-media relative h-[200px] shrink-0 overflow-hidden">
+        <Image src={blog.imageSrc} alt={blog.title} fill className="object-cover" />
       </div>
       <div className="flex flex-col flex-1 p-5">
         <div className="flex flex-wrap items-center gap-2 mb-3">
@@ -127,7 +127,7 @@ function BlogCard({ blog }: { blog: TrendingBlogCardData }) {
           <span className="flex items-center gap-1 text-[12px] text-muted"><EyeIcon /> {blog.views}</span>
           <span className="flex items-center gap-1 text-[12px] text-muted"><ClockIcon /> {blog.readTime}</span>
         </div>
-        <h3 className="text-[15px] font-bold text-heading leading-snug line-clamp-2 group-hover:text-brand transition-colors mb-2">{blog.title}</h3>
+        <h3 className="interactive-card-title mb-2 line-clamp-2 text-[15px] font-bold leading-snug text-heading">{blog.title}</h3>
         <p className="text-[13px] text-muted line-clamp-2 flex-1">{blog.excerpt}</p>
         <div className="mt-4 flex items-center justify-between">
           <div className="flex items-center gap-2">
@@ -139,7 +139,7 @@ function BlogCard({ blog }: { blog: TrendingBlogCardData }) {
               <p className="text-[11px] text-muted">{blog.author.date}</p>
             </div>
           </div>
-          <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#FFF0F3] text-brand group-hover:bg-brand group-hover:text-white transition-colors">
+          <span className="interactive-card-action">
             <svg width="14" height="12" viewBox="0 0 18 15" fill="currentColor">
               <path d="M10.6333 15c.2326 0 .4361-.0891.63-.2771l6.4459-6.5599c.1938-.188.2908-.4156.2908-.663s-.097-.475-.2908-.663L11.2827.2968C11.0694.0792 10.8659 0 10.6333 0c-.475 0-.8434.3562-.8434.851 0 .2375.0775.465.2326.6234l2.1714 2.2559 4.0419 3.7698-4.0419 3.7697-2.1714 2.256c-.1551.1484-.2326.3859-.2326.6233 0 .495.3684.851.8434.851ZM.853 8.3806h12.2617l3.1211-.1979c.3974-.0297.6688-.277.6688-.6827 0-.4057-.2714-.6531-.6688-.6828l-3.1211-.1978H.853C.349 6.6194 0 6.9855 0 7.5c0 .5145.349.8806.853.8806Z" />
             </svg>

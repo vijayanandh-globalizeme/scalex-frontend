@@ -15,7 +15,7 @@ import { REVIEWS_TYPE, REVIEW_VIDEO_SECTION } from '@/lib/courseDetailStatics';
 const SECTION_CARD = 'rounded-[20px] bg-transparent';
 
 const REVIEW_CARD =
-  'relative flex h-full min-h-[282px] min-w-0 cursor-pointer flex-col overflow-visible rounded-[20px] border border-[#EBEBEB] bg-white px-5 pb-5 pt-6 shadow-[0_4px_4px_0_rgba(30,41,59,0.08),0_4px_4px_0_rgba(30,41,59,0.03)] transition-shadow duration-200 hover:shadow-[0_8px_20px_-6px_rgba(30,41,59,0.16)]';
+  'interactive-card relative flex h-full min-h-[282px] min-w-0 flex-col overflow-visible rounded-[20px] border border-[#EBEBEB] bg-white px-5 pb-5 pt-6';
 
 const TAB_BAR_SCROLL =
   'inline-flex h-[52px] items-stretch gap-8 overflow-x-auto rounded-lg bg-[#FCFCFC] px-8 shadow-[0_4px_4px_0_rgba(30,41,59,0.08),4px_-4px_4px_0_rgba(30,41,59,0.03)] [-ms-overflow-style:none] [scrollbar-width:none] md:gap-10 [&::-webkit-scrollbar]:hidden';
@@ -103,7 +103,7 @@ function ReviewCard({ review, typeMap }: { review: ApiReview; typeMap: Map<strin
             ) : null}
           </div>
           <div className="min-w-0">
-            <p className="truncate text-[14px] font-medium leading-[20px] text-heading">{review.name}</p>
+            <p className="interactive-card-title truncate text-[14px] font-medium leading-[20px] text-heading">{review.name}</p>
             <p className="mt-0.5 truncate text-[12px] font-normal leading-normal text-muted">{review.role}</p>
             <div className="mt-1.5">
               <StarRating rating={review.rating} />
@@ -118,7 +118,7 @@ function ReviewCard({ review, typeMap }: { review: ApiReview; typeMap: Map<strin
 
 function VideoCard({ video }: { video: { thumbnailSrc: string; thumbnailAlt: string; videoUrl?: string | null } }) {
   return (
-    <div className="relative h-[282px] w-full max-w-full md:max-w-[295px] overflow-hidden rounded-[20px] shadow-[0_4px_4px_0_rgba(30,41,59,0.08),0_4px_4px_0_rgba(30,41,59,0.03)]">
+    <div className="interactive-card interactive-card-media relative h-[282px] w-full max-w-full overflow-hidden rounded-[20px] md:max-w-[295px]">
       <Image
         src={video.thumbnailSrc}
         alt={video.thumbnailAlt}

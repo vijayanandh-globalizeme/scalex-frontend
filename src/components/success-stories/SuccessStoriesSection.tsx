@@ -90,7 +90,7 @@ function VideoThumbnail({
 }) {
   return (
     <div
-      className={`relative shrink-0 overflow-hidden rounded-2xl bg-zinc-200 shadow-[0_10px_30px_-10px_rgba(15,23,42,0.18)] ${
+      className={`interactive-card interactive-card-media relative shrink-0 overflow-hidden rounded-2xl bg-zinc-200 ${
         responsive ? `aspect-[432/404] w-full max-w-[432px]` : ''
       }`}
       style={
@@ -137,7 +137,7 @@ function TestimonialCardOnly({ story, mobile = false }: { story: Reviewer; mobil
   const typeMeta = reviewTypeMap.get(story.type);
   return (
     <article
-      className={`flex flex-col justify-between gap-4 rounded-2xl bg-white p-5 shadow-[0_10px_30px_-10px_rgba(15,23,42,0.18)] md:p-6 ${
+      className={`interactive-card flex flex-col justify-between gap-4 rounded-2xl bg-white p-5 md:p-6 ${
         mobile ? 'h-auto w-full' : 'min-h-[280px]'
       }`}
       style={mobile ? undefined : { width: SLIDE_W, minWidth: SLIDE_W, maxWidth: SLIDE_W }}
@@ -175,7 +175,7 @@ function TestimonialCardOnly({ story, mobile = false }: { story: Reviewer; mobil
           </div>
         ) : null}
         <div className="min-w-0 flex-1">
-          <p className="text-[13px] font-bold uppercase tracking-wide text-heading">{story.name}</p>
+          <p className="interactive-card-title text-[13px] font-bold uppercase tracking-wide text-heading">{story.name}</p>
           <p className="text-[11px] font-medium text-subtle">{story.role}</p>
           <div className="mt-1 flex items-center gap-0.5">
             {starFills.map((fill, i) => (

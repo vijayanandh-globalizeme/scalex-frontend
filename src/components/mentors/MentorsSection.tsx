@@ -83,8 +83,8 @@ function StatPillInline({ stat }: { stat: MentorStat }) {
 
 function MentorCard({ mentor }: { mentor: Trainer }) {
   return (
-    <article className="flex flex-col items-center text-center">
-      <div className="relative h-[150px] w-[150px]">
+    <article className="interactive-card flex flex-col items-center text-center">
+      <div className="interactive-card-media relative h-[150px] w-[150px]">
         <div className="relative h-full w-full overflow-hidden rounded-full bg-zinc-100 shadow-sm">
           {mentor.profileImageUrl ? (
             <Image
@@ -100,7 +100,7 @@ function MentorCard({ mentor }: { mentor: Trainer }) {
           <LinkedInBadge href={mentor.linkedInProfile} name={mentor.name} />
         </div>
       </div>
-      <h3 className="mt-3 text-center text-[18px] font-medium leading-[140%] text-heading">
+      <h3 className="interactive-card-title mt-3 text-center text-[18px] font-medium leading-[140%] text-heading">
         {mentor.name}
       </h3>
       <p className="mt-1 text-center text-[14px] font-medium leading-[140%] text-muted">

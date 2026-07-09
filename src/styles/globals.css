@@ -12,6 +12,14 @@ body {
 }
 
 @layer base {
+  a:not([aria-disabled='true']),
+  [role='button']:not([aria-disabled='true']),
+  label[for],
+  summary,
+  select:not(:disabled) {
+    cursor: pointer;
+  }
+
   button:not(:disabled),
   input[type='button']:not(:disabled),
   input[type='submit']:not(:disabled),
@@ -98,6 +106,38 @@ body {
   /* Shared section h2 — 28px mobile, 34px desktop */
   .section-heading {
     @apply text-[28px] font-bold leading-[140%] md:text-[34px];
+  }
+
+  /* Shared card hover — shadow lift, image zoom, title brand color */
+  .interactive-card {
+    @apply cursor-pointer transition-shadow duration-300;
+    box-shadow: 0 4px 24px 0 rgba(30, 41, 59, 0.08);
+  }
+
+  .interactive-card:hover {
+    box-shadow: 0 8px 32px 0 rgba(30, 41, 59, 0.14);
+  }
+
+  .interactive-card-media {
+    @apply overflow-hidden;
+  }
+
+  .interactive-card .interactive-card-media img,
+  .interactive-card .interactive-card-media video {
+    @apply transition-transform duration-300 ease-out;
+  }
+
+  .interactive-card:hover .interactive-card-media img,
+  .interactive-card:hover .interactive-card-media video {
+    transform: scale(1.05);
+  }
+
+  .interactive-card :is(h2, h3, h4, .interactive-card-title) {
+    @apply transition-colors duration-300;
+  }
+
+  .interactive-card-action {
+    @apply flex h-8 w-8 shrink-0 cursor-pointer items-center justify-center rounded-full bg-[#FFF0F3] text-brand transition-colors duration-300;
   }
 
   .course-detail-sticky-nav {
@@ -803,5 +843,24 @@ body {
     visibility: visible;
     transform: none;
     will-change: auto;
+  }
+}
+
+/* Must beat text-heading / arbitrary text utilities on card titles */
+@layer utilities {
+  .interactive-card:hover :is(h2, h3, h4, .interactive-card-title):not(.text-white):not(.keep-title-color) {
+    color: var(--color-brand) !important;
+  }
+
+  .interactive-card:hover :is(h2, h3, h4).text-white,
+  .interactive-card:hover .interactive-card-title.text-white,
+  .interactive-card:hover .interactive-card-title.keep-title-color,
+  .interactive-card:hover :is(h2, h3, h4).keep-title-color {
+    color: #fff !important;
+  }
+
+  .interactive-card:hover .interactive-card-action {
+    background-color: var(--color-brand) !important;
+    color: #fff !important;
   }
 }

@@ -84,7 +84,7 @@ function AwardCardItem({ card, embedded = false }: { card: AwardCard; embedded?:
   const styles = VARIANT_STYLES[card.variant];
   return (
     <article
-      className={`relative h-[169px] w-full rounded-[16px] ${card.backgroundColor ? '' : styles.bg} px-5 pb-5 pt-12 text-white shadow-[0_10px_24px_-10px_rgba(15,23,42,0.25)]`}
+      className={`interactive-card relative h-[169px] w-full rounded-[16px] ${card.backgroundColor ? '' : styles.bg} px-5 pb-5 pt-12 text-white`}
       style={card.backgroundColor ? { backgroundColor: card.backgroundColor } : undefined}
     >
       <div
@@ -110,8 +110,8 @@ function AwardCardItem({ card, embedded = false }: { card: AwardCard; embedded?:
         <h3
           className={
             embedded
-              ? 'text-[16px] font-semibold leading-[140%] text-white'
-              : 'text-[20px] font-semibold leading-[140%] text-white'
+              ? 'keep-title-color text-[16px] font-semibold leading-[140%] text-white'
+              : 'keep-title-color text-[20px] font-semibold leading-[140%] text-white'
           }
         >
           {card.title}

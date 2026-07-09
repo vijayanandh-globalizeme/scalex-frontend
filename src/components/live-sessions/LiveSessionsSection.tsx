@@ -92,9 +92,9 @@ function ArrowRightIcon({ className }: { className?: string }) {
 function SessionCard({ session }: { session: LiveSession }) {
   const { openBrochureModal } = useCourseBrochureModal();
   return (
-    <article className="flex flex-col overflow-hidden rounded-2xl border border-zinc-100 bg-white shadow-[0_4px_4px_0_rgba(30,41,59,0.03),0_4px_4px_0_rgba(30,41,59,0.06)] transition hover:shadow-lg">
+    <article className="interactive-card flex flex-col overflow-hidden rounded-2xl border border-zinc-100 bg-white">
       {session.imageSrc && (
-        <div className="relative aspect-[16/9] w-full">
+        <div className="interactive-card-media relative aspect-[16/9] w-full">
           <Image
             src={session.imageSrc}
             alt={session.imageAlt}
@@ -105,7 +105,7 @@ function SessionCard({ session }: { session: LiveSession }) {
         </div>
       )}
       <div className="flex flex-1 flex-col gap-3 p-5">
-        <h3 className="text-[16px] font-bold leading-tight text-heading">{session.title}</h3>
+        <h3 className="interactive-card-title text-[16px] font-bold leading-tight text-heading">{session.title}</h3>
         <ul className="flex flex-col gap-2 text-[12px] font-medium text-body">
           <li className="inline-flex items-center gap-2">
             <CalendarIcon className="h-3.5 w-3.5 text-heading" />

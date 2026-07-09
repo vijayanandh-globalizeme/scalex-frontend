@@ -10,9 +10,6 @@ import {
 import type { CourseAwardCard, CourseAwardsContent } from '@/lib/courseBody';
 import { COURSE_SECTION_CARD } from './courseSectionCard';
 
-const CARD_SHADOW =
-  'shadow-[0_4px_4px_0_rgba(30,41,59,0.08),0_4px_4px_0_rgba(30,41,59,0.03)]';
-
 const VARIANT_STYLES: Record<CourseAwardCard['variant'], string> = {
   gold: 'bg-[linear-gradient(150deg,#F5980F_-75.58%,#B9CA63_182.49%)]',
   red: 'bg-[linear-gradient(180deg,#EF4C40_-16.69%,#F5A416_121.61%)]',
@@ -36,7 +33,7 @@ function MedalBadge() {
 function AwardCardItem({ card }: { card: CourseAwardCard }) {
   return (
     <article
-      className={`relative h-[160px] w-full rounded-2xl px-5 pb-5 pt-12 text-white ${VARIANT_STYLES[card.variant]} ${CARD_SHADOW}`}
+      className={`interactive-card relative h-[160px] w-full rounded-2xl px-5 pb-5 pt-12 text-white ${VARIANT_STYLES[card.variant]}`}
     >
       <div className="absolute -top-11 left-1/2 z-10 -translate-x-1/2">
         <MedalBadge />
@@ -51,7 +48,7 @@ function AwardCardItem({ card }: { card: CourseAwardCard }) {
         />
       </div>
       <div className="relative z-10 mt-1">
-        <h3 className="text-[16px] font-semibold leading-snug text-white">{card.title}</h3>
+        <h3 className="keep-title-color text-[16px] font-semibold leading-snug text-white">{card.title}</h3>
         <p className="mt-1 text-[12px] font-medium text-white/90">{card.subtitle}</p>
       </div>
     </article>

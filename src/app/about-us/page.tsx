@@ -122,8 +122,8 @@ export default function AboutPage() {
           </h2>
           <div className="grid gap-6 md:grid-cols-2">
             {[{ title: 'Our Mission' }, { title: 'Our Vision' }].map((card) => (
-              <div key={card.title} className="rounded-2xl border border-zinc-100 bg-white p-8 shadow-sm">
-                <h3 style={{ color: '#1E293B', fontFamily: 'Inter', fontSize: '20px', fontWeight: 700 }}>{card.title}</h3>
+              <div key={card.title} className="interactive-card rounded-2xl border border-zinc-100 bg-white p-8">
+                <h3 className="text-[20px] font-bold text-heading" style={{ color: '#1E293B', fontFamily: 'Inter' }}>{card.title}</h3>
                 <div className="mt-2 h-[3px] w-10 rounded-full bg-brand" />
                 <p className="mt-5" style={{ color: '#788593', fontFamily: 'Inter', fontSize: '14px', fontWeight: 400, lineHeight: '24px' }}>
                   Enable learners and professionals to gain practical, industry-relevant skills that drive career success and measurable impact. We bridge the gap between classroom learning and boardroom execution.
@@ -172,12 +172,12 @@ export default function AboutPage() {
               { img: '/images/ram.png', name: 'Ram Charan', role: 'VP — Enterprise Sales', bio: 'Grew EdgeX enterprise client portfolio to 100+ organisations across India.' },
               { img: '/images/aninth.png', name: 'Anitha Reddy', role: 'Head — Career Success', bio: 'Mentored 5,000+ professionals through career transitions and salary negotiations.' },
             ].map((person) => (
-              <div key={person.name} className="flex flex-col rounded-2xl border border-zinc-100 bg-white p-5 shadow-sm">
+              <div key={person.name} className="interactive-card flex flex-col rounded-2xl border border-zinc-100 bg-white p-5">
                 <div className="flex flex-col items-center text-center">
-                  <div className="relative h-28 w-28 overflow-hidden rounded-full mb-3">
+                  <div className="interactive-card-media relative h-28 w-28 overflow-hidden rounded-full mb-3">
                     <Image src={person.img} alt={person.name} fill className="object-cover" />
                   </div>
-                  <p style={{ color: '#1E293B', fontFamily: 'Inter', fontSize: '14px', fontWeight: 700 }}>{person.name}</p>
+                  <p className="interactive-card-title" style={{ color: '#1E293B', fontFamily: 'Inter', fontSize: '14px', fontWeight: 700 }}>{person.name}</p>
                   <p className="mt-0.5" style={{ color: '#788593', fontFamily: 'Inter', fontSize: '12px', fontWeight: 400 }}>{person.role}</p>
                 </div>
                 <div className="my-4 h-px w-full bg-zinc-100" />
@@ -215,12 +215,12 @@ export default function AboutPage() {
               { logo: '/images/inc.png', logoAlt: 'Inc42' },
               { logo: '/images/bussine.png', logoAlt: 'Business Standard' },
             ].map((item) => (
-              <div key={item.logoAlt} className="flex flex-col rounded-2xl border border-zinc-100 bg-white p-6 shadow-sm">
+              <div key={item.logoAlt} className="interactive-card flex flex-col rounded-2xl border border-zinc-100 bg-white p-6">
                 <div className="relative h-8 w-36">
                   <Image src={item.logo} alt={item.logoAlt} fill className="object-contain object-left" />
                 </div>
                 <div className="mt-3 h-[2px] w-8 rounded-full bg-brand" />
-                <p className="mt-4 flex-1" style={{ color: '#1E293B', fontFamily: 'Inter', fontSize: '14px', fontWeight: 700, lineHeight: '22px' }}>
+                <p className="interactive-card-title mt-4 flex-1" style={{ color: '#1E293B', fontFamily: 'Inter', fontSize: '14px', fontWeight: 700, lineHeight: '22px' }}>
                   EdgeX Learning Emerges as Top EdTech Platform in India&apos;s Professional Upskilling Space
                 </p>
                 <p className="mt-4" style={{ color: '#788593', fontFamily: 'Inter', fontSize: '13px', fontWeight: 400 }}>March 2025</p>
