@@ -404,7 +404,7 @@ export default function BlogsPage() {
             ) : items.length === 0 ? (
               <p className="col-span-3 py-10 text-center text-[14px] text-muted">No blogs available in this category yet.</p>
             ) : items.map((b) => (
-              <Link key={b.id} href={`/blogs/${b.uri}`} className="group flex flex-col overflow-hidden rounded-2xl border border-[#E2E8F0] bg-white shadow-sm transition hover:shadow-md">
+              <Link key={b.id} href={`/blogs/${b.uri}`} className="group flex flex-col overflow-hidden rounded-2xl border border-[#E2E8F0] bg-white shadow-sm transition-shadow hover:shadow-md">
                 <div className="relative h-[200px] w-full overflow-hidden">
                   <Image src={b.featureImage?.url ?? DEFAULT_BLOG_IMAGE} alt={b.title} fill className="object-cover transition-transform duration-300 group-hover:scale-105" sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw" />
                 </div>
@@ -421,7 +421,7 @@ export default function BlogsPage() {
                         {b.readTimeMinutes} MIN READ
                       </span>
                     </div>
-                    <h3 className="line-clamp-2 text-[15px] font-bold leading-[1.4] text-heading">{b.title}</h3>
+                    <h3 className="line-clamp-2 text-[15px] font-bold leading-snug text-heading transition-colors group-hover:text-brand">{b.title}</h3>
                     <p className="mt-2 line-clamp-3 text-[13px] leading-[1.6] text-muted">{b.shortDescription}</p>
                   </div>
                   <div className="mt-4 flex items-center justify-between">
@@ -434,7 +434,7 @@ export default function BlogsPage() {
                         <p className="text-[11px] text-muted">{formatDate(b.createdAt)}</p>
                       </div>
                     </div>
-                    <span className="text-brand">
+                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#FFF0F3] text-brand transition-colors group-hover:bg-brand group-hover:text-white">
                       <ArrowRightIcon />
                     </span>
                   </div>
