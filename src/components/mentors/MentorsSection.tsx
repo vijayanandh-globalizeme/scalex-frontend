@@ -83,9 +83,9 @@ function StatPillInline({ stat }: { stat: MentorStat }) {
 
 function MentorCard({ mentor }: { mentor: Trainer }) {
   return (
-    <article className="interactive-card flex flex-col items-center text-center">
-      <div className="interactive-card-media relative h-[150px] w-[150px]">
-        <div className="relative h-full w-full overflow-hidden rounded-full bg-zinc-100 shadow-sm">
+    <article className="flex flex-col items-center text-center">
+      <div className="relative h-[150px] w-[150px] rounded-full shadow-[0_4px_24px_0_rgba(30,41,59,0.08)]">
+        <div className="relative h-full w-full overflow-hidden rounded-full bg-zinc-100">
           {mentor.profileImageUrl ? (
             <Image
               src={mentor.profileImageUrl}
@@ -100,7 +100,7 @@ function MentorCard({ mentor }: { mentor: Trainer }) {
           <LinkedInBadge href={mentor.linkedInProfile} name={mentor.name} />
         </div>
       </div>
-      <h3 className="interactive-card-title mt-3 text-center text-[18px] font-medium leading-[140%] text-heading">
+      <h3 className="mt-3 text-center text-[18px] font-medium leading-[140%] text-heading">
         {mentor.name}
       </h3>
       <p className="mt-1 text-center text-[14px] font-medium leading-[140%] text-muted">
@@ -132,7 +132,7 @@ export default function MentorsSection({
 }: MentorsSectionProps) {
   return (
     <section
-      className="full-bleed relative z-10 bg-white pt-[100px] md:pt-[200px] pb-[50px] md:pb-[150px]"
+      className="full-bleed relative z-10 overflow-visible bg-white pt-[80px] md:pt-[150px] pb-8 shadow-[0_10px_40px_0_rgba(30,41,59,0.1)] md:pb-16"
       aria-labelledby="mentors-heading"
     >
       <div className="site-container relative z-10">
@@ -160,7 +160,7 @@ export default function MentorsSection({
         ) : null}
 
         {/* Mentors row */}
-        <div className="mt-10 grid grid-cols-2 justify-items-center gap-x-6 gap-y-10 md:mt-12 md:grid-cols-3 lg:grid-cols-5">
+        <div className="mt-10 grid grid-cols-2 justify-items-center gap-x-6 gap-y-10 pb-4 md:mt-12 md:grid-cols-3 lg:grid-cols-5">
           {mentors.map((m) => (
             <MentorCard key={m.id} mentor={m} />
           ))}

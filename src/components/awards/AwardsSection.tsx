@@ -358,7 +358,7 @@ export default function AwardsSection({
         ) : null}
 
         {canNavigateDesktop ? (
-          <div className="mt-6 hidden pb-20 md:block">
+          <div className="mt-6 hidden pb-10 md:block">
             <CarouselControls
               page={index}
               totalPages={maxIndex + 1}

@@ -275,11 +275,11 @@ export default function SuccessStoriesSection({
 
   return (
     <section
-      className="full-bleed relative bg-surface pt-20 pb-16 md:pt-28 md:pb-20 lg:pt-36 lg:pb-24"
+      className="full-bleed relative bg-surface pt-24 pb-16 md:pt-28 md:pb-20 lg:pt-32 lg:pb-24"
       aria-labelledby="success-stories-heading"
     >
       <div className="site-container relative z-10">
-        <header className="relative mx-auto max-w-3xl text-center">
+        <header className="relative mx-auto max-w-3xl pt-10 text-center md:pt-12 lg:pt-14">
           <h2
             id="success-stories-heading"
             className="section-heading text-heading"
@@ -319,7 +319,7 @@ export default function SuccessStoriesSection({
           ) : null}
 
           <div
-            className="relative flex items-center pt-14"
+            className="relative flex items-center pt-8"
             onMouseEnter={() => setIsPaused(true)}
             onMouseLeave={() => setIsPaused(false)}
           >

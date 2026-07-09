@@ -230,10 +230,10 @@ export function ReviewPlatformRow({ reviews, settings }: { reviews?: ReviewPlatf
           </div>
           <div className="flex flex-col items-center gap-1 text-center text-[13px]">
             <div className="flex items-center gap-2 font-semibold text-heading">
-              <svg width="14" height="14" viewBox="0 0 16 16" fill="none" className="text-black" aria-hidden>
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden>
                 <path
                   d="M3.01902 14.8627C3.30952 15.0888 3.67795 15.0111 4.11724 14.6932L7.86538 11.9453L11.6206 14.6932C12.0598 15.0111 12.4212 15.0888 12.7188 14.8627C13.0093 14.6437 13.073 14.2835 12.8959 13.7678L11.4151 9.37398L15.1986 6.66138C15.638 6.35057 15.8151 6.02562 15.7017 5.67242C15.5883 5.33335 15.2553 5.17087 14.7098 5.17087H10.0689L8.65889 0.784104C8.4889 0.261369 8.2338 0 7.86538 0C7.50399 0 7.24894 0.261369 7.0789 0.784104L5.66892 5.17087H1.02805C0.482481 5.17087 0.149473 5.33335 0.0361076 5.67242C-0.0843426 6.02562 0.099875 6.35057 0.539164 6.66138L4.32271 9.37398L2.84188 13.7678C2.66475 14.2835 2.72852 14.6437 3.01902 14.8627Z"
-                  fill="currentColor"
+                  fill="#F49114"
                 />
               </svg>
               {review.rating}
@@ -348,7 +348,7 @@ export default function TestimonialsSection({
 
   return (
     <section
-      className="full-bleed relative z-10 overflow-visible bg-[#0D0D0D] py-16 pb-20 md:py-20 md:pb-28 lg:py-24 lg:pb-32"
+      className="full-bleed relative z-10 overflow-visible bg-[#0D0D0D] pt-12 pb-10 md:pt-16 md:pb-14 lg:pt-20 lg:pb-16"
       aria-labelledby="stories-heading"
     >
       <StoriesDecorIcon className="pointer-events-none absolute bottom-0 right-0 z-0 h-auto w-[120px] md:w-[160px] lg:w-[188px]" />

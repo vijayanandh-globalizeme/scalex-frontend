@@ -117,7 +117,7 @@ export default function WhyScaleXSection({
 
   const comparisonGrid = (
     <div className={`w-full ${isEmbedded ? 'mt-10 md:mt-14' : 'mx-auto mt-10 max-w-[1080px] md:mt-14'}`}>
-      <div className="flex flex-col gap-6 lg:flex-row lg:items-stretch lg:gap-5">
+      <div className="flex flex-col gap-6 lg:flex-row lg:items-start lg:gap-5">
         {/* Row labels — desktop only */}
         <div className="hidden shrink-0 lg:block lg:w-[148px]">
           <div
@@ -145,7 +145,7 @@ export default function WhyScaleXSection({
               isEmbedded
                 ? EMBEDDED_OTHERS_CARD_CLASS
                 : `rounded-lg border border-zinc-100 bg-white ${CARD_SHADOW}`
-            } px-6 py-6 md:px-7 md:py-7`}
+            } px-6 py-6 md:px-7 md:py-7 lg:px-7 lg:pb-7 lg:pt-0`}
           >
             <h3
               className={`${cardHeaderHeight} flex items-center justify-center text-[18px] font-semibold text-heading md:text-[20px]`}
@@ -176,7 +176,7 @@ export default function WhyScaleXSection({
           <div
             className={`${
               isEmbedded ? EMBEDDED_SCALEX_CARD_CLASS : SCALEX_CARD_CLASS
-            } px-6 py-6 md:px-7 md:py-7`}
+            } px-6 py-6 md:px-7 md:py-7 lg:px-7 lg:pb-7 lg:pt-0`}
           >
             <div className={`${cardHeaderHeight} flex items-center justify-center`}>
               {scalexBrandLogo ? (
@@ -231,7 +231,7 @@ export default function WhyScaleXSection({
   return (
     <section
       id={id}
-      className={`full-bleed relative bg-surface pt-8 pb-8 md:pt-20 md:pb-12 lg:pt-24 lg:pb-16 ${className ?? ''}`}
+      className={`full-bleed relative bg-surface pt-6 pb-8 md:pt-16 md:pb-12 lg:pt-20 lg:pb-16 ${className ?? ''}`}
       aria-labelledby={headingId}
     >
       <div className="site-container relative z-10">
