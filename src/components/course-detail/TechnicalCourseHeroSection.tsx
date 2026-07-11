@@ -254,7 +254,7 @@ export default function TechnicalCourseHeroSection(course: TechnicalCourseConten
     >
       <div className="category-hero-bg pointer-events-none absolute inset-0" aria-hidden />
       <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden>
-        <div className="absolute right-[6%] top-[10%] h-[54%] w-[46%] md:w-[33%] lg:w-[24%]">
+        <div className="absolute right-[6%] top-[10%] h-[54%] w-[46%] md:w-[33%] lg:w-[19%]">
           <Image
             src="/images/hero/aero-bg-v2.png"
             alt=""

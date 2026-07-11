@@ -105,7 +105,7 @@ export default function HeroSection(props: HeroSectionProps) {
 
   const bgClassName =
     backgroundImage?.className ??
-    'absolute right-[6%] top-[10%] h-[54%] w-[46%] md:w-[33%] lg:w-[24%]';
+    'absolute right-[6%] top-[10%] h-[54%] w-[46%] md:w-[33%] lg:w-[19%]';
 
   const sectionRef = useRef<HTMLElement>(null);
   const copyRef = useRef<HTMLDivElement>(null);

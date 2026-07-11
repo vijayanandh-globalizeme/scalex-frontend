@@ -102,6 +102,8 @@ function RankedContent({ rankedContent, rankingLine }: { rankedContent?: string;
 
 export default function CourseDetailHeroSection({
   courseId,
+  slug,
+  categorySlug,
   breadcrumbs,
   titlePrefix,
   titleAccent,
@@ -138,10 +140,21 @@ export default function CourseDetailHeroSection({
   return (
     <section
       ref={sectionRef}
-      className="full-bleed relative overflow-x-clip overflow-y-visible pb-6 pt-8 md:overflow-x-hidden md:pb-0 md:pt-10 lg:min-h-[782px] lg:overflow-visible"
+      className="full-bleed relative overflow-x-clip overflow-y-visible pb-6 pt-8 md:overflow-visible md:pb-0 md:pt-10 lg:min-h-[782px]"
       aria-labelledby="course-hero-heading"
     >
       <div className="category-hero-bg pointer-events-none absolute inset-0" aria-hidden />
+      <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden>
+        <div className="absolute right-[6%] top-[10%] hidden h-[54%] w-[46%] md:block md:w-[33%] lg:w-[19%]">
+          <Image
+            src="/images/hero/aero-bg-v2.png"
+            alt=""
+            fill
+            sizes="(max-width: 768px) 46vw, (max-width: 1024px) 33vw, 400px"
+            className="object-contain object-center"
+          />
+        </div>
+      </div>
       <div className="site-container relative z-10">
         <nav aria-label="Breadcrumb" className="mb-6 flex flex-wrap items-center gap-2 text-[14px] font-medium">
           <Link href="/" className="text-muted transition hover:text-heading" aria-label="Home">
@@ -285,9 +298,12 @@ export default function CourseDetailHeroSection({
             ref={(el) => {
               rowRefs.current[1] = el;
             }}
-            className="gsap-reveal-pending mx-auto flex w-full max-w-[528px] flex-col lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:mx-0 lg:ml-auto"
+            className="gsap-reveal-pending mx-auto flex w-full max-w-[528px] flex-col overflow-visible lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:mx-0 lg:ml-auto"
           >
-            <CourseLeadForm {...form} />
+            <CourseLeadForm
+              {...form}
+              emphasizedFields={slug === 'certified-scrum-master' && categorySlug === 'agile-and-scrum'}
+            />
             <div className="mt-5 lg:mt-6" aria-label="Licensed training partner">
               <CourseLicensedPartnerStrip {...licensedPartner} embedded />
             </div>

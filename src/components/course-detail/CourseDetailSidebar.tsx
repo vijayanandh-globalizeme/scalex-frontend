@@ -263,7 +263,7 @@ export default function CourseDetailSidebar({
           <button
             type="submit"
             disabled={!agreed || status === 'submitting'}
-            className="btn-brand mt-4 inline-flex h-10 w-full items-center justify-center gap-2 text-[13px] font-semibold disabled:cursor-not-allowed disabled:opacity-60"
+            className="btn-brand mt-4 inline-flex h-10 w-full items-center justify-center gap-2 text-[13px] font-semibold disabled:cursor-not-allowed"
           >
             {status === 'submitting' ? 'Submitting…' : sidebar.ctaLabel}
             <ArrowRightIcon className="btn-arrow-icon shrink-0" />

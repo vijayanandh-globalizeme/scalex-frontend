@@ -230,7 +230,7 @@ function GuidanceForm({
       <button
         type="submit"
         disabled={!agreed || status === 'submitting'}
-        className="btn-brand mt-5 h-[44px] gap-2 rounded-md px-6 text-[14px] disabled:cursor-not-allowed disabled:opacity-60"
+        className="btn-brand mt-5 h-[44px] gap-2 rounded-md px-6 text-[14px] disabled:cursor-not-allowed"
       >
         {status === 'submitting' ? 'Submitting…' : ctaLabel}
         <svg

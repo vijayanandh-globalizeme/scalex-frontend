@@ -611,15 +611,26 @@ body {
       inset 0 0 0 100vmax rgba(255, 255, 255, 0.2);
   }
 
+  button.btn-brand:disabled {
+    opacity: 1;
+    cursor: not-allowed;
+    background-color: var(--color-brand);
+    color: #fff;
+  }
+
   button.btn-brand:disabled:hover,
-  button.btn-brand:disabled:focus-visible,
+  button.btn-brand:disabled:focus-visible {
+    box-shadow:
+      0 4px 6px 0 rgba(30, 41, 59, 0.06),
+      0 4px 10px 0 rgba(30, 41, 59, 0.1),
+      inset 0 0 0 100vmax rgba(255, 255, 255, 0.12);
+  }
+
   button.btn-brand:disabled:active {
     box-shadow:
-      0 4px 4px 0 rgba(30, 41, 59, 0.03),
-      0 4px 4px 0 rgba(30, 41, 59, 0.08),
-      0 4px 4px 0 rgba(30, 41, 59, 0.11),
-      0 4px 4px 0 rgba(30, 41, 59, 0.11),
-      inset 0 0 0 100vmax rgba(255, 255, 255, 0);
+      0 4px 6px 0 rgba(30, 41, 59, 0.06),
+      0 4px 10px 0 rgba(30, 41, 59, 0.1),
+      inset 0 0 0 100vmax rgba(255, 255, 255, 0.2);
   }
 
   /* CTA arrow wiggle on hover — arrow only */
@@ -629,6 +640,7 @@ body {
 
   a:hover .btn-arrow-icon,
   button:not(:disabled):hover .btn-arrow-icon,
+  button.btn-brand:disabled:hover .btn-arrow-icon,
   .group:hover .btn-arrow-icon {
     animation: btn-arrow-wiggle 0.55s ease-in-out infinite;
   }
@@ -761,7 +773,7 @@ body {
 }
 
 .animate-category-title-underline {
-  animation: category-title-underline 10s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  animation: category-title-underline 16s cubic-bezier(0.4, 0, 0.2, 1) infinite;
   backface-visibility: hidden;
   transform: translateZ(0);
   will-change: transform, clip-path;

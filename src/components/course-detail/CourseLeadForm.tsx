@@ -13,7 +13,7 @@ export interface CourseLeadFormProps {
   termsHref: string;
   privacyHref: string;
   ctaLabel: string;
-  /** Hide decorative arrow (e.g. in modal). */
+  /** @deprecated Decor moved to CourseDetailHeroSection; kept for modal API compat. */
   showArrowDecor?: boolean;
   /** Optional id for the title heading (dialog aria-labelledby). */
   titleId?: string;
@@ -28,10 +28,15 @@ export interface CourseLeadFormProps {
   downloadUrl?: string | null;
   /** Drop the form's own card chrome (border/rounding/shadow) — used inside the modal's right column. */
   bare?: boolean;
+  /** Stronger field borders/placeholders for hero forms that sit on light decorative backgrounds. */
+  emphasizedFields?: boolean;
 }
 
 const fieldClassName =
   'h-11 w-full rounded-lg border border-[#6E6E6E] bg-white px-4 text-[14px] text-heading placeholder:text-placeholder focus:border-brand focus:outline-none';
+
+const emphasizedFieldClassName =
+  'h-11 w-full rounded-lg border border-[#454545] bg-white px-4 text-[14px] text-heading placeholder:text-[#5C6B7A] focus:border-brand focus:outline-none';
 
 function CheckCircle({ checked }: { checked: boolean }) {
   return (
@@ -56,41 +61,18 @@ function CheckCircle({ checked }: { checked: boolean }) {
   );
 }
 
-function FormArrowDecor() {
-  return (
-    <div
-      className="pointer-events-none absolute -right-4 top-1/2 z-0 hidden h-[min(100%,480px)] w-[280px] -translate-y-1/2 lg:block xl:-right-8 xl:w-[320px]"
-      aria-hidden
-    >
-      <svg viewBox="0 0 320 480" fill="none" className="h-full w-full opacity-35">
-        <defs>
-          <linearGradient id="course-form-arrow-gradient" x1="0%" y1="100%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="#FDA4AF" />
-            <stop offset="45%" stopColor="#FDE68A" />
-            <stop offset="100%" stopColor="#86EFAC" />
-          </linearGradient>
-        </defs>
-        <path
-          d="M160 24 L300 456 L160 384 L20 456 Z"
-          fill="url(#course-form-arrow-gradient)"
-        />
-      </svg>
-    </div>
-  );
-}
-
 export default function CourseLeadForm({
   title,
   purposes,
   termsHref,
   privacyHref,
   ctaLabel,
-  showArrowDecor = true,
   titleId,
   leadType,
   courseId,
   downloadUrl,
   bare = false,
+  emphasizedFields = false,
 }: CourseLeadFormProps) {
   const [agreed, setAgreed] = useState(false);
   const [name, setName] = useState('');
@@ -133,15 +115,18 @@ export default function CourseLeadForm({
     }
   }
 
+  const inputClassName = emphasizedFields ? emphasizedFieldClassName : fieldClassName;
+
   return (
     <div className="relative w-full">
-      {showArrowDecor ? <FormArrowDecor /> : null}
       <form
         onSubmit={handleSubmit}
         className={
           bare
             ? 'relative z-10 w-full bg-white p-6 md:p-8'
-            : 'relative z-10 w-full rounded-[20px] border border-[#C7C7C7] bg-white p-6 shadow-[0_4px_4px_0_rgba(30,41,59,0.11),0_4px_4px_0_rgba(30,41,59,0.03)] md:p-8'
+            : emphasizedFields
+              ? 'relative z-10 w-full rounded-[20px] border border-[#A3A3A3] bg-white p-6 shadow-[0_4px_12px_0_rgba(30,41,59,0.14),0_2px_4px_0_rgba(30,41,59,0.06)] md:p-8'
+              : 'relative z-10 w-full rounded-[20px] border border-[#C7C7C7] bg-white p-6 shadow-[0_4px_4px_0_rgba(30,41,59,0.11),0_4px_4px_0_rgba(30,41,59,0.03)] md:p-8'
         }
       >
         <h2 id={titleId} className="text-left text-[20px] font-medium leading-normal text-heading">
@@ -156,7 +141,7 @@ export default function CourseLeadForm({
               type="text"
               required
               placeholder="Full Name"
-              className={`${fieldClassName} ${fieldErrorClass(!!fieldErrors.name)}`}
+              className={`${inputClassName} ${fieldErrorClass(!!fieldErrors.name)}`}
               value={name}
               onChange={(e) => { setName(e.target.value); clearFieldError('name'); }}
             />
@@ -167,7 +152,7 @@ export default function CourseLeadForm({
               type="email"
               required
               placeholder="Email ID"
-              className={`${fieldClassName} ${fieldErrorClass(!!fieldErrors.email)}`}
+              className={`${inputClassName} ${fieldErrorClass(!!fieldErrors.email)}`}
               value={email}
               onChange={(e) => { setEmail(e.target.value); clearFieldError('email'); }}
             />
@@ -178,7 +163,7 @@ export default function CourseLeadForm({
               type="tel"
               required
               placeholder="Contact Number"
-              className={`${fieldClassName} ${fieldErrorClass(!!fieldErrors.phone)}`}
+              className={`${inputClassName} ${fieldErrorClass(!!fieldErrors.phone)}`}
               value={phone}
               onChange={(e) => { setPhone(e.target.value); clearFieldError('phone'); }}
             />
@@ -189,7 +174,7 @@ export default function CourseLeadForm({
               required
               value={purpose}
               onChange={(e) => { setPurpose(e.target.value); clearFieldError('purpose'); }}
-              className={`${fieldClassName} ${fieldErrorClass(!!fieldErrors.purpose)}`}
+              className={`${inputClassName} ${fieldErrorClass(!!fieldErrors.purpose)}`}
             >
               <option value="" disabled>
                 Select Purpose
@@ -229,7 +214,7 @@ export default function CourseLeadForm({
         <button
           type="submit"
           disabled={!agreed || status === 'submitting'}
-          className="btn-brand mt-5 inline-flex h-[44px] items-center justify-center gap-2 self-start px-6 text-[14px] font-semibold disabled:cursor-not-allowed disabled:opacity-60"
+          className="btn-brand mt-5 inline-flex h-[44px] items-center justify-center gap-2 self-start px-6 text-[14px] font-semibold disabled:cursor-not-allowed"
         >
           {status === 'submitting' ? 'Submitting…' : ctaLabel}
           <svg className="btn-arrow-icon" width="18" height="15" viewBox="0 0 18 15" fill="currentColor" aria-hidden>

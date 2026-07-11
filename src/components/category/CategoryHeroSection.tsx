@@ -260,7 +260,7 @@ export default function CategoryHeroSection({ category, settings, heroBadges = [
 
   const bgClassName =
     backgroundImage?.className ??
-    'absolute right-[6%] top-[10%] h-[54%] w-[46%] md:w-[33%] lg:w-[24%]';
+    'absolute right-[6%] top-[10%] h-[54%] w-[46%] md:w-[33%] lg:w-[19%]';
 
   return (
     <section
