@@ -8,7 +8,7 @@ export interface HeroBadge {
   title: string;
   subtitle: string;
   variant: 'learners' | 'mentors';
-  placement: 'top-left' | 'mid-left' | 'bottom-center' | 'bottom-right';
+  placement: 'top-left' | 'top-right' | 'mid-left' | 'bottom-center' | 'bottom-right';
 }
 
 export interface HeroMediaColumnProps {
@@ -19,6 +19,8 @@ export interface HeroMediaColumnProps {
   badges?: HeroBadge[];
   className?: string;
   disableGsap?: boolean;
+  /** `figure` = cutout person + panel; `photo` = rounded photo card (category heroes). */
+  variant?: 'figure' | 'photo';
 }
 
 /** Aero: fixed at 1500+; below 1500 width shrinks and top moves down dynamically. */
@@ -124,15 +126,26 @@ function AwardBadgeIcon({ className }: { className?: string }) {
   );
 }
 
-function FloatingBadge({ badge }: { badge: HeroBadge }) {
-  const placement =
-    badge.placement === 'top-left'
+function FloatingBadge({ badge, photo = false }: { badge: HeroBadge; photo?: boolean }) {
+  const placement = photo
+    ? badge.placement === 'top-left'
+      ? 'left-0 top-10 -translate-x-[40%]'
+      : badge.placement === 'top-right'
+        ? 'right-0 top-10 translate-x-[40%]'
+        : badge.placement === 'mid-left'
+          ? 'left-0 top-[55%] -translate-x-[40%] -translate-y-1/2'
+          : badge.placement === 'bottom-right'
+            ? 'bottom-[100px] right-0 translate-x-[10%]'
+            : 'bottom-10 left-[42%] -translate-x-1/2 md:-bottom-2'
+    : badge.placement === 'top-left'
       ? 'left-0 top-10 xl:-left-6 xl:top-25'
-      : badge.placement === 'mid-left'
-        ? 'left-0 top-[60%] -translate-y-1/2 xl:-left-10'
-        : badge.placement === 'bottom-right'
-          ? 'bottom-32 right-2 md:bottom-28 md:-right-10'
-          : 'bottom-10 left-[42%] -translate-x-1/2 md:-bottom-2';
+      : badge.placement === 'top-right'
+        ? 'right-0 top-10 xl:-right-6 xl:top-25'
+        : badge.placement === 'mid-left'
+          ? 'left-0 top-[60%] -translate-y-1/2 xl:-left-10'
+          : badge.placement === 'bottom-right'
+            ? 'bottom-32 right-2 md:bottom-28 md:-right-10'
+            : 'bottom-10 left-[42%] -translate-x-1/2 md:-bottom-2';
 
   const iconBg =
     badge.variant === 'learners'
@@ -171,80 +184,108 @@ function FloatingBadge({ badge }: { badge: HeroBadge }) {
 }
 
 const HeroMediaColumn = forwardRef<HTMLDivElement, HeroMediaColumnProps>(
-  ({ imageSrc, imageAlt, aeroSrc = null, badges = [], className = '', disableGsap = false }, ref) => {
+  (
+    {
+      imageSrc,
+      imageAlt,
+      aeroSrc = null,
+      badges = [],
+      className = '',
+      disableGsap = false,
+      variant = 'figure',
+    },
+    ref,
+  ) => {
     const gsapClass = disableGsap ? '' : 'gsap-reveal-pending';
     const aeroSize = useAeroSize();
+    const isPhoto = variant === 'photo';
 
     return (
       <div
         ref={ref}
-        className={`${gsapClass} relative mx-auto w-full min-w-0 max-w-md overflow-visible lg:mx-0 lg:max-w-none ${className}`.trim()}
+        className={`${gsapClass} relative mx-auto w-full min-w-0 overflow-visible ${
+          isPhoto ? 'max-w-[521px] lg:mx-0 lg:ml-auto lg:-translate-x-[10%]' : 'max-w-md lg:mx-0 lg:max-w-none'
+        } ${className}`.trim()}
       >
-        {/* Relative stage — person centered; aero half-visible on the right. */}
-        <div className="relative mx-auto h-[420px] w-full max-w-[320px] sm:h-[480px] sm:max-w-[400px] md:h-[520px] md:max-w-[440px] lg:ml-auto lg:mr-0 lg:h-[560px] lg:max-w-[480px] xl:max-w-[520px] xl:h-[580px]">
-          {aeroSrc ? (
-            <div className="pointer-events-none absolute inset-0 z-0" aria-hidden>
-              {/* Mobile / tablet — fixed */}
-              <div
-                className="absolute lg:hidden"
-                style={{ top: 66, right: -150, width: 260, height: 320 }}
-              >
-                <Image
-                  src={aeroSrc}
-                  alt=""
-                  width={260}
-                  height={320}
-                  sizes="260px"
-                  className="h-full w-full object-contain object-center"
-                />
-              </div>
-              {/*
-                Desktop: ≥1500 fixed | below 1500 width + top scale (1200→1500)
-              */}
-              <div
-                className="absolute hidden lg:block"
-                style={{
-                  top: aeroSize.top,
-                  right: aeroSize.right,
-                  width: aeroSize.width,
-                  height: aeroSize.height,
-                }}
-              >
-                <Image
-                  src={aeroSrc}
-                  alt=""
-                  width={aeroSize.width}
-                  height={aeroSize.height}
-                  sizes={`${aeroSize.width}px`}
-                  className="h-full w-full object-contain object-center"
-                />
-              </div>
+        {isPhoto ? (
+          <div className="relative mx-auto w-full max-w-[521px] lg:ml-auto lg:mr-0">
+            <div
+              className="relative w-full overflow-hidden rounded-[7px] shadow-[0_4px_24px_0_rgba(30,41,59,0.12)]"
+              style={{ maxWidth: 521, aspectRatio: '521 / 636' }}
+            >
+              <Image
+                src={imageSrc}
+                alt={imageAlt}
+                fill
+                priority
+                sizes="521px"
+                className="object-cover object-center"
+              />
             </div>
-          ) : null}
-
-          {/* Soft panel behind person */}
-          <div
-            className="absolute bottom-0 left-1/2 z-[1] h-[360px] w-[389px] max-w-full -translate-x-1/2 rounded-t-[400px] shadow-inner shadow-black/5 sm:h-[420px] md:h-[460px] lg:h-[500px]"
-            style={{ background: 'linear-gradient(180deg, #BB9255 -140.92%, #FADCBA 165.92%)' }}
-            aria-hidden
-          />
-
-          {/* Person — centered; head overflows ~10% above the stage */}
-          <div className="absolute bottom-0 left-1/2 z-[5] h-[110%] w-[260px] -translate-x-1/2 sm:w-[300px] md:w-[330px] lg:w-[350px]">
-            <Image
-              src={imageSrc}
-              alt={imageAlt}
-              fill
-              priority
-              sizes="(max-width: 640px) 260px, (max-width: 1024px) 330px, 350px"
-              className="object-contain object-bottom drop-shadow-xl"
-            />
+            {badges.map((b) => (
+              <FloatingBadge key={b.id} badge={b} photo />
+            ))}
           </div>
+        ) : (
+          <div className="relative mx-auto h-[420px] w-full max-w-[320px] sm:h-[480px] sm:max-w-[400px] md:h-[520px] md:max-w-[440px] lg:ml-auto lg:mr-0 lg:h-[560px] lg:max-w-[480px] xl:max-w-[520px] xl:h-[580px]">
+            {aeroSrc ? (
+              <div className="pointer-events-none absolute inset-0 z-0" aria-hidden>
+                <div
+                  className="absolute lg:hidden"
+                  style={{ top: 66, right: -150, width: 260, height: 320 }}
+                >
+                  <Image
+                    src={aeroSrc}
+                    alt=""
+                    width={260}
+                    height={320}
+                    sizes="260px"
+                    className="h-full w-full object-contain object-center"
+                  />
+                </div>
+                <div
+                  className="absolute hidden lg:block"
+                  style={{
+                    top: aeroSize.top,
+                    right: aeroSize.right,
+                    width: aeroSize.width,
+                    height: aeroSize.height,
+                  }}
+                >
+                  <Image
+                    src={aeroSrc}
+                    alt=""
+                    width={aeroSize.width}
+                    height={aeroSize.height}
+                    sizes={`${aeroSize.width}px`}
+                    className="h-full w-full object-contain object-center"
+                  />
+                </div>
+              </div>
+            ) : null}
 
-          {badges.map((b) => (
-            <FloatingBadge key={b.id} badge={b} />
-          ))}
-        </div>
+            <div
+              className="absolute bottom-0 left-1/2 z-[1] h-[360px] w-[389px] max-w-full -translate-x-1/2 rounded-t-[400px] shadow-inner shadow-black/5 sm:h-[420px] md:h-[460px] lg:h-[500px]"
+              style={{ background: 'linear-gradient(180deg, #BB9255 -140.92%, #FADCBA 165.92%)' }}
+              aria-hidden
+            />
+
+            <div className="absolute bottom-0 left-1/2 z-[5] h-[110%] w-[260px] -translate-x-1/2 sm:w-[300px] md:w-[330px] lg:w-[350px]">
+              <Image
+                src={imageSrc}
+                alt={imageAlt}
+                fill
+                priority
+                sizes="(max-width: 640px) 260px, (max-width: 1024px) 330px, 350px"
+                className="object-contain object-bottom drop-shadow-xl"
+              />
+            </div>
+
+            {badges.map((b) => (
+              <FloatingBadge key={b.id} badge={b} />
+            ))}
+          </div>
+        )}
       </div>
     );
   }

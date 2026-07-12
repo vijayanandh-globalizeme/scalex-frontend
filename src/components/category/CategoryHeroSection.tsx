@@ -196,11 +196,22 @@ function LearnersBlock({ count, label, avatarSrcs }: CategoryLearnersStat) {
 
 function FeatureList({ features }: { features: string[] }) {
   return (
-    <ul className="mt-6 grid grid-cols-1 gap-x-8 gap-y-3 sm:grid-cols-2" role="list">
+    <ul className="mt-6 grid grid-cols-1 gap-x-20 gap-y-3 sm:grid-cols-2 lg:gap-x-32" role="list">
       {features.map((feature, i) => (
-        <li key={i} className="flex items-start gap-2.5">
+        <li key={i} className="flex min-w-0 items-start gap-2.5">
           <CheckIcon className="mt-0.5 shrink-0" />
-          <span className="text-[15px] font-medium leading-[152%] text-heading md:text-[18px]">{feature}</span>
+          <span
+            className={`text-[15px] font-medium leading-[152%] text-heading md:text-[18px] ${
+              feature === 'Authorized Scrum Alliance Training' ||
+              feature === 'Live CST-Led Online Sessions' ||
+              feature === 'All-Inclusive Course Pricing' ||
+              feature === '100% Exam Pass Guarantee'
+                ? 'whitespace-nowrap'
+                : ''
+            }`}
+          >
+            {feature}
+          </span>
         </li>
       ))}
     </ul>
@@ -212,15 +223,32 @@ interface CategoryHeroSectionProps {
   settings: LayoutSettings;
   heroBadges?: HeroBadge[];
   heroFigureSrc?: string;
+  /** `photo` = rounded hero image (e.g. agile-and-scrum); default cutout figure. */
+  mediaVariant?: 'figure' | 'photo';
   backgroundImage?: {
     src: string;
     className?: string;
   };
 }
 
-export default function CategoryHeroSection({ category, settings, heroBadges = [], heroFigureSrc, backgroundImage }: CategoryHeroSectionProps) {
+export default function CategoryHeroSection({
+  category,
+  settings,
+  heroBadges = [],
+  heroFigureSrc,
+  mediaVariant = 'figure',
+  backgroundImage,
+}: CategoryHeroSectionProps) {
   const features = category.highlights
-    ? category.highlights.split('\n').map((s) => s.trim()).filter(Boolean)
+    ? category.highlights
+        .split('\n')
+        .map((s) => s.trim())
+        .filter(Boolean)
+        .map((feature) =>
+          feature === 'Authorized Scrum Training'
+            ? 'Authorized Scrum Alliance Training'
+            : feature,
+        )
     : [];
 
   const reviews: CategoryReview[] = [];
@@ -254,7 +282,7 @@ export default function CategoryHeroSection({ category, settings, heroBadges = [
   };
 
   const heroImage = {
-    src: '/images/hero/person.png',
+    src: heroFigureSrc ?? '/images/hero/person.png',
     alt: category.name,
   };
 
@@ -267,9 +295,15 @@ export default function CategoryHeroSection({ category, settings, heroBadges = [
       className="full-bleed relative overflow-visible pb-2 pt-6 md:pt-8"
       aria-labelledby="category-hero-heading"
     >
-      {/* Decorative background (non-content) */}
-      <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden>
-        {backgroundImage?.src ? (
+      {/* Bottom→top pink (full width — no white gap in the middle) */}
+      <div
+        className="category-hero-bg pointer-events-none absolute inset-x-0 top-0 z-0"
+        style={{ bottom: '-35%' }}
+        aria-hidden
+      />
+      {/* Decorative background (non-content) — figure layout only */}
+      <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden" aria-hidden>
+        {mediaVariant === 'figure' && backgroundImage?.src ? (
           <div className={`${bgClassName} hidden md:block`}>
             <Image
               src={backgroundImage.src}
@@ -281,14 +315,13 @@ export default function CategoryHeroSection({ category, settings, heroBadges = [
             />
           </div>
         ) : null}
-        <div className="absolute bottom-0 right-[15%] h-48 w-48 rounded-full bg-orange-200/30 blur-3xl" aria-hidden />
       </div>
       <div className="site-container relative z-10">
         <nav aria-label="Breadcrumb" className="mb-6 flex items-center gap-2 text-[14px] font-medium">
-          <Link href="/" className="text-brand transition hover:opacity-80" aria-label="Home">
+          <Link href="/" className="text-muted transition hover:text-heading" aria-label="Home">
             <HomeIcon className="h-4 w-4" />
           </Link>
-          <span className="text-brand/60" aria-hidden>&gt;</span>
+          <span className="text-muted/60" aria-hidden>&gt;</span>
           <span className="text-brand">{category.name}</span>
         </nav>
 
@@ -317,7 +350,7 @@ export default function CategoryHeroSection({ category, settings, heroBadges = [
             )}
 
             <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:gap-4 lg:mt-6">
-              <ScrollToAnchor targetId="courses" className="btn-brand h-[54px] w-full gap-2 px-6 sm:w-auto md:px-7">
+              <ScrollToAnchor targetId="courses" className="btn-brand h-[40px] w-full gap-2 px-6 sm:w-auto md:px-7">
                 Explore Courses
                 <ArrowRightIcon className="btn-arrow-icon shrink-0" />
               </ScrollToAnchor>
@@ -325,7 +358,7 @@ export default function CategoryHeroSection({ category, settings, heroBadges = [
                 openModal
                 type="contact"
                 courseId={null}
-                className="btn-brand-outline inline-flex h-[54px] w-full items-center justify-center gap-[18px] px-6 text-sm font-semibold sm:w-auto md:px-8 md:text-[15px]"
+                className="btn-brand-outline inline-flex h-[40px] w-full items-center justify-center gap-[18px] px-6 text-sm font-semibold sm:w-auto md:px-8 md:text-[15px]"
               >
                 Get Free Career Guidance
                 <PhoneIcon className="h-5 w-5 text-brand" />
@@ -338,6 +371,7 @@ export default function CategoryHeroSection({ category, settings, heroBadges = [
             imageSrc={heroImage.src}
             imageAlt={heroImage.alt}
             badges={heroBadges}
+            variant={mediaVariant}
             disableGsap
           />
         </div>

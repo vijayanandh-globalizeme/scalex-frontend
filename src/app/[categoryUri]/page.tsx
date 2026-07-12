@@ -49,15 +49,44 @@ export default async function CategoryPage({ params }: PageProps) {
   if (!category) notFound();
 
   const settings = settingsData ?? {};
+  const isAgileScrum = categoryUri === 'agile-and-scrum';
+  const agileHeroBadges = [
+    {
+      id: 'learners-1',
+      variant: 'learners' as const,
+      placement: 'top-left' as const,
+      title: 'Active Learners',
+      subtitle: '100K+',
+    },
+    {
+      id: 'learners-2',
+      variant: 'learners' as const,
+      placement: 'top-right' as const,
+      title: 'Active Learners',
+      subtitle: '100K+',
+    },
+    {
+      id: 'mentors',
+      variant: 'mentors' as const,
+      placement: 'bottom-right' as const,
+      title: 'Expert Mentors',
+      subtitle: '1,000+',
+    },
+  ];
 
   return (
     <>
       <CategoryHeroSection
         category={category}
         settings={settings}
-        heroBadges={defaultHeroBadges}
-        heroFigureSrc={defaultHeroContent.figure.src}
-        backgroundImage={defaultHeroContent.backgroundImage}
+        heroBadges={isAgileScrum ? agileHeroBadges : defaultHeroBadges}
+        heroFigureSrc={
+          isAgileScrum
+            ? '/images/category/agile-scrum-hero.png'
+            : defaultHeroContent.figure.src
+        }
+        mediaVariant={isAgileScrum ? 'photo' : 'figure'}
+        backgroundImage={isAgileScrum ? undefined : defaultHeroContent.backgroundImage}
       />
       <CategoryCoursesSection categoryId={category.id} categoryName={category.name} />
       <CategoryExpertCtaSection />
