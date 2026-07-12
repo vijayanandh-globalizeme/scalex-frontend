@@ -8,6 +8,14 @@ import {
   COURSE_ROW_DIVIDER_FULL,
   COURSE_SECTION_CARD,
   COURSE_TOP_DIVIDER_FULL,
+  COURSE_ACCORDION_PANEL,
+  COURSE_ACCORDION_PANEL_OPEN,
+  COURSE_ACCORDION_PANEL_CLOSED,
+  COURSE_ACCORDION_INNER,
+  COURSE_ACCORDION_INNER_OPEN,
+  COURSE_ACCORDION_INNER_CLOSED,
+  COURSE_ACCORDION_CHEVRON,
+  COURSE_ACCORDION_ANSWER,
 } from './courseSectionCard';
 
 const DEFAULT_VISIBLE = 5;
@@ -18,7 +26,7 @@ const TAB_BAR_SCROLL =
 function FaqChevron({ open }: { open: boolean }) {
   return (
     <svg
-      className={`h-4 w-4 shrink-0 text-brand transition-transform duration-200 ${open ? 'rotate-180' : 'rotate-0'}`}
+      className={`h-4 w-4 shrink-0 text-brand ${COURSE_ACCORDION_CHEVRON} ${open ? 'rotate-180' : 'rotate-0'}`}
       viewBox="0 0 16 16" fill="none" aria-hidden
     >
       <path d="M4 6l4 4 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
@@ -107,11 +115,11 @@ export default function CourseFaqsSection({ faqs, title }: { faqs: FaqGroup[]; t
                 <FaqChevron open={isOpen} />
               </button>
 
-              <div className={`grid transition-all duration-200 ease-in-out ${isOpen ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'}`}>
-                <div className="overflow-hidden">
+              <div className={`${COURSE_ACCORDION_PANEL} ${isOpen ? COURSE_ACCORDION_PANEL_OPEN : COURSE_ACCORDION_PANEL_CLOSED} ${isOpen ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'}`}>
+                <div className={`${COURSE_ACCORDION_INNER} ${isOpen ? COURSE_ACCORDION_INNER_OPEN : COURSE_ACCORDION_INNER_CLOSED}`}>
                   <div className="px-5 pb-5 md:px-6">
                     <div
-                      className="w-full rounded-lg bg-[#F8F9FB] p-5 md:ml-[5%] md:w-[95%] md:p-6 [&_h3]:mb-2 [&_h3]:mt-4 [&_h3]:text-[13px] [&_h3]:font-semibold [&_h3]:text-heading [&_h3:first-child]:mt-0 [&_p]:text-[13px] [&_p]:leading-relaxed [&_p]:text-muted"
+                      className={`w-full rounded-lg bg-[#F8F9FB] p-5 md:ml-[5%] md:w-[95%] md:p-6 ${COURSE_ACCORDION_ANSWER} [&_h3]:mb-2 [&_h3]:mt-4 [&_h3]:text-[13px] [&_h3]:font-semibold [&_h3:first-child]:mt-0`}
                       dangerouslySetInnerHTML={{ __html: item.content.replaceAll('&nbsp;', ' ') }}
                     />
                   </div>

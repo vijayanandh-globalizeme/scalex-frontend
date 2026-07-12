@@ -108,6 +108,25 @@ body {
     @apply text-[28px] font-bold leading-[140%] md:text-[34px];
   }
 
+  /* Course Content + FAQ accordion answer HTML (overrides CMS inline muted color) */
+  .course-accordion-answer {
+    color: #4a5867;
+    font-size: 13px;
+    line-height: 1.625;
+  }
+
+  .course-accordion-answer :where(p, li, span, div, td, blockquote, em, strong, ul, ol) {
+    color: #4a5867 !important;
+  }
+
+  .course-accordion-answer :where(h1, h2, h3, h4, h5, h6) {
+    color: var(--color-heading) !important;
+  }
+
+  .course-accordion-answer a {
+    color: var(--color-brand) !important;
+  }
+
   /* Shared card hover — shadow lift, image zoom, title brand color */
   .interactive-card {
     @apply cursor-pointer transition-shadow duration-300;

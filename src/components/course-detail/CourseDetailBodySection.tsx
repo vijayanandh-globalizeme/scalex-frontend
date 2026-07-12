@@ -87,6 +87,14 @@ export default async function CourseDetailBodySection({
                 careerTabs={details.otherDetails.filter((d) => d.type === 'OVERVIEW')}
                 variant={isTechnical ? 'technical' : 'default'}
                 courseId={courseId}
+                guideDownloadUrl={
+                  courseUri === 'certified-scrum-master' && categoryUri === 'agile-and-scrum'
+                    ? brochureUrl
+                    : null
+                }
+                forceGuideCta={
+                  courseUri === 'certified-scrum-master' && categoryUri === 'agile-and-scrum'
+                }
               />
             ) : null}
 

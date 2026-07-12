@@ -13,3 +13,22 @@ export const COURSE_TOP_DIVIDER =
 export const COURSE_ROW_DIVIDER_FULL = 'border-b border-[#EBEBEB]';
 
 export const COURSE_TOP_DIVIDER_FULL = 'border-t border-[#EBEBEB]';
+
+/** Shared accordion expand/collapse — panel + chevron */
+export const COURSE_ACCORDION_PANEL =
+  'grid transition-[grid-template-rows] duration-700 ease-[cubic-bezier(0.33,1,0.68,1)] motion-reduce:transition-none';
+
+export const COURSE_ACCORDION_PANEL_OPEN = 'delay-150';
+export const COURSE_ACCORDION_PANEL_CLOSED = 'delay-0';
+
+export const COURSE_ACCORDION_INNER =
+  'overflow-hidden transition-opacity duration-[650ms] ease-out motion-reduce:transition-none';
+
+export const COURSE_ACCORDION_INNER_OPEN = 'opacity-100 delay-[200ms]';
+export const COURSE_ACCORDION_INNER_CLOSED = 'opacity-0 delay-0';
+
+export const COURSE_ACCORDION_CHEVRON =
+  'transition-transform duration-700 ease-[cubic-bezier(0.33,1,0.68,1)] motion-reduce:transition-none';
+
+/** Rich HTML body inside course content / FAQ accordions */
+export const COURSE_ACCORDION_ANSWER = 'course-accordion-answer';

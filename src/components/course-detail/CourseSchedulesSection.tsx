@@ -79,6 +79,14 @@ function ChevronDownIcon({ className }: { className?: string }) {
   );
 }
 
+function ViewMoreChevronIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} width="18" height="11" viewBox="0 0 18 11" fill="none" aria-hidden>
+      <path d="M7.50374 9C7.69084 9 7.87795 8.92839 8.00517 8.79244L13.7979 3.11657C13.9251 2.99489 14 2.83742 14 2.65849C14 2.2863 13.7081 2 13.3189 2C13.1318 2 12.9597 2.07158 12.8325 2.1861L7.09959 7.79038H7.9004L2.16753 2.1861C2.04778 2.07158 1.87565 2 1.68106 2C1.29188 2 1 2.2863 1 2.65849C1 2.83742 1.07484 2.99489 1.20207 3.12372L6.99482 8.79244C7.13701 8.92839 7.30915 9 7.50374 9Z" fill="currentColor" />
+    </svg>
+  );
+}
+
 function SunIcon({ className }: { className?: string }) {
   return (
     <svg className={className} width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
@@ -729,9 +737,10 @@ export default function CourseSchedulesSection({
               type="button"
               onClick={handleLoadMore}
               disabled={loadingMore}
-              className="btn-brand-outline btn-brand-outline--flat inline-flex h-9 items-center gap-2 rounded-lg px-5 text-[13px] font-medium disabled:opacity-60"
+              className="inline-flex cursor-pointer items-center gap-2 text-[14px] font-medium leading-[18px] text-brand transition disabled:cursor-not-allowed disabled:opacity-60"
             >
-              {loadingMore ? 'Loading…' : `View More (${total - batches.length} remaining)`}
+              {loadingMore ? 'Loading…' : 'View More Schedules'}
+              {!loadingMore ? <ViewMoreChevronIcon className="shrink-0 text-brand" /> : null}
             </button>
           </div>
         ) : null}
