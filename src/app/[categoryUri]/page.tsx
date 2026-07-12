@@ -61,9 +61,9 @@ export default async function CategoryPage({ params }: PageProps) {
       />
       <CategoryCoursesSection categoryId={category.id} categoryName={category.name} />
       <CategoryExpertCtaSection />
-      <WhyScaleXSection {...defaultWhyScaleXContent} />
       <CategoryExploreAllSection excludeId={category.id} />
       <CategoryRelatedBlogsSection categoryId={category.id} />
+      <WhyScaleXSection {...defaultWhyScaleXContent} />
       <GuidanceSection {...defaultGuidanceContent} />
     </>
   );

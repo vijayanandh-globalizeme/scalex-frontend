@@ -136,7 +136,7 @@ function WhiteBlogCard({ blog, mobile = false }: { blog: BlogItem; mobile?: bool
             className="object-cover"
           />
         </div>
-        <h3 className={`interactive-card-title font-bold leading-snug text-heading ${mobile ? 'line-clamp-2 text-[14px]' : 'text-[17px]'}`}>
+        <h3 className={`interactive-card-title font-bold leading-snug text-heading ${mobile ? 'line-clamp-2 text-[14px]' : 'text-[20px]'}`}>
           {blog.title}
         </h3>
         <p
@@ -161,7 +161,7 @@ function SolidBlogCard({ blog, bg, mobile = false }: { blog: BlogItem; bg: strin
       style={{ backgroundColor: bg }}
     >
       <div className="min-h-0 flex-1">
-        <h3 className={`interactive-card-title line-clamp-2 font-bold leading-snug text-white ${mobile ? 'text-[13px]' : 'text-[15px]'}`}>
+        <h3 className={`interactive-card-title line-clamp-2 font-bold leading-snug text-white ${mobile ? 'text-[13px]' : 'text-[20px]'}`}>
           {blog.title}
         </h3>
         <p
