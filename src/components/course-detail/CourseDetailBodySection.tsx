@@ -9,16 +9,17 @@ import {AwardsSection} from "@/components/awards";
 import CourseFaqsSection from './CourseFaqsSection';
 import CourseOverviewSection from './CourseOverviewSection';
 import WhyScaleXSection from '../why-scalex/WhyScaleXSection';
-import { getCourseDetails, getCourseLearners } from '@/app/actions/courseActions';
+import { getCourseDetails, getCourseLearners, getCourseReviews } from '@/app/actions/courseActions';
 import { courseWhyScaleXContent } from '@/lib/courseWhyScaleXContent';
 import {courseAwardsCards} from "@/lib/courseAwardsContent";
+import { getStaticCourseReviews } from '@/lib/courseReviewsFallback';
 import CourseAboutCertificationSection from './CourseAboutCertificationSection';
 import CourseBatchRequestBanner from './CourseBatchRequestBanner';
-import type { ApiCourseOverview } from '@/services/courseApi';
+import type { ApiCourseOverview, ApiReview } from '@/services/courseApi';
 import type { LayoutSettings } from '@/services/layoutApi';
 import CourseCredentialsSection from './CourseCredentialsSection';
 import CourseTrainersSection from './CourseTrainersSection';
-import CourseReviewsSection from './CourseReviewsSection';
+import CourseReviewsClient from './CourseReviewsClient';
 import CourseEligibilityRequirementsSection from './CourseEligibilityRequirementsSection';
 import CourseSkillsToolsSection from './CourseSkillsToolsSection';
 import CourseProgramRoadmapSection from './CourseProgramRoadmapSection';
@@ -66,13 +67,52 @@ export default async function CourseDetailBodySection({
   // When courseDetails is available derive from templateType, otherwise use the prop
   const isTechnical  = courseDetails ? isTechnicalFromDetails : isTechnicalProp;
   const hasBootcamp  = templateType === 'BOOTCAMP';
+  const isDevopsPage =
+    courseUri === 'devops-certification-training' && categoryUri === 'devops';
+  const isCsmPage =
+    courseUri === 'certified-scrum-master' && categoryUri === 'agile-and-scrum';
+
+  const awardsSection = (
+    <AwardsSection
+      heading="Awards and Recognitions"
+      subheading=""
+      cards={courseAwardsCards}
+      visibleCount={3}
+      autoplay={false}
+      id="awards"
+      variant="embedded"
+    />
+  );
 
   const navItems = isTechnical ? BOOTCAMP_NAV_ITEMS : COURSE_NAV_ITEMS;
   const locationOpts = { countryUri, cityUri };
-  const [details, learners] = await Promise.all([
+  const reviewsPromise = Promise.race([
+    getCourseReviews(courseUri, categoryUri).catch(() => [] as ApiReview[]),
+    new Promise<ApiReview[]>((resolve) => {
+      setTimeout(() => resolve([]), 8000);
+    }),
+  ]);
+  const [details, learners, apiReviews] = await Promise.all([
     getCourseDetails(courseUri, categoryUri, locationOpts),
     isTechnical ? getCourseLearners(courseUri, categoryUri, locationOpts) : Promise.resolve([]),
+    reviewsPromise,
   ]);
+
+  const reviewsFallback = getStaticCourseReviews(courseUri);
+  // CSM + DevOps: same “What Our Learners Saying” UI/content.
+  const useSharedReviewsUi = isCsmPage || isDevopsPage;
+  const reviews =
+    useSharedReviewsUi && reviewsFallback.reviews.length > 0
+      ? reviewsFallback.reviews
+      : apiReviews.length > 0
+        ? apiReviews
+        : reviewsFallback.reviews;
+  const reviewsHeading = useSharedReviewsUi
+    ? reviewsFallback.title
+    : reviewsTitle || reviewsFallback.title || 'What Our Learners Saying';
+  const reviewsVideoUrl = useSharedReviewsUi
+    ? (reviewsFallback.videoUrl ?? reviewVideoUrl)
+    : (reviewVideoUrl ?? reviewsFallback.videoUrl);
 
   return (
     <section className="full-bleed overflow-visible bg-[#F5F6F8] pb-16 pt-1" aria-label="Course details">
@@ -87,23 +127,18 @@ export default async function CourseDetailBodySection({
                 careerTabs={details.otherDetails.filter((d) => d.type === 'OVERVIEW')}
                 variant={isTechnical ? 'technical' : 'default'}
                 courseId={courseId}
-                guideDownloadUrl={
-                  courseUri === 'certified-scrum-master' && categoryUri === 'agile-and-scrum'
-                    ? brochureUrl
-                    : null
-                }
-                forceGuideCta={
-                  courseUri === 'certified-scrum-master' && categoryUri === 'agile-and-scrum'
-                }
+                guideDownloadUrl={brochureUrl}
+                forceGuideCta
               />
             ) : null}
 
             {details?.courseContent ? (
               <CourseContentSection
                 courseContent={details.courseContent}
-                syllabusUrl={syllabusUrl}
+                syllabusUrl={syllabusUrl ?? brochureUrl}
                 title={courseContentTitle}
                 courseId={courseId}
+                forceSyllabusCta
               />
             ) : null}
             
@@ -168,24 +203,14 @@ export default async function CourseDetailBodySection({
               <CourseWebinarCtaSection startedAt={startedAt} courseId={courseId} />
             ) : null}
 
-            {courseUri && categoryUri ? (
-              <CourseReviewsSection
-                courseUri={courseUri}
-                categoryUri={categoryUri}
-                title={reviewsTitle ?? 'Learner Reviews'}
-                settings={settings ?? {}}
-              />
-            ) : null}
-
-            <AwardsSection
-              heading="Awards and Recognitions"
-              subheading=""
-              cards={courseAwardsCards}
-              visibleCount={3}
-              autoplay={false}
-              id="awards"
-              variant="embedded"
+            <CourseReviewsClient
+              title={reviewsHeading}
+              reviews={reviews}
+              settings={settings ?? {}}
+              videoUrl={reviewsVideoUrl}
             />
+
+            {!isDevopsPage ? awardsSection : null}
 
             {details?.credentials && details.otherDetails ? (
               <CourseCredentialsSection
@@ -201,14 +226,27 @@ export default async function CourseDetailBodySection({
             <CourseBatchRequestBanner banner={EXPERTS_COURSE_BANNER} className="pb-6 md:pb-8" courseId={courseId} />
 
             <WhyScaleXSection {...courseWhyScaleXContent} id="why-scalex" variant="embedded" />
+            {isDevopsPage ? awardsSection : null}
             <CourseAboutCertificationSection title={aboutTitle} content={aboutContent} />
             
             {courseUri && categoryUri ? (
-              <CourseRelatedCoursesSection courseUri={courseUri} />
+              <CourseRelatedCoursesSection
+                courseUri={courseUri}
+                title="Also view other courses"
+              />
             ) : null}
 
 
-            <CourseTrainingCitiesSection courseUri={courseUri} categoryUri={categoryUri} shortName={courseDetails?.shortName} />
+            <CourseTrainingCitiesSection
+              courseUri={courseUri}
+              categoryUri={categoryUri}
+              shortName={courseDetails?.shortName}
+              title={
+                courseUri === 'certified-scrum-master'
+                  ? 'CSM Training in other Cities'
+                  : undefined
+              }
+            />
           </div>
           <CourseDetailSidebar sidebar={sidebar} courseId={courseId} brochureUrl={brochureUrl} />
 

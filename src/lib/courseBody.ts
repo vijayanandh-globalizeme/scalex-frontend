@@ -495,9 +495,8 @@ const CSM_RELATED_COURSES: RelatedCourse[] = Array.from({ length: 6 }).map((_, i
   imageSrc: '/images/course/course-1.png',
   imageAlt: 'Advanced Certified Scrum Master training session',
   rating: 4.8,
-  hours: 16,
   learners: '75K+ Learners',
-  duration: '2 Days',
+  duration: '16 Hr',
   price: 12999,
   originalPrice: 18999,
   savePercent: 40,
@@ -1259,7 +1258,7 @@ const CSM_BODY: CourseBodyContent = {
   },
   trainingCities: {
     title: 'CSM Training in other Cities',
-    cities: Array.from({ length: 30 }).map((_, index) => ({
+    cities: Array.from({ length: 52 }).map((_, index) => ({
       id: `csm-city-${index + 1}`,
       label: CSM_TRAINING_CITIES[index % CSM_TRAINING_CITIES.length],
       href: '#schedules',

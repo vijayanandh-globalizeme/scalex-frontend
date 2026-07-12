@@ -1,5 +1,6 @@
 import { getCourseReviews } from '@/app/actions/courseActions';
 import type { LayoutSettings } from '@/services/layoutApi';
+import { getStaticCourseReviews } from '@/lib/courseReviewsFallback';
 import CourseReviewsClient from './CourseReviewsClient';
 
 export default async function CourseReviewsSection({
@@ -7,15 +8,30 @@ export default async function CourseReviewsSection({
   categoryUri,
   title,
   settings,
+  videoUrl,
 }: {
   courseUri: string;
   categoryUri: string;
   title: string;
   settings: LayoutSettings;
+  videoUrl?: string | null;
 }) {
-  const reviews = await getCourseReviews(courseUri, categoryUri);
+  let apiReviews: Awaited<ReturnType<typeof getCourseReviews>> = [];
+  try {
+    apiReviews = await getCourseReviews(courseUri, categoryUri);
+  } catch {
+    apiReviews = [];
+  }
 
-  if (!reviews.length) return null;
+  const fallback = getStaticCourseReviews(courseUri);
+  const reviews = apiReviews.length ? apiReviews : fallback.reviews;
 
-  return <CourseReviewsClient title={title} reviews={reviews} settings={settings} />;
+  return (
+    <CourseReviewsClient
+      title={title || fallback.title}
+      reviews={reviews}
+      settings={settings}
+      videoUrl={videoUrl ?? fallback.videoUrl}
+    />
+  );
 }

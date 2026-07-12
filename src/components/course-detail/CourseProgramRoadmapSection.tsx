@@ -148,9 +148,22 @@ function formatHighlight(text: string) {
   );
 }
 
+/** Prefer Kindle (3rd) before Myntra (4th) in Learning Track project cards. */
+function orderLearningProjects(projects: ApiOtherDetail[]): ApiOtherDetail[] {
+  const list = [...projects];
+  const kindleIdx = list.findIndex((p) => /kindle/i.test(p.title));
+  const myntraIdx = list.findIndex((p) => /myntra/i.test(p.title));
+  if (kindleIdx >= 0 && myntraIdx >= 0 && myntraIdx < kindleIdx) {
+    const tmp = list[kindleIdx]!;
+    list[kindleIdx] = list[myntraIdx]!;
+    list[myntraIdx] = tmp;
+  }
+  return list;
+}
+
 function LearningStageContent({ stage, otherDetails }: { stage: ApiRoadmap; otherDetails: ApiOtherDetail[] }) {
   const highlights = stage.content ? stage.content.split(/\r?\n/).map((l) => l.trim()).filter(Boolean) : [];
-  const projects = otherDetails.filter((d) => d.entityId === stage.id);
+  const projects = orderLearningProjects(otherDetails.filter((d) => d.entityId === stage.id));
 
   return (
     <div className="min-w-0 flex-1">

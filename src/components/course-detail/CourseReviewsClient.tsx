@@ -91,8 +91,15 @@ function ReviewCard({ review, typeMap }: { review: ApiReview; typeMap: Map<strin
       <div className="mt-4 border-t border-[#EBEBEB] pt-4">
         <div className="flex min-w-0 items-start gap-2.5">
           <div className="relative h-[50px] w-[50px] shrink-0 overflow-hidden rounded-full bg-zinc-100">
-            {review.avatar ? (
-              <Image src={review.avatar.url} alt={review.name} fill className="object-cover grayscale" sizes="50px" />
+            {review.avatar?.url ? (
+              <Image
+                src={review.avatar.url}
+                alt={review.name}
+                fill
+                className="object-cover grayscale"
+                sizes="50px"
+                unoptimized={review.avatar.url.startsWith('http')}
+              />
             ) : null}
           </div>
           <div className="min-w-0">

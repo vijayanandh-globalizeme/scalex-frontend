@@ -244,7 +244,11 @@ export default function TechnicalCourseHeroSection(course: TechnicalCourseConten
     [],
   );
 
-  const googleReview = reviews.find((r) => r.id === 'google') ?? reviews[0];
+  const googleReview = reviews.find((r) => r.id === 'google');
+  const trustpilotReview = reviews.find((r) => r.id === 'trustpilot');
+  const formatRating = (rating: string) => (rating.includes('/') ? rating : `${rating}/5`);
+  const reviewsLabel = googleReview?.reviewsLabel ?? trustpilotReview?.reviewsLabel;
+  const reviewsUrl = googleReview?.url ?? trustpilotReview?.url;
 
   return (
     <section
@@ -305,39 +309,61 @@ export default function TechnicalCourseHeroSection(course: TechnicalCourseConten
                 style={{ padding: 1.5, borderRadius: 10, background: 'linear-gradient(to right, #1BA83A, #FD8E0D)' }}
               >
                 <div className="inline-flex items-center gap-2 rounded-[8px] bg-[#FCF9F3] px-4 py-2">
+                  <Image
+                    src="/images/money.png"
+                    alt=""
+                    width={20}
+                    height={20}
+                    className="h-5 w-5 shrink-0 object-contain"
+                  />
                   <span className="text-[16px] font-semibold leading-[140%] text-[#0AB332]">Get Job.</span>{' '}
                   <span className="text-[16px] font-semibold leading-[140%] text-[#FC6E19]">Get Refunded.</span>
                 </div>
               </div>
-              {googleReview ? (
-                <div className="inline-flex items-center gap-2 rounded-[8px] border border-[#EBEBEB] bg-[#FBFBFB] px-4 py-2 shadow-[0_4px_4px_0_rgba(30,41,59,0.08),0_4px_4px_0_rgba(30,41,59,0.03)]">
-                  <Image
-                    src="/images/g.png"
-                    alt=""
-                    width={20}
-                    height={20}
-                    className="h-5 w-5 shrink-0 object-contain"
-                  />
-                  <span className="text-[13px] font-semibold text-heading">{googleReview.rating}</span>
-                  <Image
-                    src="/images/star.png"
-                    alt=""
-                    width={20}
-                    height={20}
-                    className="h-5 w-5 shrink-0 object-contain"
-                  />
-                  {googleReview.url ? (
-                    <a
-                      href={googleReview.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-[13px] text-muted hover:underline"
-                    >
-                      {googleReview.reviewsLabel}
-                    </a>
-                  ) : (
-                    <span className="text-[13px] text-muted">{googleReview.reviewsLabel}</span>
-                  )}
+              {googleReview || trustpilotReview ? (
+                <div className="inline-flex flex-wrap items-center gap-x-3 gap-y-1 rounded-[8px] border border-[#EBEBEB] bg-[#FBFBFB] px-4 py-2 shadow-[0_4px_4px_0_rgba(30,41,59,0.08),0_4px_4px_0_rgba(30,41,59,0.03)]">
+                  {googleReview ? (
+                    <span className="inline-flex items-center gap-1.5">
+                      <Image
+                        src="/images/g.png"
+                        alt="Google"
+                        width={20}
+                        height={20}
+                        className="h-5 w-5 shrink-0 object-contain"
+                      />
+                      <span className="text-[13px] font-semibold text-heading">
+                        {formatRating(googleReview.rating)}
+                      </span>
+                    </span>
+                  ) : null}
+                  {trustpilotReview ? (
+                    <span className="inline-flex items-center gap-1.5">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden className="shrink-0">
+                        <path
+                          d="M12 1.5l2.9 7.2 7.8.7-5.9 5 1.8 7.6L12 18.6l-6.6 3.4 1.8-7.6-5.9-5 7.8-.7L12 1.5z"
+                          fill="#00B67A"
+                        />
+                        <path d="M12 16.2l3.9 2 1.1-4.5-3.5-2.9V16.2z" fill="#005128" />
+                      </svg>
+                      <span className="text-[13px] font-semibold text-heading">
+                        {formatRating(trustpilotReview.rating)}
+                      </span>
+                    </span>
+                  ) : null}
+                  {reviewsLabel ? (
+                    reviewsUrl ? (
+                      <a
+                        href={reviewsUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-[13px] text-muted hover:underline"
+                      >
+                        {reviewsLabel}
+                      </a>
+                    ) : (
+                      <span className="text-[13px] text-muted">{reviewsLabel}</span>
+                    )
+                  ) : null}
                 </div>
               ) : null}
             </div>

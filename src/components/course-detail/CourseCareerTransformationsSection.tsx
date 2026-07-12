@@ -237,7 +237,7 @@ function TransformationStoryCard({ story }: { story: CareerTransformationStory }
   return (
     <article className="relative flex h-full w-full flex-col overflow-visible pt-11">
       {/* Hike badge */}
-      <div className="pointer-events-none absolute top-[40px] left-1/2 z-30 -translate-x-1/2 max-md:static max-md:pointer-events-auto max-md:mx-auto max-md:mb-4 max-md:translate-x-0 md:left-[135px] md:translate-x-0">
+      <div className="pointer-events-none absolute top-[52px] left-1/2 z-30 -translate-x-1/2 max-md:static max-md:pointer-events-auto max-md:mx-auto max-md:mb-4 max-md:translate-x-0 md:left-[135px] md:translate-x-0">
         <HikeBadge hikePercent={story.hikePercent} />
       </div>
 

@@ -1,6 +1,7 @@
 import { getRelatedCourses } from '@/app/actions/courseActions';
 import type { ApiCourse } from '@/services/courseApi';
 import type { Course } from '@/components/courses/CoursesSection';
+import { getCourseBodyBySlug } from '@/lib/courseBody';
 import CourseRelatedCoursesCarousel from './CourseRelatedCoursesCarousel';
 
 function formatLearners(raw: string | null | undefined): string {
@@ -35,17 +36,40 @@ function toCourse(c: ApiCourse): Course {
   };
 }
 
+function getStaticRelatedCourses(courseUri: string): { title: string; courses: Course[] } {
+  const content =
+    getCourseBodyBySlug(courseUri)?.relatedCourses ??
+    getCourseBodyBySlug('certified-scrum-master')?.relatedCourses;
+
+  return {
+    title: content?.title ?? 'Also view other courses',
+    courses: content?.courses ?? [],
+  };
+}
+
 export default async function CourseRelatedCoursesSection({
   courseUri,
-  title = 'Related Courses',
+  title,
 }: {
   courseUri: string;
   title?: string;
 }) {
-  const rawCourses = await getRelatedCourses(courseUri);
-  if (!rawCourses.length) return null;
+  let rawCourses: ApiCourse[] = [];
+  try {
+    rawCourses = await getRelatedCourses(courseUri);
+  } catch {
+    rawCourses = [];
+  }
 
-  const courses = rawCourses.map(toCourse);
+  const fallback = getStaticRelatedCourses(courseUri);
+  const courses = rawCourses.length ? rawCourses.map(toCourse) : fallback.courses;
 
-  return <CourseRelatedCoursesCarousel courses={courses} title={title} />;
+  if (!courses.length) return null;
+
+  return (
+    <CourseRelatedCoursesCarousel
+      courses={courses}
+      title={title ?? 'Also view other courses'}
+    />
+  );
 }

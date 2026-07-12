@@ -59,11 +59,14 @@ export default function CourseContentSection({
   syllabusUrl,
   title,
   courseId = null,
+  forceSyllabusCta = false,
 }: {
   courseContent: ApiModule[];
   syllabusUrl?: string | null;
   title?: string | null;
   courseId?: string | null;
+  /** Show Download Syllabus even when syllabus URL is missing (opens lead modal). */
+  forceSyllabusCta?: boolean;
 }) {
   const [openModuleId, setOpenModuleId] = useState(courseContent[0]?.id ?? '');
   const [showAll, setShowAll] = useState(false);
@@ -75,7 +78,7 @@ export default function CourseContentSection({
     <div id="course-content" className={`scroll-mt-[116px] ${COURSE_SECTION_CARD} px-6 py-5 md:px-8 md:py-6`}>
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <h2 className="section-heading text-heading">{title ?? COURSE_CONTENT_TITLE}</h2>
-        {syllabusUrl ? (
+        {syllabusUrl || forceSyllabusCta ? (
           <CourseBrochureCta
             openModal
             courseId={courseId}

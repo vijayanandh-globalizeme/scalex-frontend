@@ -42,7 +42,7 @@ function buildReviews(settings: LayoutSettings) {
       name:         'Google',
       logoSrc:      '/images/hero/google.png',
       logoAlt:      'Google reviews',
-      rating:       settings.GOOGLE_REVIEW.rating,
+      rating:       settings.GOOGLE_REVIEW.rating.includes('/') ? settings.GOOGLE_REVIEW.rating : `${settings.GOOGLE_REVIEW.rating}/5`,
       reviewsLabel: `${settings.GOOGLE_REVIEW.count.toLocaleString()} Reviews`,
       url:          settings.GOOGLE_REVIEW.url || undefined,
     });
@@ -54,7 +54,7 @@ function buildReviews(settings: LayoutSettings) {
       name:         'Trustpilot',
       logoSrc:      '/images/hero/trustpilot.png',
       logoAlt:      'Trustpilot reviews',
-      rating:       settings.TRUST_PILOT_REVIEW.rating,
+      rating:       settings.TRUST_PILOT_REVIEW.rating.includes('/') ? settings.TRUST_PILOT_REVIEW.rating : `${settings.TRUST_PILOT_REVIEW.rating}/5`,
       reviewsLabel: `${settings.TRUST_PILOT_REVIEW.count.toLocaleString()} Reviews`,
       url:          settings.TRUST_PILOT_REVIEW.url || undefined,
     });
