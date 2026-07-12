@@ -34,6 +34,8 @@ export type ApiCourseOverview = {
     reviewsTitle: string;
     faqTitle: string;
     aboutTitle: string;
+    relatedCourseTitle?: string | null;
+    relatedCoursesTitle?: string | null;
     courseVideoUrl: string | null;
     introduction: string;
     syllabus: ApiCourseFile | null;

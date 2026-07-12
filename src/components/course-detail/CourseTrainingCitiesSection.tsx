@@ -1,6 +1,5 @@
 import Link from 'next/link';
 import { getCourseLocations } from '@/app/actions/courseActions';
-import { getCourseBodyBySlug } from '@/lib/courseBody';
 
 export default async function CourseTrainingCitiesSection({
   courseUri,
@@ -13,34 +12,17 @@ export default async function CourseTrainingCitiesSection({
   title?: string;
   shortName?: string;
 }) {
-  let locations: Awaited<ReturnType<typeof getCourseLocations>> = [];
-  try {
-    locations = await getCourseLocations(courseUri);
-  } catch {
-    locations = [];
-  }
+  const locations = await getCourseLocations(courseUri);
+  if (!locations.length) return null;
 
-  const fallback =
-    getCourseBodyBySlug(courseUri)?.trainingCities ??
-    getCourseBodyBySlug('certified-scrum-master')?.trainingCities;
-
-  const items = locations.length
-    ? locations.map((loc) => ({
-        key: loc.uri,
-        label: loc.labelName,
-        href: `/${categoryUri}/${loc.uri}`,
-      }))
-    : (fallback?.cities ?? []).map((city) => ({
-        key: city.id,
-        label: city.label,
-        href: city.href || '#schedules',
-      }));
-
-  if (!items.length) return null;
+  const items = locations.map((loc) => ({
+    key: loc.uri,
+    label: loc.labelName,
+    href: `/${categoryUri}/${loc.uri}`,
+  }));
 
   const heading =
     title ??
-    fallback?.title ??
     (shortName ? `${shortName} Training in other Cities` : 'Training in other Cities');
 
   return (

@@ -60,6 +60,8 @@ export default async function CourseDetailBodySection({
   const aboutContent      = d?.aboutContent         ?? null;
   const trainerTitle      = d?.trainerTitle         ?? null;
   const reviewsTitle      = d?.reviewsTitle         ?? null;
+  const relatedCourseTitle =
+    d?.relatedCoursesTitle ?? d?.relatedCourseTitle ?? null;
   const reviewVideoUrl    = d?.courseVideoUrl        ?? null;
   const startedAt    = courseDetails?.startedAt        ?? null;
   const templateType = courseDetails?.templateType     ?? null;
@@ -229,7 +231,7 @@ export default async function CourseDetailBodySection({
             {courseUri && categoryUri ? (
               <CourseRelatedCoursesSection
                 courseUri={courseUri}
-                title="Also view other courses"
+                title={relatedCourseTitle ?? 'Related Courses'}
               />
             ) : null}
 
@@ -238,11 +240,6 @@ export default async function CourseDetailBodySection({
               courseUri={courseUri}
               categoryUri={categoryUri}
               shortName={courseDetails?.shortName}
-              title={
-                courseUri === 'certified-scrum-master'
-                  ? 'CSM Training in other Cities'
-                  : undefined
-              }
             />
           </div>
           <CourseDetailSidebar sidebar={sidebar} courseId={courseId} brochureUrl={brochureUrl} />

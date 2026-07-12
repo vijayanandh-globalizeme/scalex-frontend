@@ -13,7 +13,7 @@ export default function CourseRelatedCoursesCarousel({
   title,
 }: {
   courses: Course[];
-  title: string;
+  title?: string | null;
 }) {
   const [page, setPage] = useState(0);
   const [pageSize, setPageSize] = useState(3);
@@ -39,7 +39,7 @@ export default function CourseRelatedCoursesCarousel({
   return (
     <div className="mt-[80px] overflow-visible">
       <div className="flex items-center justify-between gap-4">
-        <h2 className="section-heading text-heading">{title}</h2>
+        {title ? <h2 className="section-heading text-heading">{title}</h2> : <span />}
         {totalPages > 1 ? (
           <CategoryCarouselControls
             page={page}
