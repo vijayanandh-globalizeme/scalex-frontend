@@ -119,13 +119,13 @@ export default function WhyScaleXSection({
     <div className={`w-full ${isEmbedded ? 'mt-10 md:mt-14' : 'mx-auto mt-10 max-w-[1080px] md:mt-14'}`}>
       <div className="flex flex-col gap-6 lg:flex-row lg:items-start lg:gap-5">
         {/* Row labels — desktop only */}
-        <div className="hidden shrink-0 lg:block lg:w-[148px]">
+        <div className="hidden shrink-0 lg:block lg:w-[148px] lg:pt-3">
           <div
             className={`${cardHeaderHeight} flex items-center justify-end pr-4 text-right ${rowLabelClassName}`}
           >
             Features
           </div>
-          <div className="flex flex-col">
+          <div className="mt-3 flex flex-col md:mt-4">
             {rows.map((row) => (
               <div
                 key={`label-${row.id}`}
@@ -145,14 +145,14 @@ export default function WhyScaleXSection({
               isEmbedded
                 ? EMBEDDED_OTHERS_CARD_CLASS
                 : `rounded-lg border border-zinc-100 bg-white ${CARD_SHADOW}`
-            } px-6 py-6 md:px-7 md:py-7 lg:px-7 lg:pb-7 lg:pt-0`}
+            } px-6 py-6 md:px-7 md:py-7 lg:px-7 lg:pb-7 lg:pt-3`}
           >
             <h3
               className={`${cardHeaderHeight} flex items-center justify-center text-[18px] font-semibold text-heading md:text-[20px]`}
             >
               {othersLabel}
             </h3>
-            <ul className="flex flex-col">
+            <ul className="mt-3 flex flex-col md:mt-4">
               {rows.map((row) => (
                 <li
                   key={`others-${row.id}`}
@@ -176,7 +176,7 @@ export default function WhyScaleXSection({
           <div
             className={`${
               isEmbedded ? EMBEDDED_SCALEX_CARD_CLASS : SCALEX_CARD_CLASS
-            } px-6 py-6 md:px-7 md:py-7 lg:px-7 lg:pb-7 lg:pt-0`}
+            } px-6 py-6 md:px-7 md:py-7 lg:px-7 lg:pb-7 lg:pt-3`}
           >
             <div className={`${cardHeaderHeight} flex items-center justify-center`}>
               {scalexBrandLogo ? (
@@ -191,7 +191,7 @@ export default function WhyScaleXSection({
                 <h3 className="text-[18px] font-semibold text-heading md:text-[20px]">ScaleX</h3>
               )}
             </div>
-            <ul className="flex flex-col">
+            <ul className="mt-3 flex flex-col md:mt-4">
               {rows.map((row) => (
                 <li
                   key={`scalex-${row.id}`}
