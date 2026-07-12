@@ -239,7 +239,7 @@ export const COURSE_FEE_STATIC = {
 };
 
 export const COURSE_PLAN_COMPARISON_STATIC = {
-  subtitle: 'Unlock more features and benefits by upgrading your plan',
+  subtitle: 'Get standard plan and 10 more powerful benefits with Elite Plan.',
   featuresColumnLabel: 'Features',
 };
 

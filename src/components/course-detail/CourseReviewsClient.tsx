@@ -193,7 +193,15 @@ export default function CourseReviewsClient({
       .map(({ typeId, settingKey, logoSrc, logoAlt }) => {
         const entry = settings[settingKey] as { rating: string; count: number; url?: string } | undefined;
         if (!entry) return null;
-        return { id: typeId, logoSrc, logoAlt, rating: entry.rating, reviewsLabel: `${entry.count} Reviews`, url: entry.url || undefined };
+        const rating = entry.rating.includes('/') ? entry.rating : `${entry.rating}/5`;
+        return {
+          id: typeId,
+          logoSrc,
+          logoAlt,
+          rating,
+          reviewsLabel: `${entry.count} Reviews`,
+          url: entry.url || undefined,
+        };
       })
       .filter(Boolean) as { id: string; logoSrc: string; logoAlt: string; rating: string; reviewsLabel: string; url?: string }[],
     [settings],
@@ -258,28 +266,26 @@ export default function CourseReviewsClient({
       </div>
 
       {platformRatings.length > 0 ? (
-        <div className="mt-5 grid grid-cols-2 overflow-hidden rounded-[20px] border border-[#EBEBEB] bg-white shadow-[0_4px_4px_0_rgba(30,41,59,0.08),0_4px_4px_0_rgba(30,41,59,0.03)] sm:flex sm:flex-row">
+        <div className="mt-5 grid grid-cols-2 gap-y-5 rounded-[20px] border border-[#EBEBEB] bg-white px-5 py-5 shadow-[0_4px_14px_-4px_rgba(30,41,59,0.10),0_4px_4px_0_rgba(30,41,59,0.03)] sm:flex sm:flex-row sm:items-center sm:justify-between sm:gap-6 sm:px-8 sm:py-6">
           {platformRatings.map((platform) => (
-            <div key={platform.id} className="flex flex-1 flex-col items-center justify-center gap-2 px-4 py-4 sm:px-5">
-              <span className="relative h-5 w-[72px] shrink-0">
-                <Image src={platform.logoSrc} alt={platform.logoAlt} fill className="object-contain object-center" sizes="72px" />
+            <div key={platform.id} className="flex min-w-0 flex-col items-start gap-1.5 sm:w-auto sm:shrink-0">
+              <span className="relative h-6 w-[110px] shrink-0">
+                <Image src={platform.logoSrc} alt={platform.logoAlt} fill className="object-contain object-left" sizes="110px" />
               </span>
-              <div className="flex min-w-0 flex-col items-center justify-center gap-1 text-center">
-                <span className="flex items-center gap-1 text-[13px] font-semibold leading-normal text-heading">
-                  <PlatformStarIcon />
-                  {platform.rating}
-                </span>
+              <div className="flex min-w-0 flex-wrap items-center gap-1.5">
+                <PlatformStarIcon />
+                <span className="text-[13px] font-semibold leading-normal text-heading">{platform.rating}</span>
                 {platform.url ? (
                   <a
                     href={platform.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-[11px] font-normal leading-normal text-muted hover:underline"
+                    className="text-[14px] font-normal leading-[140%] text-muted hover:underline"
                   >
                     {platform.reviewsLabel}
                   </a>
                 ) : (
-                  <span className="text-[11px] font-normal leading-normal text-muted">{platform.reviewsLabel}</span>
+                  <span className="text-[14px] font-normal leading-[140%] text-muted">{platform.reviewsLabel}</span>
                 )}
               </div>
             </div>

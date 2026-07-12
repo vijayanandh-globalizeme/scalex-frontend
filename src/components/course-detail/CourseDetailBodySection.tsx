@@ -177,6 +177,16 @@ export default async function CourseDetailBodySection({
               />
             ) : null}
 
+            <AwardsSection
+              heading="Awards and Recognitions"
+              subheading=""
+              cards={courseAwardsCards}
+              visibleCount={3}
+              autoplay={false}
+              id="awards"
+              variant="embedded"
+            />
+
             {details?.credentials && details.otherDetails ? (
               <CourseCredentialsSection
                 credentials={details.credentials}
@@ -191,15 +201,6 @@ export default async function CourseDetailBodySection({
             <CourseBatchRequestBanner banner={EXPERTS_COURSE_BANNER} className="pb-6 md:pb-8" courseId={courseId} />
 
             <WhyScaleXSection {...courseWhyScaleXContent} id="why-scalex" variant="embedded" />
-            <AwardsSection
-              heading="Awards and Recognitions"
-              subheading=""
-              cards={courseAwardsCards}
-              visibleCount={3}
-              autoplay={false}
-              id="awards"
-              variant="embedded"
-            />
             <CourseAboutCertificationSection title={aboutTitle} content={aboutContent} />
             
             {courseUri && categoryUri ? (

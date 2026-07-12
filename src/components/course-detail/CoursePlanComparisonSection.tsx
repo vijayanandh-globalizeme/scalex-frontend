@@ -132,12 +132,87 @@ function featureValue(feature: ApiCoursePlanFeature, planNum: number): boolean {
   return Boolean(feature[key]);
 }
 
+function parsePrice(value: string | null | undefined): number | null {
+  if (value == null || value === '') return null;
+  const n = Number(value);
+  return Number.isFinite(n) ? n : null;
+}
+
+type BatchPrices = {
+  plan1RetailPrice: string | null;
+  plan1SellingPrice: string | null;
+  plan2RetailPrice: string | null;
+  plan2SellingPrice: string | null;
+  plan3RetailPrice: string | null;
+  plan3SellingPrice: string | null;
+};
+
+function planPricesForNumber(
+  batch: BatchPrices,
+  planNumber: number,
+): { retail: number | null; selling: number | null } {
+  const retail =
+    planNumber === 1
+      ? parsePrice(batch.plan1RetailPrice)
+      : planNumber === 2
+        ? parsePrice(batch.plan2RetailPrice)
+        : parsePrice(batch.plan3RetailPrice);
+  const selling =
+    planNumber === 1
+      ? parsePrice(batch.plan1SellingPrice)
+      : planNumber === 2
+        ? parsePrice(batch.plan2SellingPrice)
+        : parsePrice(batch.plan3SellingPrice);
+  return { retail, selling };
+}
+
+function resolvePlanPrices(
+  batch: BatchPrices,
+  planNumber: number,
+  fallbackBatch?: BatchPrices | null,
+): { retailPrice: number; sellingPrice: number } | null {
+  let { retail, selling } = planPricesForNumber(batch, planNumber);
+
+  if (selling == null && fallbackBatch) {
+    const fallback = planPricesForNumber(fallbackBatch, planNumber);
+    retail = retail ?? fallback.retail;
+    selling = fallback.selling;
+  }
+
+  if (selling == null) return null;
+
+  const retailPrice = retail ?? selling;
+  return { retailPrice, sellingPrice: selling };
+}
+
+function buildActivePlans(
+  plans: ApiCoursePlan[],
+  batch: BatchPrices,
+  quantity: number,
+  fallbackBatch?: BatchPrices | null,
+): ActivePlanInfo[] {
+  const activePlans: ActivePlanInfo[] = [];
+
+  for (const plan of [...plans].sort((a, b) => a.planNumber - b.planNumber)) {
+    const prices = resolvePlanPrices(batch, plan.planNumber, fallbackBatch);
+    if (!prices) continue;
+    activePlans.push({
+      plan,
+      retailPrice: prices.retailPrice * quantity,
+      sellingPrice: prices.sellingPrice * quantity,
+    });
+  }
+
+  return activePlans;
+}
+
 export default function CoursePlanComparisonSection({
   plans,
   features,
   batch,
   courseId = null,
   quantity = 1,
+  fallbackBatch = null,
 }: {
   plans: ApiCoursePlan[];
   features: ApiCoursePlanFeature[];
@@ -145,21 +220,14 @@ export default function CoursePlanComparisonSection({
   courseId?: string | null;
   /** Seat count from the schedule card's quantity stepper — scales every plan's price. */
   quantity?: number;
+  /** Reference batch from /plans when the selected schedule batch lacks plan2/plan3 prices. */
+  fallbackBatch?: ApiCoursePlanBatch | null;
 }) {
   if (!batch) return null;
 
   const s = COURSE_PLAN_COMPARISON_STATIC;
 
-  // Determine active plans (retail price not null)
-  const activePlans: ActivePlanInfo[] = [];
-  for (const plan of plans) {
-    const n = plan.planNumber;
-    const retail = n === 1 ? batch.plan1RetailPrice : n === 2 ? batch.plan2RetailPrice : batch.plan3RetailPrice;
-    const selling = n === 1 ? batch.plan1SellingPrice : n === 2 ? batch.plan2SellingPrice : batch.plan3SellingPrice;
-    if (retail !== null && selling !== null) {
-      activePlans.push({ plan, retailPrice: Number(retail) * quantity, sellingPrice: Number(selling) * quantity });
-    }
-  }
+  const activePlans = buildActivePlans(plans, batch, quantity, fallbackBatch);
 
   if (activePlans.length < 1) return null;
 
@@ -199,7 +267,9 @@ export default function CoursePlanComparisonSection({
                 ) : null}
               </h2>
               <p className="mt-2 max-w-[348px] text-[14px] font-normal leading-[140%] text-muted">
-                {s.subtitle}
+                {elitePlan
+                  ? `Get ${basePlan.plan.name} plan and more powerful benefits with ${elitePlan.plan.name} Plan.`
+                  : s.subtitle}
               </p>
             </div>
 

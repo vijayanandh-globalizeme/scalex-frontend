@@ -276,6 +276,7 @@ export type ApiCourseBatch = {
   plan3RetailPrice: string | null;
   plan3SellingPrice: string | null;
   trainerName: string;
+  trainerAvatar?: ApiCourseFile | null;
   currency: string;
   currencySymbol: string;
   timezone: string;

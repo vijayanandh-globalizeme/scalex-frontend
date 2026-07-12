@@ -1,13 +1,15 @@
 'use client';
 
+import Image from 'next/image';
 import { useState, useRef, useEffect, useMemo, type ReactNode } from 'react';
-import { getCourseBatches, getCoursePlans } from '@/app/actions/courseActions';
+import { getCourseBatches, getCoursePlans, getCourseTrainers } from '@/app/actions/courseActions';
 import CourseFeeSection from './CourseFeeSection';
 import CourseCareerAssuranceSection from './CourseCareerAssuranceSection';
 import CoursePlanComparisonSection from './CoursePlanComparisonSection';
 import CourseBatchRequestBanner from './CourseBatchRequestBanner';
 import CourseBrochureCta from './CourseBrochureCta';
 import { CUSTOMIZE_BATCH_BANNER } from '@/lib/courseDetailStatics';
+import { resolvePlansDataForCourse } from '@/lib/planComparisonFallback';
 import type { ApiCoursePlansData } from '@/services/courseApi';
 import { COURSE_SECTION_CARD } from './courseSectionCard';
 import { COURSE_SCHEDULE_FILTERS } from '@/lib/courseFilter';
@@ -577,6 +579,17 @@ export default function CourseSchedulesSection({
       setQuantities(Object.fromEntries(result.batches.map((b) => [b.id, 1])));
     });
     getCoursePlans(courseUri, categoryUri).then((data) => {
+      console.log('[Course Plans API]', {
+        courseUri,
+        categoryUri,
+        endpoint: `course/${courseUri}/plans?categoryUri=${categoryUri}`,
+        plansCount: data?.plans?.length ?? 0,
+        plans: data?.plans,
+        featuresCount: data?.features?.length ?? 0,
+        batch: data?.batch,
+        moneyBack: data?.moneyBack,
+        raw: data,
+      });
       setPlansData(data);
     });
   }, [courseUri, categoryUri]);
@@ -624,6 +637,36 @@ export default function CourseSchedulesSection({
     () => filterBatches(batches, activeFilter, dateRange),
     [batches, activeFilter, dateRange],
   );
+
+  const comparisonBatch = visibleBatches[0] ?? batches[0] ?? null;
+
+  const { data: effectivePlansData, source: plansDataSource } = useMemo(
+    () => resolvePlansDataForCourse(plansData, courseUri, categoryUri, comparisonBatch),
+    [plansData, courseUri, categoryUri, comparisonBatch],
+  );
+
+  useEffect(() => {
+    console.log('[Course Plans Resolved]', {
+      courseUri,
+      categoryUri,
+      dataSource: plansDataSource,
+      note:
+        plansDataSource === 'api'
+          ? 'Using API plans (Silver/Gold/Platinum). Static is NOT used for plan names.'
+          : plansDataSource === 'static-fallback'
+            ? 'API returned fewer than 2 plans — using CSM static Standard/Elite fallback.'
+            : 'No plan comparison data.',
+      apiPlansCount: plansData?.plans?.length ?? 0,
+      apiBatchFromPlansEndpoint: plansData?.batch ?? null,
+      resolvedPlansCount: effectivePlansData?.plans?.length ?? 0,
+      resolvedPlanNames: effectivePlansData?.plans?.map((p) => p.name) ?? [],
+      comparisonBatchId: comparisonBatch?.id ?? null,
+      plan1Selling: comparisonBatch?.plan1SellingPrice ?? effectivePlansData?.batch?.plan1SellingPrice ?? null,
+      plan2Selling: comparisonBatch?.plan2SellingPrice ?? effectivePlansData?.batch?.plan2SellingPrice ?? null,
+      plan3Selling: comparisonBatch?.plan3SellingPrice ?? effectivePlansData?.batch?.plan3SellingPrice ?? null,
+      resolved: effectivePlansData,
+    });
+  }, [plansData, effectivePlansData, plansDataSource, courseUri, categoryUri, comparisonBatch]);
 
   const emiBatch = useMemo(
     () => batches.find((b) => b.plan1HasEMI && b.plan1EMIMonthCount) ?? null,
@@ -746,6 +789,18 @@ export default function CourseSchedulesSection({
         ) : null}
       </div>
 
+      {!isTechnical && effectivePlansData && effectivePlansData.plans.length >= 2 ? (
+        <div className="mt-8">
+          <CoursePlanComparisonSection
+            plans={effectivePlansData.plans}
+            features={effectivePlansData.features}
+            batch={comparisonBatch ?? effectivePlansData.batch ?? null}
+            fallbackBatch={effectivePlansData.batch ?? null}
+            courseId={courseId}
+          />
+        </div>
+      ) : null}
+
       {/* Enroll modal */}
       {enrollModalOpen ? (
         <div
@@ -753,9 +808,9 @@ export default function CourseSchedulesSection({
           onClick={() => setEnrollModalOpen(false)}
         >
           {(() => {
-            const modalBatch = enrollBatch ?? plansData?.batch ?? emiBatch ?? batches[0] ?? null;
-            const activePlanCount = plansData && modalBatch
-              ? plansData.plans.filter((p) => {
+            const modalBatch = enrollBatch ?? comparisonBatch ?? effectivePlansData?.batch ?? emiBatch ?? null;
+            const activePlanCount = effectivePlansData && modalBatch
+              ? effectivePlansData.plans.filter((p) => {
                   const n = p.planNumber;
                   const retail = n === 1 ? modalBatch.plan1RetailPrice : n === 2 ? modalBatch.plan2RetailPrice : modalBatch.plan3RetailPrice;
                   return retail !== null;
@@ -775,11 +830,12 @@ export default function CourseSchedulesSection({
             >
               ✕
             </button>
-            {plansData ? (
+            {effectivePlansData ? (
               <CoursePlanComparisonSection
-                plans={plansData.plans}
-                features={plansData.features}
+                plans={effectivePlansData.plans}
+                features={effectivePlansData.features}
                 batch={modalBatch}
+                fallbackBatch={effectivePlansData.batch ?? null}
                 courseId={courseId}
                 quantity={enrollQuantity}
               />
