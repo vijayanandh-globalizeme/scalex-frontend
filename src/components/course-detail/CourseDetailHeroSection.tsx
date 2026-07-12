@@ -298,7 +298,11 @@ export default function CourseDetailHeroSection({
             ref={(el) => {
               rowRefs.current[1] = el;
             }}
-            className="gsap-reveal-pending mx-auto flex w-full max-w-[528px] flex-col overflow-visible lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:mx-0 lg:ml-auto"
+            className={`gsap-reveal-pending mx-auto flex w-full flex-col overflow-visible lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:mx-0 lg:ml-auto ${
+              slug === 'certified-scrum-master' && categorySlug === 'agile-and-scrum'
+                ? 'max-w-[480px]'
+                : 'max-w-[528px]'
+            }`}
           >
             <CourseLeadForm
               {...form}
