@@ -246,7 +246,7 @@ export function ReviewPlatformRow({
   const rowClass =
     className ??
     (isCenter
-      ? 'grid grid-cols-2 justify-items-center gap-x-6 gap-y-5 sm:flex sm:flex-row sm:items-center sm:justify-center sm:gap-10 lg:gap-14'
+      ? 'grid w-full grid-cols-2 justify-items-center gap-x-6 gap-y-5 sm:flex sm:flex-row sm:items-center sm:justify-between sm:gap-4 lg:gap-6'
       : 'grid grid-cols-2 gap-y-5 sm:flex sm:flex-row sm:items-center sm:justify-between sm:gap-6');
 
   return (
@@ -404,7 +404,7 @@ export default function TestimonialsSection({
             <button
               type="button"
               onClick={() => openBrochureModal({ type: 'contact', courseId: null })}
-              className="btn-brand mt-6 inline-flex h-[48px] cursor-pointer items-center justify-center gap-2 px-6 text-[14px] font-semibold md:mt-8 md:h-[52px] md:px-7 md:text-[15px]"
+              className="btn-brand mt-6 inline-flex h-[40px] cursor-pointer items-center justify-center gap-2 px-6 text-[14px] font-semibold md:mt-8 md:px-7 md:text-[15px]"
             >
               {ctaLabel}
               <ArrowRightIcon className="btn-arrow-icon h-3.5 w-3.5 shrink-0" />
@@ -469,9 +469,9 @@ export default function TestimonialsSection({
           </div>
         </div>
 
-        {/* Bottom: review platforms — overlaps the next section by ~50% */}
+        {/* Bottom: review platforms — overlaps next section; pulled up ~20% */}
         {(settings || reviews.length > 0) ? (
-          <div className="relative z-50 mt-10 mb-[-30px] translate-y-[20%] rounded-[20px] border border-[#EBEBEB] bg-white px-5 py-5 shadow-[0_4px_14px_-4px_rgba(30,41,59,0.10),0_4px_4px_0_rgba(30,41,59,0.03)] md:mt-12 md:mb-[-112px] md:translate-y-1/2 md:px-8 md:py-6">
+          <div className="relative z-50 mt-6 mb-[-30px] -translate-y-[20%] rounded-[20px] border border-[#EBEBEB] bg-white px-[70px] py-5 shadow-[0_4px_14px_-4px_rgba(30,41,59,0.10),0_4px_4px_0_rgba(30,41,59,0.03)] md:mt-8 md:mb-[-112px] md:translate-y-[30%] md:px-[70px] md:py-6">
             <ReviewPlatformRow settings={settings} reviews={reviews} align="center" />
           </div>
         ) : null}

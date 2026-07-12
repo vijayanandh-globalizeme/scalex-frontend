@@ -59,9 +59,9 @@ function StarIcon({ fill, uid }: { fill: number; uid: string }) {
           <rect x="0" y="0" width={fillWidth} height="16" />
         </clipPath>
       </defs>
-      <path d={STAR_PATH} fill="#000" opacity="0.2" />
+      <path d={STAR_PATH} fill="#F49114" opacity="0.2" />
       {fill > 0 && (
-        <path d={STAR_PATH} fill="#000" clipPath={`url(#${clipId})`} />
+        <path d={STAR_PATH} fill="#F49114" clipPath={`url(#${clipId})`} />
       )}
     </svg>
   );
@@ -279,21 +279,21 @@ export default function SuccessStoriesSection({
       aria-labelledby="success-stories-heading"
     >
       <div className="site-container relative z-10">
-        <header className="relative mx-auto max-w-3xl pt-10 text-center md:pt-12 lg:pt-14">
+        <header className="relative mx-auto w-fit max-w-full pt-6 text-center md:pt-8 lg:pt-10">
           <h2
             id="success-stories-heading"
             className="section-heading text-heading"
           >
             {heading}
           </h2>
-          <p className="mt-3 text-[16px] font-medium leading-[140%] text-muted md:text-[18px]">
+          <p className="mt-3 whitespace-nowrap text-[16px] font-medium leading-[140%] text-muted md:text-[18px]">
             {subheading}
           </p>
         </header>
 
         {/* lg+: video left + testimonial slider right, scaled to fit the container */}
         <div
-          className="relative mt-10 hidden w-full overflow-x-hidden overflow-y-visible md:mt-12 lg:block"
+          className="relative hidden w-full overflow-x-hidden overflow-y-visible lg:block"
           style={{ minHeight: blockHeight * scale }}
         >
          <div className="w-fit origin-top-left" style={{ transform: `scale(${scale})` }}>
