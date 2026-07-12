@@ -140,26 +140,6 @@ function UsersIcon({ className }: { className?: string }) {
   );
 }
 
-function FireIcon({ className }: { className?: string }) {
-  return (
-    <svg className={className} width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden>
-      <path
-        d="M8 14c2.5 0 4.5-1.8 4.5-4.4 0-2-1.4-3.4-2.5-4.6-1.1 1.5-2.2 1.7-3-.5-.5-1.4-.8-2.5-1.5-2.5C4.4 2 3.5 4 3.5 6c0 2.5 1.5 4 1.5 4S5 8.5 6.5 8C5.5 9.5 5 10.6 5 11.5 5 13 6.5 14 8 14z"
-        fill="#F97316"
-      />
-    </svg>
-  );
-}
-
-function SlotsIcon({ className }: { className?: string }) {
-  return (
-    <svg className={className} width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden>
-      <rect x="2" y="3" width="12" height="11" rx="1.5" stroke="#F97316" strokeWidth="1.5" />
-      <path d="M5 2v2M11 2v2M2 6.5h12" stroke="#F97316" strokeWidth="1.5" strokeLinecap="round" />
-    </svg>
-  );
-}
-
 function ViewMoreChevronIcon({ className }: { className?: string }) {
   return (
     <svg
@@ -268,13 +248,25 @@ export function CourseCard({
                 <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-[11px] font-semibold text-body">
                   {course.savePercent ? (
                     <span className="inline-flex items-center gap-1">
-                      <FireIcon className="h-3.5 w-3.5" />
+                      <Image
+                        src="/images/Save-icon.png"
+                        alt=""
+                        width={14}
+                        height={14}
+                        className="h-3.5 w-3.5 object-contain"
+                      />
                       Save {course.savePercent}%
                     </span>
                   ) : null}
                   {course.slotsLeft ? (
                     <span className="inline-flex items-center gap-1">
-                      <SlotsIcon className="h-3.5 w-3.5" />
+                      <Image
+                        src="/images/last-iocn.png"
+                        alt=""
+                        width={14}
+                        height={14}
+                        className="h-3.5 w-3.5 object-contain"
+                      />
                       Last {course.slotsLeft} slots left
                     </span>
                   ) : null}
