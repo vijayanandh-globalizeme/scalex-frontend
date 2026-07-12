@@ -133,10 +133,9 @@ export default async function CourseDetailBodySection({
             {details?.courseContent ? (
               <CourseContentSection
                 courseContent={details.courseContent}
-                syllabusUrl={syllabusUrl ?? brochureUrl}
+                syllabusUrl={syllabusUrl}
                 title={courseContentTitle}
                 courseId={courseId}
-                forceSyllabusCta
               />
             ) : null}
             
