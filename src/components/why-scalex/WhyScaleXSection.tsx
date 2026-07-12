@@ -28,9 +28,11 @@ const CARD_SHADOW =
 const EMBEDDED_CARD_SHADOW =
   'shadow-[0_4px_4px_0_rgba(30,41,59,0.08),0_4px_4px_0_rgba(30,41,59,0.03)]';
 
-const SCALEX_CARD_CLASS = `rounded-lg border-[0.5px] border-[#FD022D] bg-white ${CARD_SHADOW}`;
+const OTHERS_CARD_CLASS = `rounded-[20px] border-[0.5px] border-[#788593] bg-white ${CARD_SHADOW}`;
 
-const EMBEDDED_OTHERS_CARD_CLASS = `rounded-[20px] border border-[#EBEBEB] bg-white ${EMBEDDED_CARD_SHADOW}`;
+const SCALEX_CARD_CLASS = `rounded-[20px] border-[0.5px] border-[#FD022D] bg-white ${CARD_SHADOW}`;
+
+const EMBEDDED_OTHERS_CARD_CLASS = `rounded-[20px] border-[0.5px] border-[#788593] bg-white ${EMBEDDED_CARD_SHADOW}`;
 
 const EMBEDDED_SCALEX_CARD_CLASS = `rounded-[20px] border-[0.5px] border-[#FD022D] bg-white ${EMBEDDED_CARD_SHADOW}`;
 
@@ -88,14 +90,8 @@ export default function WhyScaleXSection({
         }`}
       >
         <span className="shrink-0">{headingBefore}</span>
-        <span className="inline-flex shrink-0 items-center">
-          <Image
-            src={brandLogo.src}
-            alt={brandLogo.alt}
-            width={162}
-            height={62}
-            className="h-10 w-auto max-w-[120px] object-contain object-left md:h-[62px] md:w-[162px] md:max-w-none"
-          />
+        <span className="shrink-0 font-extrabold text-heading" aria-label={brandLogo.alt}>
+          EdgeX
         </span>
         {headingAfter ? <span>{headingAfter}</span> : null}
       </h2>
@@ -117,48 +113,46 @@ export default function WhyScaleXSection({
 
   const comparisonGrid = (
     <div className={`w-full ${isEmbedded ? 'mt-10 md:mt-14' : 'mx-auto mt-10 max-w-[1080px] md:mt-14'}`}>
-      <div className="flex flex-col gap-6 lg:flex-row lg:items-start lg:gap-5">
-        {/* Row labels — desktop only */}
-        <div className="hidden shrink-0 lg:block lg:w-[148px]">
+      <div className="flex flex-col gap-6 lg:flex-row lg:items-stretch lg:gap-5">
+        {/* Row labels — desktop only; padding + flex rows match cards for straight alignment */}
+        <div className="hidden shrink-0 flex-col pt-4 pb-6 md:pt-5 md:pb-7 lg:flex lg:w-[148px]">
           <div
-            className={`${cardHeaderHeight} flex items-center justify-end pr-4 text-right ${rowLabelClassName}`}
+            className={`${cardHeaderHeight} mb-4 flex shrink-0 items-center justify-end pr-4 text-right md:mb-5 ${rowLabelClassName}`}
           >
             Features
           </div>
-          <div className="flex flex-col">
-            {rows.map((row) => (
-              <div
-                key={`label-${row.id}`}
-                className={`flex ${ROW_MIN_HEIGHT} items-center justify-end pr-4 text-right ${rowLabelClassName}`}
-              >
-                {row.label}
-              </div>
-            ))}
-          </div>
+          {rows.map((row) => (
+            <div
+              key={`label-${row.id}`}
+              className={`flex ${ROW_MIN_HEIGHT} flex-1 items-center justify-end pr-4 text-right ${rowLabelClassName}`}
+            >
+              {row.label}
+            </div>
+          ))}
         </div>
 
         {/* Comparison cards */}
-        <div className="grid min-w-0 flex-1 grid-cols-1 gap-5 md:grid-cols-2 md:gap-5">
+        <div className="grid min-w-0 flex-1 grid-cols-1 gap-5 md:grid-cols-2 md:gap-5 md:items-stretch">
           {/* Others */}
           <div
             className={`${
               isEmbedded
                 ? EMBEDDED_OTHERS_CARD_CLASS
-                : `rounded-lg border border-zinc-100 bg-white ${CARD_SHADOW}`
-            } px-6 py-6 md:px-7 md:py-7 lg:px-7 lg:pb-7 lg:pt-0`}
+                : OTHERS_CARD_CLASS
+            } flex flex-col px-6 pt-4 pb-6 md:px-7 md:pt-5 md:pb-7`}
           >
             <h3
-              className={`${cardHeaderHeight} flex items-center justify-center text-[18px] font-semibold text-heading md:text-[20px]`}
+              className={`${cardHeaderHeight} mb-4 flex shrink-0 items-center justify-center text-[18px] font-semibold text-heading md:mb-5 md:text-[20px]`}
             >
               {othersLabel}
             </h3>
-            <ul className="flex flex-col">
+            <ul className="flex flex-1 flex-col">
               {rows.map((row) => (
                 <li
                   key={`others-${row.id}`}
-                  className={`flex ${ROW_MIN_HEIGHT} items-start gap-3 pt-1 first:pt-0`}
+                  className={`flex ${ROW_MIN_HEIGHT} flex-1 items-center gap-3`}
                 >
-                  <CrossIcon className="mt-0.5 h-5 w-5 shrink-0" />
+                  <CrossIcon className="h-5 w-5 shrink-0" />
                   <div className="min-w-0">
                     <p className="text-[15px] font-semibold leading-snug text-heading md:text-[16px]">
                       {row.others.title}
@@ -176,9 +170,9 @@ export default function WhyScaleXSection({
           <div
             className={`${
               isEmbedded ? EMBEDDED_SCALEX_CARD_CLASS : SCALEX_CARD_CLASS
-            } px-6 py-6 md:px-7 md:py-7 lg:px-7 lg:pb-7 lg:pt-0`}
+            } flex flex-col px-6 pt-4 pb-6 md:px-7 md:pt-5 md:pb-7`}
           >
-            <div className={`${cardHeaderHeight} flex items-center justify-center`}>
+            <div className={`${cardHeaderHeight} mb-4 flex shrink-0 items-center justify-center md:mb-5`}>
               {scalexBrandLogo ? (
                 <Image
                   src={scalexBrandLogo.src}
@@ -191,13 +185,13 @@ export default function WhyScaleXSection({
                 <h3 className="text-[18px] font-semibold text-heading md:text-[20px]">ScaleX</h3>
               )}
             </div>
-            <ul className="flex flex-col">
+            <ul className="flex flex-1 flex-col">
               {rows.map((row) => (
                 <li
                   key={`scalex-${row.id}`}
-                  className={`flex ${ROW_MIN_HEIGHT} items-start gap-3 pt-1 first:pt-0`}
+                  className={`flex ${ROW_MIN_HEIGHT} flex-1 items-center gap-3`}
                 >
-                  <CheckBadgeIcon className="mt-0.5 h-[22px] w-[22px] shrink-0" />
+                  <CheckBadgeIcon className="h-[22px] w-[22px] shrink-0" />
                   <div className="min-w-0">
                     <p className="text-[15px] font-semibold leading-snug md:text-[16px]">
                       {row.scalex.title}

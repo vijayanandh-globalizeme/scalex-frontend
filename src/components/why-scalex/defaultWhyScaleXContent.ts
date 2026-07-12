@@ -9,8 +9,8 @@ export const defaultWhyScaleXContent: WhyScaleXSectionProps = {
   scalexBrandLogo: { src: '/images/logo.png', alt: 'EdgeX' },
   rows: [
     {
-      id: 'features',
-      label: 'Features',
+      id: 'learning-mode',
+      label: 'Learning Mode',
       others: {
         title: 'Theory-Heavy',
         description: 'Traditional classroom approach with limited practical exposure.',
@@ -22,8 +22,8 @@ export const defaultWhyScaleXContent: WhyScaleXSectionProps = {
       },
     },
     {
-      id: 'learning-mode',
-      label: 'Learning Mode',
+      id: 'mentorship',
+      label: 'Mentorship',
       others: {
         title: 'Generic Trainers',
         description: 'Academics or trainers with limited current industry experience.',
@@ -34,8 +34,8 @@ export const defaultWhyScaleXContent: WhyScaleXSectionProps = {
       },
     },
     {
-      id: 'mentorship',
-      label: 'Mentorship',
+      id: 'certifications',
+      label: 'Certifications',
       others: {
         title: 'Local Certifications',
         description: 'Certificates with limited global or industry recognition.',
@@ -46,8 +46,8 @@ export const defaultWhyScaleXContent: WhyScaleXSectionProps = {
       },
     },
     {
-      id: 'certifications',
-      label: 'Certifications',
+      id: 'career-support',
+      label: 'Career Support',
       others: {
         title: 'Basic Support',
         description: 'Limited job assistance with no long-term career tracking.',
@@ -58,8 +58,8 @@ export const defaultWhyScaleXContent: WhyScaleXSectionProps = {
       },
     },
     {
-      id: 'career-support',
-      label: 'Career Support',
+      id: 'real-time-impact',
+      label: 'Real-Time Impact',
       others: {
         title: 'Simulated Projects',
         description: "Basic, outdated capstones that don't reflect industry reality.",
@@ -67,18 +67,6 @@ export const defaultWhyScaleXContent: WhyScaleXSectionProps = {
       scalex: {
         title: 'Live Enterprise Projects',
         description: 'Work on actual projects for global brands and startups.',
-      },
-    },
-    {
-      id: 'real-time-impact',
-      label: 'Real-Time Impact',
-      others: {
-        title: 'Limited Outcomes',
-        description: 'Outcome tracking limited to course-completion certificates.',
-      },
-      scalex: {
-        title: 'Measurable Career Lift',
-        description: 'Track tangible salary, role, and skill outcomes after every milestone.',
       },
     },
   ],
