@@ -1,10 +1,8 @@
 'use client';
 
 import Image from 'next/image';
-import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 import type { Reviewer } from '@/services/peopleApi';
-import { REVIEWS_TYPE } from '@/lib/courseDetailStatics';
 
 export type { Reviewer as SuccessStory };
 
@@ -130,39 +128,21 @@ function VideoThumbnail({
   );
 }
 
-const reviewTypeMap = new Map(REVIEWS_TYPE.map((t) => [t.id, t]));
-
 function TestimonialCardOnly({ story, mobile = false }: { story: Reviewer; mobile?: boolean }) {
   const starFills = starsFromRating(story.rating ?? 0);
-  const typeMeta = reviewTypeMap.get(story.type);
   return (
     <article
-      className={`interactive-card flex flex-col justify-between gap-4 rounded-2xl bg-white p-5 md:p-6 ${
-        mobile ? 'h-auto w-full' : 'min-h-[280px]'
+      className={`interactive-card flex flex-col overflow-visible border border-[#EBEBEB] bg-white p-5 shadow-[0_4px_4px_0_rgba(30,41,59,0.11),0_4px_4px_0_rgba(30,41,59,0.03)] md:p-6 ${
+        mobile ? 'h-auto w-full gap-4 rounded-lg' : 'h-[280px] rounded-lg'
       }`}
-      style={mobile ? undefined : { width: SLIDE_W, minWidth: SLIDE_W, maxWidth: SLIDE_W }}
+      style={mobile ? undefined : { width: SLIDE_W, minWidth: SLIDE_W, maxWidth: SLIDE_W, height: SLIDE_H }}
     >
-      <div className="flex flex-col gap-2">
+      <div className={`flex flex-col gap-2 ${mobile ? '' : 'min-h-0 flex-1 justify-center'}`}>
         <p className="text-[13px] leading-[20px] text-body md:text-[14px] md:leading-[22px]">
           {story.review}
         </p>
-        {story.reviewUrl ? (
-          <Link
-            href={story.reviewUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 self-start text-[12px] font-medium text-heading transition hover:text-brand"
-          >
-            Read on
-            {typeMeta?.logoSrc ? (
-              <Image src={typeMeta.logoSrc} alt={typeMeta.logoAlt ?? ''} height={16} width={80} className="h-4 w-auto object-contain object-left shrink-0" />
-            ) : (
-              <span>{typeMeta?.label ?? ''}</span>
-            )}
-          </Link>
-        ) : null}
       </div>
-      <footer className="flex items-center gap-3 border-t border-zinc-100 pt-3">
+      <footer className={`flex shrink-0 items-center gap-3 border-t border-zinc-100 pt-3 ${mobile ? '' : 'mt-4'}`}>
         {story.avatarUrl ? (
           <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-full bg-zinc-100">
             <Image
@@ -275,7 +255,7 @@ export default function SuccessStoriesSection({
 
   return (
     <section
-      className="full-bleed relative bg-surface pt-24 pb-16 md:pt-28 md:pb-20 lg:pt-32 lg:pb-24"
+      className="full-bleed relative bg-surface pt-24 pb-8 md:pt-28 md:pb-10 lg:pt-32 lg:pb-12"
       aria-labelledby="success-stories-heading"
     >
       <div className="site-container relative z-10">
@@ -294,9 +274,9 @@ export default function SuccessStoriesSection({
         {/* lg+: video left + testimonial slider right, scaled to fit the container */}
         <div
           className="relative hidden w-full overflow-x-hidden overflow-y-visible lg:block"
-          style={{ minHeight: blockHeight * scale }}
+          style={{ minHeight: (blockHeight + 32) * scale }}
         >
-         <div className="w-fit origin-top-left" style={{ transform: `scale(${scale})` }}>
+         <div className="w-fit origin-top-left pb-8" style={{ transform: `scale(${scale})` }}>
           {canNavigateDesktop ? (
             <div className="absolute right-0 top-4 z-30 flex items-center gap-3">
               <button
@@ -319,7 +299,7 @@ export default function SuccessStoriesSection({
           ) : null}
 
           <div
-            className="relative flex items-center pt-8"
+            className="relative flex items-center pt-8 pb-6"
             onMouseEnter={() => setIsPaused(true)}
             onMouseLeave={() => setIsPaused(false)}
           >
@@ -334,7 +314,7 @@ export default function SuccessStoriesSection({
               />
             </div>
 
-            {/* Right: testimonial slider — first card overlaps onto the video */}
+            {/* Right: testimonial slider — vertically centered to video height */}
             <div
               className="relative z-10 flex shrink-0 items-center overflow-x-hidden overflow-y-visible"
               style={{
@@ -343,19 +323,19 @@ export default function SuccessStoriesSection({
                   (VISIBLE_SLIDES - 1) * SLIDE_GAP +
                   SLIDE_GAP +
                   SLIDE_PEEK,
-                minHeight: SLIDE_H,
+                height: VIDEO_H,
                 marginLeft: -SLIDE_OVERLAP,
               }}
             >
               <div
-                className="flex items-stretch transition-transform duration-500 ease-out will-change-transform"
+                className="flex items-center transition-transform duration-500 ease-out will-change-transform"
                 style={{
                   transform: `translateX(-${index * stepPx}px)`,
                   gap: SLIDE_GAP,
                 }}
               >
                 {stories.map((story) => (
-                  <div key={story.id} className="shrink-0">
+                  <div key={story.id} className="shrink-0 overflow-visible">
                     <TestimonialCardOnly story={story} />
                   </div>
                 ))}
@@ -402,9 +382,9 @@ export default function SuccessStoriesSection({
                 </button>
               </div>
             ) : null}
-            <div ref={mobileViewportRef} className="w-full overflow-hidden">
+            <div ref={mobileViewportRef} className="w-full overflow-x-hidden pb-6">
               <div
-                className="flex items-stretch transition-transform duration-500 ease-out will-change-transform"
+                className="flex items-stretch pb-2 transition-transform duration-500 ease-out will-change-transform"
                 style={{
                   transform:
                     mobileStepPx > 0
@@ -415,7 +395,7 @@ export default function SuccessStoriesSection({
                 {stories.map((story, storyIndex) => (
                   <div
                     key={story.id}
-                    className="box-border shrink-0"
+                    className="box-border shrink-0 overflow-visible pb-2"
                     style={
                       mobileSlideWidth > 0
                         ? {

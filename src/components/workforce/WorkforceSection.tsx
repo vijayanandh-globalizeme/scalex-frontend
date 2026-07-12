@@ -139,15 +139,15 @@ export default function WorkforceSection({
   const { openBrochureModal } = useCourseBrochureModal();
   return (
     <section
-      className="full-bleed relative z-20 overflow-visible bg-[#0D0D0D] pt-16 pb-20 md:pt-20 md:pb-28 lg:pt-24 lg:pb-32"
+      className="full-bleed relative z-20 overflow-visible bg-[#0D0D0D] pt-16 pb-10 md:pt-20 md:pb-12 lg:pt-24 lg:pb-14"
       aria-labelledby="workforce-heading"
     >
       <WorkforceDecorIcon className="pointer-events-none absolute bottom-0 left-0 z-0 h-auto w-[120px] md:w-[160px] lg:w-[190px]" />
 
       <div className="site-container relative z-10">
         <div className="grid items-center gap-10 min-[1100px]:grid-cols-[1.15fr_1fr] min-[1100px]:gap-8 min-[1305px]:grid-cols-[1.1fr_1fr] min-[1305px]:gap-16">
-          {/* Left: pyramid-stacked stat badges (3 / 2 / 1); centered below 1100px */}
-          <div className="flex flex-col items-center gap-2 md:gap-5 min-[1100px]:items-start ">
+          {/* Left: pyramid-stacked stat badges (3 / 2 / 1); vertically centered */}
+          <div className="flex flex-col items-center justify-center gap-[50px] min-[1100px]:items-start min-[1100px]:self-center">
             {/* Row 1: first 3 stats, left-aligned */}
             <div className="flex w-full flex-wrap justify-center gap-2 sm:w-fit sm:flex-nowrap sm:items-center min-[1305px]:gap-4 max-sm:flex-col max-sm:w-[100%]">
               {stats.slice(0, 3).map((s, i) => {
@@ -189,13 +189,20 @@ export default function WorkforceSection({
               </span>
               {headingAfter}
             </h2>
-            <p className="mt-4 text-[18px] font-medium leading-[140%] text-white">
+            <p
+              className="mt-4 text-[18px] font-medium leading-[140%] text-[#AFAFAF]"
+              style={{ fontFamily: 'Inter, sans-serif' }}
+            >
               {subheading}
             </p>
 
             <ul className="mt-6 grid grid-cols-1 gap-x-8 gap-y-3 sm:grid-cols-2">
               {features.map((f) => (
-                <li key={f.id} className="inline-flex items-center gap-2 text-[14px] font-semibold text-white">
+                <li
+                  key={f.id}
+                  className="inline-flex items-center gap-2 text-[18px] font-medium leading-[152%] text-[#AFAFAF]"
+                  style={{ fontFamily: 'Inter, sans-serif' }}
+                >
                   <CheckIcon className="h-[18px] w-[18px] shrink-0" />
                   {f.label}
                 </li>
@@ -205,7 +212,7 @@ export default function WorkforceSection({
             <button
               type="button"
               onClick={() => openBrochureModal({ type: 'demo', courseId: null })}
-              className="btn-mui-filled-dark mt-7 inline-flex h-[48px] cursor-pointer items-center justify-center gap-2 rounded-lg px-6 text-[14px] font-semibold"
+              className="btn-brand mt-7 inline-flex h-[40px] cursor-pointer items-center justify-center gap-2 rounded-lg px-6 text-[14px] font-semibold text-white"
             >
               {cta.label}
               <ArrowRightIcon className="btn-arrow-icon h-3.5 w-3.5" />
@@ -213,10 +220,10 @@ export default function WorkforceSection({
           </div>
         </div>
 
-        {/* Bottom: hiring partners strip (overlaps next section by half) */}
+        {/* Bottom: hiring partners strip — 10% in this section, 90% overlaps into next */}
         {partners.length > 0 ? (
-          <div className="relative z-50 mt-1 overflow-visible pb-6 md:mt-12 md:pb-8">
-            <div className="mb-[-72px] translate-y-1/2 rounded-2xl bg-white px-6 py-8 shadow-[0_4px_24px_0_rgba(30,41,59,0.08),0_12px_40px_0_rgba(15,23,42,0.14)] md:mb-[-130px] md:px-10 md:py-10">
+          <div className="relative z-50 mt-0 overflow-visible pb-6 md:mt-0 md:pb-8">
+            <div className="mb-[-72px] translate-y-1/2 rounded-2xl bg-white px-6 py-8 shadow-[0_4px_24px_0_rgba(30,41,59,0.08),0_12px_40px_0_rgba(15,23,42,0.14)] md:mb-[-100px] md:px-10 md:py-10">
             <div className="w-full min-w-0 overflow-hidden">
               <LogoMarquee
                 logos={partners.map((p) => ({ id: p.id, src: p.logoSrc, alt: p.logoAlt }))}

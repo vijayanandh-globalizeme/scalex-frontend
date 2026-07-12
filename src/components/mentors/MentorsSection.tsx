@@ -23,7 +23,7 @@ export interface MentorsSectionProps {
 function LinkedInBadge({ href, name }: { href?: string; name: string }) {
   const inner = (
     <span
-      className="flex h-7 w-7 items-center justify-center rounded-md bg-linkedin text-white shadow-md ring-2 ring-white"
+      className="flex h-7 w-7 items-center justify-center rounded-full bg-linkedin text-white shadow-md ring-2 ring-white"
       aria-hidden={!href}
     >
       <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
@@ -103,13 +103,16 @@ function MentorCard({ mentor }: { mentor: Trainer }) {
       <h3 className="mt-3 text-center text-[18px] font-medium leading-[140%] text-heading">
         {mentor.name}
       </h3>
-      <p className="mt-1 text-center text-[14px] font-medium leading-[140%] text-muted">
+      <p
+        className="mt-1 text-center text-[14px] font-medium leading-[140%] text-[#788593]"
+        style={{ fontFamily: 'Inter, sans-serif' }}
+      >
         {mentor.role}
       </p>
       {mentor.assocWithUrl ? (
-        <div className="mt-4 flex w-full flex-col items-center gap-2 text-[12px] font-medium text-subtle">
+        <div className="mt-4 flex w-full flex-wrap items-center justify-center gap-2 text-center text-[12px] font-medium text-subtle">
           <span>Associated with</span>
-          <div className="relative h-[24px] w-[97px]">
+          <div className="relative mx-auto flex h-[24px] w-[97px] items-center justify-center">
             <Image
               src={mentor.assocWithUrl}
               alt="Associated company"
@@ -132,7 +135,7 @@ export default function MentorsSection({
 }: MentorsSectionProps) {
   return (
     <section
-      className="full-bleed relative z-10 overflow-visible bg-white pt-[80px] md:pt-[150px] pb-8 shadow-[0_10px_40px_0_rgba(30,41,59,0.1)] md:pb-16"
+      className="full-bleed relative z-10 overflow-visible bg-white pt-[96px] md:pt-[140px] pb-8 shadow-[0_10px_40px_0_rgba(30,41,59,0.1)] md:pb-16"
       aria-labelledby="mentors-heading"
     >
       <div className="site-container relative z-10">
@@ -143,7 +146,7 @@ export default function MentorsSection({
           >
             {heading}
           </h2>
-          <p className="mt-3 text-center text-[18px] font-medium leading-[140%] text-muted">
+          <p className="mt-3 whitespace-pre-line text-center text-[18px] font-medium leading-[140%] text-muted">
             {subheading}
           </p>
         </header>

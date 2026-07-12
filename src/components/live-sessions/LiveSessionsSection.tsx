@@ -94,7 +94,7 @@ function SessionCard({ session }: { session: LiveSession }) {
   return (
     <article className="interactive-card flex flex-col overflow-hidden rounded-2xl border border-zinc-100 bg-white">
       {session.imageSrc && (
-        <div className="interactive-card-media relative aspect-[16/9] w-full">
+        <div className="interactive-card-media relative h-[181px] w-full">
           <Image
             src={session.imageSrc}
             alt={session.imageAlt}

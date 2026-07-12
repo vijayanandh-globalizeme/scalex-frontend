@@ -84,7 +84,7 @@ function AwardCardItem({ card, embedded = false }: { card: AwardCard; embedded?:
   const styles = VARIANT_STYLES[card.variant];
   return (
     <article
-      className={`interactive-card relative h-[169px] w-full rounded-[16px] ${card.backgroundColor ? '' : styles.bg} px-5 pb-5 pt-12 text-white`}
+      className={`interactive-card relative flex h-[169px] w-full flex-col justify-end rounded-[16px] ${card.backgroundColor ? '' : styles.bg} px-5 pb-[20px] pt-12 text-white`}
       style={card.backgroundColor ? { backgroundColor: card.backgroundColor } : undefined}
     >
       <div
@@ -106,7 +106,7 @@ function AwardCardItem({ card, embedded = false }: { card: AwardCard; embedded?:
           />
         </span>
       </div>
-      <div className="relative z-10 mt-2">
+      <div className="relative z-10">
         <h3
           className={
             embedded
@@ -345,7 +345,7 @@ export default function AwardsSection({
         {carousel}
 
         {canNavigateMobile ? (
-          <div className="mt-6 pb-20 md:hidden">
+          <div className="mt-6 pb-8 md:hidden">
             <CarouselControls
               page={index}
               totalPages={maxIndex + 1}
@@ -358,7 +358,7 @@ export default function AwardsSection({
         ) : null}
 
         {canNavigateDesktop ? (
-          <div className="mt-6 hidden pb-10 md:block">
+          <div className="mt-6 hidden pb-4 md:block">
             <CarouselControls
               page={index}
               totalPages={maxIndex + 1}
