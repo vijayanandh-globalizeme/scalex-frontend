@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
+import { useCourseBrochureModal } from '@/components/course-detail';
 import type { LayoutSettings } from '@/services/layoutApi';
 import type { Learner } from '@/services/peopleApi';
 
@@ -28,6 +29,7 @@ export interface ReviewPlatform {
 export interface TestimonialsSectionProps {
   heading: string;
   subheading: string;
+  ctaLabel?: string;
   testimonials: Learner[];
   stats: StatBadge[];
   reviews: ReviewPlatform[];
@@ -199,56 +201,86 @@ const REVIEW_PLATFORM_CONFIG: {
   { key: 'SWTICH_UP_REVIEW', name: 'Switch Up', logoSrc: '/images/hero/switchup.png', logoAlt: 'SwitchUp reviews' },
 ];
 
-export function ReviewPlatformRow({ reviews, settings }: { reviews?: ReviewPlatform[]; settings?: LayoutSettings }) {
+function PlatformStarIcon() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden>
+      <path
+        d="M3.01902 14.8627C3.30952 15.0888 3.67795 15.0111 4.11724 14.6932L7.86538 11.9453L11.6206 14.6932C12.0598 15.0111 12.4212 15.0888 12.7188 14.8627C13.0093 14.6437 13.073 14.2845 12.8959 13.7678L11.4151 9.37398L15.1986 6.66138C15.638 6.35057 15.8151 6.02562 15.7017 5.67242C15.5883 5.33335 15.2553 5.17087 14.7098 5.17087H10.0689L8.65889 0.784104C8.4889 0.261369 8.2338 0 7.86538 0C7.50399 0 7.24894 0.261369 7.0789 0.784104L5.66892 5.17087H1.02805C0.482481 5.17087 0.149473 5.33335 0.0361076 5.67242C-0.0843426 6.02562 0.099875 6.35057 0.539164 6.66138L4.32271 9.37398L2.84188 13.7678C2.66475 14.2845 2.72852 14.6437 3.01902 14.8627Z"
+        fill="#F4AA1F"
+      />
+    </svg>
+  );
+}
+
+export function ReviewPlatformRow({
+  reviews,
+  settings,
+  className,
+  align = 'start',
+}: {
+  reviews?: ReviewPlatform[];
+  settings?: LayoutSettings;
+  className?: string;
+  /** Home page uses center; course reviews use start. */
+  align?: 'start' | 'center';
+}) {
   const items = settings
     ? REVIEW_PLATFORM_CONFIG.flatMap((cfg) => {
         const entry = settings[cfg.key];
         if (!entry) return [];
+        const rating = entry.rating.includes('/') ? entry.rating : `${entry.rating}/5`;
         return [{
           id: cfg.key,
           logoSrc: cfg.logoSrc,
           logoAlt: cfg.logoAlt,
-          rating: `${entry.rating}/5`,
-          reviewsLabel: `${entry.count.toLocaleString()} Reviews`,
+          rating,
+          reviewsLabel: `${entry.count} Reviews`,
           url: entry.url || undefined,
         }];
       })
     : (reviews ?? []);
 
+  if (items.length === 0) return null;
+
+  const isCenter = align === 'center';
+  const rowClass =
+    className ??
+    (isCenter
+      ? 'grid grid-cols-2 justify-items-center gap-x-6 gap-y-5 sm:flex sm:flex-row sm:items-center sm:justify-center sm:gap-10 lg:gap-14'
+      : 'grid grid-cols-2 gap-y-5 sm:flex sm:flex-row sm:items-center sm:justify-between sm:gap-6');
+
   return (
-    <div
-      className="grid grid-cols-2 justify-items-center gap-x-4 gap-y-6 md:flex md:flex-wrap md:items-center md:justify-center md:gap-10 lg:gap-14"
-      aria-label="Review platforms"
-    >
+    <div className={rowClass} aria-label="Review platforms">
       {items.map((review) => (
         <div
           key={review.id}
-          className="flex w-full max-w-[160px] flex-col items-center md:w-auto md:min-w-[140px] md:max-w-none"
+          className={`flex min-w-0 flex-col gap-1.5 sm:w-auto sm:shrink-0 ${
+            isCenter ? 'items-center' : 'items-start'
+          }`}
         >
-          <div className="relative h-7 w-24">
-            <Image src={review.logoSrc} alt={review.logoAlt} fill sizes="96px" className="object-contain" />
-          </div>
-          <div className="flex flex-col items-center gap-1 text-center text-[13px]">
-            <div className="flex items-center gap-2 font-semibold text-heading">
-              <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden>
-                <path
-                  d="M3.01902 14.8627C3.30952 15.0888 3.67795 15.0111 4.11724 14.6932L7.86538 11.9453L11.6206 14.6932C12.0598 15.0111 12.4212 15.0888 12.7188 14.8627C13.0093 14.6437 13.073 14.2835 12.8959 13.7678L11.4151 9.37398L15.1986 6.66138C15.638 6.35057 15.8151 6.02562 15.7017 5.67242C15.5883 5.33335 15.2553 5.17087 14.7098 5.17087H10.0689L8.65889 0.784104C8.4889 0.261369 8.2338 0 7.86538 0C7.50399 0 7.24894 0.261369 7.0789 0.784104L5.66892 5.17087H1.02805C0.482481 5.17087 0.149473 5.33335 0.0361076 5.67242C-0.0843426 6.02562 0.099875 6.35057 0.539164 6.66138L4.32271 9.37398L2.84188 13.7678C2.66475 14.2835 2.72852 14.6437 3.01902 14.8627Z"
-                  fill="#F49114"
-                />
-              </svg>
-              {review.rating}
-            </div>
+          <span className="relative h-6 w-[110px] shrink-0">
+            <Image
+              src={review.logoSrc}
+              alt={review.logoAlt}
+              fill
+              className={`object-contain ${isCenter ? 'object-center' : 'object-left'}`}
+              sizes="110px"
+            />
+          </span>
+          <div className="flex min-w-0 flex-wrap items-center justify-center gap-1.5">
+            <PlatformStarIcon />
+            <span className="text-[13px] font-semibold leading-normal text-heading">{review.rating}</span>
             {review.url ? (
               <a
                 href={review.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="font-medium text-subtle hover:underline"
+                className="text-[14px] font-normal leading-[140%] text-muted hover:underline"
               >
                 {review.reviewsLabel}
               </a>
             ) : (
-              <span className="font-medium text-subtle">{review.reviewsLabel}</span>
+              <span className="text-[14px] font-normal leading-[140%] text-muted">{review.reviewsLabel}</span>
             )}
           </div>
         </div>
@@ -317,11 +349,13 @@ function TestimonialCard({
 export default function TestimonialsSection({
   heading,
   subheading,
+  ctaLabel = 'Talk To Us',
   testimonials,
   stats,
   reviews,
   settings,
 }: TestimonialsSectionProps) {
+  const { openBrochureModal } = useCourseBrochureModal();
   const [index, setIndex] = useState(0);
   const [direction, setDirection] = useState<'next' | 'prev'>('next');
   const [isPaused, setIsPaused] = useState(false);
@@ -367,6 +401,14 @@ export default function TestimonialsSection({
             <p className="mt-4 max-w-xs text-[14px] font-medium leading-[22px] text-white/85 md:text-[15px]">
               {subheading}
             </p>
+            <button
+              type="button"
+              onClick={() => openBrochureModal({ type: 'contact', courseId: null })}
+              className="btn-brand mt-6 inline-flex h-[48px] cursor-pointer items-center justify-center gap-2 px-6 text-[14px] font-semibold md:mt-8 md:h-[52px] md:px-7 md:text-[15px]"
+            >
+              {ctaLabel}
+              <ArrowRightIcon className="btn-arrow-icon h-3.5 w-3.5 shrink-0" />
+            </button>
           </div>
 
           {/* Center: testimonial card with carousel arrows below at right */}
@@ -429,8 +471,8 @@ export default function TestimonialsSection({
 
         {/* Bottom: review platforms — overlaps the next section by ~50% */}
         {(settings || reviews.length > 0) ? (
-          <div className="relative z-50 mt-10 mb-[-30px] translate-y-[20%] rounded-2xl bg-white px-0 py-5 shadow-[0_10px_30px_-10px_rgba(15,23,42,0.25)] md:mt-12 md:mb-[-112px] md:translate-y-1/2 md:px-10 md:py-6">
-            <ReviewPlatformRow settings={settings} reviews={reviews} />
+          <div className="relative z-50 mt-10 mb-[-30px] translate-y-[20%] rounded-[20px] border border-[#EBEBEB] bg-white px-5 py-5 shadow-[0_4px_14px_-4px_rgba(30,41,59,0.10),0_4px_4px_0_rgba(30,41,59,0.03)] md:mt-12 md:mb-[-112px] md:translate-y-1/2 md:px-8 md:py-6">
+            <ReviewPlatformRow settings={settings} reviews={reviews} align="center" />
           </div>
         ) : null}
       </div>

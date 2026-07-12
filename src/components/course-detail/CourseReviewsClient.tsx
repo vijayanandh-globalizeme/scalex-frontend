@@ -11,6 +11,7 @@ import {
 import type { ApiReview } from '@/services/courseApi';
 import type { LayoutSettings } from '@/services/layoutApi';
 import { REVIEWS_TYPE, REVIEW_VIDEO_SECTION } from '@/lib/courseDetailStatics';
+import { ReviewPlatformRow } from '@/components/testimonials';
 
 const SECTION_CARD = 'rounded-[20px] bg-transparent';
 
@@ -56,14 +57,6 @@ function QuoteIcon() {
     <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none" aria-hidden>
       <path d="M0 16C0 7.16344 7.16344 0 16 0C24.8366 0 32 7.16344 32 16C32 24.8366 24.8366 32 16 32C7.16344 32 0 24.8366 0 16Z" fill="white" />
       <path d="M9.1942 25.5999C7.77198 25.5999 6.53527 25.0827 5.48406 24.0484C4.49469 22.9494 4 21.5918 4 19.9757C4 16.9373 4.83478 14.2544 6.50435 11.9272C8.23575 9.53525 10.2145 7.72515 12.4406 6.49687L12.8116 6.3999C12.9353 6.3999 13.028 6.46455 13.0899 6.59384C13.2135 6.72313 13.2754 6.85242 13.2754 6.98172C13.2754 7.17566 13.2135 7.33728 13.0899 7.46657C10.8019 9.5999 9.65797 11.5716 9.65797 13.3817C9.65797 14.4161 10.0908 15.1272 10.9565 15.5151C11.9459 16.0322 12.7188 16.6464 13.2754 17.3575C13.8937 18.0686 14.2029 19.0383 14.2029 20.2666C14.2029 21.7534 13.7082 23.014 12.7188 24.0484C11.7913 25.0827 10.6164 25.5999 9.1942 25.5999ZM22.9913 25.5999C21.5691 25.5999 20.3324 25.0827 19.2812 24.0484C18.2918 22.9494 17.7971 21.5918 17.7971 19.9757C17.7971 16.9373 18.6319 14.2544 20.3014 11.9272C22.0329 9.53525 24.0116 7.72515 26.2377 6.49687L26.6087 6.3999C26.7324 6.3999 26.8251 6.46455 26.887 6.59384C27.0106 6.72313 27.0725 6.85242 27.0725 6.98172C27.0725 7.17566 27.0106 7.33728 26.887 7.46657C24.599 9.5999 23.4551 11.5716 23.4551 13.3817C23.4551 14.4161 23.8879 15.1272 24.7536 15.5151C25.743 16.0322 26.5159 16.6464 27.0725 17.3575C27.6908 18.0686 28 19.0383 28 20.2666C28 21.7534 27.5053 23.014 26.5159 24.0484C25.5884 25.0827 24.4135 25.5999 22.9913 25.5999Z" fill="#FD022D" />
-    </svg>
-  );
-}
-
-function PlatformStarIcon() {
-  return (
-    <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden>
-      <path d="M3.01902 14.8627C3.30952 15.0888 3.67795 15.0111 4.11724 14.6932L7.86538 11.9453L11.6206 14.6932C12.0598 15.0111 12.4212 15.0888 12.7188 14.8627C13.0093 14.6437 13.073 14.2845 12.8959 13.7678L11.4151 9.37398L15.1986 6.66138C15.638 6.35057 15.8151 6.02562 15.7017 5.67242C15.5883 5.33335 15.2553 5.17087 14.7098 5.17087H10.0689L8.65889 0.784104C8.4889 0.261369 8.2338 0 7.86538 0C7.50399 0 7.24894 0.261369 7.0789 0.784104L5.66892 5.17087H1.02805C0.482481 5.17087 0.149473 5.33335 0.0361076 5.67242C-0.0843426 6.02562 0.099875 6.35057 0.539164 6.66138L4.32271 9.37398L2.84188 13.7678C2.66475 14.2845 2.72852 14.6437 3.01902 14.8627Z" fill="#F4AA1F" />
     </svg>
   );
 }
@@ -142,13 +135,6 @@ function VideoCard({ video }: { video: { thumbnailSrc: string; thumbnailAlt: str
   );
 }
 
-const PLATFORM_KEYS: { typeId: string; settingKey: keyof LayoutSettings; logoSrc: string; logoAlt: string }[] = [
-  { typeId: 'GOOGLE_REVIEW',      settingKey: 'GOOGLE_REVIEW',      logoSrc: '/images/hero/google.png',      logoAlt: 'Google reviews' },
-  { typeId: 'FACEBOOK_REVIEW',    settingKey: 'FACEBOOK_REVIEW',    logoSrc: '/images/hero/facebook.png',    logoAlt: 'Facebook reviews' },
-  { typeId: 'TRUST_PILOT_REVIEW', settingKey: 'TRUST_PILOT_REVIEW', logoSrc: '/images/hero/trust_pilot.png', logoAlt: 'Trustpilot reviews' },
-  { typeId: 'SWTICH_UP_REVIEW',   settingKey: 'SWTICH_UP_REVIEW',   logoSrc: '/images/hero/switchup.png',    logoAlt: 'SwitchUp reviews' },
-];
-
 export default function CourseReviewsClient({
   title,
   reviews,
@@ -188,24 +174,6 @@ export default function CourseReviewsClient({
   const pages = useMemo(() => chunkPages(filteredReviews, pageSize), [filteredReviews, pageSize]);
   const totalPages = Math.max(1, pages.length);
 
-  const platformRatings = useMemo(() =>
-    PLATFORM_KEYS
-      .map(({ typeId, settingKey, logoSrc, logoAlt }) => {
-        const entry = settings[settingKey] as { rating: string; count: number; url?: string } | undefined;
-        if (!entry) return null;
-        const rating = entry.rating.includes('/') ? entry.rating : `${entry.rating}/5`;
-        return {
-          id: typeId,
-          logoSrc,
-          logoAlt,
-          rating,
-          reviewsLabel: `${entry.count} Reviews`,
-          url: entry.url || undefined,
-        };
-      })
-      .filter(Boolean) as { id: string; logoSrc: string; logoAlt: string; rating: string; reviewsLabel: string; url?: string }[],
-    [settings],
-  );
 
   return (
     <div id="reviews" className={`scroll-mt-[116px] py-5 md:py-6 ${SECTION_CARD}`}>
@@ -265,33 +233,10 @@ export default function CourseReviewsClient({
         </div>
       </div>
 
-      {platformRatings.length > 0 ? (
-        <div className="mt-5 grid grid-cols-2 gap-y-5 rounded-[20px] border border-[#EBEBEB] bg-white px-5 py-5 shadow-[0_4px_14px_-4px_rgba(30,41,59,0.10),0_4px_4px_0_rgba(30,41,59,0.03)] sm:flex sm:flex-row sm:items-center sm:justify-between sm:gap-6 sm:px-8 sm:py-6">
-          {platformRatings.map((platform) => (
-            <div key={platform.id} className="flex min-w-0 flex-col items-start gap-1.5 sm:w-auto sm:shrink-0">
-              <span className="relative h-6 w-[110px] shrink-0">
-                <Image src={platform.logoSrc} alt={platform.logoAlt} fill className="object-contain object-left" sizes="110px" />
-              </span>
-              <div className="flex min-w-0 flex-wrap items-center gap-1.5">
-                <PlatformStarIcon />
-                <span className="text-[13px] font-semibold leading-normal text-heading">{platform.rating}</span>
-                {platform.url ? (
-                  <a
-                    href={platform.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-[14px] font-normal leading-[140%] text-muted hover:underline"
-                  >
-                    {platform.reviewsLabel}
-                  </a>
-                ) : (
-                  <span className="text-[14px] font-normal leading-[140%] text-muted">{platform.reviewsLabel}</span>
-                )}
-              </div>
-            </div>
-          ))}
-        </div>
-      ) : null}
+      <ReviewPlatformRow
+        settings={settings}
+        className="mt-5 grid grid-cols-2 gap-y-5 rounded-[20px] border border-[#EBEBEB] bg-white px-5 py-5 shadow-[0_4px_14px_-4px_rgba(30,41,59,0.10),0_4px_4px_0_rgba(30,41,59,0.03)] sm:flex sm:flex-row sm:items-center sm:justify-between sm:gap-6 sm:px-8 sm:py-6"
+      />
     </div>
   );
 }

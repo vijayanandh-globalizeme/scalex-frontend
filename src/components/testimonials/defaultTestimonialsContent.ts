@@ -11,6 +11,7 @@ export const defaultTestimonialsContent: Omit<TestimonialsSectionProps, 'testimo
   heading: 'Real Stories, Real Transformations',
   subheading:
     'See how our learners are scaling their careers and making successful transitions into high-growth roles',
+  ctaLabel: 'Talk To Us',
   stats: [
     {
       id: 'hike',

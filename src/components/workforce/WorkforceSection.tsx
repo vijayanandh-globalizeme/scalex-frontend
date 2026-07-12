@@ -80,9 +80,12 @@ function WorkforceDecorIcon({ className }: { className?: string }) {
 
 function CheckIcon({ className }: { className?: string }) {
   return (
-    <svg className={className} width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden>
-      <circle cx="10" cy="10" r="9" fill="#22C55E" />
-      <path d="M6 10.5l2.5 2.5L14 7.5" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+    <svg className={className} xmlns="http://www.w3.org/2000/svg" width="23" height="23" viewBox="0 0 23 23" fill="none" aria-hidden>
+      <path
+        d="M13.1487 0.96013L14.6829 2.50848C14.8423 2.66027 14.9818 2.71087 15.191 2.71087H17.3427C19.1359 2.71087 19.9528 3.56094 19.9528 5.36229V7.55831C19.9528 7.76071 20.0126 7.91251 20.162 8.06431L21.6862 9.62277C22.9414 10.8979 22.9514 12.0819 21.6862 13.357L20.162 14.9155C20.0126 15.0774 19.9528 15.2191 19.9528 15.4316V17.6175C19.9528 19.439 19.126 20.2689 17.3427 20.2689H15.191C14.9818 20.2689 14.8423 20.3296 14.6829 20.4814L13.1487 22.0297C11.8935 23.3049 10.728 23.315 9.47271 22.0297L7.93855 20.4814C7.78912 20.3296 7.63969 20.2689 7.44044 20.2689H5.27867C3.49546 20.2689 2.6686 19.429 2.6686 17.6175V15.4316C2.6686 15.2191 2.61879 15.0774 2.46936 14.9155L0.945157 13.357C-0.310066 12.0819 -0.320029 10.8979 0.945157 9.62277L2.46936 8.06431C2.61879 7.91251 2.6686 7.76071 2.6686 7.55831V5.36229C2.6686 3.54071 3.49546 2.71087 5.27867 2.71087H7.44044C7.63969 2.71087 7.78912 2.66027 7.93855 2.50848L9.47271 0.96013C10.728 -0.314978 11.8935 -0.325098 13.1487 0.96013ZM14.4139 7.47735L10.1601 14.4196L8.13779 11.7682C7.88874 11.4342 7.66957 11.3331 7.39064 11.3331C6.93238 11.3331 6.5837 11.7075 6.5837 12.173C6.5837 12.3957 6.67336 12.6284 6.8228 12.8308L9.32328 15.9477C9.58229 16.3019 9.86123 16.4335 10.1999 16.4335C10.5386 16.4335 10.8275 16.2715 11.0368 15.9477L15.7189 8.44886C15.8385 8.24647 15.968 8.01371 15.968 7.78095C15.968 7.31543 15.5596 7.01184 15.1312 7.01184C14.8622 7.01184 14.6032 7.16364 14.4139 7.47735Z"
+        fill="white"
+        fillOpacity="0.85"
+      />
     </svg>
   );
 }
@@ -136,7 +139,7 @@ export default function WorkforceSection({
   const { openBrochureModal } = useCourseBrochureModal();
   return (
     <section
-      className="full-bleed relative z-20 overflow-visible bg-[#0D0D0D] pt-16 pb-20 md:pt-20 md:pb-28 lg:pt-24 lg:pb-32"
+      className="full-bleed relative z-30 overflow-visible bg-[#0D0D0D] pt-16 pb-12 md:pt-20 md:pb-14 lg:pt-24 lg:pb-16"
       aria-labelledby="workforce-heading"
     >
       <WorkforceDecorIcon className="pointer-events-none absolute bottom-0 left-0 z-0 h-auto w-[120px] md:w-[160px] lg:w-[190px]" />
@@ -193,7 +196,7 @@ export default function WorkforceSection({
             <ul className="mt-6 grid grid-cols-1 gap-x-8 gap-y-3 sm:grid-cols-2">
               {features.map((f) => (
                 <li key={f.id} className="inline-flex items-center gap-2 text-[14px] font-semibold text-white">
-                  <CheckIcon className="h-4 w-4" />
+                  <CheckIcon className="h-[18px] w-[18px] shrink-0" />
                   {f.label}
                 </li>
               ))}
@@ -202,7 +205,7 @@ export default function WorkforceSection({
             <button
               type="button"
               onClick={() => openBrochureModal({ type: 'demo', courseId: null })}
-              className="btn-mui-filled-dark mt-7 inline-flex h-[48px] cursor-pointer items-center justify-center gap-2 rounded-lg px-6 text-[14px] font-semibold"
+              className="btn-brand mt-7 inline-flex h-[48px] cursor-pointer items-center justify-center gap-2 px-6 text-[14px] font-semibold text-white"
             >
               {cta.label}
               <ArrowRightIcon className="btn-arrow-icon h-3.5 w-3.5" />
@@ -210,19 +213,19 @@ export default function WorkforceSection({
           </div>
         </div>
 
-        {/* Bottom: hiring partners strip (overlaps next section by half) */}
+        {/* Bottom: hiring partners strip — half overlaps the next section */}
         {partners.length > 0 ? (
-          <div className="relative z-50 mt-1 overflow-visible pb-6 md:mt-12 md:pb-8">
-            <div className="mb-[-72px] translate-y-1/2 rounded-2xl bg-white px-6 py-8 shadow-[0_4px_24px_0_rgba(30,41,59,0.08),0_12px_40px_0_rgba(15,23,42,0.14)] md:mb-[-130px] md:px-10 md:py-10">
-            <div className="w-full min-w-0 overflow-hidden">
-              <LogoMarquee
-                logos={partners.map((p) => ({ id: p.id, src: p.logoSrc, alt: p.logoAlt }))}
-                size="sm"
-                largeOnMobile
-                ariaLabel="Hiring partners"
-              />
+          <div className="relative z-50 mt-10 overflow-visible md:mt-14">
+            <div className="-mb-12 translate-y-12 rounded-2xl bg-white px-6 py-8 shadow-[0_4px_24px_0_rgba(30,41,59,0.08),0_12px_40px_0_rgba(15,23,42,0.14)] md:-mb-14 md:translate-y-14 md:px-10 md:py-10">
+              <div className="w-full min-w-0 overflow-hidden">
+                <LogoMarquee
+                  logos={partners.map((p) => ({ id: p.id, src: p.logoSrc, alt: p.logoAlt }))}
+                  size="sm"
+                  largeOnMobile
+                  ariaLabel="Hiring partners"
+                />
+              </div>
             </div>
-          </div>
           </div>
         ) : null}
       </div>
