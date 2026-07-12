@@ -80,7 +80,7 @@ function ArrowRightSmall({ className }: { className?: string }) {
 function BlogCardFooter({ blog, isSolid, compact = false }: { blog: BlogItem; isSolid: boolean; compact?: boolean }) {
   return (
     <div
-      className={`mt-auto flex items-center justify-between gap-2 border-t ${compact ? 'pt-3' : 'pt-4'} ${isSolid ? 'border-white/25' : 'border-zinc-100'}`}
+      className={`mt-auto flex items-center justify-between gap-2 ${compact ? 'pt-3' : 'pt-4'}`}
     >
       <div className="flex min-w-0 items-center gap-2">
         <span
@@ -185,7 +185,7 @@ function BlogCard({ blog, mobile = false }: { blog: BlogItem; mobile?: boolean }
 
 function BlogMobileGrid({ items }: { items: BlogItem[] }) {
   return (
-    <div className="grid grid-cols-1 gap-6 overflow-visible">
+    <div className="grid grid-cols-1 gap-4 overflow-visible">
       {items.map((blog) => (
         <div key={blog.id} className="min-w-0 overflow-visible">
           <BlogCard blog={blog} />
@@ -203,11 +203,11 @@ function BlogMasonryGrid({ items }: { items: BlogItem[] }) {
   ].filter((col) => col.some(Boolean));
 
   return (
-    <div className="grid grid-cols-1 gap-6 overflow-visible md:grid-cols-2 lg:grid-cols-3 lg:items-start lg:gap-8">
+    <div className="grid grid-cols-1 gap-4 overflow-visible md:grid-cols-2 lg:grid-cols-3 lg:items-start lg:gap-x-8 lg:gap-y-5">
       {columns.map((column, colIndex) => (
         <div
           key={colIndex}
-          className={`flex flex-col gap-6 lg:gap-8 ${BLOG_CARD_WIDTH} mx-auto lg:mx-0`}
+          className={`flex flex-col gap-4 lg:gap-5 ${BLOG_CARD_WIDTH} mx-auto lg:mx-0`}
           style={colIndex === 1 ? undefined : { paddingTop: BLOG_IMAGE_OVERFLOW_PX }}
         >
           {column.map((blog, blogIndex) =>
@@ -353,33 +353,33 @@ export default function CategoryRelatedBlogsSection({ categoryId }: { categoryId
   const carouselTotalPages = isMobile ? mobilePages.length : totalPages;
 
   return (
-    <section className="full-bleed overflow-visible bg-surface pb-14 md:pb-20" aria-labelledby="related-blogs-heading">
+    <section className="full-bleed overflow-visible bg-surface pb-8 md:pb-10" aria-labelledby="related-blogs-heading">
       <div className="site-container">
-        <header className="mx-auto max-w-3xl text-center">
+        <header className="mx-auto w-full text-center">
           <h2
             id="related-blogs-heading"
             className="text-[26px] font-extrabold leading-tight text-heading md:text-[40px] md:leading-[60px]"
           >
             Related Blogs
           </h2>
-          <p className="mt-3 text-[16px] font-medium leading-[140%] text-muted md:text-[18px]">
+          <p className="mt-3 whitespace-nowrap text-center text-[16px] font-medium leading-[140%] text-muted md:text-[18px]">
             Go deeper into specialized topics with our latest blog posts, designed to help you navigate your career path with confidence.
           </p>
         </header>
 
         <div
-          className="mt-10 overflow-visible md:mt-12"
+          className="mt-6 overflow-visible md:mt-8"
           style={{ paddingTop: BLOG_IMAGE_OVERFLOW_PX }}
         >
           {loading && currentItems.length === 0 ? (
             isMobile ? (
-              <div className="grid grid-cols-1 gap-6">
+              <div className="grid grid-cols-1 gap-4">
                 {Array.from({ length: MOBILE_SLIDE_SIZE }).map((_, i) => (
                   <SkeletonCard key={i} />
                 ))}
               </div>
             ) : (
-              <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
                 {Array.from({ length: FETCH_LIMIT }).map((_, i) => (
                   <SkeletonCard key={i} />
                 ))}
@@ -389,7 +389,7 @@ export default function CategoryRelatedBlogsSection({ categoryId }: { categoryId
             <p className="py-16 text-center text-[15px] text-muted">No blogs found.</p>
           ) : isMobile ? (
             pageFetching ? (
-              <div className="grid grid-cols-1 gap-6">
+              <div className="grid grid-cols-1 gap-4">
                 {Array.from({ length: MOBILE_SLIDE_SIZE }).map((_, i) => (
                   <SkeletonCard key={i} />
                 ))}

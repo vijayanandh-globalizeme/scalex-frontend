@@ -209,15 +209,34 @@ body {
   .category-hero-bg {
     inset: 0;
     width: 100%;
-    background-color: #fff5f7;
-    background-image: linear-gradient(
-      to top,
-      rgb(255, 201, 211) 0%,
-      rgba(255, 201, 211, 0.7) 22%,
-      rgba(255, 201, 211, 0.35) 48%,
-      rgba(255, 201, 211, 0.12) 72%,
-      #ffffff 100%
-    );
+    background-color: #ffffff;
+    background-image:
+      linear-gradient(
+        to top,
+        rgba(255, 201, 211, 0.42) 0%,
+        rgba(255, 201, 211, 0.42) 18%,
+        rgba(255, 201, 211, 0.22) 35%,
+        rgba(255, 201, 211, 0.08) 55%,
+        transparent 70%
+      ),
+      radial-gradient(
+        ellipse 80% 90% at 50% 100%,
+        rgba(255, 201, 211, 0.4) 0%,
+        rgba(255, 201, 211, 0.18) 40%,
+        transparent 70%
+      ),
+      radial-gradient(
+        ellipse 70% 85% at 0% 100%,
+        rgba(255, 201, 211, 0.38) 0%,
+        rgba(255, 201, 211, 0.14) 42%,
+        transparent 72%
+      ),
+      radial-gradient(
+        ellipse 70% 85% at 100% 100%,
+        rgba(255, 201, 211, 0.38) 0%,
+        rgba(255, 201, 211, 0.14) 42%,
+        transparent 72%
+      );
   }
 
   .header-fluid-text {

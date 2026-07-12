@@ -112,7 +112,7 @@ export default function WhyScaleXSection({
     : 'text-[16px] font-medium text-heading';
 
   const comparisonGrid = (
-    <div className={`w-full ${isEmbedded ? 'mt-10 md:mt-14' : 'mx-auto mt-10 max-w-[1080px] md:mt-14'}`}>
+    <div className={`w-full ${isEmbedded ? 'mt-6 md:mt-8' : 'mx-auto mt-6 max-w-[1080px] md:mt-8'}`}>
       <div className="flex flex-col gap-6 lg:flex-row lg:items-stretch lg:gap-5">
         {/* Row labels — desktop only; padding + flex rows match cards for straight alignment */}
         <div className="hidden shrink-0 flex-col pt-4 pb-6 md:pt-5 md:pb-7 lg:flex lg:w-[148px]">
@@ -225,7 +225,7 @@ export default function WhyScaleXSection({
   return (
     <section
       id={id}
-      className={`full-bleed relative bg-surface pt-6 pb-8 md:pt-16 md:pb-12 lg:pt-20 lg:pb-16 ${className ?? ''}`}
+      className={`full-bleed relative bg-surface pt-4 pb-8 md:pt-8 md:pb-12 lg:pt-10 lg:pb-16 ${className ?? ''}`}
       aria-labelledby={headingId}
     >
       <div className="site-container relative z-10">

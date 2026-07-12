@@ -135,7 +135,7 @@ export default function CategoryExploreAllSection({ excludeId }: { excludeId?: s
 
   return (
     <section
-      className="full-bleed overflow-visible bg-surface pb-14 pt-0 md:pb-20 md:pt-16"
+      className="full-bleed overflow-visible bg-surface pb-6 pt-0 md:pb-8 md:pt-16"
       aria-labelledby="explore-categories-heading"
     >
       <div className="site-container">
@@ -152,13 +152,13 @@ export default function CategoryExploreAllSection({ excludeId }: { excludeId?: s
         </header>
 
         {loading ? (
-          <div className="mt-10 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4 lg:gap-6 md:mt-12">
+          <div className="mt-10 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4 lg:gap-6 md:mt-6">
             {Array.from({ length: pageSize }).map((_, i) => (
               <div key={i} className="animate-pulse h-[72px] rounded-xl bg-muted/20" />
             ))}
           </div>
         ) : (
-          <div className="mt-10 overflow-visible md:mt-12">
+          <div className="mt-6 overflow-visible md:mt-6">
             <CategoryCarouselTrack page={page} className="px-0.5 pb-2" slideGap={slideGap}>
               {pages.map((pageItems, pageIndex) => (
                 <div
@@ -174,7 +174,7 @@ export default function CategoryExploreAllSection({ excludeId }: { excludeId?: s
           </div>
         )}
 
-        {!loading && totalPages > 1 && <div className="mt-10">
+        {!loading && totalPages > 1 && <div className="mt-6">
           <CategoryCarouselControls
             page={page}
             totalPages={totalPages}

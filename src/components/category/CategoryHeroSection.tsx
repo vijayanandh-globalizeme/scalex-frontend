@@ -295,10 +295,10 @@ export default function CategoryHeroSection({
       className="full-bleed relative overflow-visible pb-2 pt-6 md:pt-8"
       aria-labelledby="category-hero-heading"
     >
-      {/* Bottom→top pink (full width — no white gap in the middle) */}
+      {/* Same light pink glow as contact-us — full bottom including center */}
       <div
         className="category-hero-bg pointer-events-none absolute inset-x-0 top-0 z-0"
-        style={{ bottom: '-35%' }}
+        style={{ bottom: '-20%' }}
         aria-hidden
       />
       {/* Decorative background (non-content) — figure layout only */}
@@ -350,7 +350,7 @@ export default function CategoryHeroSection({
             )}
 
             <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:gap-4 lg:mt-6">
-              <ScrollToAnchor targetId="courses" className="btn-brand h-[40px] w-full gap-2 px-6 sm:w-auto md:px-7">
+              <ScrollToAnchor targetId="courses" className="btn-brand h-[54px] w-full gap-2 px-6 sm:w-auto md:px-7">
                 Explore Courses
                 <ArrowRightIcon className="btn-arrow-icon shrink-0" />
               </ScrollToAnchor>
@@ -358,7 +358,7 @@ export default function CategoryHeroSection({
                 openModal
                 type="contact"
                 courseId={null}
-                className="btn-brand-outline inline-flex h-[40px] w-full items-center justify-center gap-[18px] px-6 text-sm font-semibold sm:w-auto md:px-8 md:text-[15px]"
+                className="btn-brand-outline inline-flex h-[54px] w-full items-center justify-center gap-[18px] px-6 text-sm font-semibold sm:w-auto md:px-8 md:text-[15px]"
               >
                 Get Free Career Guidance
                 <PhoneIcon className="h-5 w-5 text-brand" />

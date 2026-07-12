@@ -239,7 +239,7 @@ export default function CategoryCoursesSection({
     <section
       ref={sectionRef}
       id="courses"
-      className="full-bleed relative z-0 overflow-visible bg-white pb-10 pt-20 md:pb-12 md:pt-40"
+      className="full-bleed relative z-0 overflow-visible bg-white pb-10 pt-12 md:pb-12 md:pt-24"
       aria-labelledby="category-courses-heading"
     >
       <div className="site-container">
@@ -255,9 +255,9 @@ export default function CategoryCoursesSection({
           </p>
         </header>
 
-        <div ref={gridContainerRef} className="mt-6 pb-4 md:mt-12 md:pb-6">
+        <div ref={gridContainerRef} className="mt-[45px] pb-4 md:pb-6">
           {loading ? (
-            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+            <div className="grid grid-cols-1 gap-x-3 gap-y-[30px] md:grid-cols-2 lg:grid-cols-3">
               {Array.from({ length: FETCH_LIMIT }).map((_, i) => (
                 <SkeletonCard key={i} />
               ))}
@@ -269,7 +269,7 @@ export default function CategoryCoursesSection({
               <div
                 key={`category-row-${rowIndex}`}
                 ref={(el) => { rowRefs.current[rowIndex] = el; }}
-                className="gsap-reveal-pending grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 [&+&]:mt-6"
+                className="gsap-reveal-pending grid grid-cols-1 gap-x-3 gap-y-[30px] md:grid-cols-2 lg:grid-cols-3 [&+&]:mt-[30px]"
               >
                 {rowCourses.map((course) => (
                   <CourseCard key={course.id} course={course} currencySymbol={currencySymbol} />
