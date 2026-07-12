@@ -35,21 +35,15 @@ export default function CourseOverviewSection({
   careerTabs = [],
   variant = 'default',
   courseId = null,
-  guideDownloadUrl = null,
-  forceGuideCta = false,
 }: {
   overview: ApiCourseOverviewSection;
   careerTabs?: ApiOtherDetail[];
   variant?: 'default' | 'technical';
   courseId?: string | null;
-  /** Used when overview.guide is absent (e.g. CSM uses course brochure). */
-  guideDownloadUrl?: string | null;
-  /** Show guide CTA even without a file URL (opens lead modal). */
-  forceGuideCta?: boolean;
 }) {
   const isTechnical = variant === 'technical';
-  const downloadUrl = overview.guide?.url ?? guideDownloadUrl ?? null;
-  const showGuideCta = Boolean(downloadUrl) || forceGuideCta;
+  const downloadUrl = overview.guide?.url ?? null;
+  const showGuideCta = Boolean(downloadUrl);
 
   // 7. skillRequirements → split by \n into array, distribute across 3 columns
   const skills = (overview.skillRequirements ?? '')

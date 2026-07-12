@@ -127,8 +127,6 @@ export default async function CourseDetailBodySection({
                 careerTabs={details.otherDetails.filter((d) => d.type === 'OVERVIEW')}
                 variant={isTechnical ? 'technical' : 'default'}
                 courseId={courseId}
-                guideDownloadUrl={brochureUrl}
-                forceGuideCta
               />
             ) : null}
 
