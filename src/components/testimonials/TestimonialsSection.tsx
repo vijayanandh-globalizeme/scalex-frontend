@@ -382,7 +382,7 @@ export default function TestimonialsSection({
 
   return (
     <section
-      className="full-bleed relative z-10 overflow-visible bg-[#0D0D0D] pt-12 pb-10 md:pt-16 md:pb-14 lg:pt-20 lg:pb-16"
+      className="full-bleed relative z-10 overflow-visible bg-[#0D0D0D] pt-8 pb-10 md:pt-10 md:pb-14 lg:pt-12 lg:pb-16"
       aria-labelledby="stories-heading"
     >
       <StoriesDecorIcon className="pointer-events-none absolute bottom-0 right-0 z-0 h-auto w-[120px] md:w-[160px] lg:w-[188px]" />

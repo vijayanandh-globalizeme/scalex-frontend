@@ -1,6 +1,6 @@
 'use client';
 
-import { forwardRef } from 'react';
+import { forwardRef, useEffect, useState } from 'react';
 import Image from 'next/image';
 
 export interface HeroBadge {
@@ -14,9 +14,58 @@ export interface HeroBadge {
 export interface HeroMediaColumnProps {
   imageSrc: string;
   imageAlt: string;
+  /** Decorative aero / X mark behind the person — only the right half is visible. */
+  aeroSrc?: string | null;
   badges?: HeroBadge[];
   className?: string;
   disableGsap?: boolean;
+}
+
+/** Aero: fixed at 1500+; below 1500 width shrinks and top moves down dynamically. */
+function getAeroSize(viewportWidth: number): {
+  width: number;
+  height: number;
+  right: number;
+  top: number;
+} {
+  const MAX_W = 400;
+  const MAX_H = 490;
+  const MAX_RIGHT = -150;
+  const MAX_TOP = 78;
+
+  const MIN_W = 300;
+  const MIN_H = 368;
+  const MIN_RIGHT = -120;
+  const MIN_TOP = 130; // further down at smaller widths
+
+  if (viewportWidth >= 1500) {
+    return { width: MAX_W, height: MAX_H, right: MAX_RIGHT, top: MAX_TOP };
+  }
+  if (viewportWidth <= 1200) {
+    return { width: MIN_W, height: MIN_H, right: MIN_RIGHT, top: MIN_TOP };
+  }
+
+  // 1200 → 1500: interpolate width + top (and height/right with them)
+  const t = (viewportWidth - 1200) / 300; // 0 at 1200 → 1 at 1500
+  return {
+    width: Math.round(MIN_W + t * (MAX_W - MIN_W)),
+    height: Math.round(MIN_H + t * (MAX_H - MIN_H)),
+    right: Math.round(MIN_RIGHT + t * (MAX_RIGHT - MIN_RIGHT)),
+    top: Math.round(MIN_TOP + t * (MAX_TOP - MIN_TOP)),
+  };
+}
+
+function useAeroSize() {
+  const [size, setSize] = useState({ width: 400, height: 490, right: -150, top: 78 });
+
+  useEffect(() => {
+    const update = () => setSize(getAeroSize(window.innerWidth));
+    update();
+    window.addEventListener('resize', update);
+    return () => window.removeEventListener('resize', update);
+  }, []);
+
+  return size;
 }
 
 function UsersBadgeIcon({ className }: { className?: string }) {
@@ -122,29 +171,76 @@ function FloatingBadge({ badge }: { badge: HeroBadge }) {
 }
 
 const HeroMediaColumn = forwardRef<HTMLDivElement, HeroMediaColumnProps>(
-  ({ imageSrc, imageAlt, badges = [], className = '', disableGsap = false }, ref) => {
+  ({ imageSrc, imageAlt, aeroSrc = null, badges = [], className = '', disableGsap = false }, ref) => {
     const gsapClass = disableGsap ? '' : 'gsap-reveal-pending';
+    const aeroSize = useAeroSize();
+
     return (
       <div
         ref={ref}
         className={`${gsapClass} relative mx-auto w-full min-w-0 max-w-md overflow-visible lg:mx-0 lg:max-w-none ${className}`.trim()}
       >
-        <div className="relative mx-auto aspect-[300/420] w-full max-w-[360px] overflow-visible pt-0 sm:ml-auto sm:mr-0 sm:aspect-[4/5] sm:max-w-[420px] sm:pt-14 lg:max-w-[480px] lg:pt-0">
+        {/* Relative stage — person centered; aero half-visible on the right. */}
+        <div className="relative mx-auto h-[420px] w-full max-w-[320px] sm:h-[480px] sm:max-w-[400px] md:h-[520px] md:max-w-[440px] lg:ml-auto lg:mr-0 lg:h-[560px] lg:max-w-[480px] xl:max-w-[520px] xl:h-[580px]">
+          {aeroSrc ? (
+            <div className="pointer-events-none absolute inset-0 z-0" aria-hidden>
+              {/* Mobile / tablet — fixed */}
+              <div
+                className="absolute lg:hidden"
+                style={{ top: 66, right: -150, width: 260, height: 320 }}
+              >
+                <Image
+                  src={aeroSrc}
+                  alt=""
+                  width={260}
+                  height={320}
+                  sizes="260px"
+                  className="h-full w-full object-contain object-center"
+                />
+              </div>
+              {/*
+                Desktop: ≥1500 fixed | below 1500 width + top scale (1200→1500)
+              */}
+              <div
+                className="absolute hidden lg:block"
+                style={{
+                  top: aeroSize.top,
+                  right: aeroSize.right,
+                  width: aeroSize.width,
+                  height: aeroSize.height,
+                }}
+              >
+                <Image
+                  src={aeroSrc}
+                  alt=""
+                  width={aeroSize.width}
+                  height={aeroSize.height}
+                  sizes={`${aeroSize.width}px`}
+                  className="h-full w-full object-contain object-center"
+                />
+              </div>
+            </div>
+          ) : null}
+
+          {/* Soft panel behind person */}
           <div
-            className="absolute right-5 bottom-0 z-[1] aspect-[389/549] w-[min(90%,310px)] rounded-t-[400px] shadow-inner shadow-black/5 sm:w-[min(100%,389px)]"
+            className="absolute bottom-0 left-1/2 z-[1] h-[360px] w-[389px] max-w-full -translate-x-1/2 rounded-t-[400px] shadow-inner shadow-black/5 sm:h-[420px] md:h-[460px] lg:h-[500px]"
             style={{ background: 'linear-gradient(180deg, #BB9255 -140.92%, #FADCBA 165.92%)' }}
             aria-hidden
           />
-          <div className="absolute right-4 bottom-0 z-[5] aspect-[350/554] w-[min(82%,290px)] translate-y-0 sm:right-6 sm:w-[min(90%,350px)] sm:-translate-y-[50px] lg:right-12">
+
+          {/* Person — centered; head overflows ~10% above the stage */}
+          <div className="absolute bottom-0 left-1/2 z-[5] h-[110%] w-[260px] -translate-x-1/2 sm:w-[300px] md:w-[330px] lg:w-[350px]">
             <Image
               src={imageSrc}
               alt={imageAlt}
               fill
               priority
-              sizes="(max-width: 1024px) 90vw, 350px"
+              sizes="(max-width: 640px) 260px, (max-width: 1024px) 330px, 350px"
               className="object-contain object-bottom drop-shadow-xl"
             />
           </div>
+
           {badges.map((b) => (
             <FloatingBadge key={b.id} badge={b} />
           ))}

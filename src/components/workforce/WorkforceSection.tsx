@@ -139,7 +139,7 @@ export default function WorkforceSection({
   const { openBrochureModal } = useCourseBrochureModal();
   return (
     <section
-      className="full-bleed relative z-30 overflow-visible bg-[#0D0D0D] pt-16 pb-12 md:pt-20 md:pb-14 lg:pt-24 lg:pb-16"
+      className="full-bleed relative z-20 overflow-visible bg-[#0D0D0D] pt-16 pb-20 md:pt-20 md:pb-28 lg:pt-24 lg:pb-32"
       aria-labelledby="workforce-heading"
     >
       <WorkforceDecorIcon className="pointer-events-none absolute bottom-0 left-0 z-0 h-auto w-[120px] md:w-[160px] lg:w-[190px]" />
@@ -205,7 +205,7 @@ export default function WorkforceSection({
             <button
               type="button"
               onClick={() => openBrochureModal({ type: 'demo', courseId: null })}
-              className="btn-brand mt-7 inline-flex h-[48px] cursor-pointer items-center justify-center gap-2 px-6 text-[14px] font-semibold text-white"
+              className="btn-mui-filled-dark mt-7 inline-flex h-[48px] cursor-pointer items-center justify-center gap-2 rounded-lg px-6 text-[14px] font-semibold"
             >
               {cta.label}
               <ArrowRightIcon className="btn-arrow-icon h-3.5 w-3.5" />
@@ -213,19 +213,19 @@ export default function WorkforceSection({
           </div>
         </div>
 
-        {/* Bottom: hiring partners strip — half overlaps the next section */}
+        {/* Bottom: hiring partners strip (overlaps next section by half) */}
         {partners.length > 0 ? (
-          <div className="relative z-50 mt-10 overflow-visible md:mt-14">
-            <div className="-mb-12 translate-y-12 rounded-2xl bg-white px-6 py-8 shadow-[0_4px_24px_0_rgba(30,41,59,0.08),0_12px_40px_0_rgba(15,23,42,0.14)] md:-mb-14 md:translate-y-14 md:px-10 md:py-10">
-              <div className="w-full min-w-0 overflow-hidden">
-                <LogoMarquee
-                  logos={partners.map((p) => ({ id: p.id, src: p.logoSrc, alt: p.logoAlt }))}
-                  size="sm"
-                  largeOnMobile
-                  ariaLabel="Hiring partners"
-                />
-              </div>
+          <div className="relative z-50 mt-1 overflow-visible pb-6 md:mt-12 md:pb-8">
+            <div className="mb-[-72px] translate-y-1/2 rounded-2xl bg-white px-6 py-8 shadow-[0_4px_24px_0_rgba(30,41,59,0.08),0_12px_40px_0_rgba(15,23,42,0.14)] md:mb-[-130px] md:px-10 md:py-10">
+            <div className="w-full min-w-0 overflow-hidden">
+              <LogoMarquee
+                logos={partners.map((p) => ({ id: p.id, src: p.logoSrc, alt: p.logoAlt }))}
+                size="sm"
+                largeOnMobile
+                ariaLabel="Hiring partners"
+              />
             </div>
+          </div>
           </div>
         ) : null}
       </div>

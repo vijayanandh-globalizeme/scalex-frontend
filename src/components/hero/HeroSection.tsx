@@ -1,7 +1,6 @@
 'use client';
 
 import { useRef } from 'react';
-import Image from 'next/image';
 import Link from 'next/link';
 import { LogoMarquee, HeroMediaColumn } from '@/components/shared';
 import type { HeroBadge } from '@/components/shared';
@@ -96,16 +95,11 @@ export default function HeroSection(props: HeroSectionProps) {
     subheading,
     primaryCta,
     secondaryCta,
-    trustedBy,
     collaboration,
     figure,
     backgroundImage,
     badges,
   } = props;
-
-  const bgClassName =
-    backgroundImage?.className ??
-    'absolute right-[6%] top-[10%] h-[54%] w-[46%] md:w-[33%] lg:w-[22%]';
 
   const sectionRef = useRef<HTMLElement>(null);
   const copyRef = useRef<HTMLDivElement>(null);
@@ -119,98 +113,77 @@ export default function HeroSection(props: HeroSectionProps) {
     if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
+  // Aero is composed with the person in HeroMediaColumn (half-visible on the right).
+  const aeroSrc = backgroundImage?.src ?? null;
+
   return (
     <section
       ref={sectionRef}
-      className="full-bleed relative overflow-x-clip overflow-y-visible bg-surface pb-8 pt-4 md:pb-10 md:pt-24 lg:pb-12 lg:pt-32"
+      className="full-bleed relative overflow-x-clip overflow-y-visible bg-surface pt-4 md:pt-24 lg:pt-12"
       aria-labelledby="hero-heading"
     >
-      {/* Decorative background (non-content) */}
+      {/* Soft glow only — aero lives behind the person in the media column */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden>
-        {backgroundImage?.src ? (
-          <div className={`${bgClassName} hidden md:block`}>
-            <Image
-              src={backgroundImage.src}
-              alt=""
-              fill
-              priority={false}
-              sizes="(max-width: 768px) 46vw, (max-width: 1024px) 33vw, 400px"
-              className="object-contain object-center"
-            />
-          </div>
-        ) : null}
         <div className="absolute bottom-0 right-[15%] h-48 w-48 rounded-full bg-orange-200/30 blur-3xl" aria-hidden />
       </div>
 
       <div className="site-container relative z-10">
-        <div className="grid min-w-0 items-start gap-2 sm:gap-10 lg:grid-cols-[2fr_1fr] lg:gap-6 xl:gap-8">
-          {/* Copy column */}
-          <div ref={copyRef} className="gsap-reveal-pending max-w-xl min-w-0 lg:max-w-none">
-            <h1
-              id="hero-heading"
-              className="pt-10 text-[26px] font-extrabold leading-tight tracking-tight text-heading sm:text-[36px] md:text-[40px] md:leading-[52px]"
-            >
-              <span className="inline sm:block">{headingIntro}</span>{' '}
-              <span className="inline sm:mt-1 sm:block">
-                <span className="text-[26px] font-extrabold leading-tight text-heading sm:text-[36px] md:text-[40px] md:leading-[52px]">
-                  {headingYour}
-                </span>{' '}
-                <span className="text-career-growth-gradient text-[32px] font-extrabold leading-tight sm:text-[52px] lg:text-[60px] xl:text-[68px] xl:leading-[80px]">
-                  {headingAccent}
+        <div className="grid min-w-0 items-center gap-2 sm:gap-10 lg:grid-cols-[2fr_1fr] lg:gap-6 xl:gap-8">
+          {/* Copy column — vertically centered; CTA end aligns with subheading end */}
+          <div ref={copyRef} className="gsap-reveal-pending flex min-w-0 flex-col justify-center">
+            <div className="w-fit max-w-full">
+              <h1
+                id="hero-heading"
+                className="text-[26px] font-extrabold leading-tight tracking-tight text-heading sm:text-[36px] md:text-[40px] md:leading-[52px]"
+              >
+                <span className="inline sm:block">{headingIntro}</span>{' '}
+                <span className="inline sm:mt-1 sm:block">
+                  <span className="mr-2 text-[26px] font-extrabold leading-tight text-heading sm:text-[36px] md:text-[40px] md:leading-[52px]">
+                    {headingYour}
+                  </span>
+                  <span className="text-career-growth-gradient text-[32px] font-extrabold leading-tight sm:text-[52px] md:text-[60px] md:leading-[70px]">
+                    {headingAccent}
+                  </span>
                 </span>
-              </span>
-            </h1>
-            <p className="mt-5 max-w-lg text-[16px] font-semibold leading-normal text-muted sm:text-[18px]">
-              {subheading}
-            </p>
+              </h1>
+              <p className="mt-5 whitespace-nowrap text-[16px] font-semibold leading-normal text-muted sm:text-[18px]">
+                {subheading}
+              </p>
 
-            <div className="mt-8 flex flex-wrap gap-3 sm:gap-4">
-              {primaryCta.href.startsWith('#') ? (
+              <div className="mt-8 mb-[70px] flex w-full flex-wrap items-center justify-between gap-3 sm:gap-4">
+                {primaryCta.href.startsWith('#') ? (
+                  <button
+                    type="button"
+                    onClick={() => scrollToId(primaryCta.href.slice(1))}
+                    className="btn-brand h-[54px] w-full cursor-pointer justify-center gap-2 px-6 sm:w-[257px] md:px-7"
+                  >
+                    {primaryCta.label}
+                    <ArrowRightIcon className="btn-arrow-icon shrink-0" />
+                  </button>
+                ) : (
+                  <Link href={primaryCta.href} className="btn-brand h-[54px] w-full justify-center gap-2 px-6 sm:w-[257px] md:px-7">
+                    {primaryCta.label}
+                    <ArrowRightIcon className="btn-arrow-icon shrink-0" />
+                  </Link>
+                )}
                 <button
                   type="button"
-                  onClick={() => scrollToId(primaryCta.href.slice(1))}
-                  className="btn-brand h-[54px] w-full cursor-pointer justify-center gap-2 px-6 sm:w-auto md:px-7"
+                  onClick={() => openBrochureModal({ type: 'contact', courseId: null })}
+                  className="btn-brand-outline inline-flex h-[54px] w-full min-w-0 cursor-pointer items-center justify-center gap-[18px] px-6 text-sm font-semibold sm:ml-auto sm:w-[275px] md:text-[15px]"
                 >
-                  {primaryCta.label}
-                  <ArrowRightIcon className="btn-arrow-icon shrink-0" />
+                  {secondaryCta.label}
+                  <PhoneIcon className="h-5 w-5" />
                 </button>
-              ) : (
-                <Link href={primaryCta.href} className="btn-brand h-[54px] w-full justify-center gap-2 px-6 sm:w-auto md:px-7">
-                  {primaryCta.label}
-                  <ArrowRightIcon className="btn-arrow-icon shrink-0" />
-                </Link>
-              )}
-              <button
-                type="button"
-                onClick={() => openBrochureModal({ type: 'contact', courseId: null })}
-                className="btn-brand-outline inline-flex h-[54px] w-full min-w-0 cursor-pointer items-center justify-center gap-[18px] px-6 text-sm font-semibold sm:w-auto sm:min-w-[275px] md:text-[15px]"
-              >
-                {secondaryCta.label}
-                <PhoneIcon className="h-5 w-5" />
-              </button>
-            </div>
-
-            <div className="mt-10 flex flex-col items-start gap-3 border-t border-zinc-200/80 pt-5 sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-3 sm:gap-y-3">
-              <p className="shrink-0 text-[18px] font-semibold leading-[18px] tracking-[-0.18px] text-heading">
-                {trustedBy.label}
-              </p>
-              <div className="w-full min-w-0 overflow-hidden sm:flex-1">
-                <LogoMarquee
-                  logos={trustedBy.logos}
-                  size="sm"
-                  reverse
-                  largeOnMobile
-                  ariaLabel="Trusted by partners"
-                />
               </div>
             </div>
           </div>
 
-          {/* Media column */}
+          {/* Media column — person centered, aero half-visible on the right */}
           <HeroMediaColumn
             ref={mediaRef}
             imageSrc={figure.src}
             imageAlt={figure.alt}
+            aeroSrc={aeroSrc}
             badges={badges}
           />
         </div>

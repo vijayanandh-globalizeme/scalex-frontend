@@ -23,7 +23,7 @@ export interface MentorsSectionProps {
 function LinkedInBadge({ href, name }: { href?: string; name: string }) {
   const inner = (
     <span
-      className="flex h-7 w-7 items-center justify-center rounded-full bg-linkedin text-white shadow-md ring-2 ring-white"
+      className="flex h-7 w-7 items-center justify-center rounded-md bg-linkedin text-white shadow-md ring-2 ring-white"
       aria-hidden={!href}
     >
       <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
@@ -107,9 +107,9 @@ function MentorCard({ mentor }: { mentor: Trainer }) {
         {mentor.role}
       </p>
       {mentor.assocWithUrl ? (
-        <div className="mt-4 flex w-full flex-wrap items-center justify-center gap-x-2 gap-y-1 text-[12px] font-medium text-subtle">
-          <span className="shrink-0">Associated with</span>
-          <div className="relative h-[24px] w-[97px] shrink-0">
+        <div className="mt-4 flex w-full flex-col items-center gap-2 text-[12px] font-medium text-subtle">
+          <span>Associated with</span>
+          <div className="relative h-[24px] w-[97px]">
             <Image
               src={mentor.assocWithUrl}
               alt="Associated company"

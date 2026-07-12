@@ -465,7 +465,7 @@ export default function CoursesSection({
     <section
       ref={sectionRef}
       id="all-courses"
-      className="full-bleed relative bg-surface pt-10 pb-16 md:pt-14 md:pb-20 lg:pt-16 lg:pb-24"
+      className="full-bleed relative bg-surface pt-[80px] pb-12 md:pb-16 lg:pb-20"
       aria-labelledby="courses-heading"
     >
       <div className="site-container relative z-10">
@@ -484,7 +484,7 @@ export default function CoursesSection({
         <div
           role="tablist"
           aria-label="Course categories"
-          className="mt-8 flex items-center gap-2 overflow-x-auto rounded-lg bg-surface-raised p-2 shadow-[0_4px_4px_0_rgba(30,41,59,0.08),4px_-4px_4px_0_rgba(30,41,59,0.03)] [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:mt-10 md:flex-wrap md:justify-center lg:justify-between"
+          className="mt-4 flex items-center gap-2 overflow-x-auto rounded-lg bg-surface-raised p-2 shadow-[0_4px_4px_0_rgba(30,41,59,0.08),4px_-4px_4px_0_rgba(30,41,59,0.03)] [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:mt-6 md:flex-wrap md:justify-center lg:justify-between"
         >
           {tabs.map((tab) => {
             const isActive = tab.id === activeTabId;

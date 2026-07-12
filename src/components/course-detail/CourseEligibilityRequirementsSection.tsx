@@ -123,14 +123,14 @@ export default function CourseEligibilityRequirementsSection({
           </div>
         </div>
 
-        <div className="pointer-events-none absolute bottom-0 right-2 z-20 hidden h-[280px] w-[240px] overflow-visible md:block lg:right-4 lg:h-[300px] lg:w-[260px]">
+        <div className="pointer-events-none absolute bottom-0 right-0 z-20 hidden h-[220px] w-[220px] md:block">
           <Image
             src="/images/hero/person.png"
             alt="Professional in business attire"
-            width={520}
-            height={808}
+            width={440}
+            height={440}
             className="h-full w-full object-contain object-bottom"
-            sizes="260px"
+            sizes="220px"
           />
         </div>
       </div>
