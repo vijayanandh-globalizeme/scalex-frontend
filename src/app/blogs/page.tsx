@@ -80,20 +80,12 @@ const SORT_OPTIONS: { value: SortOption; label: string }[] = [
   { value: 'trending', label: 'Trending' },
 ];
 
-// Builds a compact page-number range with ellipses, e.g. 1 … 4 5 6 … 12
-function getPaginationRange(current: number, total: number): (number | 'ellipsis')[] {
-  const delta = 1;
-  const range: (number | 'ellipsis')[] = [];
-  const left = Math.max(2, current - delta);
-  const right = Math.min(total - 1, current + delta);
-
-  range.push(1);
-  if (left > 2) range.push('ellipsis');
-  for (let i = left; i <= right; i++) range.push(i);
-  if (right < total - 1) range.push('ellipsis');
-  if (total > 1) range.push(total);
-
-  return range;
+function ViewMoreChevronIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} width="12" height="8" viewBox="0 0 12 8" fill="none" aria-hidden>
+      <path d="M1 1.5L6 6.5L11 1.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
 }
 
 export default function BlogsPage() {
@@ -112,11 +104,12 @@ export default function BlogsPage() {
   // Sort
   const [sortOption, setSortOption] = useState<SortOption>('latest');
 
-  // Blog grid + pagination
+  // Blog grid + load more
   const [items, setItems] = useState<ApiBlogListItem[]>([]);
   const [total, setTotal] = useState(0);
   const [page, setPage] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
   const allBlogsSectionRef = useRef<HTMLElement>(null);
   const scrollAfterLoadRef = useRef(false);
 
@@ -134,16 +127,12 @@ export default function BlogsPage() {
     });
   }, []);
 
-  // Reset to page 0 whenever the category, search, or sort changes
-  useEffect(() => {
-    setPage(0);
-  }, [activeCategoryUri, submittedQuery, sortOption]);
-
-  // Load the blog grid whenever category, search, sort, or page changes
+  // Reload first page whenever category, search, or sort changes
   useEffect(() => {
     let cancelled = false;
     setLoading(true);
-    // "latest" is the API's own default order — no sortBy/sortOrder sent.
+    setPage(0);
+
     const sortParams =
       sortOption === 'popular'  ? { sortBy: 'views' as const, sortOrder: 'desc' as const } :
       sortOption === 'trending' ? { sortBy: 'popular' as const, sortOrder: 'desc' as const } :
@@ -153,7 +142,7 @@ export default function BlogsPage() {
       q: submittedQuery || undefined,
       ...sortParams,
       limit: PAGE_SIZE,
-      offset: page * PAGE_SIZE,
+      offset: 0,
     }).then((res) => {
       if (cancelled) return;
       setItems(res.items);
@@ -165,7 +154,7 @@ export default function BlogsPage() {
       }
     });
     return () => { cancelled = true; };
-  }, [activeCategoryUri, submittedQuery, sortOption, page]);
+  }, [activeCategoryUri, submittedQuery, sortOption]);
 
   function handleSearchSubmit() {
     scrollAfterLoadRef.current = true;
@@ -177,23 +166,41 @@ export default function BlogsPage() {
     setSubmittedQuery('');
   }
 
-  // Re-anchor the viewport to the top of the grid on every page change so a
-  // short last page doesn't yank the scroll position into the next section.
-  function goToPage(next: number) {
-    setPage(next);
-    allBlogsSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  async function handleViewMore() {
+    if (loadingMore || items.length >= total) return;
+    setLoadingMore(true);
+    const nextPage = page + 1;
+    const sortParams =
+      sortOption === 'popular'  ? { sortBy: 'views' as const, sortOrder: 'desc' as const } :
+      sortOption === 'trending' ? { sortBy: 'popular' as const, sortOrder: 'desc' as const } :
+      {};
+    try {
+      const res = await getBlogs({
+        categoryUri: activeCategoryUri ?? undefined,
+        q: submittedQuery || undefined,
+        ...sortParams,
+        limit: PAGE_SIZE,
+        offset: nextPage * PAGE_SIZE,
+      });
+      setItems((prev) => [...prev, ...res.items]);
+      setTotal(res.total);
+      setPage(nextPage);
+    } finally {
+      setLoadingMore(false);
+    }
   }
 
   const totalHero = heroBlogs.length;
-  const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
+  const hasMore = items.length < total;
 
   return (
     <>
       {/* Hero Section */}
       <section
-        className="full-bleed relative pt-8 md:pt-14 pb-8 md:pb-14"
-        style={{ background: 'linear-gradient(11deg, rgba(255, 201, 211, 0.15) -2.77%, #F5F6F8 90.42%)', minHeight: '594px', zIndex: 10, position: 'relative' }}
+        className="full-bleed relative overflow-visible pt-4 pb-0 md:pt-6"
+        style={{ height: '594px', zIndex: 10, position: 'relative' }}
       >
+        <div className="category-hero-bg pointer-events-none absolute inset-0" aria-hidden />
         {/* Decorative ScaleX watermark */}
         <div className="pointer-events-none absolute right-0 top-1/4 z-0 hidden h-[340px] w-[300px] opacity-[0.07] md:block" aria-hidden>
           <Image src="/images/scalex-mark.png" alt="" fill className="object-contain object-right" />
@@ -201,7 +208,7 @@ export default function BlogsPage() {
 
         <div className="site-container relative z-10">
           {/* Breadcrumb */}
-          <nav className="mb-8 flex items-center gap-2 text-sm text-muted" aria-label="Breadcrumb">
+          <nav className="mb-4 flex items-center gap-2 text-sm text-muted" aria-label="Breadcrumb">
             <Link href="/" className="flex items-center gap-1 transition-colors hover:text-brand" aria-label="Home">
               <svg width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden>
                 <path d="M2.5 7.5L10 1.667L17.5 7.5V17.5H13.333V12.5H6.667V17.5H2.5V7.5Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
@@ -212,7 +219,7 @@ export default function BlogsPage() {
           </nav>
 
           {/* Heading */}
-          <div className="mb-8 text-center">
+          <div className="mb-4 pt-8 text-center md:pt-12">
             <h1 className="text-[28px] font-bold leading-[1.3] text-heading md:text-[40px] md:font-extrabold md:leading-[60px]">
               Your Gateway to Career Knowledge
             </h1>
@@ -230,13 +237,13 @@ export default function BlogsPage() {
                 </svg>
               </span>
             </span>
-            <p className="mx-auto mt-4 max-w-2xl text-[15px] font-medium leading-[26px] text-muted md:text-[16px]">
+            <p className="mx-auto mt-2 max-w-2xl text-[15px] font-medium leading-[26px] text-muted md:text-[16px]">
               Expert articles on Agile, Scrum, DevOps, Cloud, and career growth. Unlock insights to accelerate your professional journey.
             </p>
           </div>
 
           {/* Search bar */}
-          <div className="mx-auto mb-10 flex max-w-2xl items-center gap-3">
+          <div className="mx-auto mb-4 flex max-w-2xl items-center gap-3">
             <div className="relative flex-1">
               <span className="absolute left-4 top-1/2 -translate-y-1/2">
                 <SearchIcon />
@@ -260,10 +267,10 @@ export default function BlogsPage() {
             </button>
           </div>
 
-          {/* Featured slider card */}
+          {/* Featured slider — hangs ~20% below the hero into the next section */}
           {totalHero > 0 ? (
-            <>
-              <div className="interactive-card relative rounded-2xl border border-[#E2E8F0] bg-white" style={{ position: 'relative', zIndex: 20 }}>
+            <div className="relative z-20 mb-[-50px] translate-y-[10%] pb-4 md:mb-[-60px] md:pb-6">
+              <div className="interactive-card relative rounded-2xl border border-[#E2E8F0] bg-white shadow-[0_4px_24px_0_rgba(30,41,59,0.08)]" style={{ position: 'relative', zIndex: 20 }}>
                 <div className="overflow-hidden rounded-2xl">
                   <div
                     className="flex transition-transform duration-500 ease-in-out"
@@ -328,18 +335,18 @@ export default function BlogsPage() {
                   </button>
                 </div>
               ) : null}
-            </>
+            </div>
           ) : null}
         </div>
       </section>
 
-      {/* All Blogs Section */}
-      <section ref={allBlogsSectionRef} className="full-bleed bg-white pb-12 md:pb-16 mt-[80px] md:mt-[200px] scroll-mt-24">
+      {/* All Blogs Section — top space clears the hanging slider (~20%) */}
+      <section ref={allBlogsSectionRef} className="full-bleed relative z-0 bg-white pb-12 pt-36 md:pb-16 md:pt-44 scroll-mt-24">
         <div className="site-container">
           {/* Header */}
-          <div className="mb-6 text-center">
+          <div className="mb-4 text-center">
             <h2 className="text-[26px] font-bold text-heading md:text-[32px]">All Blogs</h2>
-            <p className="mx-auto mt-2 max-w-2xl text-[14px] text-muted">
+            <p className="mx-auto mt-2 whitespace-nowrap text-[14px] text-muted">
               The most effective project-based immersive learning experience to educate that combines hands-on projects with deep, engaging learning.
             </p>
           </div>
@@ -349,14 +356,14 @@ export default function BlogsPage() {
             <div
               role="tablist"
               aria-label="Blog categories"
-              className="mt-8 mb-6 flex items-center gap-2 overflow-x-auto rounded-lg bg-surface-raised p-2 shadow-[0_4px_4px_0_rgba(30,41,59,0.08),4px_-4px_4px_0_rgba(30,41,59,0.03)] [-ms-overflow-style:none] [scrollbar-width:none] md:mt-10 md:flex-wrap md:justify-center lg:justify-between"
+              className="mt-5 mb-6 flex items-center gap-2 overflow-x-auto rounded-lg bg-surface-raised p-2 shadow-[0_4px_4px_0_rgba(30,41,59,0.08),4px_-4px_4px_0_rgba(30,41,59,0.03)] [-ms-overflow-style:none] [scrollbar-width:none] md:mt-6 md:flex-wrap md:justify-center lg:justify-between"
             >
               <button
                 type="button"
                 role="tab"
                 aria-selected={activeCategoryUri === null}
                 onClick={() => setActiveCategoryUri(null)}
-                className={`cursor-pointer whitespace-nowrap rounded-lg px-3 py-2 text-center text-[13px] font-medium leading-[140%] md:px-4 md:py-2.5 md:text-[16px] ${activeCategoryUri === null ? 'courses-tab-active' : 'btn-mui-brand-tint text-heading'}`}
+                className={`cursor-pointer whitespace-nowrap rounded-lg px-3 py-2 text-center text-[13px] font-normal leading-[140%] md:px-4 md:py-2.5 md:text-[16px] ${activeCategoryUri === null ? 'courses-tab-active' : 'btn-mui-brand-tint text-heading'}`}
               >
                 All Blogs
               </button>
@@ -367,7 +374,7 @@ export default function BlogsPage() {
                   role="tab"
                   aria-selected={cat.uri === activeCategoryUri}
                   onClick={() => setActiveCategoryUri(cat.uri)}
-                  className={`cursor-pointer whitespace-nowrap rounded-lg px-3 py-2 text-center text-[13px] font-medium leading-[140%] md:px-4 md:py-2.5 md:text-[16px] ${cat.uri === activeCategoryUri ? 'courses-tab-active' : 'btn-mui-brand-tint text-heading'}`}
+                  className={`cursor-pointer whitespace-nowrap rounded-lg px-3 py-2 text-center text-[13px] font-normal leading-[140%] md:px-4 md:py-2.5 md:text-[16px] ${cat.uri === activeCategoryUri ? 'courses-tab-active' : 'btn-mui-brand-tint text-heading'}`}
                 >
                   {cat.name}
                 </button>
@@ -412,24 +419,32 @@ export default function BlogsPage() {
               <p className="col-span-3 py-10 text-center text-[14px] text-muted">No blogs available in this category yet.</p>
             ) : items.map((b) => (
               <Link key={b.id} href={`/blogs/${b.uri}`} className="interactive-card flex flex-col overflow-hidden rounded-2xl border border-[#E2E8F0] bg-white">
-                <div className="interactive-card-media relative h-[200px] w-full">
+                <div className="interactive-card-media relative h-[180px] w-full">
                   <Image src={b.featureImage?.url ?? DEFAULT_BLOG_IMAGE} alt={b.title} fill className="object-cover" sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw" />
                 </div>
                 <div className="flex flex-1 flex-col justify-between p-5">
                   <div>
-                    <div className="mb-3 flex items-center gap-3">
-                      <span className="rounded-full bg-[#FFF0F3] px-3 py-1 text-[11px] font-semibold text-brand">{b.categoryName ?? 'Blog'}</span>
-                      <span className="flex items-center gap-1 text-[11px] text-muted">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-                        {b.views.toLocaleString()} Views
+                    <div className="mb-3 flex w-full items-center gap-3">
+                      <span
+                        className="inline-flex h-[24px] w-[113px] shrink-0 items-center justify-center truncate rounded-[6px] bg-[#FFDEE4] px-2 text-[11px] font-medium leading-normal text-[#1E293B]"
+                        style={{ fontFamily: 'Inter, sans-serif' }}
+                      >
+                        {b.categoryName ?? 'Blog'}
                       </span>
-                      <span className="flex items-center gap-1 text-[11px] text-muted">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                        {b.readTimeMinutes} MIN READ
-                      </span>
+                      <div className="ml-auto flex items-center gap-3">
+                        <span className="flex items-center gap-1 text-[11px] text-muted">
+                          <Image src="/images/eye-ic.png" alt="" width={14} height={14} className="h-[14px] w-[14px] shrink-0 object-contain" aria-hidden />
+                          {b.views.toLocaleString()} Views
+                        </span>
+                        <span className="flex items-center gap-1 text-[11px] text-muted">
+                          <Image src="/images/time-icon.png" alt="" width={14} height={14} className="h-[14px] w-[14px] shrink-0 object-contain" aria-hidden />
+                          {b.readTimeMinutes} Min Read
+                        </span>
+                      </div>
                     </div>
-                    <h3 className="interactive-card-title line-clamp-2 text-[15px] font-bold leading-snug text-heading">{b.title}</h3>
-                    <p className="mt-2 line-clamp-3 text-[13px] leading-[1.6] text-muted">{b.shortDescription}</p>
+                    <h3 className="interactive-card-title line-clamp-2 min-h-[42px] text-[15px] font-bold leading-snug text-heading">{b.title}</h3>
+                    <p className="mt-2 line-clamp-3 min-h-[62px] text-[13px] leading-[1.6] text-muted">{b.shortDescription}</p>
+                    <div className="mb-4 mt-4 border-b border-[#EBEBEB]" aria-hidden />
                   </div>
                   <div className="mt-4 flex items-center justify-between">
                     <div className="flex items-center gap-2">
@@ -451,51 +466,22 @@ export default function BlogsPage() {
           </div>
 
           {/* Footer */}
-
           <div className="mt-8 flex flex-wrap items-center justify-between gap-4">
             <p className="text-[13px] text-muted">
-              Showing {items.length === 0 ? 0 : page * PAGE_SIZE + 1}–{page * PAGE_SIZE + items.length} of {total} articles
+              Showing {items.length === 0 ? 0 : 1}–{items.length} of {total} articles
             </p>
 
-            {totalPages > 1 && (
-              <div className="flex items-center gap-1.5">
-                <button
-                  type="button"
-                  onClick={() => goToPage(Math.max(0, page - 1))}
-                  disabled={page === 0}
-                  aria-label="Previous page"
-                  className="flex h-8 w-8 items-center justify-center rounded-lg border border-[#E2E8F0] text-muted transition hover:border-brand hover:text-brand disabled:opacity-40"
-                >
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="15 18 9 12 15 6" /></svg>
-                </button>
-                {getPaginationRange(page + 1, totalPages).map((p, i) =>
-                  p === 'ellipsis' ? (
-                    <span key={`ellipsis-${i}`} className="px-1 text-[13px] text-muted">…</span>
-                  ) : (
-                    <button
-                      key={p}
-                      type="button"
-                      onClick={() => goToPage(p - 1)}
-                      aria-current={p === page + 1 ? 'page' : undefined}
-                      className={`flex h-8 w-8 items-center justify-center rounded-lg text-[13px] font-semibold transition ${
-                        p === page + 1 ? 'bg-brand text-white' : 'text-heading hover:bg-[#FFF0F3] hover:text-brand'
-                      }`}
-                    >
-                      {p}
-                    </button>
-                  )
-                )}
-                <button
-                  type="button"
-                  onClick={() => goToPage(Math.min(totalPages - 1, page + 1))}
-                  disabled={page >= totalPages - 1}
-                  aria-label="Next page"
-                  className="flex h-8 w-8 items-center justify-center rounded-lg border border-[#E2E8F0] text-muted transition hover:border-brand hover:text-brand disabled:opacity-40"
-                >
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="9 18 15 12 9 6" /></svg>
-                </button>
-              </div>
-            )}
+            {hasMore ? (
+              <button
+                type="button"
+                onClick={handleViewMore}
+                disabled={loadingMore}
+                className="inline-flex cursor-pointer items-center gap-2 text-[14px] font-medium leading-[18px] text-brand transition disabled:cursor-not-allowed disabled:opacity-60"
+              >
+                {loadingMore ? 'Loading…' : 'View More Blogs'}
+                {!loadingMore ? <ViewMoreChevronIcon className="shrink-0 text-brand" /> : null}
+              </button>
+            ) : null}
           </div>
         </div>
       </section>
@@ -507,6 +493,7 @@ export default function BlogsPage() {
           maxCourses={6}
           initialVisibleCount={3}
           loadMoreStep={3}
+          compactTop
         />
       ) : null}
 

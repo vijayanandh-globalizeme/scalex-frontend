@@ -38,6 +38,10 @@ export interface CategoryCoursesSectionProps {
   initialVisibleCount?: number;
   /** How many additional courses "View More Courses" reveals per click. Defaults to a full fetch batch (6). */
   loadMoreStep?: number;
+  /** Tighter top spacing (e.g. blogs listing page). */
+  compactTop?: boolean;
+  /** Soft gray section background (e.g. blog detail page). */
+  mutedBackground?: boolean;
 }
 
 function SkeletonCard() {
@@ -68,6 +72,8 @@ export default function CategoryCoursesSection({
   maxCourses,
   initialVisibleCount,
   loadMoreStep,
+  compactTop = false,
+  mutedBackground = false,
 }: CategoryCoursesSectionProps) {
   const [courses, setCourses] = useState<Course[]>([]);
   const [visibleCount, setVisibleCount] = useState(initialVisibleCount ?? FETCH_LIMIT);
@@ -239,11 +245,13 @@ export default function CategoryCoursesSection({
     <section
       ref={sectionRef}
       id="courses"
-      className="full-bleed relative z-0 overflow-visible bg-white pb-10 pt-12 md:pb-12 md:pt-24"
+      className={`full-bleed relative z-0 overflow-visible pb-10 md:pb-12 ${
+        mutedBackground ? 'bg-[#F5F6F8]' : 'bg-white'
+      } ${compactTop || mutedBackground ? 'pt-[14px] md:pt-[30px]' : 'pt-12 md:pt-24'}`}
       aria-labelledby="category-courses-heading"
     >
       <div className="site-container">
-        <header className="mx-auto mt-0 max-w-4xl text-center md:mt-8 lg:mt-10">
+        <header className={`mx-auto mt-0 max-w-4xl text-center ${compactTop || mutedBackground ? '' : 'md:mt-8 lg:mt-10'}`}>
           <h2
             id="category-courses-heading"
             className="section-heading text-center text-heading"
@@ -255,7 +263,7 @@ export default function CategoryCoursesSection({
           </p>
         </header>
 
-        <div ref={gridContainerRef} className="mt-[45px] pb-4 md:pb-6">
+        <div ref={gridContainerRef} className={`mt-[45px] ${compactTop || mutedBackground ? 'pb-2' : 'pb-4 md:pb-6'}`}>
           {loading ? (
             <div className="grid grid-cols-1 gap-x-3 gap-y-[30px] md:grid-cols-2 lg:grid-cols-3">
               {Array.from({ length: FETCH_LIMIT }).map((_, i) => (
@@ -280,7 +288,7 @@ export default function CategoryCoursesSection({
         </div>
 
         {!loading && hasMore && (
-          <div className="mt-10 flex justify-center md:mt-12">
+          <div className={`flex justify-center ${compactTop || mutedBackground ? 'mt-4 mb-[20px] md:mt-5' : 'mt-10 md:mt-12'}`}>
             <button
               type="button"
               onClick={handleViewMore}

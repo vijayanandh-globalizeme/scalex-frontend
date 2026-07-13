@@ -51,16 +51,6 @@ function sanitizeBlogContent(html: string) {
 
 // ─── Icons ────────────────────────────────────────────────────────────────────
 
-function CalendarIcon() {
-  return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden>
-      <rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor" strokeWidth="1.5" />
-      <path d="M3 9h18" stroke="currentColor" strokeWidth="1.5" />
-      <path d="M8 2v4M16 2v4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-    </svg>
-  );
-}
-
 function EyeIcon() {
   return (
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden>
@@ -179,7 +169,7 @@ function TrendingBlogsSection({ blogs }: { blogs: TrendingBlogCardData[] }) {
   const next = () => setIndex((i) => Math.min(maxIndex, i + 1));
 
   return (
-    <section className="full-bleed bg-[#F5F6F8] py-12 md:py-16">
+    <section className="full-bleed bg-[#F5F6F8] pt-3 pb-12 md:pt-4 md:pb-16">
       <div className="site-container">
         {/* Header */}
         <div className="mb-10 text-center">
@@ -632,23 +622,28 @@ export default function BlogDetailPage() {
         <div className="site-container relative z-10 py-10 md:py-14">
           {/* Breadcrumb */}
           <nav className="mb-6 flex items-center gap-2 text-[13px] text-white/60">
-            <Link href="/" className="hover:text-white transition-colors">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-label="Home">
+            <Link href="/" className="text-white/60 transition-colors hover:text-white" aria-label="Home">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
               </svg>
             </Link>
+            <span className="text-white">&gt;</span>
+            <Link href="/blogs" className="font-medium text-white transition-colors hover:text-white/90">
+              Blogs
+            </Link>
             <span className="text-white/40">&gt;</span>
-            <Link href="/blogs" className="hover:text-white transition-colors">Blogs</Link>
-            <span className="text-white/40">&gt;</span>
-            <span className="truncate max-w-[240px] text-[#FF002C] font-medium">{blog.title}</span>
+            <span className="max-w-[240px] truncate font-medium text-[#FF002C]">{blog.title}</span>
           </nav>
 
-          <div className="flex flex-col gap-8 lg:flex-row lg:items-center lg:gap-10">
+          <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:gap-10">
             {/* Left content */}
             <div className="flex-1">
               {/* Category badge */}
               {blog.category ? (
-                <span className="inline-block rounded-full border border-white/20 bg-white/10 px-4 py-1.5 text-[13px] font-medium text-white/90 backdrop-blur-sm mb-5">
+                <span
+                  className="mb-5 inline-flex h-[28px] items-center justify-center rounded-[14px] bg-[#FFDEE4] px-[12px] pl-[14px] text-[11px] font-medium leading-normal text-[#1E293B]"
+                  style={{ fontFamily: 'Inter, sans-serif' }}
+                >
                   {blog.category.name}
                 </span>
               ) : null}
@@ -659,14 +654,14 @@ export default function BlogDetailPage() {
               </h1>
 
               {/* Short description */}
-              <p className="mt-4 text-[15px] leading-[1.7] text-white/70 md:text-[16px]">
+              <p className="mb-[30px] pt-[20px] text-[15px] leading-[1.7] text-[#BEBEBE] md:text-[16px]">
                 {blog.shortDescription}
               </p>
 
-              {/* Author + meta */}
-              <div className="mt-6 flex flex-wrap items-center gap-4">
+              {/* Author + meta — same row; role breaks under name; icon + label on one line */}
+              <div className="mt-6 flex flex-wrap items-center justify-between gap-x-6 gap-y-4">
                 {blog.trainer ? (
-                  <div className="flex items-center gap-3">
+                  <div className="flex min-w-0 items-center gap-3">
                     <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-full bg-zinc-100 ring-2 ring-white/20">
                       <Image
                         src={blog.trainer.avatar?.url ?? DEFAULT_AUTHOR_AVATAR}
@@ -676,25 +671,46 @@ export default function BlogDetailPage() {
                         sizes="40px"
                       />
                     </div>
-                    <div>
-                      <p className="text-[14px] font-semibold text-white">{blog.trainer.name}</p>
-                      <p className="text-[12px] text-white/50">{blog.trainer.role}</p>
+                    <div className="min-w-0">
+                      <p className="text-[14px] font-semibold leading-tight text-white">{blog.trainer.name}</p>
+                      <p className="mt-0.5 text-[12px] leading-snug text-white">{blog.trainer.role}</p>
                     </div>
                   </div>
                 ) : null}
 
-                <div className="flex flex-wrap items-center gap-3 text-[13px] text-white/60">
-                  <span className="flex items-center gap-1.5">
-                    <CalendarIcon />
-                    {formatDate(blog.createdAt)}
+                <div className="flex flex-wrap items-start gap-x-5 gap-y-2 text-[13px] text-white">
+                  <span className="inline-flex flex-col items-start gap-1 text-left">
+                    <Image
+                      src="/images/calener_icon.png"
+                      alt=""
+                      width={16}
+                      height={16}
+                      className="h-4 w-4 shrink-0 object-contain"
+                      aria-hidden
+                    />
+                    <span>{formatDate(blog.createdAt)}</span>
                   </span>
-                  <span className="flex items-center gap-1.5">
-                    <EyeIcon />
-                    {blog.views.toLocaleString()} Views
+                  <span className="inline-flex flex-col items-start gap-1 text-left">
+                    <Image
+                      src="/images/eye-ic.png"
+                      alt=""
+                      width={16}
+                      height={16}
+                      className="h-4 w-4 shrink-0 object-contain"
+                      aria-hidden
+                    />
+                    <span>{blog.views.toLocaleString()} Views</span>
                   </span>
-                  <span className="flex items-center gap-1.5">
-                    <ClockIcon />
-                    {blog.readTimeMinutes} min read
+                  <span className="inline-flex flex-col items-start gap-1 text-left">
+                    <Image
+                      src="/images/time-icon.png"
+                      alt=""
+                      width={16}
+                      height={16}
+                      className="h-4 w-4 shrink-0 object-contain"
+                      aria-hidden
+                    />
+                    <span>{blog.readTimeMinutes} min read</span>
                   </span>
                 </div>
               </div>
@@ -791,7 +807,7 @@ export default function BlogDetailPage() {
               {/* Blog content */}
               <div
                 ref={contentRef}
-                className="max-w-none min-w-0 break-words space-y-4 text-[15px] leading-[1.8] text-muted [&_h2]:mt-6 [&_h2]:mb-1 [&_h2]:text-[22px] [&_h2]:font-extrabold [&_h2]:text-heading [&_h3]:mt-5 [&_h3]:text-[18px] [&_h3]:font-bold [&_h3]:text-heading [&_p]:mt-3 [&_ul]:mt-3 [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:mt-3 [&_ol]:list-decimal [&_ol]:pl-5 [&_li]:mt-1 [&_a]:text-brand [&_a]:underline [&_a]:break-all [&_strong]:font-semibold [&_strong]:text-heading [&_table]:mt-4 [&_table]:w-full [&_table]:overflow-hidden [&_table]:rounded-xl [&_table]:border [&_table]:border-zinc-200 [&_th]:bg-[#1A1A2E] [&_th]:px-4 [&_th]:py-3 [&_th]:text-left [&_th]:text-white [&_td]:border-t [&_td]:border-zinc-100 [&_td]:px-4 [&_td]:py-2.5 [&_img]:mt-4 [&_img]:rounded-xl [&_img]:max-w-full [&_pre]:overflow-x-auto [&_pre]:whitespace-pre-wrap [&_code]:break-words"
+                className="blog-article-content max-w-none min-w-0 break-words space-y-4 text-[15px] leading-[1.8] text-muted [&_h2]:mt-6 [&_h2]:mb-3 [&_h2]:text-[22px] [&_h2]:font-extrabold [&_h2]:text-heading [&_h3]:mt-5 [&_h3]:text-[18px] [&_h3]:font-bold [&_h3]:text-heading [&_p]:mt-3 [&_ul]:mt-3 [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:mt-3 [&_ol]:list-decimal [&_ol]:pl-5 [&_li]:mt-1 [&_a]:text-brand [&_a]:underline [&_a]:break-all [&_strong]:font-semibold [&_strong]:text-heading [&_table]:mt-4 [&_table]:w-full [&_table]:overflow-hidden [&_table]:rounded-xl [&_table]:border [&_table]:border-zinc-200 [&_th]:bg-[#1A1A2E] [&_th]:px-4 [&_th]:py-3 [&_th]:text-left [&_th]:text-white [&_td]:border-t [&_td]:border-zinc-100 [&_td]:px-4 [&_td]:py-2.5 [&_img]:mt-4 [&_img]:rounded-xl [&_img]:max-w-full [&_pre]:overflow-x-auto [&_pre]:whitespace-pre-wrap [&_code]:break-words"
                 style={{ overflowWrap: 'break-word' }}
                 dangerouslySetInnerHTML={{ __html: blog.content?.content ? sanitizeBlogContent(blog.content.content) : '' }}
               />
@@ -906,6 +922,7 @@ export default function BlogDetailPage() {
           maxCourses={6}
           initialVisibleCount={3}
           loadMoreStep={3}
+          mutedBackground
         />
       ) : null}
 
