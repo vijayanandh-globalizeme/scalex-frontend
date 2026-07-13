@@ -155,14 +155,40 @@ function HeroMediaColumn({
   figureSrc,
   figureAlt,
   badges,
+  aeroSrc = '/images/hero/aero-bg-v2.png',
+  aeroShiftRight = false,
 }: {
   figureSrc: string;
   figureAlt: string;
   badges: HeroBadge[];
+  aeroSrc?: string | null;
+  /** CSM only — nudge aero further right */
+  aeroShiftRight?: boolean;
 }) {
   return (
-    <div className="relative mx-auto w-full min-w-0 max-w-md overflow-visible lg:mx-0 lg:max-w-none">
+    <div className="relative mx-auto w-full min-w-0 max-w-md overflow-visible lg:mx-0 lg:max-w-none lg:-translate-x-[10%]">
       <div className="relative ml-auto mr-0 h-[537px] w-full max-w-[420px] overflow-visible lg:max-w-[480px]">
+        {aeroSrc ? (
+          <div
+            className="pointer-events-none absolute z-0 hidden lg:block"
+            style={{
+              top: 78,
+              right: aeroShiftRight ? -190 : -150,
+              width: 400,
+              height: 490,
+            }}
+            aria-hidden
+          >
+            <Image
+              src={aeroSrc}
+              alt=""
+              width={400}
+              height={490}
+              sizes="400px"
+              className="h-full w-full object-contain object-center"
+            />
+          </div>
+        ) : null}
         <div
           className="absolute right-5 bottom-0 z-[1] h-[537px] w-[min(100%,389px)] rounded-t-[400px] shadow-inner shadow-black/5"
           style={{
@@ -213,6 +239,8 @@ function RankedContent({ rankedContent, rankingLine }: { rankedContent?: string;
 export default function TechnicalCourseHeroSection(course: TechnicalCourseContent) {
   const {
     courseId,
+    slug,
+    categorySlug,
     breadcrumbs,
     heroTitle,
     featureRows,
@@ -226,6 +254,9 @@ export default function TechnicalCourseHeroSection(course: TechnicalCourseConten
     startedAt,
     brochureUrl,
   } = course;
+  const isCsmPage = slug === 'certified-scrum-master' && categorySlug === 'agile-and-scrum';
+  const isDevopsPage = slug === 'devops-certification-training' && categorySlug === 'devops';
+  const heroFigureSrc = isDevopsPage ? '/images/cc-1.png' : '/images/hero/person.png';
 
   const sectionRef = useRef<HTMLElement>(null);
   const rowRefs = useRef<(HTMLDivElement | null)[]>([]);
@@ -253,21 +284,14 @@ export default function TechnicalCourseHeroSection(course: TechnicalCourseConten
   return (
     <section
       ref={sectionRef}
-      className="full-bleed relative overflow-x-clip overflow-y-visible bg-surface pb-0 pt-8 md:pt-10"
+      className="full-bleed relative overflow-x-clip overflow-y-visible bg-[#F5F6F8] pb-0 pt-8 md:pt-10"
       aria-labelledby="technical-course-hero-heading"
     >
-      <div className="category-hero-bg pointer-events-none absolute inset-0" aria-hidden />
-      <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden>
-        <div className="absolute right-[6%] top-[10%] h-[54%] w-[46%] md:w-[33%] lg:w-[19%]">
-          <Image
-            src="/images/hero/aero-bg-v2.png"
-            alt=""
-            fill
-            sizes="(max-width: 768px) 46vw, (max-width: 1024px) 33vw, 400px"
-            className="object-contain object-center"
-          />
-        </div>
-      </div>
+      <div
+        className="category-hero-bg pointer-events-none absolute inset-0"
+        style={{ backgroundColor: '#F5F6F8' }}
+        aria-hidden
+      />
       <div className="site-container relative z-10">
         <nav aria-label="Breadcrumb" className="mb-6 flex flex-wrap items-center gap-2 text-[14px] font-medium">
           <Link href="/" className="text-muted transition hover:text-heading" aria-label="Home">
@@ -452,9 +476,10 @@ export default function TechnicalCourseHeroSection(course: TechnicalCourseConten
             className="gsap-reveal-pending"
           >
             <HeroMediaColumn
-              figureSrc="/images/hero/person.png"
+              figureSrc={heroFigureSrc}
               figureAlt="Technical course learner"
               badges={heroBadges}
+              aeroShiftRight={isCsmPage}
             />
             <div className="mt-6 flex justify-center">
               <div className="inline-flex flex-col items-start">

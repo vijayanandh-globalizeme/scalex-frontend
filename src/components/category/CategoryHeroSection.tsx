@@ -292,7 +292,7 @@ export default function CategoryHeroSection({
 
   return (
     <section
-      className="full-bleed relative overflow-visible pb-2 pt-6 md:pt-8"
+      className="full-bleed relative overflow-visible bg-[#F5F6F8] pb-2 pt-6 md:pt-8"
       aria-labelledby="category-hero-heading"
     >
       {/* Same light pink glow as contact-us — full bottom including center */}

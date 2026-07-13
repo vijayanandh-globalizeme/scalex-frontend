@@ -119,7 +119,8 @@ export default function CourseContentSection({
                     <div className="md:flex md:gap-3">
                       <span className="hidden h-4 w-4 shrink-0 md:block" aria-hidden />
                       <div
-                        className={`w-full min-w-0 rounded-lg bg-[#F8F9FB] p-5 md:flex-1 md:p-6 ${COURSE_ACCORDION_ANSWER} [&_h3]:mb-2 [&_h3]:mt-4 [&_h3]:text-[13px] [&_h3]:font-semibold [&_h3:first-child]:mt-0`}
+                        className={`w-full min-w-0 rounded-[20px] border border-[#F5F6F8] bg-[#F5F6F8] p-5 md:flex-1 md:p-6 ${COURSE_ACCORDION_ANSWER} [&_h3]:mb-2 [&_h3]:mt-4 [&_h3]:text-[13px] [&_h3]:font-semibold [&_h3:first-child]:mt-0`}
+                        style={{ fontFamily: 'Inter, sans-serif' }}
                         dangerouslySetInnerHTML={{ __html: module.content.replaceAll('&nbsp;', ' ') }}
                       />
                     </div>

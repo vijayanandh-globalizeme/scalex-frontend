@@ -119,7 +119,8 @@ export default function CourseFaqsSection({ faqs, title }: { faqs: FaqGroup[]; t
                 <div className={`${COURSE_ACCORDION_INNER} ${isOpen ? COURSE_ACCORDION_INNER_OPEN : COURSE_ACCORDION_INNER_CLOSED}`}>
                   <div className="px-5 pb-5 md:px-6">
                     <div
-                      className={`w-full rounded-lg bg-[#F8F9FB] p-5 md:ml-[5%] md:w-[95%] md:p-6 ${COURSE_ACCORDION_ANSWER} [&_h3]:mb-2 [&_h3]:mt-4 [&_h3]:text-[13px] [&_h3]:font-semibold [&_h3:first-child]:mt-0`}
+                      className={`w-full rounded-[20px] border border-[#F5F6F8] bg-[#F5F6F8] p-5 md:ml-[5%] md:w-[95%] md:p-6 ${COURSE_ACCORDION_ANSWER} [&_h3]:mb-2 [&_h3]:mt-4 [&_h3]:text-[13px] [&_h3]:font-semibold [&_h3:first-child]:mt-0`}
+                      style={{ fontFamily: 'Inter, sans-serif' }}
                       dangerouslySetInnerHTML={{ __html: item.content.replaceAll('&nbsp;', ' ') }}
                     />
                   </div>

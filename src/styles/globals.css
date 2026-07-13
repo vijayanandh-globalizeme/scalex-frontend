@@ -111,12 +111,19 @@ body {
   /* Course Content + FAQ accordion answer HTML (overrides CMS inline muted color) */
   .course-accordion-answer {
     color: #4a5867;
-    font-size: 13px;
-    line-height: 1.625;
+    font-family: Inter, sans-serif;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
   }
 
   .course-accordion-answer :where(p, li, span, div, td, blockquote, em, strong, ul, ol) {
     color: #4a5867 !important;
+    font-family: Inter, sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: normal;
   }
 
   .course-accordion-answer :where(h1, h2, h3, h4, h5, h6) {
@@ -209,7 +216,7 @@ body {
   .category-hero-bg {
     inset: 0;
     width: 100%;
-    background-color: #ffffff;
+    background-color: #F5F6F8 !important;
     background-image:
       linear-gradient(
         to top,
@@ -217,26 +224,27 @@ body {
         rgba(255, 201, 211, 0.42) 18%,
         rgba(255, 201, 211, 0.22) 35%,
         rgba(255, 201, 211, 0.08) 55%,
-        transparent 70%
+        #F5F6F8 70%,
+        #F5F6F8 100%
       ),
       radial-gradient(
         ellipse 80% 90% at 50% 100%,
         rgba(255, 201, 211, 0.4) 0%,
         rgba(255, 201, 211, 0.18) 40%,
-        transparent 70%
+        #F5F6F8 70%
       ),
       radial-gradient(
         ellipse 70% 85% at 0% 100%,
         rgba(255, 201, 211, 0.38) 0%,
         rgba(255, 201, 211, 0.14) 42%,
-        transparent 72%
+        #F5F6F8 72%
       ),
       radial-gradient(
         ellipse 70% 85% at 100% 100%,
         rgba(255, 201, 211, 0.38) 0%,
         rgba(255, 201, 211, 0.14) 42%,
-        transparent 72%
-      );
+        #F5F6F8 72%
+      ) !important;
   }
 
   .header-fluid-text {

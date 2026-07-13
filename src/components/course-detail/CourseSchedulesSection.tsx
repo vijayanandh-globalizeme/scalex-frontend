@@ -810,18 +810,6 @@ export default function CourseSchedulesSection({
         ) : null}
       </div>
 
-      {!isTechnical && effectivePlansData && effectivePlansData.plans.length >= 2 ? (
-        <div className="mt-8">
-          <CoursePlanComparisonSection
-            plans={effectivePlansData.plans}
-            features={effectivePlansData.features}
-            batch={comparisonBatch ?? effectivePlansData.batch ?? null}
-            fallbackBatch={effectivePlansData.batch ?? null}
-            courseId={courseId}
-          />
-        </div>
-      ) : null}
-
       {/* Enroll modal */}
       {enrollModalOpen ? (
         <div

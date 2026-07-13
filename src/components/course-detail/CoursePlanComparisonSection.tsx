@@ -9,7 +9,7 @@ const SECTION_CARD =
   'rounded-[20px] border border-[#EBEBEB] bg-white shadow-[0_4px_4px_0_rgba(30,41,59,0.08),0_4px_4px_0_rgba(30,41,59,0.03)]';
 
 const ELITE_COLUMN_BG =
-  'bg-[linear-gradient(90deg,rgba(255,239,242,0.5)_0%,rgba(255,255,255,0)_100%)]';
+  'border-l border-l-[1px] border-l-[#FD022D]/35 bg-[linear-gradient(90deg,rgba(255,220,228,0.75)_0%,rgba(255,239,242,0.45)_100%)]';
 
 function formatPrice(amount: number, currencySymbol: string) {
   return `${currencySymbol}${amount.toLocaleString('en-IN')}`;
@@ -93,11 +93,11 @@ function PlanCard({
       }`}
     >
       {plan.isTrending ? (
-        <span className="absolute top-3 right-3 rounded-lg bg-[#FFF6F7] px-2 py-0.5 text-[10px] font-medium leading-normal text-[#FD022D]">
+        <span className="absolute top-3 right-3 inline-flex h-[30px] items-center rounded-[8px] bg-[#FFF2F2] px-2.5 text-[10px] font-medium leading-normal text-[#FD022D]">
           Trending
         </span>
       ) : pct > 0 ? (
-        <span className="absolute top-3 right-3 rounded-lg bg-[#FFF6F7] px-2 py-0.5 text-[10px] font-medium leading-normal text-[#FD022D]">
+        <span className="absolute top-3 right-3 inline-flex h-[30px] items-center rounded-[8px] bg-[#FFF2F2] px-2.5 text-[10px] font-medium leading-normal text-[#FD022D]">
           {pct}% Off
         </span>
       ) : null}

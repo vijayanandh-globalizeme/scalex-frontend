@@ -33,7 +33,7 @@ function TrainerCard({ trainer }: { trainer: ApiTrainer }) {
 
   return (
     <article className={TRAINER_CARD}>
-      <div className="interactive-card-media absolute top-0 left-1/2 h-[72px] w-[72px] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-full border-[3px] border-[#FFF6F7] bg-zinc-100">
+      <div className="interactive-card-media absolute top-0 left-1/2 h-[72px] w-[72px] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-full border border-[#FD022D] bg-zinc-100">
         <Image
           src={trainer.avatar?.url ?? '/images/avatar-placeholder.png'}
           alt={trainer.name}
@@ -46,13 +46,13 @@ function TrainerCard({ trainer }: { trainer: ApiTrainer }) {
 
       <h3 className="interactive-card-title text-[20px] font-semibold leading-normal text-heading">{trainer.name}</h3>
       <p className="mt-1 text-[14px] font-medium leading-normal text-[#FD022D]">{trainer.role}</p>
-      <p className="mt-3 line-clamp-4 text-[14px] font-normal leading-normal text-muted">{trainer.about}</p>
+      <p className="mt-3 line-clamp-4 text-left text-[14px] font-normal leading-normal text-muted">{trainer.about}</p>
 
-      <div className="mt-4 border-t border-[#EBEBEB] pt-4">
-        <div className="flex flex-col items-center gap-2">
+      <div className="mt-5 border-t border-[#EBEBEB] pt-4">
+        <div className="flex w-full flex-row flex-wrap items-center justify-between gap-2">
           <p className="text-[12px] font-normal leading-normal text-muted uppercase">Associated with</p>
           {trainer.assocWith ? (
-            <div className="relative flex h-9 min-w-[106px] items-center justify-center">
+            <div className="relative flex h-9 min-w-[106px] items-center justify-end">
               <Image
                 src={trainer.assocWith.url}
                 alt={trainer.name}
@@ -66,11 +66,11 @@ function TrainerCard({ trainer }: { trainer: ApiTrainer }) {
         </div>
       </div>
 
-      <div className="mt-4 flex w-full items-center gap-2.5 rounded-lg bg-[#F5F6F8] px-3 py-2 text-left">
-        <span className="text-muted"><BriefcaseIcon /></span>
-        <span>
+      <div className="mt-4 flex w-full items-center gap-[20px] rounded-lg bg-[#F5F6F8] px-[10px] py-2 text-left">
+        <span className="shrink-0 text-muted"><BriefcaseIcon /></span>
+        <span className="flex flex-col gap-[3px]">
           <span className="block text-[10px] leading-normal text-muted">Experience</span>
-          <span className="block text-[12px] font-semibold leading-normal text-heading">{experienceValue}</span>
+          <span className="block text-[14px] font-medium leading-normal text-[#1E293B]" style={{ fontFamily: 'Inter, sans-serif' }}>{experienceValue}</span>
         </span>
       </div>
 
@@ -78,10 +78,11 @@ function TrainerCard({ trainer }: { trainer: ApiTrainer }) {
         href={trainer.linkedInProfile}
         target="_blank"
         rel="noopener noreferrer"
-        className="mt-4 inline-flex items-center justify-center gap-1.5 text-[12px] font-medium text-brand transition hover:underline"
+        className="mt-4 inline-flex items-center justify-center gap-1.5 text-[14px] font-medium leading-[18px] text-[#FD022D] transition hover:underline"
+        style={{ fontFamily: 'Inter, sans-serif' }}
       >
         View Profile on
-        <Image src="/images/linked.png" alt="" width={16} height={16} className="h-4 w-4 shrink-0 object-contain" aria-hidden />
+        <Image src="/images/linked.png" alt="" width={22} height={22} className="h-[22px] w-[22px] shrink-0 object-contain" aria-hidden />
       </Link>
     </article>
   );

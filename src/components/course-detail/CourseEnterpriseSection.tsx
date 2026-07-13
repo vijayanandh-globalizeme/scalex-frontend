@@ -87,7 +87,7 @@ export function CourseEnterpriseCard({
 export default function CourseEnterpriseSection({ compact = false }: { compact?: boolean }) {
   return (
     <section
-      className={`full-bleed relative z-0 overflow-visible bg-white pb-10 md:pb-12 ${
+      className={`full-bleed relative z-0 overflow-visible bg-[#F5F6F8] pb-10 md:pb-12 ${
         compact ? 'pt-12 md:pt-14' : 'pt-10 md:pt-40'
       }`}
       aria-hidden
