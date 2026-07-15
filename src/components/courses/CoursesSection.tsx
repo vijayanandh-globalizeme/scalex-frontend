@@ -192,8 +192,11 @@ export function CourseCard({
           className="object-cover"
         />
         {course.isBestSeller && (
-          <span className="absolute top-0 right-0 inline-flex items-center gap-1 bg-brand px-3 py-1.5 text-[11px] font-bold uppercase tracking-widest text-white shadow-lg" style={{ borderBottomLeftRadius: '10px' }}>
-            <svg width="11" height="11" viewBox="0 0 16 16" fill="none" aria-hidden>
+          <span
+            className="absolute left-3 top-3 inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[11px] font-semibold text-white shadow-[0_4px_12px_rgba(253,2,45,0.35)] ring-1 ring-white/25"
+            style={{ background: 'linear-gradient(135deg, #FD022D 0%, #FF7A45 100%)' }}
+          >
+            <svg width="10" height="10" viewBox="0 0 16 16" fill="none" aria-hidden>
               <path d="M8 0L9.8 5.6H16L11 8.9L12.9 14.5L8 11.2L3.1 14.5L5 8.9L0 5.6H6.2L8 0Z" fill="white"/>
             </svg>
             Best Seller

@@ -13,7 +13,7 @@ export default function AboutPage() {
       <AboutHero />
 
       {/* Our Journey of Growth and Impact */}
-      <section className="full-bleed relative overflow-hidden py-16 md:py-20" style={{ background: '#141414' }}>
+      <section className="full-bleed relative overflow-hidden py-16" style={{ background: '#141414' }}>
         {/* Cross icon bottom right */}
         <div className="pointer-events-none absolute right-0 bottom-0" aria-hidden>
           <Image src="/images/cros.png" alt="" width={220} height={220} className="object-contain" />
@@ -54,7 +54,7 @@ export default function AboutPage() {
       </section>
 
       {/* Who We Are */}
-      <section className="full-bleed bg-white py-16 md:py-20">
+      <section className="full-bleed bg-white py-16 md:py-20 md:pb-10">
         <div className="site-container">
           <div className="grid items-center gap-12 lg:grid-cols-2">
             <div className="relative overflow-hidden rounded-2xl" style={{ height: '380px' }}>
@@ -76,7 +76,7 @@ export default function AboutPage() {
       </section>
 
       {/* What We Do */}
-      <section className="full-bleed bg-white py-16 md:py-20">
+      <section className="full-bleed bg-white py-16 md:py-20 md:pt-10">
         <div className="site-container">
           <div className="mb-12 text-center">
             <h2 style={{ color: '#1E293B', fontFamily: 'Inter', fontSize: '36px', fontWeight: 700, lineHeight: '1.2' }}>What We Do</h2>
@@ -115,7 +115,7 @@ export default function AboutPage() {
       </section>
 
       {/* What Drives Us Every Day */}
-      <section className="full-bleed bg-surface pt-10 pb-16 md:py-20">
+      <section className="full-bleed bg-surface pt-10 pb-16 md:py-20  md:pb-10">
         <div className="site-container">
           <h2 className="mb-10 text-center" style={{ color: '#1E293B', fontFamily: 'Inter', fontSize: '36px', fontWeight: 700 }}>
             What Drives Us Every Day
@@ -156,7 +156,7 @@ export default function AboutPage() {
       </section>
 
       {/* The Minds Behind Scale X Learning */}
-      <section className="full-bleed bg-surface pt-10 pb-16 md:py-20">
+      <section className="full-bleed bg-surface pt-10 pb-16 md:py-20 md:pt-10 md:pb-10">
         <div className="site-container">
           <div className="mb-10 text-center">
             <h2 style={{ color: '#1E293B', fontFamily: 'Inter', fontSize: '36px', fontWeight: 700 }}>The Minds Behind Scale X Learning</h2>

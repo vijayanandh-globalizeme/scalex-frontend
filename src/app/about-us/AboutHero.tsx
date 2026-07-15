@@ -14,7 +14,7 @@ export default function AboutHero() {
   useGsapScrollReveal(heroRef, heroImagesRef, { y: 50, duration: 1.4, delay: 0.3, start: 'top 95%' });
 
   return (
-    <section ref={heroRef} className="full-bleed relative overflow-x-clip overflow-y-visible pb-12 pt-[55px] md:pb-20 md:pt-[75px] lg:pb-24">
+    <section ref={heroRef} className="full-bleed relative overflow-x-clip overflow-y-visible pb-12 pt-[55px] md:pt-[75px]">
       <div className="category-hero-bg pointer-events-none absolute inset-0" aria-hidden />
 
       <div className="site-container relative z-10">
