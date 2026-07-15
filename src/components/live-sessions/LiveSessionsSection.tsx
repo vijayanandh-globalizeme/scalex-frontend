@@ -142,7 +142,7 @@ export default function LiveSessionsSection() {
   const cols = useGridColumns();
 
   useEffect(() => {
-    getWebinars(10).then((data) => {
+    getWebinars(3).then((data) => {
       setSessions(data.map(mapWebinar));
     });
   }, []);
