@@ -262,7 +262,7 @@ export default function SuccessStoriesSection({
         <header className="relative mx-auto w-fit max-w-full pt-6 text-center md:pt-8 lg:pt-10">
           <h2
             id="success-stories-heading"
-            className="section-heading text-heading"
+            className="section-heading scroll-mt-24 text-heading"
           >
             {heading}
           </h2>

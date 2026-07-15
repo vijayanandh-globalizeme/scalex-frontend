@@ -12,15 +12,18 @@ const COLUMN_GROUPS: { title: string; links: { label: string; href: string }[] }
   {
     title: 'Company',
     links: [
-      { label: 'About us', href: 'about-us' },
-      { label: 'Contact us', href: 'contact-us' },
+      { label: 'About us', href: '/about-us' },
+      { label: 'Reviews', href: '/#success-stories-heading' },
+      { label: 'Trainers', href: '/#mentors-heading' },
+      { label: 'Corporate training', href: '/#workforce-heading' },
     ],
   },
   {
-    title: 'Discover',
+    title: 'Support',
     links: [
-      { label: 'Trainers', href: '#' },
-      { label: 'Help Center', href: '#' },
+      { label: 'Contact us', href: '/contact-us' },
+      { label: 'Become a Instructor', href: '/contact-us#become-instructor' },
+      { label: 'Become a Training partner', href: '/contact-us#become-trainer' },
     ],
   },
   {

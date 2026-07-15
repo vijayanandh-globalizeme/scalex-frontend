@@ -204,65 +204,95 @@ export default function ContactPageClient({
         </div>
       </section>
 
-      {/* Our Presence Section */}
+      {/* Enquiry Section */}
       <section className="full-bleed bg-[#F5F6F8] py-14 md:py-20">
         <div className="site-container">
           <div className="mb-10 text-center">
             <h2 style={{ color: '#1E293B', fontFamily: 'Inter', fontSize: '32px', fontWeight: 700, lineHeight: '1.2' }}>
-              Our Presence
+              Enquiry
             </h2>
             <p className="mt-2 text-[15px]" style={{ color: '#788593', fontFamily: 'Inter', fontWeight: 400 }}>
-              We are the right ones that leaps your career
+              We&apos;re here to help
             </p>
           </div>
 
-          <div className="flex flex-col lg:flex-row lg:items-stretch lg:justify-between" style={{ gap: '30px' }}>
-            <div className="flex flex-col justify-between rounded-2xl bg-white p-8 shadow-sm lg:shrink-0" style={{ width: '420px', maxWidth: '100%' }}>
-              <div>
-                <div className="flex items-center gap-2">
-                  <span className="text-xl">🇮🇳</span>
-                  <span style={{ color: '#1E293B', fontFamily: 'Inter', fontSize: '17px', fontWeight: 700 }}>
-                    Bengaluru, India
-                  </span>
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {[
+              {
+                icon: 'fa-comment-dots',
+                title: 'Chat with us',
+                desc: 'For a Quick Answers to your queries, chat with us',
+                cta: 'Initiate Chat',
+                href: whatsappHref,
+                external: true,
+              },
+              {
+                icon: 'fa-book-open',
+                title: 'For Individual Learners',
+                desc: 'Feel free to mail us for all your queries',
+                cta: 'Mail Us',
+                href: `mailto:${email}`,
+              },
+              {
+                icon: 'fa-building',
+                title: 'For Enterprise Learners',
+                desc: 'Mail us for all your queries',
+                cta: 'Mail Us',
+                href: `mailto:${email}`,
+              },
+              {
+                id: 'become-instructor',
+                icon: 'fa-chalkboard-user',
+                title: 'Become an Instructor',
+                desc: 'Drop us a line, and we will be happy to assist',
+                cta: 'Mail Us',
+                href: `mailto:${email}`,
+              },
+              {
+                id: 'become-trainer',
+                icon: 'fa-handshake',
+                title: 'Training Partners',
+                desc: 'Feel free to ping us with your inquiries',
+                cta: 'Mail Us',
+                href: `mailto:${email}`,
+              },
+              {
+                icon: 'fa-file-invoice-dollar',
+                title: 'Billing Related',
+                desc: 'Feel free to ping for all your queries',
+                cta: 'Mail Us',
+                href: `mailto:${email}`,
+              },
+            ].map((card) => (
+              <div
+                key={card.title}
+                id={card.id}
+                className="flex flex-col items-center rounded-2xl bg-white p-8 text-center shadow-sm scroll-mt-24"
+              >
+                <div className="flex h-14 w-14 items-center justify-center rounded-2xl" style={{ background: '#EEF3FF' }}>
+                  <i className={`fa-solid ${card.icon}`} style={{ color: '#2563EB', fontSize: '22px' }} aria-hidden />
                 </div>
-                <div className="mt-2 h-[3px] w-10 rounded-full bg-brand" />
 
-                <div className="mt-6">
-                  <p style={{ color: '#1E293B', fontFamily: 'Inter', fontSize: '14px', fontWeight: 700 }}>
-                    Scale X Learning Pvt. Ltd.
-                  </p>
-                  <p className="mt-2" style={{ color: '#788593', fontFamily: 'Inter', fontSize: '14px', fontWeight: 400, lineHeight: '22px' }}>
-                    {addressFull || '4th Floor, Koramangala Industrial Layout, Koramangala, Bengaluru, Karnataka 560034'}
-                  </p>
-                </div>
+                <p className="mt-5" style={{ color: '#1E293B', fontFamily: 'Inter', fontSize: '18px', fontWeight: 700 }}>
+                  {card.title}
+                </p>
+                <p className="mt-2" style={{ color: '#788593', fontFamily: 'Inter', fontSize: '14px', fontWeight: 400, lineHeight: '22px' }}>
+                  &ldquo;{card.desc}&rdquo;
+                </p>
+
+                <a
+                  href={card.href}
+                  {...(card.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+                  className="btn-brand group mt-6 h-11 gap-2 px-5 inline-flex items-center"
+                  style={{ fontSize: '14px', fontWeight: 600, fontFamily: 'Inter' }}
+                >
+                  {card.cta}
+                  <svg width="16" height="13" viewBox="0 0 18 15" fill="none" aria-hidden className="btn-arrow-icon shrink-0">
+                    <path d="M10.6333 15C10.8659 15 11.0694 14.9109 11.2633 14.7229L17.7092 8.16292C17.903 7.97492 18 7.74735 18 7.49999C18 7.25263 17.903 7.02506 17.7092 6.83707L11.2827 0.296834C11.0694 0.0791556 10.8659 0 10.6333 0C10.1583 0 9.78996 0.3562 9.78996 0.850923C9.78996 1.08839 9.86751 1.31596 10.0226 1.47428L12.1939 3.73021L16.2358 7.49999L12.1939 11.2697L10.0226 13.5257C9.86751 13.6741 9.78996 13.9116 9.78996 14.149C9.78996 14.6438 10.1583 15 10.6333 15ZM0.852987 8.3806H13.1147L16.2358 8.18271C16.6332 8.15303 16.9046 7.90566 16.9046 7.49999C16.9046 7.09432 16.6332 6.84696 16.2358 6.81728L13.1147 6.61938H0.852987C0.348949 6.61938 0 6.98548 0 7.49999C0 8.01451 0.348949 8.3806 0.852987 8.3806Z" fill="white" />
+                  </svg>
+                </a>
               </div>
-
-              <div className="my-6 border-t border-zinc-200" />
-
-              <div className="space-y-3">
-                <div className="flex items-center gap-3">
-                  <Image src="/images/ph.png" alt="" width={18} height={18} className="object-contain shrink-0" />
-                  <span style={{ color: '#1E293B', fontFamily: 'Inter', fontSize: '14px', fontWeight: 500 }}>
-                    {phone}
-                  </span>
-                </div>
-                <div className="flex items-center gap-3">
-                  <Image src="/images/email.png" alt="" width={18} height={18} className="object-contain shrink-0" />
-                  <span style={{ color: '#E0001B', fontFamily: 'Inter', fontSize: '14px', fontWeight: 500 }}>
-                    {email}
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            <div className="relative min-h-[280px] overflow-hidden rounded-2xl lg:min-h-0 flex-1" style={{ maxWidth: '850px' }}>
-              <Image
-                src="/images/rit.png"
-                alt="Bengaluru, Karnataka — EdgeX Learning HQ"
-                fill
-                className="object-cover"
-              />
-            </div>
+            ))}
           </div>
         </div>
       </section>

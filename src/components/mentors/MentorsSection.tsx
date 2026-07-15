@@ -142,7 +142,7 @@ export default function MentorsSection({
         <header className="w-full text-center">
           <h2
             id="mentors-heading"
-            className="section-heading text-center text-heading"
+            className="section-heading scroll-mt-24 text-center text-heading"
           >
             {heading}
           </h2>

@@ -181,7 +181,7 @@ export default function WorkforceSection({
           <div className="text-white min-[1100px]:ml-auto min-[1100px]:w-full min-[1100px]:max-w-[560px] min-[1100px]:justify-self-end">
             <h2
               id="workforce-heading"
-              className="section-heading font-extrabold leading-tight md:text-[34px] lg:text-[36px]"
+              className="section-heading scroll-mt-24 font-extrabold leading-tight md:text-[34px] lg:text-[36px]"
             >
               {headingBefore}
               <span className="mx-2 inline-block align-middle whitespace-nowrap" aria-label={brandLogo.alt}>
