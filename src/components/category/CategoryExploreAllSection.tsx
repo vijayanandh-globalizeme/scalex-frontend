@@ -69,7 +69,7 @@ function CategoryCard({ item }: { item: ExploreCategoryItem }) {
   );
 }
 
-const MOBILE_PAGE_SIZE = 4;
+const MOBILE_PAGE_SIZE = 2;
 const DESKTOP_PAGE_SIZE = 8;
 
 const ICON_COLORS = ['#E95A58', '#7C3AED', '#2563EB', '#0D9488', '#1E293B', '#16A34A', '#F97316', '#0891B2'];
@@ -135,7 +135,7 @@ export default function CategoryExploreAllSection({ excludeId }: { excludeId?: s
 
   return (
     <section
-      className="full-bleed overflow-visible bg-surface pb-6 pt-0 md:pb-8 md:pt-16"
+      className="full-bleed overflow-visible bg-surface pb-6 pt-6 md:pb-8 md:pt-16"
       aria-labelledby="explore-categories-heading"
     >
       <div className="site-container">
