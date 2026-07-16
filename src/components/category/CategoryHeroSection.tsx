@@ -196,7 +196,7 @@ function LearnersBlock({ count, label, avatarSrcs }: CategoryLearnersStat) {
 
 function FeatureList({ features }: { features: string[] }) {
   return (
-    <ul className="mt-6 grid grid-cols-1 gap-x-20 gap-y-3 sm:grid-cols-2 lg:gap-x-32" role="list">
+    <ul className="mt-6 grid grid-cols-1 gap-x-20 gap-y-3 lg:gap-x-32" role="list">
       {features.map((feature, i) => (
         <li key={i} className="flex min-w-0 items-start gap-2.5">
           <CheckIcon className="mt-0.5 shrink-0" />
@@ -345,7 +345,6 @@ export default function CategoryHeroSection({
                 {reviews.map((review) => (
                   <ReviewBlock key={review.id} review={review} />
                 ))}
-                <LearnersBlock {...learnersStat} />
               </div>
             )}
 

@@ -49,7 +49,7 @@ export default async function CategoryPage({ params }: PageProps) {
   if (!category) notFound();
 
   const settings = settingsData ?? {};
-  const isAgileScrum = categoryUri === 'agile-and-scrum';
+  const isAgileScrum = true;
   const agileHeroBadges = [
     {
       id: 'learners-1',
