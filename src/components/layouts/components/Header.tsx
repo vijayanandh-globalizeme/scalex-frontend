@@ -6,6 +6,7 @@ import HeaderSearch from './HeaderSearch';
 import NavDropdown from './NavDropdown';
 import type { MegaMenuCategory } from '@/lib/allCoursesMegaMenu';
 import type { OtherMenu } from '@/services/layoutApi';
+import { RESOURCES_ITEMS } from '@/lib/headerStaticNav';
 
 function SignInArrow({ className }: { className?: string }) {
   return (
@@ -35,12 +36,6 @@ function SignInArrow({ className }: { className?: string }) {
 
 const navLinkClass =
   'header-fluid-text flex h-10 items-center gap-1 px-1.5 py-0 font-normal not-italic tracking-[-0.16px] whitespace-nowrap max-[1399px]:px-1.5 min-[1400px]:px-2.5';
-
-// Static (non admin-managed) nav — always shown alongside the admin-configured "Other Menus".
-const RESOURCES_ITEMS = [
-  { label: 'Blog', href: '/blogs' },
-  { label: 'About Us', href: '/about-us' },
-] as const;
 
 const Header = ({
   megaMenuCategories,

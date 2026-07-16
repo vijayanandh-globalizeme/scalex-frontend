@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import HeaderSearch from './HeaderSearch';
+import { RESOURCES_ITEMS } from '@/lib/headerStaticNav';
 import type { NavDropdownItem } from './NavDropdown';
 import type { MegaMenuCategory } from '@/lib/allCoursesMegaMenu';
 import type { OtherMenu } from '@/services/layoutApi';
@@ -273,14 +274,10 @@ export default function HeaderMobileMenu({
                   <MobileNavSection key={menu.title} label={menu.title} items={menu.items} onNavigate={closeMenu} />
                 ))}
 
+                {/* Level 1 → Level 2 — static Resources (Blog, About Us), mirrors desktop */}
+                <MobileNavSection label="Resources" items={RESOURCES_ITEMS} onNavigate={closeMenu} />
+
                 {/* Level 1 — direct links */}
-                <Link
-                  href="/about-us"
-                  onClick={closeMenu}
-                  className="header-fluid-text block border-b border-zinc-100 py-4 text-[15px] font-semibold text-ink hover:text-brand"
-                >
-                  About Us
-                </Link>
                 <Link
                   href="/contact-us"
                   onClick={closeMenu}
