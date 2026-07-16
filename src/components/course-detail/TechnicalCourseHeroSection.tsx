@@ -364,21 +364,21 @@ export default function TechnicalCourseHeroSection(course: TechnicalCourseConten
                         height={20}
                         className="h-5 w-5 shrink-0 object-contain"
                       />
-                      <span className="text-[13px] font-semibold text-heading">
+                      <span className="text-[16px] font-semibold text-heading">
                         {formatRating(googleReview.rating)}
                       </span>
                     </span>
                   ) : null}
                   {trustpilotReview ? (
                     <span className="inline-flex items-center gap-1.5">
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden className="shrink-0">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden className="shrink-0">
                         <path
                           d="M12 1.5l2.9 7.2 7.8.7-5.9 5 1.8 7.6L12 18.6l-6.6 3.4 1.8-7.6-5.9-5 7.8-.7L12 1.5z"
                           fill="#00B67A"
                         />
                         <path d="M12 16.2l3.9 2 1.1-4.5-3.5-2.9V16.2z" fill="#005128" />
                       </svg>
-                      <span className="text-[13px] font-semibold text-heading">
+                      <span className="text-[16px] font-semibold text-heading">
                         {formatRating(trustpilotReview.rating)}
                       </span>
                     </span>

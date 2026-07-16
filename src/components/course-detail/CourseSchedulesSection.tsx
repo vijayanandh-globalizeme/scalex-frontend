@@ -1,11 +1,12 @@
 'use client';
 
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import { useState, useRef, useEffect, useMemo, type ReactNode } from 'react';
 import { getCourseBatches, getCoursePlans, getCourseTrainers } from '@/app/actions/courseActions';
 import CourseFeeSection from './CourseFeeSection';
 import CourseCareerAssuranceSection from './CourseCareerAssuranceSection';
-import CoursePlanComparisonSection from './CoursePlanComparisonSection';
+import CoursePlanComparisonSection, { buildActivePlans } from './CoursePlanComparisonSection';
 import CourseBatchRequestBanner from './CourseBatchRequestBanner';
 import CourseBrochureCta from './CourseBrochureCta';
 import { CUSTOMIZE_BATCH_BANNER } from '@/lib/courseDetailStatics';
@@ -324,9 +325,12 @@ const SCHEDULE_CARD =
   'interactive-card relative overflow-hidden rounded-[20px] border border-[#EBEBEB] bg-white';
 
 function formatDate(iso: string) {
+  // Pin to UTC so server and client always agree on the calendar day, regardless of
+  // either environment's local timezone (mismatched TZ ⇒ hydration error near midnight).
   return new Date(iso).toLocaleDateString('en-US', {
-    month: 'long',
-    day: 'numeric',
+    month: 'short',
+    day: '2-digit',
+    timeZone: 'UTC',
   });
 }
 
@@ -424,6 +428,7 @@ function ScheduleCard({ batch, quantity, onQuantityChange, onEnroll }: {
   const startLabel = formatDate(batch.startDate);
   const endLabel = formatDate(batch.endDate);
   const dateRange = startLabel === endLabel ? startLabel : `${startLabel} - ${endLabel}`;
+  const isSoldOut = batch.availability === 'SOLD_OUT';
   const timeLabel = `${batch.timezone}: ${formatTime(batch.startTime)} - ${formatTime(batch.endTime)}`;
   const dayLabel = batch.dayType === 'WEEKDAY' ? 'Weekday Batch' : 'Weekend Batch';
   const tod = getTimeOfDay(batch.startTime);
@@ -519,14 +524,20 @@ function ScheduleCard({ batch, quantity, onQuantityChange, onEnroll }: {
               <span className="text-zinc-300" aria-hidden>|</span>
               <span>24/7<br />Support</span>
             </div>
-            <button
-              type="button"
-              onClick={() => onEnroll?.(batch, quantity)}
-              className="btn-brand mt-3 inline-flex w-[139px] items-center justify-center gap-[11px] px-4 py-[11px] text-[14px] font-medium leading-[18px] max-md:mt-0 max-md:w-auto max-md:gap-1 max-md:px-3 max-md:py-2 max-md:text-[11px]"
-            >
-              Enroll Now
-              <ArrowRightIcon className="btn-arrow-icon shrink-0 text-white max-md:h-3 max-md:w-3" />
-            </button>
+            {isSoldOut ? (
+              <span className="mt-3 inline-flex w-[139px] items-center justify-center rounded-lg bg-zinc-100 px-4 py-[11px] text-[14px] font-medium leading-[18px] text-muted max-md:mt-0 max-md:w-auto max-md:px-3 max-md:py-2 max-md:text-[11px]">
+                Sold Out
+              </span>
+            ) : (
+              <button
+                type="button"
+                onClick={() => onEnroll?.(batch, quantity)}
+                className="btn-brand mt-3 inline-flex w-[139px] items-center justify-center gap-[11px] px-4 py-[11px] text-[14px] font-medium leading-[18px] max-md:mt-0 max-md:w-auto max-md:gap-1 max-md:px-3 max-md:py-2 max-md:text-[11px]"
+              >
+                Enroll Now
+                <ArrowRightIcon className="btn-arrow-icon shrink-0 text-white max-md:h-3 max-md:w-3" />
+              </button>
+            )}
           </div>
         </div>
       </div>
@@ -579,6 +590,7 @@ export default function CourseSchedulesSection({
   const INITIAL_LIMIT = 3;
   const LOAD_MORE_LIMIT = 5;
 
+  const router = useRouter();
   const isTechnical = variant === 'technical';
   const [batches, setBatches] = useState<ApiCourseBatch[]>([]);
   const [total, setTotal] = useState(0);
@@ -600,17 +612,6 @@ export default function CourseSchedulesSection({
       setQuantities(Object.fromEntries(result.batches.map((b) => [b.id, 1])));
     });
     getCoursePlans(courseUri, categoryUri).then((data) => {
-      console.log('[Course Plans API]', {
-        courseUri,
-        categoryUri,
-        endpoint: `course/${courseUri}/plans?categoryUri=${categoryUri}`,
-        plansCount: data?.plans?.length ?? 0,
-        plans: data?.plans,
-        featuresCount: data?.features?.length ?? 0,
-        batch: data?.batch,
-        moneyBack: data?.moneyBack,
-        raw: data,
-      });
       setPlansData(data);
     });
   }, [courseUri, categoryUri]);
@@ -629,6 +630,18 @@ export default function CourseSchedulesSection({
   }
 
   function handleEnroll(batch: ApiCourseBatch, quantity: number = 1) {
+    const activePlans = effectivePlansData
+      ? buildActivePlans(effectivePlansData.plans, batch, quantity, effectivePlansData.batch ?? null)
+      : [];
+
+    // Only plan1 priced (plan2/plan3 absent) → skip the plan picker and go straight to checkout.
+    if (activePlans.length === 1) {
+      const params = new URLSearchParams({ batchId: batch.id, planNumber: String(activePlans[0].plan.planNumber) });
+      if (courseId) params.set('courseId', courseId);
+      router.push(`/checkout?${params.toString()}`);
+      return;
+    }
+
     setEnrollBatch(batch);
     setEnrollQuantity(quantity);
     setEnrollModalOpen(true);
@@ -661,33 +674,10 @@ export default function CourseSchedulesSection({
 
   const comparisonBatch = visibleBatches[0] ?? batches[0] ?? null;
 
-  const { data: effectivePlansData, source: plansDataSource } = useMemo(
+  const { data: effectivePlansData } = useMemo(
     () => resolvePlansDataForCourse(plansData, courseUri, categoryUri, comparisonBatch),
     [plansData, courseUri, categoryUri, comparisonBatch],
   );
-
-  useEffect(() => {
-    console.log('[Course Plans Resolved]', {
-      courseUri,
-      categoryUri,
-      dataSource: plansDataSource,
-      note:
-        plansDataSource === 'api'
-          ? 'Using API plans (Silver/Gold/Platinum). Static is NOT used for plan names.'
-          : plansDataSource === 'static-fallback'
-            ? 'API returned fewer than 2 plans — using CSM static Standard/Elite fallback.'
-            : 'No plan comparison data.',
-      apiPlansCount: plansData?.plans?.length ?? 0,
-      apiBatchFromPlansEndpoint: plansData?.batch ?? null,
-      resolvedPlansCount: effectivePlansData?.plans?.length ?? 0,
-      resolvedPlanNames: effectivePlansData?.plans?.map((p) => p.name) ?? [],
-      comparisonBatchId: comparisonBatch?.id ?? null,
-      plan1Selling: comparisonBatch?.plan1SellingPrice ?? effectivePlansData?.batch?.plan1SellingPrice ?? null,
-      plan2Selling: comparisonBatch?.plan2SellingPrice ?? effectivePlansData?.batch?.plan2SellingPrice ?? null,
-      plan3Selling: comparisonBatch?.plan3SellingPrice ?? effectivePlansData?.batch?.plan3SellingPrice ?? null,
-      resolved: effectivePlansData,
-    });
-  }, [plansData, effectivePlansData, plansDataSource, courseUri, categoryUri, comparisonBatch]);
 
   const emiBatch = useMemo(
     () => batches.find((b) => b.plan1HasEMI && b.plan1EMIMonthCount) ?? null,
@@ -695,7 +685,7 @@ export default function CourseSchedulesSection({
   );
 
   const dateRangeLabel = dateRange
-    ? `${new Date(dateRange.from).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })} - ${new Date(dateRange.to).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}`
+    ? `${formatDate(dateRange.from)} to ${formatDate(dateRange.to)}`
     : 'Month';
     
   return (
@@ -819,11 +809,7 @@ export default function CourseSchedulesSection({
           {(() => {
             const modalBatch = enrollBatch ?? comparisonBatch ?? effectivePlansData?.batch ?? emiBatch ?? null;
             const activePlanCount = effectivePlansData && modalBatch
-              ? effectivePlansData.plans.filter((p) => {
-                  const n = p.planNumber;
-                  const retail = n === 1 ? modalBatch.plan1RetailPrice : n === 2 ? modalBatch.plan2RetailPrice : modalBatch.plan3RetailPrice;
-                  return retail !== null;
-                }).length
+              ? buildActivePlans(effectivePlansData.plans, modalBatch, enrollQuantity, effectivePlansData.batch ?? null).length
               : 0;
             const maxW = activePlanCount >= 3 ? 'max-w-[1200px]' : activePlanCount === 2 ? 'max-w-4xl' : 'max-w-2xl';
             return (

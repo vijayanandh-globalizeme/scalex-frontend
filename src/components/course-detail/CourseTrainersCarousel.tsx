@@ -48,7 +48,7 @@ function TrainerCard({ trainer }: { trainer: ApiTrainer }) {
       <h3 className="interactive-card-title text-[20px] font-semibold leading-normal text-heading">{trainer.name}</h3>
       <p className="mt-1 text-[14px] font-medium leading-normal text-[#FD022D]">{trainer.role}</p>
       <p
-        className="mt-3 line-clamp-4 text-left text-[14px] font-normal leading-normal text-muted [&_a]:text-brand [&_a]:underline [&_a]:underline-offset-2"
+        className="mt-3 line-clamp-4 text-left text-[14px] font-normal leading-normal text-muted [&_a]:text-brand [&_a]:no-underline [&_a]:hover:underline [&_a]:underline-offset-2"
         dangerouslySetInnerHTML={{ __html: withNewTabLinks(trainer.about) }}
       />
 

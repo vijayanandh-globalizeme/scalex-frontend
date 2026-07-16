@@ -9,7 +9,7 @@ const SECTION_CARD =
   'rounded-[20px] border border-[#EBEBEB] bg-white shadow-[0_4px_4px_0_rgba(30,41,59,0.08),0_4px_4px_0_rgba(30,41,59,0.03)]';
 
 const ELITE_COLUMN_BG =
-  'border-l border-l-[1px] border-l-[#FD022D]/35 bg-[linear-gradient(90deg,rgba(255,220,228,0.75)_0%,rgba(255,239,242,0.45)_100%)]';
+  'border-l border-l-[1px] border-l-[#FD022D]/35 bg-[linear-gradient(90deg,#fff6f8_0%,rgba(255,239,242,0.45)_100%)]';
 
 function formatPrice(amount: number, currencySymbol: string) {
   return `${currencySymbol}${amount.toLocaleString('en-IN')}`;
@@ -53,7 +53,7 @@ function FeatureStatusIcon({ included }: { included: boolean }) {
   return included ? <FeatureCheckIcon /> : <FeatureCrossIcon />;
 }
 
-type ActivePlanInfo = {
+export type ActivePlanInfo = {
   plan: ApiCoursePlan;
   retailPrice: number;
   sellingPrice: number;
@@ -138,7 +138,7 @@ function parsePrice(value: string | null | undefined): number | null {
   return Number.isFinite(n) ? n : null;
 }
 
-type BatchPrices = {
+export type BatchPrices = {
   plan1RetailPrice: string | null;
   plan1SellingPrice: string | null;
   plan2RetailPrice: string | null;
@@ -185,7 +185,7 @@ function resolvePlanPrices(
   return { retailPrice, sellingPrice: selling };
 }
 
-function buildActivePlans(
+export function buildActivePlans(
   plans: ApiCoursePlan[],
   batch: BatchPrices,
   quantity: number,

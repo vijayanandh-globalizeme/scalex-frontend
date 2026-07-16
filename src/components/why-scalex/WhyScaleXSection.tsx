@@ -108,7 +108,7 @@ export default function WhyScaleXSection({
   );
 
   const rowLabelClassName = isEmbedded
-    ? 'text-[16px] font-medium text-muted'
+    ? 'text-[16px] font-medium text-body'
     : 'text-[16px] font-medium text-heading';
 
   const comparisonGrid = (

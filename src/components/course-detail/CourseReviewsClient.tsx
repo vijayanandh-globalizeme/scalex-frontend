@@ -72,7 +72,7 @@ function ReviewCard({ review, typeMap }: { review: ApiReview; typeMap: Map<strin
         <QuoteIcon />
       </div>
       <p
-        className="mt-3 line-clamp-3 flex-1 text-[13px] font-normal leading-normal text-muted [&_a]:text-brand [&_a]:underline [&_a]:underline-offset-2"
+        className="mt-3 line-clamp-3 flex-1 text-[13px] font-normal leading-normal text-muted [&_a]:text-brand [&_a]:no-underline [&_a]:hover:underline [&_a]:underline-offset-2"
         dangerouslySetInnerHTML={{ __html: withNewTabLinks(review.review) }}
       />
       {review.reviewUrl ? (
