@@ -1,5 +1,6 @@
 import type { ApiCourseOverviewSection, ApiOtherDetail } from '@/services/courseApi';
 import { COURSE_OVERVIEW_STANDOUT_TITLE, COURSE_OVERVIEW_SKILLS_TITLE } from '@/lib/courseDetailStatics';
+import { withNewTabLinks } from '@/lib/richText';
 import CourseBrochureCta from './CourseBrochureCta';
 import CourseDownloadIcon from './CourseDownloadIcon';
 import CourseCareerSection from './CourseCareerSection';
@@ -91,13 +92,13 @@ export default function CourseOverviewSection({
         </div>
         <p
           className={
-            isTechnical
+            (isTechnical
               ? 'mt-4 text-[14px] font-normal leading-[150%] text-[#788593]'
-              : 'mt-4 text-[18px] font-medium leading-[140%] text-muted'
+              : 'mt-4 text-[18px] font-medium leading-[140%] text-muted') +
+            ' [&_a]:text-brand [&_a]:underline [&_a]:underline-offset-2'
           }
-        >
-          {overview.description}
-        </p>
+          dangerouslySetInnerHTML={{ __html: withNewTabLinks(overview.description) }}
+        />
 
         <h3
           className={
@@ -124,13 +125,13 @@ export default function CourseOverviewSection({
                 </p>
                 <p
                   className={
-                    isTechnical
+                    (isTechnical
                       ? 'mt-1 text-[14px] font-normal leading-[140%] text-[#788593]'
-                      : 'mt-1 text-[14px] font-normal leading-[140%] text-muted'
+                      : 'mt-1 text-[14px] font-normal leading-[140%] text-muted') +
+                    ' [&_a]:text-brand [&_a]:underline [&_a]:underline-offset-2'
                   }
-                >
-                  {feature.content}
-                </p>
+                  dangerouslySetInnerHTML={{ __html: withNewTabLinks(feature.content) }}
+                />
               </div>
             </li>
           ))}
@@ -158,7 +159,10 @@ export default function CourseOverviewSection({
                   }
                 >
                   <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-muted" aria-hidden />
-                  {skill}
+                  <span
+                    className="[&_a]:text-brand [&_a]:underline [&_a]:underline-offset-2"
+                    dangerouslySetInnerHTML={{ __html: withNewTabLinks(skill) }}
+                  />
                 </li>
               ))}
             </ul>

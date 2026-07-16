@@ -2,6 +2,7 @@ import Image from 'next/image';
 import type { ApiCourseDetails, ApiOtherDetail } from '@/services/courseApi';
 import { COURSE_SECTION_CARD } from './courseSectionCard';
 import { SKILLS_TOOLS_SKILLS_TITLE, SKILLS_TOOLS_TOOLS_TITLE } from '@/lib/courseDetailStatics';
+import { withNewTabLinks } from '@/lib/richText';
 
 type ApiSkillsTools = NonNullable<ApiCourseDetails['skillsTools']>;
 
@@ -70,7 +71,10 @@ export default function CourseSkillsToolsSection({
           <h2 id="skills-tools-heading" className="section-heading text-[#1E293B] md:text-[32px]">
             {skillsTools.title}
           </h2>
-          <p className="mt-1 text-[14px] font-normal leading-[150%] text-[#788593]">{skillsTools.description}</p>
+          <p
+            className="mt-1 text-[14px] font-normal leading-[150%] text-[#788593] [&_a]:text-brand [&_a]:underline [&_a]:underline-offset-2"
+            dangerouslySetInnerHTML={{ __html: withNewTabLinks(skillsTools.description) }}
+          />
         </>
       ) : (
         <h2 id="skills-tools-heading" className="section-heading text-[#1E293B] md:text-[32px]">

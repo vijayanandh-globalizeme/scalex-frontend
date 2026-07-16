@@ -12,6 +12,7 @@ import type { ApiReview } from '@/services/courseApi';
 import type { LayoutSettings } from '@/services/layoutApi';
 import { REVIEWS_TYPE, REVIEW_VIDEO_SECTION } from '@/lib/courseDetailStatics';
 import { ReviewPlatformRow } from '@/components/testimonials';
+import { withNewTabLinks } from '@/lib/richText';
 
 const SECTION_CARD = 'rounded-[20px] bg-transparent';
 
@@ -70,9 +71,10 @@ function ReviewCard({ review, typeMap }: { review: ApiReview; typeMap: Map<strin
       <div className="absolute top-0 left-5 z-10 -translate-y-1/2">
         <QuoteIcon />
       </div>
-      <p className="mt-3 line-clamp-3 flex-1 text-[13px] font-normal leading-normal text-muted">
-        {review.review}
-      </p>
+      <p
+        className="mt-3 line-clamp-3 flex-1 text-[13px] font-normal leading-normal text-muted [&_a]:text-brand [&_a]:underline [&_a]:underline-offset-2"
+        dangerouslySetInnerHTML={{ __html: withNewTabLinks(review.review) }}
+      />
       {review.reviewUrl ? (
         <Link
           href={review.reviewUrl}

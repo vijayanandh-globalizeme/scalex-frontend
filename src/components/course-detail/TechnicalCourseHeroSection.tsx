@@ -8,6 +8,7 @@ import { LogoMarquee } from '@/components/shared';
 import type { HeroBadge } from '@/components/hero/HeroSection';
 import { useGsapScrollRevealStagger } from '@/hooks/useGsapScrollReveal';
 import type { TechnicalCourseContent } from '@/lib/technicalCourses';
+import { withNewTabLinks } from '@/lib/richText';
 import CourseBrochureCta from './CourseBrochureCta';
 import TechnicalCourseWebinarCountdown from './TechnicalCourseWebinarCountdown';
 
@@ -397,11 +398,17 @@ export default function TechnicalCourseHeroSection(course: TechnicalCourseConten
                 <li key={left} className="contents">
                   <span className="flex min-w-0 items-start gap-2.5">
                     <CheckIcon className="mt-0.5 shrink-0" />
-                    <span className="min-w-0 text-[16px] font-medium leading-[152%] text-heading">{left}</span>
+                    <span
+                      className="min-w-0 text-[16px] font-medium leading-[152%] text-heading [&_a]:text-brand [&_a]:underline [&_a]:underline-offset-2"
+                      dangerouslySetInnerHTML={{ __html: withNewTabLinks(left) }}
+                    />
                   </span>
                   <span className="flex min-w-0 items-start gap-2.5">
                     <CheckIcon className="mt-0.5 shrink-0" />
-                    <span className="min-w-0 text-[16px] font-medium leading-[152%] text-heading">{right}</span>
+                    <span
+                      className="min-w-0 text-[16px] font-medium leading-[152%] text-heading [&_a]:text-brand [&_a]:underline [&_a]:underline-offset-2"
+                      dangerouslySetInnerHTML={{ __html: withNewTabLinks(right) }}
+                    />
                   </span>
                 </li>
               ))}

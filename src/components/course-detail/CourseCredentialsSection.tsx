@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { useState } from 'react';
 import type { ApiCourseDetails, ApiOtherDetail } from '@/services/courseApi';
 import { CREDENTIALS_FEATURES } from '@/lib/courseDetailStatics';
+import { withNewTabLinks } from '@/lib/richText';
 import { COURSE_SECTION_CARD } from './courseSectionCard';
 
 const TAB_BAR_SCROLL =
@@ -113,9 +114,10 @@ export default function CourseCredentialsSection({
   return (
     <div className={`${COURSE_SECTION_CARD} px-6 py-5 md:px-8 md:py-6`}>
       <h2 className="section-heading text-heading">{credentials.title}</h2>
-      <p className="mt-2 max-w-[864px] text-[18px] font-medium leading-[140%] text-muted">
-        {credentials.description}
-      </p>
+      <p
+        className="mt-2 max-w-[864px] text-[18px] font-medium leading-[140%] text-muted [&_a]:text-brand [&_a]:underline [&_a]:underline-offset-2"
+        dangerouslySetInnerHTML={{ __html: withNewTabLinks(credentials.description) }}
+      />
 
       {isMultiTab ? (
         <div className="mt-5" role="tablist" aria-label={credentials.title}>

@@ -10,6 +10,7 @@ import {
 } from '@/components/category/CategoryCarouselNav';
 import CourseBatchRequestBanner from '@/components/course-detail/CourseBatchRequestBanner';
 import type { ApiTrainer } from '@/services/courseApi';
+import { withNewTabLinks } from '@/lib/richText';
 
 const TRAINER_CARD =
   'interactive-card relative flex h-full flex-col rounded-[20px] border border-[#EBEBEB] bg-white px-5 pb-5 pt-12 text-center';
@@ -46,7 +47,10 @@ function TrainerCard({ trainer }: { trainer: ApiTrainer }) {
 
       <h3 className="interactive-card-title text-[20px] font-semibold leading-normal text-heading">{trainer.name}</h3>
       <p className="mt-1 text-[14px] font-medium leading-normal text-[#FD022D]">{trainer.role}</p>
-      <p className="mt-3 line-clamp-4 text-left text-[14px] font-normal leading-normal text-muted">{trainer.about}</p>
+      <p
+        className="mt-3 line-clamp-4 text-left text-[14px] font-normal leading-normal text-muted [&_a]:text-brand [&_a]:underline [&_a]:underline-offset-2"
+        dangerouslySetInnerHTML={{ __html: withNewTabLinks(trainer.about) }}
+      />
 
       <div className="mt-5 border-t border-[#EBEBEB] pt-4">
         <div className="flex w-full flex-row flex-wrap items-center justify-between gap-2">

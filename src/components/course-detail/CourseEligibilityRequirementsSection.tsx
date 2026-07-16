@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import type { ApiCourseDetails } from '@/services/courseApi';
+import { withNewTabLinks } from '@/lib/richText';
 
 type ApiEligibility = NonNullable<ApiCourseDetails['eligibility']>;
 
@@ -83,9 +84,10 @@ export default function CourseEligibilityRequirementsSection({
       className={`scroll-mt-[116px] overflow-visible px-6 py-5 md:px-8 md:py-6 ${SECTION_CARD}`}
     >
       <h2 className="section-heading text-heading">{title}</h2>
-      <p className="mt-2 max-w-[720px] text-[14px] font-normal leading-normal text-muted">
-        {description}
-      </p>
+      <p
+        className="mt-2 max-w-[720px] text-[14px] font-normal leading-normal text-muted [&_a]:text-brand [&_a]:underline [&_a]:underline-offset-2"
+        dangerouslySetInnerHTML={{ __html: withNewTabLinks(description) }}
+      />
 
       <div className="mt-6 flex flex-col gap-8 lg:flex-row lg:items-center lg:gap-10">
         <ul className="w-full max-w-[490px] shrink-0 sm:ml-[42px]" role="list">
@@ -97,7 +99,10 @@ export default function CourseEligibilityRequirementsSection({
               <RequirementIcon icon={item.icon} />
               <div className="min-w-0 pt-0.5">
                 <p className="text-[14px] font-semibold leading-normal text-heading">{item.title}</p>
-                <p className="mt-1.5 text-[14px] font-normal leading-normal text-muted">{item.content}</p>
+                <p
+                  className="mt-1.5 text-[14px] font-normal leading-normal text-muted [&_a]:text-brand [&_a]:underline [&_a]:underline-offset-2"
+                  dangerouslySetInnerHTML={{ __html: withNewTabLinks(item.content) }}
+                />
               </div>
             </li>
           ))}
@@ -115,7 +120,10 @@ export default function CourseEligibilityRequirementsSection({
                 {column.map((role) => (
                   <li key={role} className="flex items-start gap-2.5 text-[14px] leading-normal text-heading">
                     <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-muted" aria-hidden />
-                    {role}
+                    <span
+                      className="[&_a]:text-brand [&_a]:underline [&_a]:underline-offset-2"
+                      dangerouslySetInnerHTML={{ __html: withNewTabLinks(role) }}
+                    />
                   </li>
                 ))}
               </ul>

@@ -6,6 +6,7 @@ import { useRef } from 'react';
 import CategoryTitleUnderline from '@/components/category/CategoryTitleUnderline';
 import type { CourseDetailContent } from '@/lib/courses';
 import { useGsapScrollRevealStagger } from '@/hooks/useGsapScrollReveal';
+import { withNewTabLinks } from '@/lib/richText';
 import { useCourseBrochureModal } from './CourseBrochureModalContext';
 import { ScrollToAnchor } from '@/components/shared';
 import CourseLeadForm from './CourseLeadForm';
@@ -68,7 +69,7 @@ function CheckIcon({ className }: { className?: string }) {
 
 function StarIcon({ className }: { className?: string }) {
   return (
-    <svg className={className} width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden>
+    <svg className={className} width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden>
       <path
         d="M3.01902 14.8627C3.30952 15.0888 3.67795 15.0111 4.11724 14.6932L7.86538 11.9453L11.6206 14.6932C12.0598 15.0111 12.4212 15.0888 12.7188 14.8627C13.0093 14.6437 13.073 14.2835 12.8959 13.7678L11.4151 9.37398L15.1986 6.66138C15.638 6.35057 15.8151 6.02562 15.7017 5.67242C15.5883 5.33335 15.2553 5.17087 14.7098 5.17087H10.0689L8.65889 0.784104C8.4889 0.261369 8.2338 0 7.86538 0C7.50399 0 7.24894 0.261369 7.0789 0.784104L5.66892 5.17087H1.02805C0.482481 5.17087 0.149473 5.33335 0.0361076 5.67242C-0.0843426 6.02562 0.099875 6.35057 0.539164 6.66138L4.32271 9.37398L2.84188 13.7678C2.66475 14.2835 2.72852 14.6437 3.01902 14.8627Z"
         fill="currentColor"
@@ -209,9 +210,10 @@ export default function CourseDetailHeroSection({
                 {features.map((feature) => (
                   <li key={feature} className="flex min-w-0 items-start gap-2.5">
                     <CheckIcon className="mt-0.5 shrink-0" />
-                    <span className="min-w-0 text-[16px] font-medium leading-[152%] text-heading md:text-[18px]">
-                      {feature}
-                    </span>
+                    <span
+                      className="min-w-0 text-[16px] font-medium leading-[152%] text-heading [&_a]:text-brand [&_a]:underline [&_a]:underline-offset-2 md:text-[18px]"
+                      dangerouslySetInnerHTML={{ __html: withNewTabLinks(feature) }}
+                    />
                   </li>
                 ))}
               </ul>
@@ -233,7 +235,7 @@ export default function CourseDetailHeroSection({
                   </div>
                   <div className="flex flex-wrap items-center gap-1.5">
                     <StarIcon className="shrink-0 text-[#F4AA1F]" />
-                    <span className="text-[13px] font-semibold text-heading">{review.rating}</span>
+                    <span className="text-[16px] font-semibold text-heading">{review.rating}</span>
                     {review.url ? (
                       <a
                         href={review.url}

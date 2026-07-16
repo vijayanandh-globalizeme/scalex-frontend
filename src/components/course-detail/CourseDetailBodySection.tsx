@@ -162,10 +162,6 @@ export default async function CourseDetailBodySection({
               />
             ) : null}
 
-            {!isTechnical ? (
-              <CourseBatchRequestBanner banner={UNLOCK_COURSE_BANNER} className="pb-6 md:pb-8" courseId={courseId} />
-            ) : null}
-
             {courseUri && categoryUri ? (
               <div id="schedules">
                 <CourseSchedulesSection
@@ -192,6 +188,10 @@ export default async function CourseDetailBodySection({
                 categoryUri={categoryUri}
                 title={trainerTitle ?? 'Our Trainers'}
               />
+            ) : null}
+
+            {!isTechnical ? (
+              <CourseBatchRequestBanner banner={UNLOCK_COURSE_BANNER} className="pb-6 md:pb-8" courseId={courseId} />
             ) : null}
 
             {!isTechnical && details?.eligibility ? (
