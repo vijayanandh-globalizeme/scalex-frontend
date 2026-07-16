@@ -123,7 +123,7 @@ export function resolvePlansDataForCourse(
   categoryUri: string,
   scheduleBatch?: PriceSource | null,
 ): ResolvedPlansData {
-  if (apiData?.plans?.length >= 2) {
+  if (apiData && apiData.plans.length >= 2) {
     if (scheduleBatch) {
       return { data: overlayBatchPrices(apiData, scheduleBatch), source: 'api' };
     }
