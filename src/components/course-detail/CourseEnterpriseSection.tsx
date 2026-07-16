@@ -34,13 +34,9 @@ export function CourseEnterpriseCard({
   partners,
   courseId = null,
 }: CourseEnterpriseCardProps) {
-  const midpoint = Math.ceil(partners.length / 2);
-  const firstRow = partners.slice(0, midpoint);
-  const secondRow = partners.slice(midpoint);
-
   return (
     <div
-      className={`relative z-10 flex w-full min-w-0 flex-col justify-between overflow-visible ${COURSE_SECTION_CARD} px-5 py-6 md:h-[285px] md:px-[68px] md:py-8`}
+      className={`relative z-10 flex w-full min-w-0 flex-col overflow-visible ${COURSE_SECTION_CARD} gap-4 px-5 py-6 md:px-[68px] md:py-8`}
       aria-labelledby="course-enterprise-heading"
     >
       <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between md:gap-6">
@@ -62,23 +58,15 @@ export function CourseEnterpriseCard({
         </CourseBrochureCta>
       </div>
 
-      <div className="mt-5 flex min-w-0 flex-col gap-[27px] overflow-x-clip md:mt-0">
-        {firstRow.length > 0 ? (
+      {partners.length > 0 ? (
+        <div className="flex min-w-0 flex-col overflow-x-clip">
           <LogoMarquee
-            logos={toMarqueeLogos(firstRow)}
+            logos={toMarqueeLogos(partners)}
             ariaLabel="Enterprise training partners"
             largeOnMobile
           />
-        ) : null}
-        {secondRow.length > 0 ? (
-          <LogoMarquee
-            logos={toMarqueeLogos(secondRow)}
-            reverse
-            ariaLabel="Enterprise training partners"
-            largeOnMobile
-          />
-        ) : null}
-      </div>
+        </div>
+      ) : null}
     </div>
   );
 }
@@ -88,7 +76,7 @@ export default function CourseEnterpriseSection({ compact = false }: { compact?:
   return (
     <section
       className={`full-bleed relative z-0 overflow-visible bg-[#F5F6F8] pb-10 md:pb-12 ${
-        compact ? 'pt-12 md:pt-14' : 'pt-10 md:pt-40'
+        compact ? 'pt-12 md:pt-14' : 'pt-10 md:pt-20'
       }`}
       aria-hidden
     />

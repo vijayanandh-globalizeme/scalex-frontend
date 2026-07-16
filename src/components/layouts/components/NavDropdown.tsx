@@ -1,4 +1,7 @@
+'use client';
+
 import Link from 'next/link';
+import { useRef, useState } from 'react';
 
 function ChevronDown({ className }: { className?: string }) {
   return (
@@ -63,31 +66,60 @@ const NavDropdown = ({
   triggerClassName,
   triggerVariant = 'nav',
 }: NavDropdownProps) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const closeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const isOutlineButton = triggerVariant === 'outline-button';
   const triggerClasses = isOutlineButton
     ? [outlineButtonTriggerClass, triggerClassName]
     : [triggerBaseClass, triggerClassName];
 
+  const handleOpen = () => {
+    if (closeTimerRef.current) clearTimeout(closeTimerRef.current);
+    setIsOpen(true);
+  };
+
+  const handleClose = () => setIsOpen(false);
+
+  const scheduleClose = () => {
+    closeTimerRef.current = setTimeout(handleClose, 120);
+  };
+
   return (
-    <div className="group/nav relative">
+    <div
+      className="relative"
+      onMouseEnter={handleOpen}
+      onMouseLeave={scheduleClose}
+      onFocus={handleOpen}
+      onBlur={(e) => {
+        if (!e.currentTarget.contains(e.relatedTarget as Node)) handleClose();
+      }}
+    >
       <button
         type="button"
         className={triggerClasses.filter(Boolean).join(' ')}
         aria-haspopup="true"
+        aria-expanded={isOpen}
         aria-label={`${label} menu`}
       >
         {label}
         {isOutlineButton ? (
-          <OutlineButtonChevron className="shrink-0 text-current transition-transform duration-200 ease-out group-hover/nav:rotate-180" />
+          <OutlineButtonChevron
+            className={`shrink-0 text-current transition-transform duration-200 ease-out ${isOpen ? 'rotate-180' : ''}`}
+          />
         ) : (
-          <ChevronDown className="shrink-0 text-current transition-transform duration-200 ease-out group-hover/nav:rotate-180" />
+          <ChevronDown
+            className={`shrink-0 text-current transition-transform duration-200 ease-out ${isOpen ? 'rotate-180' : ''}`}
+          />
         )}
       </button>
 
       <div
-        className="pointer-events-none invisible absolute left-0 top-full z-50 min-w-[260px] pt-3 group-hover/nav:pointer-events-auto group-hover/nav:visible group-focus-within/nav:pointer-events-auto group-focus-within/nav:visible"
+        className={`absolute left-0 top-full z-50 min-w-[260px] pt-3 ${
+          isOpen ? 'visible pointer-events-auto' : 'invisible pointer-events-none'
+        }`}
         role="menu"
         aria-label={label}
+        aria-hidden={!isOpen}
       >
         <ul className="overflow-hidden rounded-none border border-zinc-100 bg-white py-1.5 shadow-[0_12px_40px_-8px_rgba(15,23,42,0.18)] ring-1 ring-zinc-900/5">
           {items.map((item) => (
@@ -95,6 +127,7 @@ const NavDropdown = ({
               <Link
                 href={item.href}
                 role="menuitem"
+                onClick={handleClose}
                 className="btn-mui-nav-link header-fluid-text block px-4 py-2.5 font-normal text-ink tracking-[-0.16px] focus-visible:outline-none"
               >
                 {item.label}
