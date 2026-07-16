@@ -1287,7 +1287,7 @@ const CSM_BODY: CourseBodyContent = {
 };
 
 const COURSE_BODY: Record<string, CourseBodyContent> = {
-  'certified-scrum-master': CSM_BODY,
+  '@@@@DDDDDDD@@@@@@': CSM_BODY,
 };
 
 export function getCourseBodyBySlug(slug: string): CourseBodyContent | undefined {
