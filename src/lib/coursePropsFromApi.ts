@@ -105,6 +105,7 @@ function buildBaseProps(
     ],
     titlePrefix:   course.title,
     // titleAccent intentionally omitted — shows only the title
+    shortDescription: course.shortDescription,
     rankedContent: course.rankedContent ?? undefined,
     rankingLine:   { highlight: '', rest: '' },
     features:      parseFeatures(course.details?.introduction),
@@ -113,11 +114,13 @@ function buildBaseProps(
     learnersStat:  buildLearnersStat(settings),
     primaryCta:    { href: schedulePath, label: 'View Schedules' },
     secondaryCta:  { href: '#schedules', label: 'View Schedules' },
-    licensedPartner: {
-      label:   'Licensed Training Partner',
-      logoSrc: '/images/course/scrum-alliance.png',
-      logoAlt: 'Scrum Alliance',
-    },
+    licensedPartner: course.companyLogos[0]
+      ? {
+          label:   'Licensed Training Partner',
+          logoSrc: course.companyLogos[0].url,
+          logoAlt: 'Training partner',
+        }
+      : null,
     enterprise: {
       headingHighlight: 'Enterprise Training',
       headingRest:      'Solutions Trusted by Top Companies',
@@ -178,10 +181,10 @@ export function buildTechnicalCourseProps(
       { id: 'partners', variant: 'learners', placement: 'mid-left',     title: 'Hiring Partners', subtitle: '1200+' },
       { id: 'salary',   variant: 'mentors',  placement: 'bottom-right', title: 'Average Salary',  subtitle: '8 LPA' },
     ],
-    collaboration: [
-      { alt: 'Amazon',    src: '/images/ama.png' },
-      { alt: 'Microsoft', src: '/images/course/google.png' },
-    ],
+    collaboration: course.companyLogos.slice(0, 2).map((logo) => ({
+      alt: 'Collaboration partner',
+      src: logo.url,
+    })),
     hiringPartners: HIRING_PARTNERS,
   };
 }

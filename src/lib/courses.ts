@@ -20,6 +20,8 @@ export interface CourseDetailContent {
   breadcrumbs: CourseBreadcrumb[];
   titlePrefix: string;
   titleAccent?: string;
+  /** Short blurb shown next to the title; may contain `<a>` links. */
+  shortDescription?: string | null;
   /** Raw ranked content string; **bold** segments get text-brand styling */
   rankedContent?: string;
   /** Legacy split ranking line — used when rankedContent is absent */
@@ -34,11 +36,12 @@ export interface CourseDetailContent {
   learnersStat: CategoryLearnersStat;
   primaryCta: { href: string; label: string };
   secondaryCta: { href: string; label: string };
-  licensedPartner: {
+  /** Absent when the course has no training-partner logo uploaded. */
+  licensedPartner?: {
     label: string;
     logoSrc: string;
     logoAlt: string;
-  };
+  } | null;
   enterprise: {
     headingHighlight: string;
     headingRest: string;

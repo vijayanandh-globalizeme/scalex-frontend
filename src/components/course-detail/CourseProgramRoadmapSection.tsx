@@ -118,7 +118,7 @@ function StageSidebar({ stage, stageNumber }: { stage: ApiRoadmap; stageNumber: 
         {first}<br />{rest.join(' ')}
       </p>
       <p
-        className="mt-3 max-w-[220px] text-[14px] font-normal leading-[150%] text-[#788593] [&_a]:text-brand [&_a]:underline [&_a]:underline-offset-2"
+        className="mt-3 max-w-[220px] text-[14px] font-normal leading-[150%] text-[#788593] [&_a]:text-brand [&_a]:no-underline [&_a]:hover:underline [&_a]:underline-offset-2"
         dangerouslySetInnerHTML={{ __html: withNewTabLinks(stage.sideDescription) }}
       />
       <StageSidebarArrow theme={theme} />
@@ -134,7 +134,7 @@ function ProgramRoadmapSectionHeader({ title, description }: { title: string; de
       <h2 id="program-roadmap-heading" className="section-heading text-[#1E293B]" style={{ fontFamily: 'Inter' }}>{title}</h2>
       {description ? (
         <p
-          className="mt-1 max-w-3xl text-[18px] font-medium leading-[140%] text-[#788593] [&_a]:text-brand [&_a]:underline [&_a]:underline-offset-2"
+          className="mt-1 max-w-3xl text-[18px] font-medium leading-[140%] text-[#788593] [&_a]:text-brand [&_a]:no-underline [&_a]:hover:underline [&_a]:underline-offset-2"
           style={{ fontFamily: 'Inter' }}
           dangerouslySetInnerHTML={{ __html: withNewTabLinks(description) }}
         />
@@ -150,7 +150,7 @@ function formatHighlight(text: string) {
   if (idx === -1) {
     return (
       <span
-        className="font-medium text-[#1E293B] [&_a]:text-brand [&_a]:underline [&_a]:underline-offset-2"
+        className="font-medium text-[#1E293B] [&_a]:text-brand [&_a]:no-underline [&_a]:hover:underline [&_a]:underline-offset-2"
         dangerouslySetInnerHTML={{ __html: withNewTabLinks(text) }}
       />
     );
@@ -158,11 +158,11 @@ function formatHighlight(text: string) {
   return (
     <>
       <span
-        className="font-medium text-[#1E293B] [&_a]:text-brand [&_a]:underline [&_a]:underline-offset-2"
+        className="font-medium text-[#1E293B] [&_a]:text-brand [&_a]:no-underline [&_a]:hover:underline [&_a]:underline-offset-2"
         dangerouslySetInnerHTML={{ __html: withNewTabLinks(text.slice(0, idx + 1)) }}
       />
       <span
-        className="font-normal text-[#1E293B] [&_a]:text-brand [&_a]:underline [&_a]:underline-offset-2"
+        className="font-normal text-[#1E293B] [&_a]:text-brand [&_a]:no-underline [&_a]:hover:underline [&_a]:underline-offset-2"
         dangerouslySetInnerHTML={{ __html: withNewTabLinks(text.slice(idx + 1)) }}
       />
     </>
@@ -259,7 +259,7 @@ function PlacementStageContent({ stage }: { stage: ApiRoadmap }) {
             <div>
               <p className="text-[14px] font-bold leading-[140%] text-[#1E293B]">{feature.title}</p>
               <p
-                className="mt-1 text-[13px] font-normal leading-[150%] text-[#788593] [&_a]:text-brand [&_a]:underline [&_a]:underline-offset-2"
+                className="mt-1 text-[13px] font-normal leading-[150%] text-[#788593] [&_a]:text-brand [&_a]:no-underline [&_a]:hover:underline [&_a]:underline-offset-2"
                 dangerouslySetInnerHTML={{ __html: withNewTabLinks(feature.content) }}
               />
             </div>

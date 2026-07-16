@@ -20,6 +20,9 @@ export type ApiCourseOverview = {
   title: string;
   startedAt: string | null;
   totalEnroll: string | null;
+  shortDescription: string | null;
+  /** BASIC → single "Training partner" logo; TECHNICAL/BOOTCAMP → up to 2 "Collaboration with" logos. */
+  companyLogos: ApiCourseFile[];
   details: {
     reviewSchemaName: string | null;
     reviewSchemaMessage: string | null;

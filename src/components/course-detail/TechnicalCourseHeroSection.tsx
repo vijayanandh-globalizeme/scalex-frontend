@@ -244,6 +244,7 @@ export default function TechnicalCourseHeroSection(course: TechnicalCourseConten
     categorySlug,
     breadcrumbs,
     heroTitle,
+    shortDescription,
     featureRows,
     rankedContent,
     rankingLine,
@@ -328,6 +329,13 @@ export default function TechnicalCourseHeroSection(course: TechnicalCourseConten
               <CategoryTitleUnderline />
             </h1>
 
+            {shortDescription ? (
+              <p
+                className="mt-5 max-w-xl text-[15px] font-semibold leading-6 text-muted [&_a]:text-brand [&_a]:no-underline [&_a]:hover:underline [&_a]:underline-offset-2 md:text-[18px]"
+                dangerouslySetInnerHTML={{ __html: withNewTabLinks(shortDescription) }}
+              />
+            ) : null}
+
             <div className="mt-[28px] flex flex-wrap items-center gap-3">
               <div
                 className="inline-flex shadow-[0_4px_4px_0_rgba(30,41,59,0.08),0_4px_4px_0_rgba(30,41,59,0.03)]"
@@ -399,14 +407,14 @@ export default function TechnicalCourseHeroSection(course: TechnicalCourseConten
                   <span className="flex min-w-0 items-start gap-2.5">
                     <CheckIcon className="mt-0.5 shrink-0" />
                     <span
-                      className="min-w-0 text-[16px] font-medium leading-[152%] text-heading [&_a]:text-brand [&_a]:underline [&_a]:underline-offset-2"
+                      className="min-w-0 text-[16px] font-medium leading-[152%] text-heading [&_a]:text-brand [&_a]:no-underline [&_a]:hover:underline [&_a]:underline-offset-2"
                       dangerouslySetInnerHTML={{ __html: withNewTabLinks(left) }}
                     />
                   </span>
                   <span className="flex min-w-0 items-start gap-2.5">
                     <CheckIcon className="mt-0.5 shrink-0" />
                     <span
-                      className="min-w-0 text-[16px] font-medium leading-[152%] text-heading [&_a]:text-brand [&_a]:underline [&_a]:underline-offset-2"
+                      className="min-w-0 text-[16px] font-medium leading-[152%] text-heading [&_a]:text-brand [&_a]:no-underline [&_a]:hover:underline [&_a]:underline-offset-2"
                       dangerouslySetInnerHTML={{ __html: withNewTabLinks(right) }}
                     />
                   </span>
@@ -488,24 +496,26 @@ export default function TechnicalCourseHeroSection(course: TechnicalCourseConten
               badges={heroBadges}
               aeroShiftRight={isCsmPage}
             />
-            <div className="mt-6 flex justify-center">
-              <div className="inline-flex flex-col items-start">
-                <p className="text-[18px] font-medium leading-normal text-[#1E293B]">In Collaboration with</p>
-                <div className="mt-3 flex items-center gap-8">
-                  {collaboration.map((logo) => (
-                    <div key={logo.alt} className="relative h-8 w-24">
-                      <Image
-                        src={logo.src!}
-                        alt={logo.alt}
-                        fill
-                        sizes="96px"
-                        className="object-contain object-left"
-                      />
-                    </div>
-                  ))}
+            {collaboration.length > 0 ? (
+              <div className="mt-6 flex justify-center">
+                <div className="inline-flex flex-col items-start">
+                  <p className="text-[18px] font-medium leading-normal text-[#1E293B]">In Collaboration with</p>
+                  <div className="mt-3 flex items-center gap-8">
+                    {collaboration.map((logo) => (
+                      <div key={logo.src} className="relative h-8 w-24">
+                        <Image
+                          src={logo.src!}
+                          alt={logo.alt}
+                          fill
+                          sizes="96px"
+                          className="object-contain object-left"
+                        />
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
-            </div>
+            ) : null}
           </div>
         </div>
 

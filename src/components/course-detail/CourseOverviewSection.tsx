@@ -95,7 +95,7 @@ export default function CourseOverviewSection({
             (isTechnical
               ? 'mt-4 text-[14px] font-normal leading-[150%] text-[#788593]'
               : 'mt-4 text-[18px] font-medium leading-[140%] text-muted') +
-            ' [&_a]:text-brand [&_a]:underline [&_a]:underline-offset-2'
+            ' [&_a]:text-brand [&_a]:no-underline [&_a]:hover:underline [&_a]:underline-offset-2'
           }
           dangerouslySetInnerHTML={{ __html: withNewTabLinks(overview.description) }}
         />
@@ -128,7 +128,7 @@ export default function CourseOverviewSection({
                     (isTechnical
                       ? 'mt-1 text-[14px] font-normal leading-[140%] text-[#788593]'
                       : 'mt-1 text-[14px] font-normal leading-[140%] text-muted') +
-                    ' [&_a]:text-brand [&_a]:underline [&_a]:underline-offset-2'
+                    ' [&_a]:text-brand [&_a]:no-underline [&_a]:hover:underline [&_a]:underline-offset-2'
                   }
                   dangerouslySetInnerHTML={{ __html: withNewTabLinks(feature.content) }}
                 />
@@ -160,7 +160,7 @@ export default function CourseOverviewSection({
                 >
                   <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-muted" aria-hidden />
                   <span
-                    className="[&_a]:text-brand [&_a]:underline [&_a]:underline-offset-2"
+                    className="[&_a]:text-brand [&_a]:no-underline [&_a]:hover:underline [&_a]:underline-offset-2"
                     dangerouslySetInnerHTML={{ __html: withNewTabLinks(skill) }}
                   />
                 </li>

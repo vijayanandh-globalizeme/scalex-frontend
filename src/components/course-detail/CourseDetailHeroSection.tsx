@@ -108,6 +108,7 @@ export default function CourseDetailHeroSection({
   breadcrumbs,
   titlePrefix,
   titleAccent,
+  shortDescription,
   rankedContent,
   features,
   rankingLine,
@@ -202,6 +203,13 @@ export default function CourseDetailHeroSection({
               <CategoryTitleUnderline />
             </h1>
 
+            {shortDescription ? (
+              <p
+                className="mt-5 max-w-xl text-[15px] font-semibold leading-6 text-muted [&_a]:text-brand [&_a]:no-underline [&_a]:hover:underline [&_a]:underline-offset-2 md:text-[18px]"
+                dangerouslySetInnerHTML={{ __html: withNewTabLinks(shortDescription) }}
+              />
+            ) : null}
+
             {features.length > 0 ? (
               <ul
                 className="mt-6 grid grid-cols-1 gap-x-8 gap-y-3 sm:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)]"
@@ -211,7 +219,7 @@ export default function CourseDetailHeroSection({
                   <li key={feature} className="flex min-w-0 items-start gap-2.5">
                     <CheckIcon className="mt-0.5 shrink-0" />
                     <span
-                      className="min-w-0 text-[16px] font-medium leading-[152%] text-heading [&_a]:text-brand [&_a]:underline [&_a]:underline-offset-2 md:text-[18px]"
+                      className="min-w-0 text-[16px] font-medium leading-[152%] text-heading [&_a]:text-brand [&_a]:no-underline [&_a]:hover:underline [&_a]:underline-offset-2 md:text-[18px]"
                       dangerouslySetInnerHTML={{ __html: withNewTabLinks(feature) }}
                     />
                   </li>
@@ -334,9 +342,11 @@ export default function CourseDetailHeroSection({
               {...form}
               emphasizedFields={slug === 'certified-scrum-master' && categorySlug === 'agile-and-scrum'}
             />
-            <div className="mt-5 lg:mt-6" aria-label="Licensed training partner">
-              <CourseLicensedPartnerStrip {...licensedPartner} embedded />
-            </div>
+            {licensedPartner ? (
+              <div className="mt-5 lg:mt-6" aria-label="Licensed training partner">
+                <CourseLicensedPartnerStrip {...licensedPartner} embedded />
+              </div>
+            ) : null}
             </div>
           </div>
 

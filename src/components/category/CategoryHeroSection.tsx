@@ -207,7 +207,7 @@ function FeatureList({ features }: { features: string[] }) {
         <li key={i} className="flex min-w-0 items-start gap-2.5">
           <CheckIcon className="mt-0.5 shrink-0" />
           <span
-            className={`text-[15px] font-medium leading-[152%] text-heading [&_a]:text-brand [&_a]:underline [&_a]:underline-offset-2 md:text-[18px] ${
+            className={`text-[15px] font-medium leading-[152%] text-heading [&_a]:text-brand [&_a]:no-underline [&_a]:hover:underline [&_a]:underline-offset-2 md:text-[18px] ${
               feature === 'Authorized Scrum Alliance Training' ||
               feature === 'Live CST-Led Online Sessions' ||
               feature === 'All-Inclusive Course Pricing' ||
@@ -342,7 +342,7 @@ export default function CategoryHeroSection({
             </h1>
 
             <p
-              className="mt-5 max-w-xl text-[15px] font-semibold leading-6 text-muted [&_a]:text-brand [&_a]:underline [&_a]:underline-offset-2 md:text-[18px]"
+              className="mt-5 max-w-xl text-[15px] font-semibold leading-6 text-muted [&_a]:text-brand [&_a]:no-underline [&_a]:hover:underline [&_a]:underline-offset-2 md:text-[18px]"
               dangerouslySetInnerHTML={{ __html: withNewTabLinks(category.description) }}
             />
 

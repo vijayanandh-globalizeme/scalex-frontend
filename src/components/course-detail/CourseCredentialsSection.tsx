@@ -115,7 +115,7 @@ export default function CourseCredentialsSection({
     <div className={`${COURSE_SECTION_CARD} px-6 py-5 md:px-8 md:py-6`}>
       <h2 className="section-heading text-heading">{credentials.title}</h2>
       <p
-        className="mt-2 max-w-[864px] text-[18px] font-medium leading-[140%] text-muted [&_a]:text-brand [&_a]:underline [&_a]:underline-offset-2"
+        className="mt-2 max-w-[864px] text-[18px] font-medium leading-[140%] text-muted [&_a]:text-brand [&_a]:no-underline [&_a]:hover:underline [&_a]:underline-offset-2"
         dangerouslySetInnerHTML={{ __html: withNewTabLinks(credentials.description) }}
       />
 

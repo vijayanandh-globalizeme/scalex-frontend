@@ -85,7 +85,7 @@ export default function CourseEligibilityRequirementsSection({
     >
       <h2 className="section-heading text-heading">{title}</h2>
       <p
-        className="mt-2 max-w-[720px] text-[14px] font-normal leading-normal text-muted [&_a]:text-brand [&_a]:underline [&_a]:underline-offset-2"
+        className="mt-2 max-w-[720px] text-[14px] font-normal leading-normal text-muted [&_a]:text-brand [&_a]:no-underline [&_a]:hover:underline [&_a]:underline-offset-2"
         dangerouslySetInnerHTML={{ __html: withNewTabLinks(description) }}
       />
 
@@ -100,7 +100,7 @@ export default function CourseEligibilityRequirementsSection({
               <div className="min-w-0 pt-0.5">
                 <p className="text-[14px] font-semibold leading-normal text-heading">{item.title}</p>
                 <p
-                  className="mt-1.5 text-[14px] font-normal leading-normal text-muted [&_a]:text-brand [&_a]:underline [&_a]:underline-offset-2"
+                  className="mt-1.5 text-[14px] font-normal leading-normal text-muted [&_a]:text-brand [&_a]:no-underline [&_a]:hover:underline [&_a]:underline-offset-2"
                   dangerouslySetInnerHTML={{ __html: withNewTabLinks(item.content) }}
                 />
               </div>
@@ -121,7 +121,7 @@ export default function CourseEligibilityRequirementsSection({
                   <li key={role} className="flex items-start gap-2.5 text-[14px] leading-normal text-heading">
                     <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-muted" aria-hidden />
                     <span
-                      className="[&_a]:text-brand [&_a]:underline [&_a]:underline-offset-2"
+                      className="[&_a]:text-brand [&_a]:no-underline [&_a]:hover:underline [&_a]:underline-offset-2"
                       dangerouslySetInnerHTML={{ __html: withNewTabLinks(role) }}
                     />
                   </li>

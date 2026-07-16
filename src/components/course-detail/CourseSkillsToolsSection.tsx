@@ -72,7 +72,7 @@ export default function CourseSkillsToolsSection({
             {skillsTools.title}
           </h2>
           <p
-            className="mt-1 text-[14px] font-normal leading-[150%] text-[#788593] [&_a]:text-brand [&_a]:underline [&_a]:underline-offset-2"
+            className="mt-1 text-[14px] font-normal leading-[150%] text-[#788593] [&_a]:text-brand [&_a]:no-underline [&_a]:hover:underline [&_a]:underline-offset-2"
             dangerouslySetInnerHTML={{ __html: withNewTabLinks(skillsTools.description) }}
           />
         </>
