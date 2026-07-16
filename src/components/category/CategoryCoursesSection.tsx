@@ -29,8 +29,13 @@ function ViewMoreChevronIcon({ className }: { className?: string }) {
 }
 
 export interface CategoryCoursesSectionProps {
-  categoryId: string;
-  categoryName: string;
+  /** Single category to filter by. Omit (along with `categoryIds`) to show courses from any category. */
+  categoryId?: string;
+  /** Multiple categories to filter by (matched with an `IN` query, ordered by priority/updatedAt across all of them). Takes precedence over `categoryId`. */
+  categoryIds?: string[];
+  categoryName?: string;
+  /** Overrides the default "Explore all {categoryName} courses" heading. */
+  heading?: string;
   currencySymbol?: string;
   /** When set, caps total displayed courses and hides "View More Courses" once reached. */
   maxCourses?: number;
@@ -67,7 +72,9 @@ function SkeletonCard() {
 
 export default function CategoryCoursesSection({
   categoryId,
+  categoryIds,
   categoryName,
+  heading,
   currencySymbol = '₹',
   maxCourses,
   initialVisibleCount,
@@ -81,6 +88,11 @@ export default function CategoryCoursesSection({
   const [loadingMore, setLoadingMore] = useState(false);
   const [hasMoreRemote, setHasMoreRemote] = useState(false);
   const offsetRef = useRef(0);
+
+  // Stable key for the effect dependency array — `categoryIds` arrays are
+  // re-created on every render by callers, so compare by value, not identity.
+  const categoryKey = categoryIds && categoryIds.length ? categoryIds.slice().sort().join(',') : (categoryId ?? '');
+  const fetchOptions = categoryIds && categoryIds.length ? { categoryIds } : { categoryId };
 
   const sectionRef = useRef<HTMLElement>(null);
   const gridContainerRef = useRef<HTMLDivElement>(null);
@@ -104,7 +116,7 @@ export default function CategoryCoursesSection({
     setVisibleCount(initialVisibleCount ?? FETCH_LIMIT);
     offsetRef.current = 0;
 
-    getCourses({ categoryId, limit: FETCH_LIMIT, offset: 0 }).then((items) => {
+    getCourses({ ...fetchOptions, limit: FETCH_LIMIT, offset: 0 }).then((items) => {
       if (cancelled) return;
       const cards = items.map(apiCourseToCard);
       setCourses(cards);
@@ -115,7 +127,7 @@ export default function CategoryCoursesSection({
 
     return () => { cancelled = true; };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [categoryId]);
+  }, [categoryKey]);
 
   async function handleViewMore() {
     if (loadingMore) return;
@@ -131,7 +143,7 @@ export default function CategoryCoursesSection({
 
     captureExpandStart();
     setLoadingMore(true);
-    const items = await getCourses({ categoryId, limit: FETCH_LIMIT, offset: offsetRef.current });
+    const items = await getCourses({ ...fetchOptions, limit: FETCH_LIMIT, offset: offsetRef.current });
     const cards = items.map(apiCourseToCard);
     setCourses((prev) => [...prev, ...cards]);
     offsetRef.current += items.length;
@@ -256,7 +268,7 @@ export default function CategoryCoursesSection({
             id="category-courses-heading"
             className="section-heading text-center text-heading"
           >
-            Explore all {categoryName} courses
+            {heading ?? `Explore all ${categoryName} courses`}
           </h2>
           <p className="mt-2 text-[16px] font-medium leading-[140%] text-muted md:mt-3 md:text-[18px]">
             Find the right course that leaps your career

@@ -345,12 +345,16 @@ export async function fetchRelatedCourses(courseUri: string): Promise<ApiCourse[
   return json?.success ? (json.data.items ?? []) : [];
 }
 
-export async function fetchCourses(options: { categoryId?: string; limit?: number; offset?: number } = {}): Promise<ApiCourse[]> {
-  const { categoryId, limit = 12, offset = 0 } = options;
+export async function fetchCourses(options: { categoryId?: string; categoryIds?: string[]; limit?: number; offset?: number } = {}): Promise<ApiCourse[]> {
+  const { categoryId, categoryIds, limit = 12, offset = 0 } = options;
   const params = new URLSearchParams();
   params.set('limit', String(limit));
   params.set('offset', String(offset));
-  if (categoryId) params.set('categoryId', categoryId);
+  if (categoryIds && categoryIds.length > 0) {
+    categoryIds.forEach((id) => params.append('categoryIds', id));
+  } else if (categoryId) {
+    params.set('categoryId', categoryId);
+  }
 
   const json = await get<CoursesApiResponse>(`courses?${params.toString()}`, { revalidate: 0 });
   return json?.success ? (json.data.items ?? []) : [];

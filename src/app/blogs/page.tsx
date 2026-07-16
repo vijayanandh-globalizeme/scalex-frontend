@@ -7,14 +7,10 @@ import { CarouselNavIcon } from '@/components/category/CategoryCarouselNav';
 import CategoryCoursesSection from '@/components/category/CategoryCoursesSection';
 import { GuidanceSection, defaultGuidanceContent } from '@/components/guidance';
 import { getBlogs, getTrendingBlogs, getBlogCategories, type ApiBlogListItem, type ApiBlogCategory } from '@/app/actions/blogActions';
-import { getCategoryByUri } from '@/app/actions/categoryActions';
 
 const PAGE_SIZE = 9;
 const DEFAULT_BLOG_IMAGE = '/images/blog.png';
 const DEFAULT_AUTHOR_AVATAR = '/images/pranee.png';
-// Blog list grid's course promo section defaults to this course category
-// (mirrors the page's original static "Agile and Scrum" content).
-const DEFAULT_COURSE_CATEGORY_URI = 'agile-and-scrum';
 
 function formatDate(iso: string) {
   return new Date(iso).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
@@ -80,12 +76,35 @@ const SORT_OPTIONS: { value: SortOption; label: string }[] = [
   { value: 'trending', label: 'Trending' },
 ];
 
-function ViewMoreChevronIcon({ className }: { className?: string }) {
+function PageArrowIcon({ direction, className }: { direction: 'prev' | 'next'; className?: string }) {
   return (
-    <svg className={className} width="12" height="8" viewBox="0 0 12 8" fill="none" aria-hidden>
-      <path d="M1 1.5L6 6.5L11 1.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    <svg
+      className={className}
+      width="8"
+      height="14"
+      viewBox="0 0 8 14"
+      fill="none"
+      aria-hidden
+      style={direction === 'prev' ? { transform: 'rotate(180deg)' } : undefined}
+    >
+      <path d="M1 1L7 7L1 13" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   );
+}
+
+// Windowed page-number list with ellipses, e.g. [1, '...', 4, 5, 6, '...', 12].
+function getPageNumbers(current: number, total: number): (number | '...')[] {
+  const delta = 1;
+  const pages: (number | '...')[] = [1];
+  const left = Math.max(2, current - delta);
+  const right = Math.min(total - 1, current + delta);
+
+  if (left > 2) pages.push('...');
+  for (let i = left; i <= right; i++) pages.push(i);
+  if (right < total - 1) pages.push('...');
+  if (total > 1) pages.push(total);
+
+  return pages;
 }
 
 export default function BlogsPage() {
@@ -104,34 +123,27 @@ export default function BlogsPage() {
   // Sort
   const [sortOption, setSortOption] = useState<SortOption>('latest');
 
-  // Blog grid + load more
+  // Blog grid + pagination
   const [items, setItems] = useState<ApiBlogListItem[]>([]);
   const [total, setTotal] = useState(0);
-  const [page, setPage] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1); // 1-indexed
   const [loading, setLoading] = useState(true);
-  const [loadingMore, setLoadingMore] = useState(false);
   const allBlogsSectionRef = useRef<HTMLElement>(null);
   const scrollAfterLoadRef = useRef(false);
 
   const isSearchActive = submittedQuery !== '';
 
-  // Course promo section (default category)
-  const [courseCategory, setCourseCategory] = useState<{ id: string; name: string } | null>(null);
-
-  // Load hero + categories + default course category once
+  // Load hero + categories once
   useEffect(() => {
     getTrendingBlogs({ limit: 10 }).then((res) => setHeroBlogs(res.items.map(toFeaturedBlog)));
     getBlogCategories().then(setCategories);
-    getCategoryByUri(DEFAULT_COURSE_CATEGORY_URI).then((cat) => {
-      if (cat) setCourseCategory({ id: cat.id, name: cat.name });
-    });
   }, []);
 
   // Reload first page whenever category, search, or sort changes
   useEffect(() => {
     let cancelled = false;
     setLoading(true);
-    setPage(0);
+    setCurrentPage(1);
 
     const sortParams =
       sortOption === 'popular'  ? { sortBy: 'views' as const, sortOrder: 'desc' as const } :
@@ -166,32 +178,31 @@ export default function BlogsPage() {
     setSubmittedQuery('');
   }
 
-  async function handleViewMore() {
-    if (loadingMore || items.length >= total) return;
-    setLoadingMore(true);
-    const nextPage = page + 1;
+  async function goToPage(pageNumber: number) {
+    if (loading || pageNumber === currentPage || pageNumber < 1) return;
+    setLoading(true);
     const sortParams =
       sortOption === 'popular'  ? { sortBy: 'views' as const, sortOrder: 'desc' as const } :
       sortOption === 'trending' ? { sortBy: 'popular' as const, sortOrder: 'desc' as const } :
       {};
-    try {
-      const res = await getBlogs({
-        categoryUri: activeCategoryUri ?? undefined,
-        q: submittedQuery || undefined,
-        ...sortParams,
-        limit: PAGE_SIZE,
-        offset: nextPage * PAGE_SIZE,
-      });
-      setItems((prev) => [...prev, ...res.items]);
-      setTotal(res.total);
-      setPage(nextPage);
-    } finally {
-      setLoadingMore(false);
-    }
+    const res = await getBlogs({
+      categoryUri: activeCategoryUri ?? undefined,
+      q: submittedQuery || undefined,
+      ...sortParams,
+      limit: PAGE_SIZE,
+      offset: (pageNumber - 1) * PAGE_SIZE,
+    });
+    setItems(res.items);
+    setTotal(res.total);
+    setCurrentPage(pageNumber);
+    setLoading(false);
+    allBlogsSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
   const totalHero = heroBlogs.length;
-  const hasMore = items.length < total;
+  const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
+  const rangeStart = total === 0 ? 0 : (currentPage - 1) * PAGE_SIZE + 1;
+  const rangeEnd = Math.min(currentPage * PAGE_SIZE, total);
 
   return (
     <>
@@ -468,34 +479,66 @@ export default function BlogsPage() {
           {/* Footer */}
           <div className="mt-8 flex flex-wrap items-center justify-between gap-4">
             <p className="text-[13px] text-muted">
-              Showing {items.length === 0 ? 0 : 1}–{items.length} of {total} articles
+              Showing {rangeStart}–{rangeEnd} of {total} articles
             </p>
 
-            {hasMore ? (
-              <button
-                type="button"
-                onClick={handleViewMore}
-                disabled={loadingMore}
-                className="inline-flex cursor-pointer items-center gap-2 text-[14px] font-medium leading-[18px] text-brand transition disabled:cursor-not-allowed disabled:opacity-60"
-              >
-                {loadingMore ? 'Loading…' : 'View More Blogs'}
-                {!loadingMore ? <ViewMoreChevronIcon className="shrink-0 text-brand" /> : null}
-              </button>
+            {totalPages > 1 ? (
+              <nav aria-label="Blog pagination" className="flex items-center gap-1.5">
+                <button
+                  type="button"
+                  onClick={() => goToPage(currentPage - 1)}
+                  disabled={loading || currentPage === 1}
+                  aria-label="Previous page"
+                  className="flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded-lg border border-[#E2E8F0] text-heading transition hover:border-brand hover:text-brand disabled:cursor-not-allowed disabled:opacity-40"
+                >
+                  <PageArrowIcon direction="prev" />
+                </button>
+
+                {getPageNumbers(currentPage, totalPages).map((p, i) =>
+                  p === '...' ? (
+                    <span key={`ellipsis-${i}`} className="px-1 text-[13px] text-muted">
+                      …
+                    </span>
+                  ) : (
+                    <button
+                      key={p}
+                      type="button"
+                      onClick={() => goToPage(p)}
+                      disabled={loading}
+                      aria-current={p === currentPage ? 'page' : undefined}
+                      className={`flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded-lg text-[13px] font-medium transition disabled:cursor-not-allowed ${
+                        p === currentPage
+                          ? 'bg-brand text-white'
+                          : 'border border-[#E2E8F0] text-heading hover:border-brand hover:text-brand'
+                      }`}
+                    >
+                      {p}
+                    </button>
+                  ),
+                )}
+
+                <button
+                  type="button"
+                  onClick={() => goToPage(currentPage + 1)}
+                  disabled={loading || currentPage === totalPages}
+                  aria-label="Next page"
+                  className="flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded-lg border border-[#E2E8F0] text-heading transition hover:border-brand hover:text-brand disabled:cursor-not-allowed disabled:opacity-40"
+                >
+                  <PageArrowIcon direction="next" />
+                </button>
+              </nav>
             ) : null}
           </div>
         </div>
       </section>
 
-      {courseCategory ? (
-        <CategoryCoursesSection
-          categoryId={courseCategory.id}
-          categoryName={courseCategory.name}
-          maxCourses={6}
-          initialVisibleCount={3}
-          loadMoreStep={3}
-          compactTop
-        />
-      ) : null}
+      <CategoryCoursesSection
+        heading="Master the Skills that Scale Your Career"
+        maxCourses={12}
+        initialVisibleCount={3}
+        loadMoreStep={3}
+        compactTop
+      />
 
       <GuidanceSection {...defaultGuidanceContent} />
     </>

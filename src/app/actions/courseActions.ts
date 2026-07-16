@@ -4,7 +4,7 @@ export type { ApiCourse, ApiCourseOverview, ApiCourseDetails, ApiTrainer, ApiRev
 import { fetchCourses, searchCourses, fetchRelatedCourses, fetchCourseLocations, fetchCourseOverview, fetchCourseDetails, fetchCourseTrainers, fetchCourseReviews, fetchCourseLearners, fetchCoursePlans, fetchCourseBatches } from '@/services/courseApi';
 import type { CourseBatchFilter } from '@/services/courseApi';
 
-export async function getCourses(options: { categoryId?: string; limit?: number; offset?: number } = {}) {
+export async function getCourses(options: { categoryId?: string; categoryIds?: string[]; limit?: number; offset?: number } = {}) {
   return fetchCourses(options);
 }
 
