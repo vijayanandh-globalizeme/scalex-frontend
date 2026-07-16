@@ -297,8 +297,8 @@ export default function CategoryHeroSection({
 
   return (
     <section
-      className={`full-bleed relative overflow-visible bg-[#F5F6F8] pb-2 pt-6 md:pt-8 ${
-        mediaVariant === 'photo' ? 'lg:min-h-[625px]' : ''
+      className={`full-bleed relative overflow-visible bg-[#F5F6F8] pt-6 md:pt-8 ${
+        mediaVariant === 'photo' ? 'pb-16 md:pb-20 lg:min-h-[625px]' : 'pb-2'
       }`}
       aria-labelledby="category-hero-heading"
     >
