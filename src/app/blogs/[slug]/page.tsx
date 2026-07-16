@@ -867,10 +867,10 @@ export default function BlogDetailPage() {
                   {/* Text content */}
                   <div className="relative z-10">
                     <p className="text-[13px] font-bold text-white leading-snug mb-1.5">
-                      Explore Scrum Master Certification
+                      {blog.content?.bannerTitle || 'Explore Scrum Master Certification'}
                     </p>
                     <p className="text-[11px] text-white/50 leading-relaxed mb-3">
-                      Upon course completion, you will earn an expertise and certificate
+                      {blog.content?.bannerDescription || 'Upon course completion, you will earn an expertise and certificate'}
                     </p>
                     <button
                       type="button"
@@ -915,11 +915,11 @@ export default function BlogDetailPage() {
 
 
       {/* ── Courses ───────────────────────────────────────────────────────────── */}
-      {blog.courseCategory ? (
+      {blog.courseCategories.length > 0 ? (
         <CategoryCoursesSection
-          categoryId={blog.courseCategory.id}
-          categoryName={blog.courseCategory.name}
-          maxCourses={6}
+          categoryIds={blog.courseCategories.map((c) => c.id)}
+          heading="Popular Courses that Scale Your Career"
+          maxCourses={12}
           initialVisibleCount={3}
           loadMoreStep={3}
           mutedBackground
