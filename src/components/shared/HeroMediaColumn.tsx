@@ -204,27 +204,24 @@ const HeroMediaColumn = forwardRef<HTMLDivElement, HeroMediaColumnProps>(
       <div
         ref={ref}
         className={`${gsapClass} relative mx-auto w-full min-w-0 overflow-visible ${
-          isPhoto ? 'max-w-[521px] lg:mx-0 lg:ml-auto lg:-translate-x-[10%]' : 'max-w-md lg:mx-0 lg:max-w-none'
+          isPhoto ? 'max-w-[685px] lg:mx-0 lg:ml-auto' : 'max-w-md lg:mx-0 lg:max-w-none'
         } ${className}`.trim()}
       >
         {isPhoto ? (
-          <div className="relative mx-auto w-full max-w-[521px] lg:ml-auto lg:mr-0">
+          <div className="relative mx-auto w-full max-w-[685px] lg:ml-auto lg:mr-0">
             <div
-              className="relative w-full overflow-hidden rounded-[7px] shadow-[0_4px_24px_0_rgba(30,41,59,0.12)]"
-              style={{ maxWidth: 521, aspectRatio: '521 / 636' }}
+              className="relative w-full overflow-hidden rounded-[16px] shadow-[0_4px_24px_0_rgba(30,41,59,0.12)]"
+              style={{ maxWidth: 685, aspectRatio: '685 / 374' }}
             >
               <Image
                 src={imageSrc}
                 alt={imageAlt}
                 fill
                 priority
-                sizes="521px"
+                sizes="(max-width: 1024px) 100vw, 685px"
                 className="object-cover object-center"
               />
             </div>
-            {badges.map((b) => (
-              <FloatingBadge key={b.id} badge={b} photo />
-            ))}
           </div>
         ) : (
           <div className="relative mx-auto h-[420px] w-full max-w-[320px] sm:h-[480px] sm:max-w-[400px] md:h-[520px] md:max-w-[440px] lg:ml-auto lg:mr-0 lg:h-[560px] lg:max-w-[480px] xl:max-w-[520px] xl:h-[580px]">

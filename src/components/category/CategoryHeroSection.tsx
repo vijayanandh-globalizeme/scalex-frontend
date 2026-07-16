@@ -50,6 +50,11 @@ export interface CategoryPageContent {
   };
 }
 
+const TECHNICAL_HERO_COLLABORATION_LOGOS = [
+  { alt: 'Amazon', src: '/images/ama.png' },
+  { alt: 'Microsoft', src: '/images/course/google.png' },
+];
+
 const DEFAULT_COLLABORATION: CategoryPageContent['collaboration'] = {
   lineBefore: 'In Collaboration with ',
   lineHighlight: 'World-Class',
@@ -292,7 +297,9 @@ export default function CategoryHeroSection({
 
   return (
     <section
-      className="full-bleed relative overflow-visible bg-[#F5F6F8] pb-2 pt-6 md:pt-8"
+      className={`full-bleed relative overflow-visible bg-[#F5F6F8] pb-2 pt-6 md:pt-8 ${
+        mediaVariant === 'photo' ? 'lg:min-h-[625px]' : ''
+      }`}
       aria-labelledby="category-hero-heading"
     >
       {/* Same light pink glow as contact-us — full bottom including center */}
@@ -366,13 +373,31 @@ export default function CategoryHeroSection({
           </div>
 
           {/* Media column */}
-          <HeroMediaColumn
-            imageSrc={heroImage.src}
-            imageAlt={heroImage.alt}
-            badges={heroBadges}
-            variant={mediaVariant}
-            disableGsap
-          />
+          <div>
+            <HeroMediaColumn
+              imageSrc={heroImage.src}
+              imageAlt={heroImage.alt}
+              badges={heroBadges}
+              variant={mediaVariant}
+              disableGsap
+            />
+            {mediaVariant === 'photo' && (
+              <div className="mt-6 flex justify-center">
+                <div className="inline-flex items-center gap-4">
+                  <p className="whitespace-nowrap text-[16px] font-medium leading-normal text-[#1E293B]">
+                    In Collaboration with
+                  </p>
+                  <div className="flex items-center gap-6">
+                    {TECHNICAL_HERO_COLLABORATION_LOGOS.map((logo) => (
+                      <div key={logo.alt} className="relative h-7 w-20">
+                        <Image src={logo.src} alt={logo.alt} fill sizes="80px" className="object-contain object-left" />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
