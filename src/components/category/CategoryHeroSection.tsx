@@ -50,6 +50,19 @@ export interface CategoryPageContent {
   };
 }
 
+/** Forces any admin-authored `<a>` tags to open in a new tab, regardless of what attributes were typed. */
+function withNewTabLinks(html: string): string {
+  return html.replace(/<a\b([^>]*)>/gi, (_match, attrs: string) => {
+    let nextAttrs = /\btarget\s*=/i.test(attrs)
+      ? attrs.replace(/\btarget\s*=\s*(["']).*?\1/i, 'target="_blank"')
+      : `${attrs} target="_blank"`;
+    nextAttrs = /\brel\s*=/i.test(nextAttrs)
+      ? nextAttrs.replace(/\brel\s*=\s*(["']).*?\1/i, 'rel="noopener noreferrer"')
+      : `${nextAttrs} rel="noopener noreferrer"`;
+    return `<a${nextAttrs}>`;
+  });
+}
+
 const TECHNICAL_HERO_COLLABORATION_LOGOS = [
   { alt: 'Amazon', src: '/images/ama.png' },
   { alt: 'Microsoft', src: '/images/course/google.png' },
@@ -206,7 +219,7 @@ function FeatureList({ features }: { features: string[] }) {
         <li key={i} className="flex min-w-0 items-start gap-2.5">
           <CheckIcon className="mt-0.5 shrink-0" />
           <span
-            className={`text-[15px] font-medium leading-[152%] text-heading md:text-[18px] ${
+            className={`text-[15px] font-medium leading-[152%] text-heading [&_a]:text-brand [&_a]:underline [&_a]:underline-offset-2 md:text-[18px] ${
               feature === 'Authorized Scrum Alliance Training' ||
               feature === 'Live CST-Led Online Sessions' ||
               feature === 'All-Inclusive Course Pricing' ||
@@ -214,9 +227,8 @@ function FeatureList({ features }: { features: string[] }) {
                 ? 'whitespace-nowrap'
                 : ''
             }`}
-          >
-            {feature}
-          </span>
+            dangerouslySetInnerHTML={{ __html: withNewTabLinks(feature) }}
+          />
         </li>
       ))}
     </ul>
@@ -341,9 +353,10 @@ export default function CategoryHeroSection({
               <CategoryTitleUnderline />
             </h1>
 
-            <p className="mt-5 max-w-xl text-[15px] font-semibold leading-6 text-muted md:text-[18px]">
-              {category.description}
-            </p>
+            <p
+              className="mt-5 max-w-xl text-[15px] font-semibold leading-6 text-muted [&_a]:text-brand [&_a]:underline [&_a]:underline-offset-2 md:text-[18px]"
+              dangerouslySetInnerHTML={{ __html: withNewTabLinks(category.description) }}
+            />
 
             {features.length > 0 && <FeatureList features={features} />}
 

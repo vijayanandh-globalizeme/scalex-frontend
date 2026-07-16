@@ -81,9 +81,8 @@ export default async function CategoryPage({ params }: PageProps) {
         settings={settings}
         heroBadges={isAgileScrum ? agileHeroBadges : defaultHeroBadges}
         heroFigureSrc={
-          isAgileScrum
-            ? '/images/category/agile-scrum-hero.png'
-            : defaultHeroContent.figure.src
+          category.posterImage?.url ??
+          (isAgileScrum ? '/images/category/agile-scrum-hero.png' : defaultHeroContent.figure.src)
         }
         mediaVariant={isAgileScrum ? 'photo' : 'figure'}
         backgroundImage={isAgileScrum ? undefined : defaultHeroContent.backgroundImage}
