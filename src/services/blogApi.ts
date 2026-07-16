@@ -53,12 +53,14 @@ export type ApiBlogDetail = {
   createdAt: string;
   featureImage: ApiFile | null;
   category: { id: string; name: string; uri: string } | null;
-  courseCategory: { id: string; name: string; uri: string } | null;
+  courseCategories: { id: string; name: string; uri: string }[];
   trainer: ApiBlogTrainer | null;
   content: {
     tableTitle: string | null;
     tableOfContents: ApiBlogTocItem[] | null;
     content: string;
+    bannerTitle: string;
+    bannerDescription: string;
   } | null;
   seo: { metaTitle: string | null; metaDescription: string | null; metaKeywords: string | null } | null;
 };

@@ -120,7 +120,7 @@ export default function BlogsPage() {
 
   // Load hero + categories + default course category once
   useEffect(() => {
-    getTrendingBlogs({ limit: 5 }).then((res) => setHeroBlogs(res.items.map(toFeaturedBlog)));
+    getTrendingBlogs({ limit: 10 }).then((res) => setHeroBlogs(res.items.map(toFeaturedBlog)));
     getBlogCategories().then(setCategories);
     getCategoryByUri(DEFAULT_COURSE_CATEGORY_URI).then((cat) => {
       if (cat) setCourseCategory({ id: cat.id, name: cat.name });
@@ -219,7 +219,7 @@ export default function BlogsPage() {
           </nav>
 
           {/* Heading */}
-          <div className="mb-4 pt-8 text-center md:pt-12">
+          <div className="mb-4 pt-8 text-center md:pt-12 md:pb-6">
             <h1 className="text-[28px] font-bold leading-[1.3] text-heading md:text-[40px] md:font-extrabold md:leading-[60px]">
               Your Gateway to Career Knowledge
             </h1>
@@ -237,7 +237,7 @@ export default function BlogsPage() {
                 </svg>
               </span>
             </span>
-            <p className="mx-auto mt-2 max-w-2xl text-[15px] font-medium leading-[26px] text-muted md:text-[16px]">
+            <p className="mx-auto mt-2 max-w-6xl text-[15px] font-medium leading-[26px] text-muted md:text-[16px]">
               Expert articles on Agile, Scrum, DevOps, Cloud, and career growth. Unlock insights to accelerate your professional journey.
             </p>
           </div>
@@ -295,8 +295,8 @@ export default function BlogsPage() {
                         <div>
                           <div className="flex items-center gap-2">
                             <span className="text-[11px] font-bold uppercase tracking-widest text-brand">{b.tag}</span>
-                            <span className="text-[#CBD5E1]">•</span>
-                            <span className="text-[11px] font-semibold uppercase tracking-widest text-muted">{b.readTime}</span>
+                            <span className="text-brand">•</span>
+                            <span className="text-[11px] font-semibold uppercase tracking-widest text-brand">{b.readTime}</span>
                           </div>
                           <h2 className="interactive-card-title mt-3 text-[18px] font-bold leading-[1.4] text-heading md:text-[22px]">{b.title}</h2>
                           <p className="mt-3 line-clamp-3 text-[14px] leading-[1.6] text-muted">{b.excerpt}</p>
