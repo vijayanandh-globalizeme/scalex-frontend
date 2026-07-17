@@ -31,7 +31,17 @@ export default function AboutHero() {
 
         {/* Heading */}
         <div ref={heroContentRef} className="gsap-reveal-pending text-center">
-          <h1 style={{ color: '#1E293B', fontFamily: 'Inter', fontSize: '48px', fontWeight: 800, lineHeight: '1.2' }}>
+          <h1
+            style={{
+              color: 'var(--Text-Black-Primary, #1E293B)',
+              textAlign: 'center',
+              fontFamily: 'Inter',
+              fontSize: '40px',
+              fontStyle: 'normal',
+              fontWeight: 800,
+              lineHeight: '60px',
+            }}
+          >
             Empowering Professionals to
             <br />
             Build Future-Ready Careers. AI Powered Now
@@ -55,7 +65,7 @@ export default function AboutHero() {
           </div>
 
           <p
-            className="mx-auto mt-4 max-w-2xl md:mt-6"
+            className="mx-auto mt-4 max-w-[1050px] md:mt-6"
             style={{
               color: '#788593',
               textAlign: 'center',
@@ -66,10 +76,12 @@ export default function AboutHero() {
               lineHeight: '24px',
             }}
           >
-            Helping learners and professionals gain industry-relevant skills, certifications, and practical expertise to accelerate career growth and long-term success.
+            Helping learners and professionals gain industry-relevant skills, certifications, and practical expertise to
+            <br />
+            accelerate career growth and long-term success.
           </p>
 
-          <div className="mt-6 flex justify-center md:mt-8">
+          <div className="mt-6 mb-6 flex justify-center md:mt-8 md:mb-8">
             <CourseBrochureCta
               openModal
               type="contact"
@@ -86,7 +98,10 @@ export default function AboutHero() {
         </div>
 
         {/* Image grid */}
-        <div ref={heroImagesRef} className="gsap-reveal-pending mt-6 grid grid-cols-3 gap-2 pb-[50px] md:mt-10 md:gap-4 md:pb-0">
+        <div
+          ref={heroImagesRef}
+          className="gsap-reveal-pending mt-6 grid grid-cols-3 gap-2 pb-[50px] md:mt-10 md:gap-4 md:pb-0 min-[1400px]:grid-cols-[395px_405px_395px] min-[1400px]:justify-center"
+        >
           <div className="flex flex-col gap-2 md:gap-4">
             <div className="relative h-[140px] overflow-hidden rounded-2xl md:h-[220px]">
               <Image src="/images/about-left.png" alt="Professional" fill className="object-cover" />

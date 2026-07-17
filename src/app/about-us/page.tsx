@@ -25,7 +25,17 @@ export default function AboutPage() {
         <div className="site-container relative z-10">
           <div className="grid items-center gap-12 lg:grid-cols-2">
             <div>
-              <h2 style={{ color: '#FFFFFF', fontFamily: 'Inter', fontSize: '36px', fontWeight: 700, lineHeight: '1.25' }}>
+              <h2
+                className="mt-6"
+                style={{
+                  color: '#E5E5E5',
+                  fontFamily: 'Inter',
+                  fontSize: '34px',
+                  fontStyle: 'normal',
+                  fontWeight: 700,
+                  lineHeight: '140%',
+                }}
+              >
                 Our Journey of Growth<br />and Impact
               </h2>
               <p className="mt-5 max-w-md" style={{ color: '#94A3B8', fontFamily: 'Inter', fontSize: '15px', fontWeight: 400, lineHeight: '26px' }}>
@@ -61,13 +71,32 @@ export default function AboutPage() {
               <Image src="/images/who-we.png" alt="Who We Are — Scale X Learning team" fill className="object-cover" />
             </div>
             <div>
-              <h2 style={{ color: '#1E293B', fontFamily: 'Inter', fontSize: '40px', fontWeight: 800, lineHeight: '1.2' }}>
+              <h2
+                style={{
+                  color: '#1E293B',
+                  fontFamily: 'Inter',
+                  fontSize: '38px',
+                  fontStyle: 'normal',
+                  fontWeight: 800,
+                  lineHeight: '48px',
+                }}
+              >
                 Who<br />We Are
               </h2>
-              <p className="mt-6" style={{ color: '#788593', fontFamily: 'Inter', fontSize: '15px', fontWeight: 400, lineHeight: '26px' }}>
+              <p
+                className="mt-6"
+                style={{
+                  color: '#4A5867',
+                  fontFamily: 'Inter',
+                  fontSize: '15px',
+                  fontStyle: 'normal',
+                  fontWeight: 400,
+                  lineHeight: '24px',
+                }}
+              >
                 Founded in 2016, Scale X Learning has grown into India&apos;s most trusted professional upskilling platform — helping working professionals, corporate teams, and fresh graduates build skills that actually matter in today&apos;s fast-moving industry.
               </p>
-              <p className="mt-4" style={{ color: '#788593', fontFamily: 'Inter', fontSize: '15px', fontWeight: 400, lineHeight: '26px' }}>
+              <p className="mt-4" style={{ color: '#4A5867', fontFamily: 'Inter', fontSize: '15px', fontStyle: 'normal', fontWeight: 400, lineHeight: '24px' }}>
                 From Agile and Scrum certifications to DevOps, Cloud, and project management — we deliver programs built around real-world outcomes, not just classroom hours.
               </p>
             </div>
@@ -79,8 +108,31 @@ export default function AboutPage() {
       <section className="full-bleed bg-white pt-10 pb-16 md:pt-10 md:pb-20">
         <div className="site-container">
           <div className="mb-12 text-center">
-            <h2 style={{ color: '#1E293B', fontFamily: 'Inter', fontSize: '36px', fontWeight: 700, lineHeight: '1.2' }}>What We Do</h2>
-            <p className="mt-3" style={{ color: '#788593', fontFamily: 'Inter', fontSize: '15px', fontWeight: 400, lineHeight: '26px' }}>
+            <h2
+              style={{
+                color: '#1E293B',
+                textAlign: 'center',
+                fontFamily: 'Inter',
+                fontSize: '34px',
+                fontStyle: 'normal',
+                fontWeight: 700,
+                lineHeight: '140%',
+              }}
+            >
+              What We Do
+            </h2>
+            <p
+              className="mt-3"
+              style={{
+                color: '#788593',
+                textAlign: 'center',
+                fontFamily: 'Inter',
+                fontSize: '18px',
+                fontStyle: 'normal',
+                fontWeight: 500,
+                lineHeight: 'normal',
+              }}
+            >
               We provide career-transforming programs built for working professionals,<br />
               corporate teams, and enterprise learners across India.
             </p>
@@ -101,8 +153,8 @@ export default function AboutPage() {
                     </svg>
                   </div>
                   <div>
-                    <p style={{ color: '#1E293B', fontFamily: 'Inter', fontSize: '15px', fontWeight: 700 }}>{item.title}</p>
-                    <p className="mt-1" style={{ color: '#788593', fontFamily: 'Inter', fontSize: '14px', fontWeight: 400, lineHeight: '22px' }}>{item.desc}</p>
+                    <p style={{ color: '#1E293B', fontFamily: 'Inter', fontSize: '18px', fontStyle: 'normal', fontWeight: 700, lineHeight: 'normal' }}>{item.title}</p>
+                    <p className="mt-1" style={{ color: '#788593', fontFamily: 'Inter', fontSize: '15px', fontStyle: 'normal', fontWeight: 400, lineHeight: 'normal' }}>{item.desc}</p>
                   </div>
                 </div>
               ))}
@@ -117,15 +169,26 @@ export default function AboutPage() {
       {/* What Drives Us Every Day */}
       <section className="full-bleed bg-surface pt-10 pb-16 md:py-20  md:pb-10">
         <div className="site-container">
-          <h2 className="mb-10 text-center" style={{ color: '#1E293B', fontFamily: 'Inter', fontSize: '36px', fontWeight: 700 }}>
+          <h2
+            className="mb-10 text-center"
+            style={{
+              color: '#1E293B',
+              textAlign: 'center',
+              fontFamily: 'Inter',
+              fontSize: '34px',
+              fontStyle: 'normal',
+              fontWeight: 700,
+              lineHeight: '140%',
+            }}
+          >
             What Drives Us Every Day
           </h2>
           <div className="grid gap-6 md:grid-cols-2">
             {[{ title: 'Our Mission' }, { title: 'Our Vision' }].map((card) => (
               <div key={card.title} className="interactive-card rounded-2xl border border-zinc-100 bg-white p-8">
-                <h3 className="text-[20px] font-bold text-heading" style={{ color: '#1E293B', fontFamily: 'Inter' }}>{card.title}</h3>
+                <h3 style={{ color: '#1E293B', fontFamily: 'Inter', fontSize: '26px', fontStyle: 'normal', fontWeight: 700, lineHeight: '36px' }}>{card.title}</h3>
                 <div className="mt-2 h-[3px] w-10 rounded-full bg-brand" />
-                <p className="mt-5" style={{ color: '#788593', fontFamily: 'Inter', fontSize: '14px', fontWeight: 400, lineHeight: '24px' }}>
+                <p className="mt-5" style={{ color: '#788593', fontFamily: 'Inter', fontSize: '15px', fontStyle: 'normal', fontWeight: 400, lineHeight: 'normal' }}>
                   Enable learners and professionals to gain practical, industry-relevant skills that drive career success and measurable impact. We bridge the gap between classroom learning and boardroom execution.
                 </p>
               </div>
@@ -160,7 +223,7 @@ export default function AboutPage() {
         <div className="site-container">
           <div className="mb-10 text-center">
             <h2 style={{ color: '#1E293B', fontFamily: 'Inter', fontSize: '36px', fontWeight: 700 }}>The Minds Behind Scale X Learning</h2>
-            <p className="mt-3" style={{ color: '#788593', fontFamily: 'Inter', fontSize: '15px', fontWeight: 400, lineHeight: '26px' }}>
+            <p className="mt-3" style={{ color: '#788593', textAlign: 'center', fontFamily: 'Inter', fontSize: '18px', fontStyle: 'normal', fontWeight: 500, lineHeight: '26px' }}>
               Visionary leaders with decades of combined experience in ed-tech, corporate training, and professional development.
             </p>
           </div>
@@ -180,7 +243,7 @@ export default function AboutPage() {
                   <p className="interactive-card-title" style={{ color: '#1E293B', fontFamily: 'Inter', fontSize: '14px', fontWeight: 700 }}>{person.name}</p>
                   <p className="mt-0.5" style={{ color: '#788593', fontFamily: 'Inter', fontSize: '12px', fontWeight: 400 }}>{person.role}</p>
                 </div>
-                <div className="my-4 h-px w-full bg-zinc-100" />
+                <div className="mt-4 mb-2 h-px w-full bg-zinc-100" />
                 <p className="text-center" style={{ color: '#788593', fontFamily: 'Inter', fontSize: '13px', fontWeight: 400, lineHeight: '20px' }}>{person.bio}</p>
                 <div className="mt-4 flex items-center justify-center gap-1.5">
                   <span style={{ color: '#E0001B', fontFamily: 'Inter', fontSize: '13px', fontWeight: 600 }}>View Profile on</span>
