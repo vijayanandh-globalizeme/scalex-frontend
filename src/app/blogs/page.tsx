@@ -211,7 +211,7 @@ export default function BlogsPage() {
         className="full-bleed relative overflow-visible pt-4 pb-0 md:pt-6"
         style={{ height: '594px', zIndex: 10, position: 'relative' }}
       >
-        <div className="category-hero-bg pointer-events-none absolute inset-0" aria-hidden />
+        <div className="blogs-hero-bg pointer-events-none absolute inset-0" aria-hidden />
         {/* Decorative ScaleX watermark */}
         <div className="pointer-events-none absolute right-0 top-1/4 z-0 hidden h-[340px] w-[300px] opacity-[0.07] md:block" aria-hidden>
           <Image src="/images/scalex-mark.png" alt="" fill className="object-contain object-right" />
@@ -339,7 +339,7 @@ export default function BlogsPage() {
                           </div>
                           <span className="inline-flex items-center gap-2 text-[13px] font-semibold text-brand">
                             Read Article
-                            <span className="interactive-card-action">
+                            <span className="inline-flex items-center">
                               <ArrowRightIcon />
                             </span>
                           </span>
@@ -482,7 +482,7 @@ export default function BlogsPage() {
                         <p className="text-[11px] text-muted">{formatDate(b.createdAt)}</p>
                       </div>
                     </div>
-                    <span className="interactive-card-action">
+                    <span className="inline-flex items-center text-brand">
                       <ArrowRightIcon />
                     </span>
                   </div>

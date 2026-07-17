@@ -247,6 +247,21 @@ body {
       ) !important;
   }
 
+  .blogs-hero-bg {
+    inset: 0;
+    width: 100%;
+    background-color: #f5f6f8;
+    background-image: linear-gradient(
+      to top right,
+      #f5f6f8 0%,
+      #f5f6f8 8%,
+      rgba(255, 201, 211, 0.08) 28%,
+      rgba(255, 201, 211, 0.18) 48%,
+      rgba(255, 201, 211, 0.3) 72%,
+      rgba(255, 201, 211, 0.4) 100%
+    );
+  }
+
   /* Blog detail — red accent under main section titles (h2) */
   .blog-article-content h2 {
     position: relative;

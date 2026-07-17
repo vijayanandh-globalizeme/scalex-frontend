@@ -146,7 +146,7 @@ export default function HeroSection(props: HeroSectionProps) {
                   </span>
                 </span>
               </h1>
-              <p className="mt-5 whitespace-nowrap text-[16px] font-semibold leading-normal text-muted sm:text-[18px]">
+              <p className="mt-5 max-w-full whitespace-normal break-words text-[16px] font-semibold leading-normal text-muted sm:text-[18px]">
                 {subheading}
               </p>
 

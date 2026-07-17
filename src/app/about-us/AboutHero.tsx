@@ -14,7 +14,7 @@ export default function AboutHero() {
   useGsapScrollReveal(heroRef, heroImagesRef, { y: 50, duration: 1.4, delay: 0.3, start: 'top 95%' });
 
   return (
-    <section ref={heroRef} className="full-bleed relative overflow-x-clip overflow-y-visible pb-12 pt-[55px] md:pt-[75px]">
+    <section ref={heroRef} className="full-bleed relative overflow-x-clip overflow-y-visible pb-0 pt-[55px] md:pb-12 md:pt-[75px]">
       <div className="site-container relative z-10">
         {/* Breadcrumb */}
         <nav className="mb-6 flex items-center gap-2 text-sm text-muted md:mb-10" aria-label="Breadcrumb">
@@ -30,18 +30,17 @@ export default function AboutHero() {
         {/* Heading */}
         <div ref={heroContentRef} className="gsap-reveal-pending text-center">
           <h1
+            className="text-[28px] leading-[40px] md:text-[40px] md:leading-[60px]"
             style={{
               color: 'var(--Text-Black-Primary, #1E293B)',
               textAlign: 'center',
               fontFamily: 'Inter',
-              fontSize: '40px',
               fontStyle: 'normal',
               fontWeight: 800,
-              lineHeight: '60px',
             }}
           >
             Empowering Professionals to
-            <br />
+            <br className="hidden md:block" />
             Build{' '}
             <span className="relative inline-block whitespace-nowrap pb-[23px] align-top">
               <span>Future-Ready Careers</span>
