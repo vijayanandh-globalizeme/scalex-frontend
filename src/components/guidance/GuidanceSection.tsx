@@ -73,6 +73,7 @@ function GuidanceForm({
   termsHref,
   privacyHref,
   ctaLabel,
+  decorativeArrow,
   embedded,
 }: {
   formTitle: string;
@@ -80,6 +81,7 @@ function GuidanceForm({
   termsHref: string;
   privacyHref: string;
   ctaLabel: string;
+  decorativeArrow?: { src: string; alt?: string };
   embedded: boolean;
 }) {
   const [agreed, setAgreed] = useState(false);
@@ -127,15 +129,28 @@ function GuidanceForm({
   return (
     <form
       onSubmit={handleSubmit}
-      className={`w-full rounded-lg bg-white p-6 ${FORM_SHADOW} ${
+      className={`relative w-full overflow-hidden rounded-lg bg-white p-6 ${FORM_SHADOW} ${
         embedded ? '' : 'md:mx-auto md:max-w-[696px] md:p-8 lg:w-[695.792px]'
       }`}
     >
-      <h3 className="text-[20px] font-medium leading-normal text-heading">{formTitle}</h3>
+      {decorativeArrow ? (
+        <div className="pointer-events-none absolute right-3 bottom-3 z-0 h-28 w-28" aria-hidden>
+          <Image
+            src={decorativeArrow.src}
+            alt=""
+            fill
+            sizes="112px"
+            className="object-contain object-right-bottom"
+          />
+        </div>
+      ) : null}
 
-      <div className="mt-5 grid grid-cols-1 gap-5">
+      <div className="relative z-10">
+        <h3 className="text-[20px] font-medium leading-normal text-heading">{formTitle}</h3>
+
+        <div className="mt-5 grid grid-cols-1 gap-5">
         <div>
-          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+          <div className="grid grid-cols-1 gap-5">
             <input
               type="text"
               required
@@ -203,9 +218,9 @@ function GuidanceForm({
           </select>
           {fieldErrors.purpose ? <p className="mt-1 text-[12px] font-medium text-brand">{fieldErrors.purpose}</p> : null}
         </div>
-      </div>
+        </div>
 
-      <label className="mt-4 flex items-start gap-2 text-[12px] text-subtle">
+        <label className="mt-4 flex items-start gap-2 text-[12px] text-subtle">
         <button
           type="button"
           onClick={() => setAgreed((v) => !v)}
@@ -225,29 +240,30 @@ function GuidanceForm({
             Privacy Policy.
           </Link>
         </span>
-      </label>
+        </label>
 
-      <button
-        type="submit"
-        disabled={!agreed || status === 'submitting'}
-        className="btn-brand mt-5 h-[44px] gap-2 rounded-md px-6 text-[14px] disabled:cursor-not-allowed"
-      >
-        {status === 'submitting' ? 'Submitting…' : ctaLabel}
-        <svg
-          className="btn-arrow-icon"
-          width="18"
-          height="15"
-          viewBox="0 0 18 15"
-          fill="currentColor"
-          aria-hidden
+        <button
+          type="submit"
+          disabled={!agreed || status === 'submitting'}
+          className="btn-brand mt-5 h-[44px] gap-2 rounded-md px-6 text-[14px] disabled:cursor-not-allowed"
         >
-          <path d="M10.6333 15c.2326 0 .4361-.0891.63-.2771l6.4459-6.5599c.1938-.188.2908-.4156.2908-.663s-.097-.475-.2908-.663L11.2827.2968C11.0694.0792 10.8659 0 10.6333 0c-.475 0-.8434.3562-.8434.851 0 .2375.0775.465.2326.6234l2.1714 2.2559 4.0419 3.7698-4.0419 3.7697-2.1714 2.256c-.1551.1484-.2326.3859-.2326.6233 0 .495.3684.851.8434.851ZM.853 8.3806h12.2617l3.1211-.1979c.3974-.0297.6688-.277.6688-.6827 0-.4057-.2714-.6531-.6688-.6828l-3.1211-.1978H.853C.349 6.6194 0 6.9855 0 7.5c0 .5145.349.8806.853.8806Z" />
-        </svg>
-      </button>
+          {status === 'submitting' ? 'Submitting…' : ctaLabel}
+          <svg
+            className="btn-arrow-icon"
+            width="18"
+            height="15"
+            viewBox="0 0 18 15"
+            fill="currentColor"
+            aria-hidden
+          >
+            <path d="M10.6333 15c.2326 0 .4361-.0891.63-.2771l6.4459-6.5599c.1938-.188.2908-.4156.2908-.663s-.097-.475-.2908-.663L11.2827.2968C11.0694.0792 10.8659 0 10.6333 0c-.475 0-.8434.3562-.8434.851 0 .2375.0775.465.2326.6234l2.1714 2.2559 4.0419 3.7698-4.0419 3.7697-2.1714 2.256c-.1551.1484-.2326.3859-.2326.6233 0 .495.3684.851.8434.851ZM.853 8.3806h12.2617l3.1211-.1979c.3974-.0297.6688-.277.6688-.6827 0-.4057-.2714-.6531-.6688-.6828l-3.1211-.1978H.853C.349 6.6194 0 6.9855 0 7.5c0 .5145.349.8806.853.8806Z" />
+          </svg>
+        </button>
 
-      {status === 'error' && Object.keys(fieldErrors).length === 0 ? (
-        <p className="mt-3 text-[13px] font-medium text-brand">{errorMessage || 'Something went wrong. Please try again.'}</p>
-      ) : null}
+        {status === 'error' && Object.keys(fieldErrors).length === 0 ? (
+          <p className="mt-3 text-[13px] font-medium text-brand">{errorMessage || 'Something went wrong. Please try again.'}</p>
+        ) : null}
+      </div>
     </form>
   );
 }
@@ -268,25 +284,6 @@ export default function GuidanceSection({
 
   const content = (
     <>
-      {decorativeArrow ? (
-        <div
-          className={`pointer-events-none absolute z-0 ${
-            isEmbedded
-              ? 'right-2 bottom-2 h-28 w-28 opacity-80'
-              : 'right-4 bottom-4 hidden h-64 w-64 lg:block'
-          }`}
-          aria-hidden
-        >
-          <Image
-            src={decorativeArrow.src}
-            alt=""
-            fill
-            sizes={isEmbedded ? '112px' : '256px'}
-            className="object-contain object-right-bottom opacity-90"
-          />
-        </div>
-      ) : null}
-
       <div className={`relative z-10 ${isEmbedded ? '' : 'site-container'}`}>
         <div
           className={
@@ -342,6 +339,7 @@ export default function GuidanceSection({
               termsHref={termsHref}
               privacyHref={privacyHref}
               ctaLabel={ctaLabel}
+              decorativeArrow={decorativeArrow}
               embedded={isEmbedded}
             />
           </div>

@@ -87,43 +87,49 @@ function VideoThumbnail({
   responsive?: boolean;
 }) {
   return (
-    <div
-      className={`interactive-card interactive-card-media relative shrink-0 overflow-hidden rounded-2xl bg-zinc-200 ${
-        responsive ? `aspect-[432/404] w-full max-w-[432px]` : ''
-      }`}
-      style={
-        responsive
-          ? undefined
-          : { width, height, minWidth: width, minHeight: height, maxWidth: width, maxHeight: height }
-      }
-    >
-      <Image
-        src={src}
-        alt={alt}
-        fill
-        sizes={`${width}px`}
-        className="object-cover"
-        priority={false}
+    <div className={`relative isolate ${responsive ? 'w-full max-w-[432px]' : 'shrink-0'}`}>
+      <span
+        className="pointer-events-none absolute right-[-50px] -top-4 h-40 w-40 rounded-lg bg-[rgba(229,172,38,0.16)] blur-[32px]"
+        aria-hidden
       />
-      {videoUrl ? (
-        <a
-          href={videoUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="Play testimonial video"
-          className="absolute inset-0 z-10 flex items-center justify-center"
-        >
-          <span className="flex h-14 w-14 items-center justify-center rounded-full bg-brand text-white shadow-lg transition hover:scale-105">
-            <PlayIcon className="ml-0.5 h-6 w-6" />
+      <div
+        className={`interactive-card interactive-card-media relative z-10 shrink-0 overflow-hidden rounded-2xl bg-zinc-200 ${
+          responsive ? `aspect-[432/404] w-full max-w-[432px]` : ''
+        }`}
+        style={
+          responsive
+            ? undefined
+            : { width, height, minWidth: width, minHeight: height, maxWidth: width, maxHeight: height }
+        }
+      >
+        <Image
+          src={src}
+          alt={alt}
+          fill
+          sizes={`${width}px`}
+          className="object-cover"
+          priority={false}
+        />
+        {videoUrl ? (
+          <a
+            href={videoUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Play testimonial video"
+            className="absolute inset-0 z-10 flex items-center justify-center"
+          >
+            <span className="flex h-14 w-14 items-center justify-center rounded-full bg-brand text-white shadow-lg transition hover:scale-105">
+              <PlayIcon className="ml-0.5 h-6 w-6" />
+            </span>
+          </a>
+        ) : (
+          <span className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center">
+            <span className="flex h-14 w-14 items-center justify-center rounded-full bg-brand text-white shadow-lg">
+              <PlayIcon className="ml-0.5 h-6 w-6" />
+            </span>
           </span>
-        </a>
-      ) : (
-        <span className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center">
-          <span className="flex h-14 w-14 items-center justify-center rounded-full bg-brand text-white shadow-lg">
-            <PlayIcon className="ml-0.5 h-6 w-6" />
-          </span>
-        </span>
-      )}
+        )}
+      </div>
     </div>
   );
 }
