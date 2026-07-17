@@ -23,7 +23,7 @@ export interface MentorsSectionProps {
 function LinkedInBadge({ href, name }: { href?: string; name: string }) {
   const inner = (
     <span
-      className="relative block h-9 w-9 overflow-hidden rounded-full shadow-md ring-2 ring-white"
+      className="relative block h-9 w-9 overflow-hidden rounded-full shadow-md"
       aria-hidden={!href}
     >
       <Image
