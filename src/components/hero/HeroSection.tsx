@@ -150,7 +150,7 @@ export default function HeroSection(props: HeroSectionProps) {
                 {subheading}
               </p>
 
-              <div className="mt-8 mb-[70px] flex w-full flex-wrap items-center justify-between gap-3 sm:gap-4">
+              <div className="mt-8 mb-0 flex w-full flex-wrap items-center justify-between gap-3 sm:mb-[70px] sm:gap-4">
                 {primaryCta.href.startsWith('#') ? (
                   <button
                     type="button"

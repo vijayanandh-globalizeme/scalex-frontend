@@ -13,23 +13,23 @@ export interface LogoMarqueeItem {
 type LogoMarqueeSize = 'sm' | 'md';
 
 const sizeClasses: Record<LogoMarqueeSize, string> = {
-  sm: 'h-[30px] min-w-[60px] max-w-[130px] px-2',
+  sm: 'h-[33px] min-w-[60px] max-w-[130px] px-2',
   md: 'h-9 min-w-[100px] max-w-[160px] px-3',
 };
 
 /** ~2 large logos visible per mobile viewport; desktop marquee sizes unchanged. */
 const largeMobileSizeClasses: Record<LogoMarqueeSize, string> = {
-  sm: 'h-6 w-[56px] min-w-[56px] max-w-[56px] md:h-[30px] md:w-auto md:min-w-[60px] md:max-w-[130px] md:px-2',
+  sm: 'h-[27px] w-[56px] min-w-[56px] max-w-[56px] md:h-[33px] md:w-auto md:min-w-[60px] md:max-w-[130px] md:px-2',
   md: 'h-[26px] w-[65px] min-w-[65px] max-w-[65px] md:h-9 md:w-auto md:min-w-[100px] md:max-w-[160px] md:px-3',
 };
 
 const imageSizes: Record<LogoMarqueeSize, { width: number; height: number; sizes: string }> = {
-  sm: { width: 56, height: 24, sizes: '(max-width: 767px) 56px, 130px' },
+  sm: { width: 56, height: 27, sizes: '(max-width: 767px) 56px, 130px' },
   md: { width: 65, height: 26, sizes: '(max-width: 767px) 65px, 160px' },
 };
 
 const desktopImageSizes: Record<LogoMarqueeSize, { width: number; height: number }> = {
-  sm: { width: 130, height: 30 },
+  sm: { width: 130, height: 33 },
   md: { width: 160, height: 36 },
 };
 

@@ -468,7 +468,7 @@ export default function CoursesSection({
     <section
       ref={sectionRef}
       id="all-courses"
-      className="full-bleed relative bg-surface pt-[80px] pb-12 md:pb-16 lg:pb-20"
+      className="full-bleed relative bg-surface pt-[60px] md:pt-[80px]  pb-12 md:pb-16 lg:pb-20"
       aria-labelledby="courses-heading"
     >
       <div className="site-container relative z-10">

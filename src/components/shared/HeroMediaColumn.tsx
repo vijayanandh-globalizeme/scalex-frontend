@@ -127,6 +127,7 @@ function AwardBadgeIcon({ className }: { className?: string }) {
 }
 
 function FloatingBadge({ badge, photo = false }: { badge: HeroBadge; photo?: boolean }) {
+  const mobileVisibility = badge.id === 'learners-1' ? 'hidden md:block' : '';
   const placement = photo
     ? badge.placement === 'top-left'
       ? 'left-0 top-10 -translate-x-[40%]'
@@ -144,7 +145,7 @@ function FloatingBadge({ badge, photo = false }: { badge: HeroBadge; photo?: boo
         : badge.placement === 'mid-left'
           ? 'left-0 top-[60%] -translate-y-1/2 xl:-left-10'
           : badge.placement === 'bottom-right'
-            ? 'bottom-32 right-2 md:bottom-28 md:-right-10'
+            ? 'bottom-6 right-2 md:bottom-28 md:-right-10'
             : 'bottom-10 left-[42%] -translate-x-1/2 md:-bottom-2';
 
   const iconBg =
@@ -161,7 +162,7 @@ function FloatingBadge({ badge, photo = false }: { badge: HeroBadge; photo?: boo
 
   return (
     <div
-      className={`absolute z-30 rounded-xl border border-zinc-100 bg-white shadow-lg shadow-zinc-900/8 ${sizeClass} ${placement}`}
+      className={`absolute z-30 rounded-xl border border-zinc-100 bg-white shadow-lg shadow-zinc-900/8 ${sizeClass} ${placement} ${mobileVisibility}`}
     >
       <div className={`flex gap-2.5 ${alignClass}`}>
         <div

@@ -24,11 +24,11 @@ export const defaultWorkforceContent: WorkforceSectionProps = {
   partners: [
     { id: 'google', name: 'Google', logoSrc: '/images/hero/google.png', logoAlt: 'Google' },
     { id: 'stanford', name: 'Stanford', logoSrc: '/images/hero/stanford.png', logoAlt: 'Stanford' },
-    { id: 'ibm', name: 'IBM', logoSrc: '/images/hero/ibm.png', logoAlt: 'IBM' },
-    { id: 'infosys', name: 'Infosys', logoSrc: '/images/hero/infosys.png', logoAlt: 'Infosys' },
-    { id: 'claude', name: 'Claude', logoSrc: '/images/hero/google.png', logoAlt: 'Claude' },
-    { id: 'capgemini', name: 'Capgemini', logoSrc: '/images/hero/google.png', logoAlt: 'Capgemini' },
-    { id: 'deloitte', name: 'Deloitte', logoSrc: '/images/hero/google.png', logoAlt: 'Deloitte' },
-    { id: 'tcs', name: 'TCS', logoSrc: '/images/hero/tcs.png', logoAlt: 'Tata Consultancy Services' },
+    { id: 'ibm', name: 'IBM', logoSrc: '/images/sm-ibm.png', logoAlt: 'IBM' },
+    { id: 'infosys', name: 'Infosys', logoSrc: '/images/sm-info.png', logoAlt: 'Infosys' },
+    { id: 'claude', name: 'Claude', logoSrc: '/images/sm-claude.png', logoAlt: 'Claude' },
+    { id: 'capgemini', name: 'Capgemini', logoSrc: '/images/sm-capgemni.png', logoAlt: 'Capgemini' },
+    { id: 'deloitte', name: 'Deloitte', logoSrc: '/images/sm-deloitte.png', logoAlt: 'Deloitte' },
+    { id: 'tcs', name: 'TCS', logoSrc: '/images/sm-tcs.png', logoAlt: 'Tata Consultancy Services' },
   ],
 };

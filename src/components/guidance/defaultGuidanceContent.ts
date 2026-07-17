@@ -24,5 +24,5 @@ export const defaultGuidanceContent: GuidanceSectionProps = {
   termsHref: '/terms-of-use',
   privacyHref: '/privacy-policy',
   ctaLabel: 'Scale Your Career',
-  decorativeArrow: { src: '/images/big-aerox.png', alt: '' },
+  decorativeArrow: { src: '/images/x-ic.png', alt: '' },
 };

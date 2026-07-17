@@ -147,9 +147,9 @@ export default function WorkforceSection({
       <div className="site-container relative z-10">
         <div className="grid items-center gap-10 min-[1100px]:grid-cols-[1.15fr_1fr] min-[1100px]:gap-8 min-[1305px]:grid-cols-[1.1fr_1fr] min-[1305px]:gap-16">
           {/* Left: pyramid-stacked stat badges (3 / 2 / 1); vertically centered */}
-          <div className="flex flex-col items-center justify-center gap-[50px] min-[1100px]:items-start min-[1100px]:self-center">
+          <div className="flex flex-col items-center justify-center gap-3 sm:gap-[50px] min-[1100px]:items-start min-[1100px]:self-center">
             {/* Row 1: first 3 stats, left-aligned */}
-            <div className="flex w-full flex-wrap justify-center gap-2 sm:w-fit sm:flex-nowrap sm:items-center min-[1305px]:gap-4 max-sm:flex-col max-sm:w-[100%]">
+            <div className="flex w-full flex-wrap justify-center gap-3 sm:w-fit sm:flex-nowrap sm:items-center sm:gap-2 min-[1305px]:gap-4 max-sm:flex-col max-sm:w-[100%]">
               {stats.slice(0, 3).map((s, i) => {
                 const variant: 'learners' | 'mentors' =
                   s.variant ?? (i % 2 === 0 ? 'mentors' : 'learners');
@@ -157,7 +157,7 @@ export default function WorkforceSection({
               })}
             </div>
             {/* Row 2: next 2 stats, indented */}
-            <div className="flex w-full flex-wrap justify-center gap-2 sm:w-fit sm:flex-nowrap sm:items-center min-[1100px]:pl-10 min-[1305px]:gap-4 min-[1305px]:pl-20 max-sm:flex-col max-sm:w-[100%]">
+            <div className="flex w-full flex-wrap justify-center gap-3 sm:w-fit sm:flex-nowrap sm:items-center sm:gap-2 min-[1100px]:pl-10 min-[1305px]:gap-4 min-[1305px]:pl-20 max-sm:flex-col max-sm:w-[100%]">
               {stats.slice(3, 5).map((s, i) => {
                 const variant: 'learners' | 'mentors' =
                   s.variant ?? ((i + 3) % 2 === 0 ? 'mentors' : 'learners');

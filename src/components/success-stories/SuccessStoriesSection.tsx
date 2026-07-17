@@ -10,6 +10,7 @@ export interface SuccessStoriesSectionProps {
   heading: string;
   subheading: string;
   stories: Reviewer[];
+  compact?: boolean;
   autoplay?: boolean;
   autoplayIntervalMs?: number;
   featureMedia: {
@@ -87,43 +88,49 @@ function VideoThumbnail({
   responsive?: boolean;
 }) {
   return (
-    <div
-      className={`interactive-card interactive-card-media relative shrink-0 overflow-hidden rounded-2xl bg-zinc-200 ${
-        responsive ? `aspect-[432/404] w-full max-w-[432px]` : ''
-      }`}
-      style={
-        responsive
-          ? undefined
-          : { width, height, minWidth: width, minHeight: height, maxWidth: width, maxHeight: height }
-      }
-    >
-      <Image
-        src={src}
-        alt={alt}
-        fill
-        sizes={`${width}px`}
-        className="object-cover"
-        priority={false}
+    <div className={`relative isolate ${responsive ? 'w-full max-w-[432px]' : 'shrink-0'}`}>
+      <span
+        className="pointer-events-none absolute right-[-50px] -top-4 h-40 w-40 rounded-lg bg-[rgba(229,172,38,0.16)] blur-[32px]"
+        aria-hidden
       />
-      {videoUrl ? (
-        <a
-          href={videoUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="Play testimonial video"
-          className="absolute inset-0 z-10 flex items-center justify-center"
-        >
-          <span className="flex h-14 w-14 items-center justify-center rounded-full bg-brand text-white shadow-lg transition hover:scale-105">
-            <PlayIcon className="ml-0.5 h-6 w-6" />
+      <div
+        className={`interactive-card interactive-card-media relative z-10 shrink-0 overflow-hidden rounded-2xl bg-zinc-200 ${
+          responsive ? `aspect-[432/404] w-full max-w-[432px]` : ''
+        }`}
+        style={
+          responsive
+            ? undefined
+            : { width, height, minWidth: width, minHeight: height, maxWidth: width, maxHeight: height }
+        }
+      >
+        <Image
+          src={src}
+          alt={alt}
+          fill
+          sizes={`${width}px`}
+          className="object-cover"
+          priority={false}
+        />
+        {videoUrl ? (
+          <a
+            href={videoUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Play testimonial video"
+            className="absolute inset-0 z-10 flex items-center justify-center"
+          >
+            <span className="flex h-14 w-14 items-center justify-center rounded-full bg-brand text-white shadow-lg transition hover:scale-105">
+              <PlayIcon className="ml-0.5 h-6 w-6" />
+            </span>
+          </a>
+        ) : (
+          <span className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center">
+            <span className="flex h-14 w-14 items-center justify-center rounded-full bg-brand text-white shadow-lg">
+              <PlayIcon className="ml-0.5 h-6 w-6" />
+            </span>
           </span>
-        </a>
-      ) : (
-        <span className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center">
-          <span className="flex h-14 w-14 items-center justify-center rounded-full bg-brand text-white shadow-lg">
-            <PlayIcon className="ml-0.5 h-6 w-6" />
-          </span>
-        </span>
-      )}
+        )}
+      </div>
     </div>
   );
 }
@@ -172,6 +179,7 @@ export default function SuccessStoriesSection({
   heading,
   subheading,
   stories,
+  compact = false,
   autoplay = true,
   autoplayIntervalMs = 6000,
   featureMedia,
@@ -255,18 +263,30 @@ export default function SuccessStoriesSection({
 
   return (
     <section
-      className="full-bleed relative bg-surface pt-24 pb-8 md:pt-28 md:pb-10 lg:pt-32 lg:pb-12"
+      className={`full-bleed relative ${
+        compact
+          ? 'bg-surface pt-[30px] pb-0'
+          : 'bg-surface pt-16 pb-2 md:pt-28 md:pb-10 lg:pt-32 lg:pb-12'
+      }`}
       aria-labelledby="success-stories-heading"
     >
       <div className="site-container relative z-10">
-        <header className="relative mx-auto w-fit max-w-full pt-6 text-center md:pt-8 lg:pt-10">
+        <header
+          className={`relative mx-auto w-fit max-w-full text-center ${
+            compact ? 'pt-0' : 'pt-6 md:pt-8 lg:pt-10'
+          }`}
+        >
           <h2
             id="success-stories-heading"
             className="section-heading scroll-mt-24 text-heading"
           >
             {heading}
           </h2>
-          <p className="mt-3 whitespace-nowrap text-[16px] font-medium leading-[140%] text-muted md:text-[18px]">
+          <p
+            className={`mx-auto mt-3 text-[16px] font-medium leading-[140%] text-muted md:text-[18px] ${
+              compact ? 'max-w-none md:whitespace-nowrap' : 'max-w-3xl'
+            }`}
+          >
             {subheading}
           </p>
         </header>
@@ -276,7 +296,10 @@ export default function SuccessStoriesSection({
           className="relative hidden w-full overflow-x-hidden overflow-y-visible lg:block"
           style={{ minHeight: (blockHeight + 32) * scale }}
         >
-         <div className="w-fit origin-top-left pb-8" style={{ transform: `scale(${scale})` }}>
+         <div
+           className={`w-fit origin-top-left ${compact ? 'pb-0' : 'pb-8'}`}
+           style={{ transform: `scale(${scale})` }}
+         >
           {canNavigateDesktop ? (
             <div className="absolute right-0 top-4 z-30 flex items-center gap-3">
               <button

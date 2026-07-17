@@ -23,12 +23,16 @@ export interface MentorsSectionProps {
 function LinkedInBadge({ href, name }: { href?: string; name: string }) {
   const inner = (
     <span
-      className="flex h-7 w-7 items-center justify-center rounded-full bg-linkedin text-white shadow-md ring-2 ring-white"
+      className="relative block h-9 w-9 overflow-hidden rounded-full shadow-md ring-2 ring-white"
       aria-hidden={!href}
     >
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
-        <path d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.13 1.45-2.13 2.94v5.67H9.36V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.45zM5.34 7.43a2.06 2.06 0 110-4.12 2.06 2.06 0 010 4.12zM7.12 20.45H3.55V9h3.57z" />
-      </svg>
+      <Image
+        src="/images/image 20233.png"
+        alt=""
+        width={36}
+        height={36}
+        className="h-9 w-9 object-contain"
+      />
     </span>
   );
   if (!href) return inner;
