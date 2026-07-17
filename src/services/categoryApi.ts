@@ -23,12 +23,18 @@ type CategoryDetailResponse = { success: boolean; data: ApiCategoryDetail };
 type CategoryListResponse   = { success: boolean; data: ApiCategoryItem[] };
 
 export async function fetchCategoryByUri(uri: string): Promise<ApiCategoryDetail | null> {
-  const json = await get<CategoryDetailResponse>(`course-categories/${uri}`, { revalidate: 300 });
+  const json = await get<CategoryDetailResponse>(`course-categories/${uri}`, {
+    revalidate: 300,
+    tags: [`course-category-${uri}`],
+  });
   return json?.success ? json.data : null;
 }
 
 export async function fetchAllCategories(): Promise<ApiCategoryItem[]> {
-  const json = await get<CategoryListResponse>('course-categories', { revalidate: 300 });
+  const json = await get<CategoryListResponse>('course-categories', {
+    revalidate: 300,
+    tags: ['course-categories-list'],
+  });
   return json?.success ? (json.data ?? []) : [];
 }
 

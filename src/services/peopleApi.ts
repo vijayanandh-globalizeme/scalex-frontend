@@ -63,7 +63,10 @@ type ReviewersApiResponse = {
 };
 
 export async function fetchLearners(limit = 10): Promise<Learner[]> {
-  const json = await get<LearnersApiResponse>(`people/learners?limit=${limit}`);
+  const json = await get<LearnersApiResponse>(`people/learners?limit=${limit}`, {
+    revalidate: 300,
+    tags: ['people-learners'],
+  });
   if (!json?.success) return [];
   return (json.data ?? []).map((item) => ({
     id: item.id,
@@ -101,7 +104,10 @@ type TrainersApiResponse = {
 };
 
 export async function fetchTrainers(limit = 10): Promise<Trainer[]> {
-  const json = await get<TrainersApiResponse>(`people/trainers?limit=${limit}`);
+  const json = await get<TrainersApiResponse>(`people/trainers?limit=${limit}`, {
+    revalidate: 300,
+    tags: ['people-trainers'],
+  });
   if (!json?.success) return [];
   return (json.data ?? []).map((item) => ({
     id: item.id,
@@ -114,7 +120,10 @@ export async function fetchTrainers(limit = 10): Promise<Trainer[]> {
 }
 
 export async function fetchReviewers(limit = 10): Promise<Reviewer[]> {
-  const json = await get<ReviewersApiResponse>(`people/reviewers?limit=${limit}`);
+  const json = await get<ReviewersApiResponse>(`people/reviewers?limit=${limit}`, {
+    revalidate: 300,
+    tags: ['people-reviewers'],
+  });
   if (!json?.success) return [];
   return (json.data ?? []).map((item) => ({
     id: item.id,

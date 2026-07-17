@@ -32,7 +32,10 @@ export interface Webinar {
 }
 
 export async function fetchWebinars(limit = 10): Promise<Webinar[]> {
-  const json = await get<WebinarApiResponse>(`webinar?limit=${limit}&offset=0`);
+  const json = await get<WebinarApiResponse>(`webinar?limit=${limit}&offset=0`, {
+    revalidate: 300,
+    tags: ['webinars-list'],
+  });
   if (!json?.success) return [];
   return (json.data?.data ?? []).map((item) => ({
     id: item.id,

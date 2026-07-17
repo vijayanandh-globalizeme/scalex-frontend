@@ -114,7 +114,7 @@ function toFooterMenu(apiFooter: ApiFooterMenu | undefined): FooterMenu {
 }
 
 export const fetchLayout = cache(async (): Promise<LayoutData | null> => {
-  const json = await get<LayoutApiResponse>('layout');
+  const json = await get<LayoutApiResponse>('layout', { revalidate: 300, tags: ['layout'] });
   if (!json?.success) return null;
   return {
     megaMenu: toMegaMenuCategories(json.data.megaMenu ?? []),
@@ -125,7 +125,7 @@ export const fetchLayout = cache(async (): Promise<LayoutData | null> => {
 });
 
 export const fetchSetting = cache(async (): Promise<LayoutSettings | null> => {
-  const json = await get<SettingsApiResponse>('layout/settings');
+  const json = await get<SettingsApiResponse>('layout/settings', { revalidate: 300, tags: ['layout-settings'] });
   if (!json?.success) return null;
   return json.data ?? {};
 });

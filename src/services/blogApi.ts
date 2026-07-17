@@ -98,7 +98,10 @@ function buildListParams(options: BlogListOptions): URLSearchParams {
 
 export async function fetchBlogs(options: BlogListOptions = {}): Promise<ApiBlogListResult> {
   const params = buildListParams(options);
-  const json = await get<BlogListApiResponse>(`blogs?${params.toString()}`, { revalidate: 60 });
+  const json = await get<BlogListApiResponse>(`blogs?${params.toString()}`, {
+    revalidate: 60,
+    tags: ['blogs-list'],
+  });
   return json?.success
     ? json.data
     : { items: [], total: 0, limit: options.limit ?? 12, offset: options.offset ?? 0 };
