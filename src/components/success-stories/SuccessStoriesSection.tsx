@@ -261,7 +261,7 @@ export default function SuccessStoriesSection({
 
   return (
     <section
-      className="full-bleed relative bg-surface pt-24 pb-8 md:pt-28 md:pb-10 lg:pt-32 lg:pb-12"
+      className="full-bleed relative bg-surface pt-16 pb-2 md:pt-28 md:pb-10 lg:pt-32 lg:pb-12"
       aria-labelledby="success-stories-heading"
     >
       <div className="site-container relative z-10">
@@ -272,7 +272,7 @@ export default function SuccessStoriesSection({
           >
             {heading}
           </h2>
-          <p className="mt-3 whitespace-nowrap text-[16px] font-medium leading-[140%] text-muted md:text-[18px]">
+          <p className="mx-auto mt-3 max-w-3xl text-[16px] font-medium leading-[140%] text-muted md:text-[18px]">
             {subheading}
           </p>
         </header>
