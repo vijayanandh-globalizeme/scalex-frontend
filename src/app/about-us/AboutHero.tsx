@@ -101,7 +101,7 @@ export default function AboutHero() {
         {/* Image grid */}
         <div
           ref={heroImagesRef}
-          className="gsap-reveal-pending mt-6 grid grid-cols-3 gap-2 pb-[50px] md:mt-10 md:gap-4 md:pb-0 min-[1400px]:grid-cols-[395px_405px_395px] min-[1400px]:justify-center"
+          className="gsap-reveal-pending mt-6 grid grid-cols-3 gap-2 pb-[50px] md:mt-10 md:gap-4 md:pb-0 min-[1400px]:grid-cols-[398px_408px_398px] min-[1400px]:justify-between"
         >
           <div className="flex flex-col gap-2 md:gap-4">
             <div className="relative h-[140px] overflow-hidden rounded-2xl md:h-[220px]">
