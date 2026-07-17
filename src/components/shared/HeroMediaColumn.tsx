@@ -268,7 +268,7 @@ const HeroMediaColumn = forwardRef<HTMLDivElement, HeroMediaColumnProps>(
               aria-hidden
             />
 
-            <div className="absolute bottom-12 left-1/2 z-[5] h-[110%] w-[260px] -translate-x-1/2 sm:w-[300px] md:w-[330px] lg:w-[350px]">
+            <div className="absolute bottom-0 left-1/2 z-[5] h-[110%] w-[260px] -translate-x-1/2 sm:w-[300px] md:w-[330px] lg:w-[350px]">
               <Image
                 src={imageSrc}
                 alt={imageAlt}

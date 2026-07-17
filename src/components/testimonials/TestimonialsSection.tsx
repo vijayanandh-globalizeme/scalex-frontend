@@ -300,9 +300,18 @@ function TestimonialCard({
     direction === 'next' ? 'animate-slide-in-right' : 'animate-slide-in-left';
   return (
     <article
-      className={`${animationClass} interactive-card relative mt-8 w-full max-w-[520px] rounded-2xl bg-white p-6 md:mt-12 md:p-7`}
+      className={`${animationClass} interactive-card relative mt-8 w-full max-w-[520px] overflow-hidden rounded-2xl bg-white p-6 md:mt-12 md:p-7`}
     >
-      <header className="flex items-start justify-between gap-4">
+      <div className="pointer-events-none absolute right-2 bottom-2 z-0 h-[56.011px] w-[51.503px]" aria-hidden>
+        <Image
+          src="/images/x-ic.png"
+          alt=""
+          fill
+          sizes="52px"
+          className="object-contain object-right-bottom"
+        />
+      </div>
+      <header className="relative z-10 flex items-start justify-between gap-4">
         <div className="flex items-center gap-3">
           {testimonial.avatarUrl ? (
             <div className="relative h-12 w-12 overflow-hidden rounded-full bg-zinc-100">
@@ -328,9 +337,9 @@ function TestimonialCard({
           <p className="text-[12px] font-semibold text-brand">Salary Hike</p>
         </div>
       </header>
-      <p className="mt-4 text-[14px] leading-[22px] text-body">{testimonial.review}</p>
+      <p className="relative z-10 mt-4 text-[14px] leading-[22px] text-body">{testimonial.review}</p>
       {(testimonial.prevCompanyUrl || testimonial.currentCompanyUrl) ? (
-        <footer className="mt-5 flex items-center gap-4">
+        <footer className="relative z-10 mt-5 flex items-center gap-4">
           {testimonial.prevCompanyUrl ? (
             <Image src={testimonial.prevCompanyUrl} alt="Previous company" height={28} width={120} className="h-7 w-auto object-contain object-left" />
           ) : null}

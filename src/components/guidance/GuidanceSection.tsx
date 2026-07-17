@@ -148,9 +148,9 @@ function GuidanceForm({
       <div className="relative z-10">
         <h3 className="text-[20px] font-medium leading-normal text-heading">{formTitle}</h3>
 
-        <div className="mt-5 grid grid-cols-1 gap-5">
+        <div className="mt-8 grid grid-cols-1 gap-6">
         <div>
-          <div className="grid grid-cols-1 gap-5">
+          <div className="grid grid-cols-1 gap-6">
             <input
               type="text"
               required
@@ -220,7 +220,7 @@ function GuidanceForm({
         </div>
         </div>
 
-        <label className="mt-4 flex items-start gap-2 text-[12px] text-subtle">
+        <label className="mt-5 flex items-start gap-2 text-[12px] text-subtle">
         <button
           type="button"
           onClick={() => setAgreed((v) => !v)}
@@ -292,7 +292,7 @@ export default function GuidanceSection({
               : 'grid items-start gap-10 lg:grid-cols-[2fr_3fr] lg:gap-16'
           }
         >
-          <div className="text-white">
+          <div className="text-white pt-5 md:pt-22">
             <h2
               id="guidance-heading"
               className={`whitespace-pre-line font-semibold leading-[140%] text-white ${
@@ -330,7 +330,7 @@ export default function GuidanceSection({
             className={
               isEmbedded
                 ? 'relative w-full'
-                : 'relative z-20 w-full self-start md:mb-[-40px] md:translate-y-[10%]'
+                : 'relative z-20 w-full self-start md:mb-[-40px] md:translate-y-[7%]'
             }
           >
             <GuidanceForm
@@ -361,7 +361,7 @@ export default function GuidanceSection({
 
   return (
     <section
-      className={`full-bleed relative z-10 overflow-visible bg-[#0D0D0D] pt-10 pb-12 ${className ?? ''}`}
+      className={`full-bleed relative z-10 overflow-visible bg-[#0D0D0D] pt-0 pb-12 ${className ?? ''}`}
       aria-labelledby="guidance-heading"
     >
       {content}
