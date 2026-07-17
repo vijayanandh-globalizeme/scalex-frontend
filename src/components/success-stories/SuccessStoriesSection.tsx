@@ -10,6 +10,7 @@ export interface SuccessStoriesSectionProps {
   heading: string;
   subheading: string;
   stories: Reviewer[];
+  compact?: boolean;
   autoplay?: boolean;
   autoplayIntervalMs?: number;
   featureMedia: {
@@ -178,6 +179,7 @@ export default function SuccessStoriesSection({
   heading,
   subheading,
   stories,
+  compact = false,
   autoplay = true,
   autoplayIntervalMs = 6000,
   featureMedia,
@@ -261,18 +263,30 @@ export default function SuccessStoriesSection({
 
   return (
     <section
-      className="full-bleed relative bg-surface pt-16 pb-2 md:pt-28 md:pb-10 lg:pt-32 lg:pb-12"
+      className={`full-bleed relative ${
+        compact
+          ? 'bg-surface pt-[30px] pb-0'
+          : 'bg-surface pt-16 pb-2 md:pt-28 md:pb-10 lg:pt-32 lg:pb-12'
+      }`}
       aria-labelledby="success-stories-heading"
     >
       <div className="site-container relative z-10">
-        <header className="relative mx-auto w-fit max-w-full pt-6 text-center md:pt-8 lg:pt-10">
+        <header
+          className={`relative mx-auto w-fit max-w-full text-center ${
+            compact ? 'pt-0' : 'pt-6 md:pt-8 lg:pt-10'
+          }`}
+        >
           <h2
             id="success-stories-heading"
             className="section-heading scroll-mt-24 text-heading"
           >
             {heading}
           </h2>
-          <p className="mx-auto mt-3 max-w-3xl text-[16px] font-medium leading-[140%] text-muted md:text-[18px]">
+          <p
+            className={`mx-auto mt-3 text-[16px] font-medium leading-[140%] text-muted md:text-[18px] ${
+              compact ? 'max-w-none md:whitespace-nowrap' : 'max-w-3xl'
+            }`}
+          >
             {subheading}
           </p>
         </header>
@@ -282,7 +296,10 @@ export default function SuccessStoriesSection({
           className="relative hidden w-full overflow-x-hidden overflow-y-visible lg:block"
           style={{ minHeight: (blockHeight + 32) * scale }}
         >
-         <div className="w-fit origin-top-left pb-8" style={{ transform: `scale(${scale})` }}>
+         <div
+           className={`w-fit origin-top-left ${compact ? 'pb-0' : 'pb-8'}`}
+           style={{ transform: `scale(${scale})` }}
+         >
           {canNavigateDesktop ? (
             <div className="absolute right-0 top-4 z-30 flex items-center gap-3">
               <button

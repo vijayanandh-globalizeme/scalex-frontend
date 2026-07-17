@@ -54,7 +54,7 @@ export default function AboutPage() {
       </section>
 
       {/* Who We Are */}
-      <section className="full-bleed bg-white py-16 md:py-20 md:pb-10">
+      <section className="full-bleed bg-white pt-16 pb-3 md:pt-20 md:pb-10">
         <div className="site-container">
           <div className="grid items-center gap-12 lg:grid-cols-2">
             <div className="relative overflow-hidden rounded-2xl" style={{ height: '380px' }}>
@@ -76,7 +76,7 @@ export default function AboutPage() {
       </section>
 
       {/* What We Do */}
-      <section className="full-bleed bg-white py-16 md:py-20 md:pt-10">
+      <section className="full-bleed bg-white pt-10 pb-16 md:pt-10 md:pb-20">
         <div className="site-container">
           <div className="mb-12 text-center">
             <h2 style={{ color: '#1E293B', fontFamily: 'Inter', fontSize: '36px', fontWeight: 700, lineHeight: '1.2' }}>What We Do</h2>
@@ -156,7 +156,7 @@ export default function AboutPage() {
       </section>
 
       {/* The Minds Behind Scale X Learning */}
-      <section className="full-bleed bg-surface pt-10 pb-16 md:py-20 md:pt-10 md:pb-10">
+      <section className="full-bleed bg-surface pt-6 pb-16 md:py-20 md:pt-10 md:pb-10">
         <div className="site-container">
           <div className="mb-10 text-center">
             <h2 style={{ color: '#1E293B', fontFamily: 'Inter', fontSize: '36px', fontWeight: 700 }}>The Minds Behind Scale X Learning</h2>
@@ -184,9 +184,14 @@ export default function AboutPage() {
                 <p className="text-center" style={{ color: '#788593', fontFamily: 'Inter', fontSize: '13px', fontWeight: 400, lineHeight: '20px' }}>{person.bio}</p>
                 <div className="mt-4 flex items-center justify-center gap-1.5">
                   <span style={{ color: '#E0001B', fontFamily: 'Inter', fontSize: '13px', fontWeight: 600 }}>View Profile on</span>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#0A66C2" aria-hidden>
-                    <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
-                  </svg>
+                  <Image
+                    src="/images/image 20233.png"
+                    alt=""
+                    width={22}
+                    height={22}
+                    className="h-[22px] w-[22px] rounded-full object-contain"
+                    aria-hidden
+                  />
                 </div>
               </div>
             ))}
@@ -194,16 +199,18 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <SuccessStoriesSectionServer />
+      <SuccessStoriesSectionServer compact />
 
-      <div className="site-container py-6">
-        <div className="rounded-2xl border border-zinc-100 bg-white px-0 py-6 shadow-sm md:px-10">
-          <ReviewPlatformRowServer />
+      <div className="full-bleed bg-surface pt-0 pb-6">
+        <div className="site-container">
+          <div className="rounded-2xl border border-zinc-100 bg-white px-0 py-6 shadow-sm md:px-10">
+            <ReviewPlatformRowServer />
+          </div>
         </div>
       </div>
 
       {/* Scale X Learning in the News */}
-      <section className="full-bleed bg-surface pt-10 pb-16 md:py-20">
+      <section className="full-bleed bg-surface pt-6 pb-16 md:pt-10 md:pb-20">
         <div className="site-container">
           <h2 className="mb-10 text-center" style={{ color: '#1E293B', fontFamily: 'Inter', fontSize: '36px', fontWeight: 700 }}>
             Scale X Learning in the News
@@ -236,7 +243,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <AwardsSection {...defaultAwardsContent} />
+      <AwardsSection {...defaultAwardsContent} className="pb-12 md:pb-16" />
 
       <GuidanceSection {...defaultGuidanceContent} />
     </>
