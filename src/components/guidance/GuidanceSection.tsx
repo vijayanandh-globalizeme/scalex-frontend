@@ -292,7 +292,7 @@ export default function GuidanceSection({
               : 'grid items-start gap-10 lg:grid-cols-[2fr_3fr] lg:gap-16'
           }
         >
-          <div className="text-white pt-5 md:pt-22">
+          <div className="text-white pt-15 md:pt-22">
             <h2
               id="guidance-heading"
               className={`whitespace-pre-line font-semibold leading-[140%] text-white ${
