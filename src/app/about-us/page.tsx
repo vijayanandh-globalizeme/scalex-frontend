@@ -13,7 +13,7 @@ export default function AboutPage() {
       <AboutHero />
 
       {/* Our Journey of Growth and Impact */}
-      <section className="full-bleed relative overflow-hidden py-16" style={{ background: '#141414' }}>
+      <section className="full-bleed relative mt-0 overflow-hidden py-16" style={{ background: '#141414' }}>
         {/* Cross icon bottom right */}
         <div className="pointer-events-none absolute right-0 bottom-0" aria-hidden>
           <Image src="/images/cros.png" alt="" width={220} height={220} className="object-contain" />
@@ -26,7 +26,6 @@ export default function AboutPage() {
           <div className="grid items-center gap-12 lg:grid-cols-2">
             <div>
               <h2
-                className="mt-6"
                 style={{
                   color: '#E5E5E5',
                   fontFamily: 'Inter',
