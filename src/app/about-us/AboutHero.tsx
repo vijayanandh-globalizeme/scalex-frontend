@@ -54,7 +54,18 @@ export default function AboutHero() {
             </span>
           </div>
 
-          <p className="mx-auto mt-4 max-w-2xl md:mt-6" style={{ color: '#788593', fontFamily: 'Inter', fontSize: '17px', fontWeight: 400, lineHeight: '26px' }}>
+          <p
+            className="mx-auto mt-4 max-w-2xl md:mt-6"
+            style={{
+              color: '#788593',
+              textAlign: 'center',
+              fontFamily: 'Inter',
+              fontSize: '18px',
+              fontStyle: 'normal',
+              fontWeight: 600,
+              lineHeight: '24px',
+            }}
+          >
             Helping learners and professionals gain industry-relevant skills, certifications, and practical expertise to accelerate career growth and long-term success.
           </p>
 

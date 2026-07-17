@@ -47,11 +47,11 @@ export const defaultHeroContent: HeroSectionProps = {
     lineHighlight: 'World-Class',
     lineAfter: ' Certifying Bodies',
     logos: [
-      { alt: 'Google', src: '/images/hero/google.png' },
+      { alt: 'Google', src: '/images/goo.png' },
       { alt: 'IBM', src: '/images/hero/ibm.png' },
       { alt: 'Infosys', src: '/images/hero/infosys.png' },
       { alt: 'Stanford', src: '/images/hero/stanford.png' },
-      { alt: 'Deloitte' },
+      { alt: 'Deloitte', src: '/images/delo.png' },
       { alt: 'TCS', src: '/images/hero/tcs.png' },
     ],
   },
