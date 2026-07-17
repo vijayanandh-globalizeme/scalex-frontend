@@ -184,7 +184,7 @@ function TrendingBlogsSection({ blogs }: { blogs: TrendingBlogCardData[] }) {
           <div className="overflow-x-clip">
           <div
             className="flex items-stretch gap-6 transition-transform duration-500 ease-in-out"
-            style={{ transform: `translateX(calc(-${index} * (100% / ${perPage} + (${perPage - 1} * 1.5rem / ${perPage}))))` }}
+            style={{ transform: `translateX(calc(-${index} * (100% / ${perPage} + 24px / ${perPage})))` }}
           >
             {blogs.map((blog) => (
               <div key={blog.id} className="flex shrink-0 self-stretch" style={{ width: `calc((100% - ${(perPage - 1) * 24}px) / ${perPage})` }}>
@@ -678,7 +678,7 @@ export default function BlogDetailPage() {
                   </div>
                 ) : null}
 
-                <div className="flex flex-wrap items-start gap-x-5 gap-y-2 text-[13px] text-white">
+                <div className="flex flex-wrap items-start gap-x-20 gap-y-5 text-[13px] text-white">
                   <span className="inline-flex flex-col items-start gap-1 text-left">
                     <Image
                       src="/images/calener_icon.png"
