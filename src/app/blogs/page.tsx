@@ -62,7 +62,7 @@ function SearchIcon() {
 
 function ArrowRightIcon() {
   return (
-    <svg width="18" height="15" viewBox="0 0 18 15" fill="currentColor" aria-hidden>
+    <svg className="btn-arrow-icon" width="18" height="15" viewBox="0 0 18 15" fill="currentColor" aria-hidden>
       <path d="M10.6333 15c.2326 0 .4361-.0891.63-.2771l6.4459-6.5599c.1938-.188.2908-.4156.2908-.663s-.097-.475-.2908-.663L11.2827.2968C11.0694.0792 10.8659 0 10.6333 0c-.475 0-.8434.3562-.8434.851 0 .2375.0775.465.2326.6234l2.1714 2.2559 4.0419 3.7698-4.0419 3.7697-2.1714 2.256c-.1551.1484-.2326.3859-.2326.6233 0 .495.3684.851.8434.851ZM.853 8.3806h12.2617l3.1211-.1979c.3974-.0297.6688-.277.6688-.6827 0-.4057-.2714-.6531-.6688-.6828l-3.1211-.1978H.853C.349 6.6194 0 6.9855 0 7.5c0 .5145.349.8806.853.8806Z" />
     </svg>
   );
@@ -232,22 +232,25 @@ export default function BlogsPage() {
           {/* Heading */}
           <div className="mb-4 pt-8 text-center md:pt-12 md:pb-6">
             <h1 className="text-[28px] font-bold leading-[1.3] text-heading md:text-[40px] md:font-extrabold md:leading-[60px]">
-              Your Gateway to Career Knowledge
-            </h1>
-            <span className="mt-1 block h-[19px] w-full max-w-[358px] overflow-hidden mx-auto" aria-hidden>
-              <span className="inline-block h-[19px] w-[358px] max-w-full origin-left animate-category-title-underline">
-                <svg xmlns="http://www.w3.org/2000/svg" width="358" height="19" viewBox="0 0 358 19" fill="none" className="block h-[19px] w-[358px] max-w-full">
-                  <path d="M356.433 5.57693C311.699 1.53361 254.63 7.65521 197.333 7.97869C140.035 8.30216 83.0426 16.3565 25.745 16.6799C13.0292 17.1813 -2.07743 21.6484 0.237115 15.75C6.29024 7.76846 63.664 9.3777 120.885 7.12151C190.823 4.36396 260.607 -2.25902 330.773 0.781552C346.108 2.11261 362.715 3.39353 356.433 5.57693Z" fill="url(#blog-title-underline)" />
-                  <defs>
-                    <linearGradient id="blog-title-underline" x1="357.654" y1="1.02531" x2="-0.0681898" y2="15.13" gradientUnits="userSpaceOnUse">
-                      <stop stopColor="#FD022D" />
-                      <stop offset="0.5" stopColor="#FFB301" />
-                      <stop offset="1" stopColor="#58BD0F" />
-                    </linearGradient>
-                  </defs>
-                </svg>
+              Your Gateway to{' '}
+              <span className="relative inline-block whitespace-nowrap pb-[23px] align-top">
+                <span>Career Knowledge</span>
+                <span className="absolute bottom-0 left-0 block h-[19px] w-full overflow-hidden" aria-hidden>
+                  <span className="block h-[19px] w-full origin-left animate-category-title-underline">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="358" height="19" viewBox="0 0 358 19" fill="none" className="block h-[19px] w-full">
+                      <path d="M356.433 5.57693C311.699 1.53361 254.63 7.65521 197.333 7.97869C140.035 8.30216 83.0426 16.3565 25.745 16.6799C13.0292 17.1813 -2.07743 21.6484 0.237115 15.75C6.29024 7.76846 63.664 9.3777 120.885 7.12151C190.823 4.36396 260.607 -2.25902 330.773 0.781552C346.108 2.11261 362.715 3.39353 356.433 5.57693Z" fill="url(#blog-title-underline)" />
+                      <defs>
+                        <linearGradient id="blog-title-underline" x1="357.654" y1="1.02531" x2="-0.0681898" y2="15.13" gradientUnits="userSpaceOnUse">
+                          <stop stopColor="#FD022D" />
+                          <stop offset="0.5" stopColor="#FFB301" />
+                          <stop offset="1" stopColor="#58BD0F" />
+                        </linearGradient>
+                      </defs>
+                    </svg>
+                  </span>
+                </span>
               </span>
-            </span>
+            </h1>
             <p className="mx-auto mt-2 max-w-6xl text-[15px] font-medium leading-[26px] text-muted md:text-[16px]">
               Expert articles on Agile, Scrum, DevOps, Cloud, and career growth. Unlock insights to accelerate your professional journey.
             </p>
@@ -271,7 +274,7 @@ export default function BlogsPage() {
             <button
               type="button"
               onClick={handleSearchSubmit}
-              className="btn-brand inline-flex h-[52px] shrink-0 items-center gap-2 rounded-xl px-6 text-[15px] font-semibold text-white"
+              className="btn-brand h-[54px] w-[169px] shrink-0 gap-2 py-4 pr-[26px] pl-[34px]"
             >
               Find Now
               <ArrowRightIcon />
@@ -281,6 +284,18 @@ export default function BlogsPage() {
           {/* Featured slider — hangs ~20% below the hero into the next section */}
           {totalHero > 0 ? (
             <div className="relative z-20 mb-[-50px] translate-y-[10%] pb-4 md:mb-[-60px] md:pb-6">
+              <div
+                className="pointer-events-none absolute -right-8 -top-12 z-0 h-40 w-40 md:-right-20 md:-top-20 md:h-60 md:w-60 min-[1920px]:-right-28 min-[1920px]:-top-24 min-[1920px]:h-[320px] min-[1920px]:w-[320px]"
+                aria-hidden
+              >
+                <Image
+                  src="/images/aero-bg-v2.png"
+                  alt=""
+                  fill
+                  sizes="(min-width: 1920px) 320px, (max-width: 767px) 160px, 240px"
+                  className="object-contain"
+                />
+              </div>
               <div className="interactive-card relative rounded-2xl border border-[#E2E8F0] bg-white shadow-[0_4px_24px_0_rgba(30,41,59,0.08)]" style={{ position: 'relative', zIndex: 20 }}>
                 <div className="overflow-hidden rounded-2xl">
                   <div
