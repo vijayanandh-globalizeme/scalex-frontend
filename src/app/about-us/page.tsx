@@ -5,6 +5,7 @@ import { LogoMarquee } from '@/components/shared';
 import { SuccessStoriesSectionServer } from '@/components/success-stories';
 import { ReviewPlatformRowServer } from '@/components/testimonials';
 import { AwardsSection, defaultAwardsContent } from '@/components/awards';
+import { defaultHeroContent } from '@/components/hero';
 import AboutHero from './AboutHero';
 
 export default function AboutPage() {
@@ -13,7 +14,7 @@ export default function AboutPage() {
       <AboutHero />
 
       {/* Our Journey of Growth and Impact */}
-      <section className="full-bleed relative mt-0 overflow-hidden py-16" style={{ background: '#141414' }}>
+      <section className="full-bleed relative mt-0 overflow-hidden py-10" style={{ background: '#141414' }}>
         {/* Cross icon bottom right */}
         <div className="pointer-events-none absolute right-0 bottom-0" aria-hidden>
           <Image src="/images/cros.png" alt="" width={220} height={220} className="object-contain" />
@@ -104,7 +105,7 @@ export default function AboutPage() {
       </section>
 
       {/* What We Do */}
-      <section className="full-bleed bg-white pt-10 pb-16 md:pt-10 md:pb-20">
+      <section className="full-bleed bg-white pt-10 pb-10 md:pt-10 md:pb-10">
         <div className="site-container">
           <div className="mb-12 text-center">
             <h2
@@ -183,33 +184,40 @@ export default function AboutPage() {
             What Drives Us Every Day
           </h2>
           <div className="grid gap-6 md:grid-cols-2">
-            {[{ title: 'Our Mission' }, { title: 'Our Vision' }].map((card) => (
+            {[
+              {
+                title: 'Our Mission',
+                description: 'Enable learners and professionals to gain practical, industry-relevant skills that drive career success and measurable impact. We bridge the gap between classroom learning and boardroom execution.Enable learners and professionals to gain practical, industry-relevant skills that drive career success and measurable impact.industry-relevant skills that drive career success and measurable impact.Enable learners and professionals to gain practical, industry-relevant skills that drive career success and measurable impactEnable learners and professionals to gain practical.',
+              },
+              {
+                title: 'Our Vision',
+                description: 'Enable learners and professionals to gain practical, industry-relevant skills that drive career success and measurable impact. We bridge the gap between classroom learning and boardroom execution.Enable learners and professionals to gain practical, industry-relevant skills that drive career success and measurable impact.industry-relevant skills that drive career success and measurable impact.Enable learners and professionals to gain practical, industry-relevant skills that drive career success and measurable impactEnable learners and professionals to gain practical.',
+              },
+            ].map((card) => (
               <div key={card.title} className="interactive-card rounded-2xl border border-zinc-100 bg-white p-8">
                 <h3 style={{ color: '#1E293B', fontFamily: 'Inter', fontSize: '26px', fontStyle: 'normal', fontWeight: 700, lineHeight: '36px' }}>{card.title}</h3>
                 <div className="mt-2 h-[3px] w-10 rounded-full bg-brand" />
                 <p className="mt-5" style={{ color: '#788593', fontFamily: 'Inter', fontSize: '15px', fontStyle: 'normal', fontWeight: 400, lineHeight: 'normal' }}>
-                  Enable learners and professionals to gain practical, industry-relevant skills that drive career success and measurable impact. We bridge the gap between classroom learning and boardroom execution.
+                  {card.description}
                 </p>
               </div>
             ))}
           </div>
 
-          <div className="mt-6 rounded-2xl border border-zinc-100 bg-white px-6 py-8 shadow-sm md:px-10">
+          <div className="relative z-10 mt-6 rounded-lg border border-zinc-100 bg-white px-6 py-5 shadow-[0_4px_4px_0_rgba(30,41,59,0.11),0_4px_4px_0_rgba(30,41,59,0.03)] md:px-10 md:py-6">
             <p className="mb-6 text-center text-[22px] font-semibold leading-normal text-heading md:text-[28px]">
-              In Collaboration with{' '}<span className="font-semibold text-brand">World-Class</span>{' '}Certifying Bodies
+              {defaultHeroContent.collaboration.lineBefore}
+              <span className="font-semibold text-brand">
+                {defaultHeroContent.collaboration.lineHighlight}
+              </span>
+              {defaultHeroContent.collaboration.lineAfter}
             </p>
             <div className="w-full min-w-0 overflow-hidden py-5">
               <LogoMarquee
-                logos={[
-                  { alt: 'Google', src: '/images/hero/google.png' },
-                  { alt: 'IBM', src: '/images/hero/ibm.png' },
-                  { alt: 'Infosys', src: '/images/hero/infosys.png' },
-                  { alt: 'Stanford', src: '/images/hero/stanford.png' },
-                  { alt: 'Deloitte' },
-                  { alt: 'TCS', src: '/images/hero/tcs.png' },
-                ]}
+                logos={defaultHeroContent.collaboration.logos}
                 size="md"
                 largeOnMobile
+                className="[&_img]:scale-110"
                 ariaLabel="Certifying body partners"
               />
             </div>
@@ -289,7 +297,7 @@ export default function AboutPage() {
                   <Image src={item.logo} alt={item.logoAlt} fill className="object-contain object-left" />
                 </div>
                 <div className="mt-3 h-[2px] w-8 rounded-full bg-brand" />
-                <p className="interactive-card-title mt-4 flex-1" style={{ color: '#1E293B', fontFamily: 'Inter', fontSize: '14px', fontWeight: 700, lineHeight: '22px' }}>
+                <p className="interactive-card-title mt-4 flex-1" style={{ color: '#1E293B', fontFamily: 'Inter', fontSize: '14px', fontStyle: 'normal', fontWeight: 600, lineHeight: 'normal' }}>
                   EdgeX Learning Emerges as Top EdTech Platform in India&apos;s Professional Upskilling Space
                 </p>
                 <p className="mt-4" style={{ color: '#788593', fontFamily: 'Inter', fontSize: '13px', fontWeight: 400 }}>March 2025</p>
