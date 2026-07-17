@@ -44,25 +44,26 @@ export default function AboutHero() {
           >
             Empowering Professionals to
             <br />
-            Build Future-Ready Careers. AI Powered Now
-          </h1>
-
-          <div className="mt-2 flex justify-center">
-            <span className="block h-[19px] w-full max-w-[500px] overflow-hidden" aria-hidden="true">
-              <span className="inline-block h-[19px] w-[500px] max-w-full origin-left animate-category-title-underline">
-                <svg xmlns="http://www.w3.org/2000/svg" width="500" height="19" viewBox="0 0 500 19" fill="none" className="block h-[19px] w-full">
-                  <path d="M498.433 5.57693C435.699 1.53361 355.63 7.65521 275.333 7.97869C195.035 8.30216 115.043 16.3565 35.745 16.6799C18.0292 17.1813 -2.07743 21.6484 0.237115 15.75C8.29024 7.76846 88.664 9.3777 168.885 7.12151C265.823 4.36396 362.607 -2.25902 460.773 0.781552C481.108 2.11261 506.715 3.39353 498.433 5.57693Z" fill="url(#about-title-underline)" />
-                  <defs>
-                    <linearGradient id="about-title-underline" x1="500" y1="1" x2="0" y2="15" gradientUnits="userSpaceOnUse">
-                      <stop stopColor="#FD022D" />
-                      <stop offset="0.5" stopColor="#FFB301" />
-                      <stop offset="1" stopColor="#58BD0F" />
-                    </linearGradient>
-                  </defs>
-                </svg>
+            Build{' '}
+            <span className="relative inline-block whitespace-nowrap pb-[23px] align-top">
+              <span>Future-Ready Careers</span>
+              <span className="absolute bottom-0 left-0 block h-[19px] w-full overflow-hidden" aria-hidden>
+                <span className="block h-[19px] w-full origin-left animate-category-title-underline">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="500" height="19" viewBox="0 0 500 19" fill="none" className="block h-[19px] w-full">
+                    <path d="M498.433 5.57693C435.699 1.53361 355.63 7.65521 275.333 7.97869C195.035 8.30216 115.043 16.3565 35.745 16.6799C18.0292 17.1813 -2.07743 21.6484 0.237115 15.75C8.29024 7.76846 88.664 9.3777 168.885 7.12151C265.823 4.36396 362.607 -2.25902 460.773 0.781552C481.108 2.11261 506.715 3.39353 498.433 5.57693Z" fill="url(#about-title-underline)" />
+                    <defs>
+                      <linearGradient id="about-title-underline" x1="500" y1="1" x2="0" y2="15" gradientUnits="userSpaceOnUse">
+                        <stop stopColor="#FD022D" />
+                        <stop offset="0.5" stopColor="#FFB301" />
+                        <stop offset="1" stopColor="#58BD0F" />
+                      </linearGradient>
+                    </defs>
+                  </svg>
+                </span>
               </span>
             </span>
-          </div>
+            {'. AI Powered Now'}
+          </h1>
 
           <p
             className="mx-auto mt-4 max-w-[1050px] md:mt-6"
