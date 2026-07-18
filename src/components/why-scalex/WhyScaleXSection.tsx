@@ -90,8 +90,14 @@ export default function WhyScaleXSection({
         }`}
       >
         <span className="shrink-0">{headingBefore}</span>
-        <span className="shrink-0 font-extrabold text-heading" aria-label={brandLogo.alt}>
-          EdgeX
+        <span className="inline-flex shrink-0 items-center" aria-label={brandLogo.alt}>
+          <Image
+            src={brandLogo.src}
+            alt={brandLogo.alt}
+            width={150}
+            height={64}
+            className="h-[64.097px] w-[149.998px] object-contain"
+          />
         </span>
         {headingAfter ? <span>{headingAfter}</span> : null}
       </h2>

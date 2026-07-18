@@ -14,9 +14,7 @@ export default function AboutHero() {
   useGsapScrollReveal(heroRef, heroImagesRef, { y: 50, duration: 1.4, delay: 0.3, start: 'top 95%' });
 
   return (
-    <section ref={heroRef} className="full-bleed relative overflow-x-clip overflow-y-visible pb-12 pt-[55px] md:pt-[75px]">
-      <div className="category-hero-bg pointer-events-none absolute inset-0" aria-hidden />
-
+    <section ref={heroRef} className="full-bleed relative overflow-x-clip overflow-y-visible pb-0 pt-[55px] md:pb-12 md:pt-[75px]">
       <div className="site-container relative z-10">
         {/* Breadcrumb */}
         <nav className="mb-6 flex items-center gap-2 text-sm text-muted md:mb-10" aria-label="Breadcrumb">
@@ -31,34 +29,57 @@ export default function AboutHero() {
 
         {/* Heading */}
         <div ref={heroContentRef} className="gsap-reveal-pending text-center">
-          <h1 style={{ color: '#1E293B', fontFamily: 'Inter', fontSize: '48px', fontWeight: 800, lineHeight: '1.2' }}>
+          <h1
+            className="text-[28px] leading-[40px] md:text-[40px] md:leading-[60px]"
+            style={{
+              color: 'var(--Text-Black-Primary, #1E293B)',
+              textAlign: 'center',
+              fontFamily: 'Inter',
+              fontStyle: 'normal',
+              fontWeight: 800,
+            }}
+          >
             Empowering Professionals to
-            <br />
-            Build Future-Ready Careers. AI Powered Now
-          </h1>
-
-          <div className="mt-2 flex justify-center">
-            <span className="block h-[19px] w-full max-w-[500px] overflow-hidden" aria-hidden="true">
-              <span className="inline-block h-[19px] w-[500px] max-w-full origin-left animate-category-title-underline">
-                <svg xmlns="http://www.w3.org/2000/svg" width="500" height="19" viewBox="0 0 500 19" fill="none" className="block h-[19px] w-full">
-                  <path d="M498.433 5.57693C435.699 1.53361 355.63 7.65521 275.333 7.97869C195.035 8.30216 115.043 16.3565 35.745 16.6799C18.0292 17.1813 -2.07743 21.6484 0.237115 15.75C8.29024 7.76846 88.664 9.3777 168.885 7.12151C265.823 4.36396 362.607 -2.25902 460.773 0.781552C481.108 2.11261 506.715 3.39353 498.433 5.57693Z" fill="url(#about-title-underline)" />
-                  <defs>
-                    <linearGradient id="about-title-underline" x1="500" y1="1" x2="0" y2="15" gradientUnits="userSpaceOnUse">
-                      <stop stopColor="#FD022D" />
-                      <stop offset="0.5" stopColor="#FFB301" />
-                      <stop offset="1" stopColor="#58BD0F" />
-                    </linearGradient>
-                  </defs>
-                </svg>
+            <br className="hidden md:block" />
+            Build{' '}
+            <span className="relative inline-block whitespace-nowrap pb-[23px] align-top">
+              <span>Future-Ready Careers</span>
+              <span className="absolute bottom-0 left-0 block h-[19px] w-full overflow-hidden" aria-hidden>
+                <span className="block h-[19px] w-full origin-left animate-category-title-underline">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="500" height="19" viewBox="0 0 500 19" fill="none" className="block h-[19px] w-full">
+                    <path d="M498.433 5.57693C435.699 1.53361 355.63 7.65521 275.333 7.97869C195.035 8.30216 115.043 16.3565 35.745 16.6799C18.0292 17.1813 -2.07743 21.6484 0.237115 15.75C8.29024 7.76846 88.664 9.3777 168.885 7.12151C265.823 4.36396 362.607 -2.25902 460.773 0.781552C481.108 2.11261 506.715 3.39353 498.433 5.57693Z" fill="url(#about-title-underline)" />
+                    <defs>
+                      <linearGradient id="about-title-underline" x1="500" y1="1" x2="0" y2="15" gradientUnits="userSpaceOnUse">
+                        <stop stopColor="#FD022D" />
+                        <stop offset="0.5" stopColor="#FFB301" />
+                        <stop offset="1" stopColor="#58BD0F" />
+                      </linearGradient>
+                    </defs>
+                  </svg>
+                </span>
               </span>
             </span>
-          </div>
+            {'. AI Powered Now'}
+          </h1>
 
-          <p className="mx-auto mt-4 max-w-2xl md:mt-6" style={{ color: '#788593', fontFamily: 'Inter', fontSize: '17px', fontWeight: 400, lineHeight: '26px' }}>
-            Helping learners and professionals gain industry-relevant skills, certifications, and practical expertise to accelerate career growth and long-term success.
+          <p
+            className="mx-auto mt-4 max-w-[1050px] md:mt-6"
+            style={{
+              color: '#788593',
+              textAlign: 'center',
+              fontFamily: 'Inter',
+              fontSize: '18px',
+              fontStyle: 'normal',
+              fontWeight: 600,
+              lineHeight: '24px',
+            }}
+          >
+            Helping learners and professionals gain industry-relevant skills, certifications, and practical expertise to
+            <br />
+            accelerate career growth and long-term success.
           </p>
 
-          <div className="mt-6 flex justify-center md:mt-8">
+          <div className="mt-6 mb-6 flex justify-center md:mt-8 md:mb-8">
             <CourseBrochureCta
               openModal
               type="contact"
@@ -75,7 +96,10 @@ export default function AboutHero() {
         </div>
 
         {/* Image grid */}
-        <div ref={heroImagesRef} className="gsap-reveal-pending mt-6 grid grid-cols-3 gap-2 pb-[50px] md:mt-10 md:gap-4 md:pb-0">
+        <div
+          ref={heroImagesRef}
+          className="gsap-reveal-pending mt-6 grid grid-cols-3 gap-2 px-[10px] pb-[50px] md:mt-10 md:gap-4 md:pb-0 min-[1400px]:grid-cols-[398px_408px_398px] min-[1400px]:justify-between"
+        >
           <div className="flex flex-col gap-2 md:gap-4">
             <div className="relative h-[140px] overflow-hidden rounded-2xl md:h-[220px]">
               <Image src="/images/about-left.png" alt="Professional" fill className="object-cover" />

@@ -208,10 +208,9 @@ export default function BlogsPage() {
     <>
       {/* Hero Section */}
       <section
-        className="full-bleed relative overflow-visible pt-4 pb-0 md:pt-6"
-        style={{ height: '594px', zIndex: 10, position: 'relative' }}
+        className="full-bleed relative z-10 min-h-[594px] overflow-visible pt-4 pb-0 md:h-[594px] md:pt-6"
       >
-        <div className="category-hero-bg pointer-events-none absolute inset-0" aria-hidden />
+        <div className="blogs-hero-bg pointer-events-none absolute inset-0" aria-hidden />
         {/* Decorative ScaleX watermark */}
         <div className="pointer-events-none absolute right-0 top-1/4 z-0 hidden h-[340px] w-[300px] opacity-[0.07] md:block" aria-hidden>
           <Image src="/images/scalex-mark.png" alt="" fill className="object-contain object-right" />
@@ -283,7 +282,7 @@ export default function BlogsPage() {
 
           {/* Featured slider — hangs ~20% below the hero into the next section */}
           {totalHero > 0 ? (
-            <div className="relative z-20 mb-[-50px] translate-y-[10%] pb-4 md:mb-[-60px] md:pb-6">
+            <div className="relative z-20 mb-0 translate-y-0 pb-4 md:mb-[-60px] md:translate-y-[10%] md:pb-6">
               <div
                 className="pointer-events-none absolute -right-8 -top-12 z-0 h-40 w-40 md:-right-20 md:-top-20 md:h-60 md:w-60 min-[1920px]:-right-28 min-[1920px]:-top-24 min-[1920px]:h-[320px] min-[1920px]:w-[320px]"
                 aria-hidden
@@ -339,7 +338,7 @@ export default function BlogsPage() {
                           </div>
                           <span className="inline-flex items-center gap-2 text-[13px] font-semibold text-brand">
                             Read Article
-                            <span className="interactive-card-action">
+                            <span className="inline-flex items-center">
                               <ArrowRightIcon />
                             </span>
                           </span>
@@ -367,7 +366,7 @@ export default function BlogsPage() {
       </section>
 
       {/* All Blogs Section — top space clears the hanging slider (~20%) */}
-      <section ref={allBlogsSectionRef} className="full-bleed relative z-0 bg-white pb-12 pt-36 md:pb-16 md:pt-44 scroll-mt-24">
+      <section ref={allBlogsSectionRef} className="full-bleed relative z-0 bg-white pb-12 pt-12 md:pb-16 md:pt-44 scroll-mt-24">
         <div className="site-container">
           {/* Header */}
           <div className="mb-4 text-center">
@@ -482,7 +481,7 @@ export default function BlogsPage() {
                         <p className="text-[11px] text-muted">{formatDate(b.createdAt)}</p>
                       </div>
                     </div>
-                    <span className="interactive-card-action">
+                    <span className="inline-flex items-center text-brand">
                       <ArrowRightIcon />
                     </span>
                   </div>

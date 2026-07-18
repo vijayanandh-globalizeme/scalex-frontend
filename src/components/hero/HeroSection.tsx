@@ -119,7 +119,7 @@ export default function HeroSection(props: HeroSectionProps) {
   return (
     <section
       ref={sectionRef}
-      className="full-bleed relative overflow-x-clip overflow-y-visible bg-surface pt-4 md:pt-24 lg:pt-12"
+      className="full-bleed relative overflow-x-clip overflow-y-visible bg-surface pt-8 md:pt-29 lg:pt-17"
       aria-labelledby="hero-heading"
     >
       {/* Soft glow only — aero lives behind the person in the media column */}
@@ -146,7 +146,7 @@ export default function HeroSection(props: HeroSectionProps) {
                   </span>
                 </span>
               </h1>
-              <p className="mt-5 whitespace-nowrap text-[16px] font-semibold leading-normal text-muted sm:text-[18px]">
+              <p className="mt-5 max-w-full whitespace-normal break-words text-[16px] font-semibold leading-normal text-muted sm:text-[18px]">
                 {subheading}
               </p>
 
@@ -203,6 +203,7 @@ export default function HeroSection(props: HeroSectionProps) {
                 logos={collaboration.logos}
                 size="md"
                 largeOnMobile
+                className="[&_img]:scale-110"
                 ariaLabel="Certifying body partners"
               />
             </div>

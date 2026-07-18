@@ -229,6 +229,7 @@ export default function WorkforceSection({
                 logos={partners.map((p) => ({ id: p.id, src: p.logoSrc, alt: p.logoAlt }))}
                 size="sm"
                 largeOnMobile
+                className="[&_img]:scale-[1.2]"
                 ariaLabel="Hiring partners"
               />
             </div>
