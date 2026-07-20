@@ -226,10 +226,18 @@ export default function WorkforceSection({
             <div className="mb-[-72px] translate-y-1/2 rounded-2xl bg-white px-6 py-8 shadow-[0_4px_24px_0_rgba(30,41,59,0.08),0_12px_40px_0_rgba(15,23,42,0.14)] md:mb-[-100px] md:px-10 md:py-10">
             <div className="w-full min-w-0 overflow-hidden">
               <LogoMarquee
-                logos={partners.map((p) => ({ id: p.id, src: p.logoSrc, alt: p.logoAlt }))}
+                logos={partners.map((p) => ({
+                  id: p.id,
+                  src: p.logoSrc,
+                  alt: p.logoAlt,
+                  height:
+                    p.id === 'claude' ? 25 :
+                    p.id === 'capgemini' ? 27 :
+                    30,
+                }))}
                 size="sm"
                 largeOnMobile
-                className="[&_img]:scale-[1.2]"
+                className="[&>div>div]:!h-[30px] [&>div>div]:!max-h-none [&>div>div]:!min-h-[30px] [&>div>div]:!w-auto [&>div>div]:!min-w-[60px] [&>div>div]:!max-w-[140px]"
                 ariaLabel="Hiring partners"
               />
             </div>

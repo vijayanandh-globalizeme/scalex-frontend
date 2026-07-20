@@ -8,6 +8,8 @@ export interface LogoMarqueeItem {
   id?: string;
   src?: string;
   alt: string;
+  /** Optional explicit logo height in px (width stays auto via object-contain). */
+  height?: number;
 }
 
 type LogoMarqueeSize = 'sm' | 'md';
@@ -52,19 +54,26 @@ function LogoSlot({
   desktopImg: (typeof desktopImageSizes)['md'];
   responsiveMobileDimensions: boolean;
 }) {
+  const customHeight = logo.height;
+  const imageWidth = responsiveMobileDimensions ? img.width : desktopImg.width;
+  const imageHeight = customHeight ?? (responsiveMobileDimensions ? img.height : desktopImg.height);
+
   return (
     <div className={`flex shrink-0 items-center justify-center ${box}`}>
       {logo.src ? (
         <Image
           src={logo.src}
           alt={logo.alt}
-          width={responsiveMobileDimensions ? img.width : desktopImg.width}
-          height={responsiveMobileDimensions ? img.height : desktopImg.height}
+          width={imageWidth}
+          height={imageHeight}
           className={
-            responsiveMobileDimensions
-              ? 'h-full w-full object-contain md:h-auto md:max-h-full md:w-auto md:max-w-full'
-              : 'h-auto max-h-full w-auto max-w-full object-contain'
+            customHeight
+              ? 'w-auto max-w-full object-contain'
+              : responsiveMobileDimensions
+                ? 'h-full w-full object-contain md:h-auto md:max-h-full md:w-auto md:max-w-full'
+                : 'h-auto max-h-full w-auto max-w-full object-contain'
           }
+          style={customHeight ? { height: customHeight } : undefined}
           sizes={img.sizes}
         />
       ) : (
