@@ -635,31 +635,33 @@ export default function BlogDetailPage() {
             <span className="max-w-[240px] truncate font-medium text-[#FF002C]">{blog.title}</span>
           </nav>
 
-          <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:gap-10">
+          <div className="flex flex-col gap-8 lg:flex-row lg:items-stretch lg:gap-10">
             {/* Left content */}
-            <div className="flex-1">
-              {/* Category badge */}
-              {blog.category ? (
-                <span
-                  className="mb-5 inline-flex h-[28px] items-center justify-center rounded-[14px] bg-[#FFDEE4] px-[12px] pl-[14px] text-[11px] font-medium leading-normal text-[#1E293B]"
-                  style={{ fontFamily: 'Inter, sans-serif' }}
-                >
-                  {blog.category.name}
-                </span>
-              ) : null}
+            <div className="flex flex-1 flex-col lg:min-h-[380px]">
+              <div>
+                {/* Category badge */}
+                {blog.category ? (
+                  <span
+                    className="mb-5 inline-flex h-[28px] items-center justify-center rounded-[14px] bg-[#FFDEE4] px-[12px] pl-[14px] text-[11px] font-medium leading-normal text-[#1E293B]"
+                    style={{ fontFamily: 'Inter, sans-serif' }}
+                  >
+                    {blog.category.name}
+                  </span>
+                ) : null}
 
-              {/* Title */}
-              <h1 className="text-[22px] font-extrabold leading-[1.2] text-white md:text-[32px] lg:text-[40px]">
-                {blog.title}
-              </h1>
+                {/* Title */}
+                <h1 className="text-[22px] font-extrabold leading-[1.2] text-white md:text-[32px] lg:text-[40px]">
+                  {blog.title}
+                </h1>
 
-              {/* Short description */}
-              <p className="mb-[30px] pt-[20px] text-[15px] leading-[1.7] text-[#BEBEBE] md:text-[16px]">
-                {blog.shortDescription}
-              </p>
+                {/* Short description */}
+                <p className="mb-[30px] pt-[20px] text-[15px] leading-[1.7] text-[#BEBEBE] md:text-[16px]">
+                  {blog.shortDescription}
+                </p>
+              </div>
 
-              {/* Author + meta — same row; role breaks under name; icon + label on one line */}
-              <div className="mt-6 flex flex-wrap items-center justify-between gap-x-6 gap-y-4">
+              {/* Author + meta — pinned to bottom on desktop */}
+              <div className="mt-6 flex flex-wrap items-center justify-between gap-x-6 gap-y-4 lg:mt-auto">
                 {blog.trainer ? (
                   <div className="flex min-w-0 items-center gap-3">
                     <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-full bg-zinc-100 ring-2 ring-white/20">
