@@ -144,7 +144,7 @@ function TestimonialCardOnly({ story, mobile = false }: { story: Reviewer; mobil
       }`}
       style={mobile ? undefined : { width: SLIDE_W, minWidth: SLIDE_W, maxWidth: SLIDE_W, height: SLIDE_H }}
     >
-      <div className={`flex flex-col gap-2 ${mobile ? '' : 'min-h-0 flex-1 justify-center'}`}>
+      <div className={`flex flex-col gap-2 ${mobile ? '' : 'min-h-0 flex-1 justify-start'}`}>
         <p className="text-[13px] leading-[20px] text-body md:text-[14px] md:leading-[22px]">
           {story.review}
         </p>
