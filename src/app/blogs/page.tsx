@@ -130,6 +130,8 @@ export default function BlogsPage() {
   const [loading, setLoading] = useState(true);
   const allBlogsSectionRef = useRef<HTMLElement>(null);
   const scrollAfterLoadRef = useRef(false);
+  const heroSlideRefs = useRef<(HTMLAnchorElement | null)[]>([]);
+  const [mobileHeroHeight, setMobileHeroHeight] = useState<number | undefined>();
 
   const isSearchActive = submittedQuery !== '';
 
@@ -138,6 +140,32 @@ export default function BlogsPage() {
     getTrendingBlogs({ limit: 10 }).then((res) => setHeroBlogs(res.items.map(toFeaturedBlog)));
     getBlogCategories().then(setCategories);
   }, []);
+
+  // On mobile, size the slider viewport to the active slide only (not the tallest slide).
+  useEffect(() => {
+    const isDesktop = () => window.matchMedia('(min-width: 768px)').matches;
+
+    const updateHeight = () => {
+      if (isDesktop()) {
+        setMobileHeroHeight(undefined);
+        return;
+      }
+      const slide = heroSlideRefs.current[heroPage];
+      if (slide) setMobileHeroHeight(slide.getBoundingClientRect().height);
+    };
+
+    updateHeight();
+
+    const slide = heroSlideRefs.current[heroPage];
+    const resizeObserver = slide ? new ResizeObserver(updateHeight) : null;
+    if (slide && resizeObserver) resizeObserver.observe(slide);
+
+    window.addEventListener('resize', updateHeight);
+    return () => {
+      resizeObserver?.disconnect();
+      window.removeEventListener('resize', updateHeight);
+    };
+  }, [heroPage, heroBlogs]);
 
   // Reload first page whenever category, search, or sort changes
   useEffect(() => {
@@ -297,14 +325,20 @@ export default function BlogsPage() {
                 />
               </div>
               <div className="interactive-card relative rounded-2xl border border-[#E2E8F0] bg-white shadow-[0_4px_24px_0_rgba(30,41,59,0.08)]" style={{ position: 'relative', zIndex: 20 }}>
-                <div className="overflow-hidden rounded-2xl">
+                <div
+                  className="overflow-hidden rounded-2xl transition-[height] duration-300 md:!h-auto"
+                  style={mobileHeroHeight ? { height: mobileHeroHeight } : undefined}
+                >
                   <div
-                    className="flex transition-transform duration-500 ease-in-out"
+                    className="flex items-start transition-transform duration-500 ease-in-out"
                     style={{ transform: `translateX(-${heroPage * 100}%)` }}
                   >
-                    {heroBlogs.map((b) => (
+                    {heroBlogs.map((b, index) => (
                       <Link
                         key={b.id}
+                        ref={(el) => {
+                          heroSlideRefs.current[index] = el;
+                        }}
                         href={b.href}
                         className="flex w-full shrink-0 flex-col bg-white md:flex-row"
                       >
@@ -317,17 +351,17 @@ export default function BlogsPage() {
                           className="h-[200px] w-full object-cover md:h-[290px] md:w-[460px]"
                         />
                       </div>
-                      <div className="flex min-w-0 flex-1 flex-col justify-between p-6 md:p-8">
-                        <div>
+                      <div className="flex min-w-0 flex-col gap-3 px-5 pt-5 pb-4 md:flex-1 md:justify-between md:gap-0 md:p-8">
+                        <div className="flex flex-col gap-2">
                           <div className="flex items-center gap-2">
                             <span className="text-[11px] font-bold uppercase tracking-widest text-brand">{b.tag}</span>
                             <span className="text-brand">•</span>
                             <span className="text-[11px] font-semibold uppercase tracking-widest text-brand">{b.readTime}</span>
                           </div>
-                          <h2 className="interactive-card-title mt-3 text-[18px] font-bold leading-[1.4] text-heading md:text-[22px]">{b.title}</h2>
-                          <p className="mt-3 line-clamp-3 text-[14px] leading-[1.6] text-muted">{b.excerpt}</p>
+                          <h2 className="interactive-card-title line-clamp-2 min-h-[30px] text-[18px] font-bold leading-[1.4] text-heading md:min-h-0 md:mt-3 md:text-[22px]">{b.title}</h2>
+                          <p className="line-clamp-3 min-h-[68px] text-[14px] leading-[1.6] text-muted md:min-h-0 md:mt-3">{b.excerpt}</p>
                         </div>
-                        <div className="mt-6 flex flex-wrap items-center justify-between gap-4">
+                        <div className="flex flex-wrap items-center justify-between gap-2 md:mt-6 md:gap-4">
                           <div className="flex items-center gap-3">
                             <div className="relative h-9 w-9 shrink-0 overflow-hidden rounded-full bg-zinc-100">
                               <Image src={b.author.avatarSrc} alt={b.author.name} fill className="object-cover" sizes="36px" />
