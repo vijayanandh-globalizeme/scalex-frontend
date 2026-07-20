@@ -163,13 +163,13 @@ export default function ContactPageClient({
 
             {/* Right: India Map */}
             <div ref={heroRightRef} className="gsap-reveal-pending relative flex items-center justify-center">
-              <div className="relative w-full max-w-[700px] md:rounded-2xl md:border md:border-zinc-100 md:bg-white md:p-6 md:shadow-[0_4px_24px_0_rgba(30,41,59,0.08)] md:h-[652px]">
-                <div className="relative mx-auto aspect-[547/700] w-full max-w-[547px] md:mt-5 md:px-5">
+              <div className="relative w-full max-w-[700px] overflow-hidden md:rounded-2xl md:border md:border-zinc-100 md:bg-white md:p-6 md:shadow-[0_4px_24px_0_rgba(30,41,59,0.08)] md:h-[652px]">
+                <div className="relative mx-auto aspect-[547/700] w-full max-w-[547px] -translate-y-3 md:mt-0 md:-translate-y-6 md:px-5">
                   <Image
                     src="/images/map.png"
                     alt="India map showing EdgeX Learning presence"
                     fill
-                    className="object-contain"
+                    className="object-contain object-top"
                     priority
                   />
 
@@ -270,7 +270,7 @@ export default function ContactPageClient({
                 className="flex flex-col items-center rounded-2xl bg-white p-8 text-center shadow-sm scroll-mt-24"
               >
                 <div className="flex h-14 w-14 items-center justify-center rounded-2xl" style={{ background: '#EEF3FF' }}>
-                  <i className={`fa-solid ${card.icon}`} style={{ color: '#2563EB', fontSize: '22px' }} aria-hidden />
+                  <i className={`fa-solid ${card.icon}`} style={{ color: '#60A5FA', fontSize: '22px' }} aria-hidden />
                 </div>
 
                 <p className="mt-5" style={{ color: '#1E293B', fontFamily: 'Inter', fontSize: '18px', fontWeight: 700 }}>
