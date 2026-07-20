@@ -255,12 +255,15 @@ function BlogAssistForm() {
     }
   }
 
+  const fieldBaseCls =
+    'w-full rounded-lg border border-zinc-200 px-3 py-2.5 text-[14px] font-normal leading-[18px] tracking-[-0.14px] text-heading focus:border-brand focus:outline-none';
   const inputCls =
-    'w-full rounded-lg border border-zinc-200 px-3 py-2.5 text-[13px] text-heading placeholder-zinc-400 focus:border-brand focus:outline-none';
+    `${fieldBaseCls} placeholder:text-[#788593] placeholder:text-[14px] placeholder:font-normal placeholder:leading-[18px] placeholder:tracking-[-0.14px]`;
+  const selectCls = `${fieldBaseCls} bg-white ${purpose ? 'text-heading' : 'text-[#788593]'}`;
 
   return (
     <div className="rounded-xl border border-zinc-100 bg-white p-5 shadow-sm">
-      <h3 className="text-[14px] font-bold text-heading mb-4">Let us assist you</h3>
+      <h3 className="mb-4 text-[16px] font-medium leading-normal text-[#1E293B]">Let us assist you</h3>
       <form className="space-y-3" onSubmit={handleSubmit}>
         <div>
           <input
@@ -300,7 +303,7 @@ function BlogAssistForm() {
             required
             value={purpose}
             onChange={(e) => { setPurpose(e.target.value); clearFieldError('purpose'); }}
-            className={`w-full rounded-lg border border-zinc-200 px-3 py-2.5 text-[13px] text-heading focus:border-brand focus:outline-none bg-white ${fieldErrorClass(!!fieldErrors.purpose)}`}
+            className={`${selectCls} ${fieldErrorClass(!!fieldErrors.purpose)}`}
           >
             <option value="" disabled>Purpose</option>
             <option>Course Enquiry</option>
@@ -312,7 +315,7 @@ function BlogAssistForm() {
         </div>
         <label className="flex items-start gap-2 cursor-pointer">
           <input type="checkbox" checked={agreed} onChange={(e) => setAgreed(e.target.checked)} className="mt-0.5 accent-brand" />
-          <span className="text-[11px] text-muted leading-relaxed">
+          <span className="text-[12px] font-normal leading-[16px] text-[#1E293B]">
             I agree to ScaleX&apos;s{' '}
             <Link href="/terms-of-use" target="_blank" rel="noopener noreferrer" className="hover:underline active:underline">
               Terms &amp; Conditions
@@ -871,7 +874,7 @@ export default function BlogDetailPage() {
                     <p className="text-[13px] font-bold text-white leading-snug mb-1.5">
                       {blog.content?.bannerTitle || 'Explore Scrum Master Certification'}
                     </p>
-                    <p className="text-[11px] text-white/50 leading-relaxed mb-3">
+                    <p className="mb-3 text-[12px] font-normal leading-normal text-[#B5B5B5]">
                       {blog.content?.bannerDescription || 'Upon course completion, you will earn an expertise and certificate'}
                     </p>
                     <button
@@ -889,7 +892,7 @@ export default function BlogDetailPage() {
                     viewBox="0 0 51 55"
                     fill="none"
                     aria-hidden
-                    className="absolute bottom-0 right-0 z-10"
+                    className="absolute bottom-2 right-0 z-10"
                     style={{ width: '50px', height: '55px' }}
                   >
                     <g opacity="0.2">
@@ -901,7 +904,7 @@ export default function BlogDetailPage() {
                   {/* Person image — in front of arrow */}
                   <div className="absolute bottom-0 right-0 z-20" style={{ width: '87px', height: '76.765px' }}>
                     <Image
-                      src="/images/person-3.png"
+                      src="/images/ery.png"
                       alt="Course instructor"
                       fill
                       className="object-cover object-top"
