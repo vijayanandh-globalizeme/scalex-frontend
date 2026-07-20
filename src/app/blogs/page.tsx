@@ -273,9 +273,10 @@ export default function BlogsPage() {
             <button
               type="button"
               onClick={handleSearchSubmit}
-              className="btn-brand h-[54px] w-[169px] shrink-0 gap-2 py-4 pr-[26px] pl-[34px]"
+              aria-label="Find now"
+              className="btn-brand flex h-[52px] w-[52px] shrink-0 items-center justify-center p-0 md:h-[54px] md:w-[169px] md:gap-2 md:py-4 md:pr-[26px] md:pl-[34px]"
             >
-              Find Now
+              <span className="hidden md:inline">Find Now</span>
               <ArrowRightIcon />
             </button>
           </div>
