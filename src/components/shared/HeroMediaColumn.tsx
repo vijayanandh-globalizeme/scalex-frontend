@@ -139,11 +139,15 @@ function FloatingBadge({ badge, photo = false }: { badge: HeroBadge; photo?: boo
             ? 'bottom-[100px] right-0 translate-x-[10%]'
             : 'bottom-10 left-[42%] -translate-x-1/2 md:-bottom-2'
     : badge.placement === 'top-left'
-      ? 'left-0 top-10 xl:-left-6 xl:top-25'
+      ? badge.id === 'learners-1'
+        ? 'left-0 top-10 -translate-x-[20px] translate-y-[20px] xl:-left-6 xl:top-25'
+        : 'left-0 top-10 xl:-left-6 xl:top-25'
       : badge.placement === 'top-right'
         ? 'right-0 top-10 xl:-right-6 xl:top-25'
         : badge.placement === 'mid-left'
-          ? 'left-0 top-[60%] -translate-y-1/2 xl:-left-10'
+          ? badge.id === 'learners-2'
+            ? '-left-10 top-[60%] -translate-x-[30px] -translate-y-1/2 xl:-left-20'
+            : 'left-0 top-[60%] -translate-y-1/2 xl:-left-10'
           : badge.placement === 'bottom-right'
             ? 'bottom-6 right-2 md:bottom-28 md:-right-10'
             : 'bottom-10 left-[42%] -translate-x-1/2 md:-bottom-2';
@@ -155,14 +159,15 @@ function FloatingBadge({ badge, photo = false }: { badge: HeroBadge; photo?: boo
 
   const sizeClass =
     badge.variant === 'mentors'
-      ? 'h-[62px] w-[162px] px-3 py-2'
+      ? 'h-[62px] w-[180px] px-3 py-2'
       : 'max-w-[200px] px-3 py-2.5 md:px-4 md:py-3';
 
   const alignClass = badge.variant === 'mentors' ? 'h-full items-center' : 'items-start';
+  const zIndexClass = badge.id === 'learners-2' ? 'z-[4]' : 'z-30';
 
   return (
     <div
-      className={`absolute z-30 rounded-xl border border-zinc-100 bg-white shadow-lg shadow-zinc-900/8 ${sizeClass} ${placement} ${mobileVisibility}`}
+      className={`absolute ${zIndexClass} rounded-xl border border-zinc-100 bg-white shadow-lg shadow-zinc-900/8 ${sizeClass} ${placement} ${mobileVisibility}`}
     >
       <div className={`flex gap-2.5 ${alignClass}`}>
         <div
@@ -268,7 +273,7 @@ const HeroMediaColumn = forwardRef<HTMLDivElement, HeroMediaColumnProps>(
               aria-hidden
             />
 
-            <div className="absolute bottom-0 left-1/2 z-[5] h-[110%] w-[260px] -translate-x-1/2 sm:w-[300px] md:w-[330px] lg:w-[350px]">
+            <div className="absolute bottom-6 left-1/2 z-[5] h-[110%] w-[260px] -translate-x-1/2 sm:bottom-8 sm:w-[300px] md:w-[330px] lg:bottom-10 lg:w-[350px]">
               <Image
                 src={imageSrc}
                 alt={imageAlt}

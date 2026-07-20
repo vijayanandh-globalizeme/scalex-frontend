@@ -6,8 +6,8 @@ export const defaultHeroBadges: HeroBadge[] = [
     id: 'learners-1',
     variant: 'learners',
     placement: 'top-left',
-    title: 'Active Learners',
-    subtitle: '100K+',
+    title: 'Job Transitions',
+    subtitle: '15K+',
   },
   {
     id: 'learners-2',
