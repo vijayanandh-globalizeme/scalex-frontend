@@ -66,25 +66,43 @@ export default function AboutPage() {
       {/* Who We Are */}
       <section className="full-bleed bg-white pt-16 pb-3 md:pt-20 md:pb-10">
         <div className="site-container">
-          <div className="grid items-center gap-12 lg:grid-cols-2">
+          <div className="mb-12 text-center">
+            <h2
+              style={{
+                color: '#1E293B',
+                textAlign: 'center',
+                fontFamily: 'Inter',
+                fontSize: '34px',
+                fontStyle: 'normal',
+                fontWeight: 700,
+                lineHeight: '140%',
+              }}
+            >
+              Who we are
+            </h2>
+            <p
+              className="mt-3"
+              style={{
+                color: '#788593',
+                textAlign: 'center',
+                fontFamily: 'Inter',
+                fontSize: '18px',
+                fontStyle: 'normal',
+                fontWeight: 500,
+                lineHeight: 'normal',
+              }}
+            >
+              We provide career-transforming programs built for working professionals,<br />
+              corporate teams, and enterprise learners across India.
+            </p>
+          </div>
+          <div className="grid items-start gap-4 lg:gap-12 lg:grid-cols-2">
             <div className="relative overflow-hidden rounded-2xl" style={{ height: '380px' }}>
               <Image src="/images/who-we.png" alt="Who We Are — Scale X Learning team" fill className="object-cover" />
             </div>
             <div>
-              <h2
-                style={{
-                  color: '#1E293B',
-                  fontFamily: 'Inter',
-                  fontSize: '38px',
-                  fontStyle: 'normal',
-                  fontWeight: 800,
-                  lineHeight: '48px',
-                }}
-              >
-                Who<br />We Are
-              </h2>
               <p
-                className="mt-6"
+                className="mt-0 lg:mt-6"
                 style={{
                   color: '#4A5867',
                   fontFamily: 'Inter',
