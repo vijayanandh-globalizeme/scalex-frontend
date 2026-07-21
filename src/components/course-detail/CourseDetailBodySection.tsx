@@ -128,7 +128,7 @@ export default async function CourseDetailBodySection({
     : (reviewVideoUrl ?? reviewsFallback.videoUrl);
 
   return (
-    <section className="full-bleed overflow-visible bg-[#F5F6F8] pb-16 pt-1" aria-label="Course details">
+    <section className="full-bleed overflow-visible bg-[#F5F6F8] pb-1 md:pb-0 pt-1" aria-label="Course details">
       <CourseDetailStickyNav items={navItems} phone={phone ?? ''} />
 
       <div className="site-container pb-15 pt-4">
