@@ -351,14 +351,14 @@ export default function BlogsPage() {
                           className="h-[200px] w-full object-cover md:h-[290px] md:w-[460px]"
                         />
                       </div>
-                      <div className="flex min-w-0 flex-col gap-3 px-5 pt-5 pb-4 md:flex-1 md:justify-between md:gap-0 md:p-8">
+                      <div className="flex min-w-0 flex-col gap-3 px-5 pt-5 pb-2 md:flex-1 md:justify-between md:gap-0 md:px-8 md:pt-8 md:pb-5">
                         <div className="flex flex-col gap-2">
                           <div className="flex items-center gap-2">
-                            <span className="text-[11px] font-bold uppercase tracking-widest text-brand">{b.tag}</span>
-                            <span className="text-brand">•</span>
-                            <span className="text-[11px] font-semibold uppercase tracking-widest text-brand">{b.readTime}</span>
+                            <span className="text-[11px] font-semibold uppercase leading-normal tracking-widest text-[#C85050]">{b.tag}</span>
+                            <span className="text-[#C85050]">•</span>
+                            <span className="text-[11px] font-semibold uppercase leading-normal tracking-widest text-[#C85050]">{b.readTime}</span>
                           </div>
-                          <h2 className="interactive-card-title line-clamp-2 min-h-[30px] text-[18px] font-bold leading-[1.4] text-heading md:min-h-0 md:mt-3 md:text-[22px]">{b.title}</h2>
+                          <h2 className="interactive-card-title line-clamp-2 min-h-[64px] text-[24px] font-bold capitalize leading-[32px] text-[#1E293B] md:min-h-0">{b.title}</h2>
                           <p className="line-clamp-3 min-h-[68px] text-[14px] leading-[1.6] text-muted md:min-h-0 md:mt-3">{b.excerpt}</p>
                         </div>
                         <div className="flex flex-wrap items-center justify-between gap-2 md:mt-6 md:gap-4">
@@ -371,7 +371,7 @@ export default function BlogsPage() {
                               <p className="text-[12px] text-muted">{b.date} · {b.publication}</p>
                             </div>
                           </div>
-                          <span className="inline-flex items-center gap-2 text-[13px] font-semibold text-brand">
+                          <span className="inline-flex items-center gap-2 text-center text-[14px] font-semibold leading-normal text-brand">
                             Read Article
                             <span className="inline-flex items-center">
                               <ArrowRightIcon />
@@ -405,8 +405,8 @@ export default function BlogsPage() {
         <div className="site-container">
           {/* Header */}
           <div className="mb-4 text-center">
-            <h2 className="text-[26px] font-bold text-heading md:text-[32px]">All Blogs</h2>
-            <p className="mx-auto mt-2 whitespace-nowrap text-[14px] text-muted">
+            <h2 className="text-center text-[34px] font-bold leading-[140%] text-[#1E293B]">All Blogs</h2>
+            <p className="mx-auto mt-2 text-center text-[18px] font-medium leading-[140%] text-[#788593]">
               The most effective project-based immersive learning experience to educate that combines hands-on projects with deep, engaging learning.
             </p>
           </div>

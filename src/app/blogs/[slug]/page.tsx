@@ -614,14 +614,6 @@ export default function BlogDetailPage() {
           background: 'linear-gradient(83deg, #0D0D0D -37.91%, #161A26 28%, #FF002C 212.06%)',
         }}
       >
-        {/* Watermark */}
-        <span
-          aria-hidden
-          className="pointer-events-none absolute right-0 top-1/2 -translate-y-1/2 select-none text-[180px] font-black leading-none text-white/[0.03]"
-        >
-          BLOG
-        </span>
-
         <div className="site-container relative z-10 py-10 md:py-14">
           {/* Breadcrumb */}
           <nav className="mb-6 flex items-center gap-2 text-[13px] text-white/60">
