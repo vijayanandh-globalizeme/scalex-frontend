@@ -49,7 +49,7 @@ export default async function CategoryPage({ params }: PageProps) {
   if (!category) notFound();
 
   const settings = settingsData ?? {};
-  const isAgileScrum = true;
+  const isAgileScrum = categoryUri === 'agile-and-scrum';
   const agileHeroBadges = [
     {
       id: 'learners-1',
@@ -87,7 +87,12 @@ export default async function CategoryPage({ params }: PageProps) {
         mediaVariant={isAgileScrum ? 'photo' : 'figure'}
         backgroundImage={isAgileScrum ? undefined : defaultHeroContent.backgroundImage}
       />
-      <CategoryCoursesSection categoryId={category.id} categoryName={category.name} />
+      <CategoryCoursesSection
+        categoryId={category.id}
+        categoryName={category.name}
+        className={isAgileScrum ? 'md:mt-[50px]' : undefined}
+        headingClassName={isAgileScrum ? 'max-md:mt-[130px]' : undefined}
+      />
       <CategoryExpertCtaSection />
       <CategoryExploreAllSection excludeId={category.id} />
       <CategoryRelatedBlogsSection categoryId={category.id} />

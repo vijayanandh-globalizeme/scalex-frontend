@@ -5,13 +5,11 @@ import Link from 'next/link';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import {
   CategoryCarouselControls,
-  CategoryCarouselTrack,
-  chunkPages,
 } from '@/components/category/CategoryCarouselNav';
 import { getBlogs, type ApiBlogListItem } from '@/app/actions/blogActions';
 
 const FETCH_LIMIT = 6;
-const MOBILE_SLIDE_SIZE = 2;
+const MOBILE_VISIBLE_COUNT = 3;
 const AUTHOR_AVATAR = '/images/Alex.png';
 const DEFAULT_BLOG_IMAGE = '/images/course/course-1.png';
 const BLOG_CARD_WIDTH = 'max-w-[412px] w-full';
@@ -90,11 +88,11 @@ function BlogCardFooter({ blog, isSolid, compact = false }: { blog: BlogItem; is
         </span>
         <span className="min-w-0">
           <span
-            className={`block truncate text-[11px] font-bold uppercase tracking-wide ${isSolid ? 'text-white' : 'text-heading'}`}
+            className={`block truncate text-[14px] font-normal leading-[20px] ${isSolid ? 'text-white' : 'text-heading'}`}
           >
             {blog.author}
           </span>
-          <span className={`text-[11px] font-medium ${isSolid ? 'text-white/75' : 'text-muted'}`}>{blog.date}</span>
+          <span className={`text-[12px] font-normal leading-normal ${isSolid ? 'text-white' : 'text-muted'}`}>{blog.date}</span>
         </span>
       </div>
       <Link
@@ -165,7 +163,7 @@ function SolidBlogCard({ blog, bg, mobile = false }: { blog: BlogItem; bg: strin
           {blog.title}
         </h3>
         <p
-          className={`line-clamp-2 leading-relaxed text-white/90 ${mobile ? 'mt-1.5 text-[11px]' : 'mt-2 text-[13px]'}`}
+          className={`line-clamp-2 ${mobile ? 'mt-1.5 text-[11px] leading-relaxed text-white/90' : 'mt-2 text-[14px] font-normal leading-[150%] text-white'}`}
         >
           {blog.excerpt}
         </p>
@@ -181,6 +179,25 @@ function BlogCard({ blog, mobile = false }: { blog: BlogItem; mobile?: boolean }
   }
 
   return <SolidBlogCard blog={blog} bg={SOLID_BG[blog.variant]} mobile={mobile} />;
+}
+
+function ViewMoreChevronIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      className={className}
+      xmlns="http://www.w3.org/2000/svg"
+      width="18"
+      height="11"
+      viewBox="0 0 18 11"
+      fill="none"
+      aria-hidden
+    >
+      <path
+        d="M7.50374 9C7.69084 9 7.87795 8.92839 8.00517 8.79244L13.7979 3.11657C13.9251 2.99489 14 2.83742 14 2.65849C14 2.2863 13.7081 2 13.3189 2C13.1318 2 12.9597 2.07158 12.8325 2.1861L7.09959 7.79038H7.9004L2.16753 2.1861C2.04778 2.07158 1.87565 2 1.68106 2C1.29188 2 1 2.2863 1 2.65849C1 2.83742 1.07484 2.99489 1.20207 3.12372L6.99482 8.79244C7.13701 8.92839 7.30915 9 7.50374 9Z"
+        fill="currentColor"
+      />
+    </svg>
+  );
 }
 
 function BlogMobileGrid({ items }: { items: BlogItem[] }) {
@@ -256,12 +273,15 @@ export default function CategoryRelatedBlogsSection({ categoryId }: { categoryId
   const [loading, setLoading] = useState(true);
   const [pageFetching, setPageFetching] = useState(false);
   const [page, setPage] = useState(0);
-  const [mobileSlide, setMobileSlide] = useState(0);
   const [isMobile, setIsMobile] = useState(true);
   const [totalPages, setTotalPages] = useState(0);
   const [currentItems, setCurrentItems] = useState<BlogItem[]>([]);
 
   const cache = useRef<Map<number, BlogItem[]>>(new Map());
+  const mobileItems = useMemo(
+    () => currentItems.slice(0, MOBILE_VISIBLE_COUNT),
+    [currentItems],
+  );
 
   useEffect(() => {
     const md = window.matchMedia('(min-width: 768px)');
@@ -270,11 +290,6 @@ export default function CategoryRelatedBlogsSection({ categoryId }: { categoryId
     md.addEventListener('change', update);
     return () => md.removeEventListener('change', update);
   }, []);
-
-  const mobilePages = useMemo(
-    () => chunkPages(currentItems, MOBILE_SLIDE_SIZE),
-    [currentItems],
-  );
 
   async function fetchBlogPage(pageIndex: number): Promise<BlogItem[]> {
     if (cache.current.has(pageIndex)) {
@@ -292,7 +307,7 @@ export default function CategoryRelatedBlogsSection({ categoryId }: { categoryId
     return mapped;
   }
 
-  async function switchBatch(apiPage: number, slide: number | 'last' = 0) {
+  async function switchBatch(apiPage: number) {
     const isFirstLoad = currentItems.length === 0;
     if (isFirstLoad) {
       setLoading(true);
@@ -302,12 +317,8 @@ export default function CategoryRelatedBlogsSection({ categoryId }: { categoryId
 
     try {
       const items = await fetchBlogPage(apiPage);
-      const slideCount = chunkPages(items, MOBILE_SLIDE_SIZE).length;
-      const slideIndex = slide === 'last' ? Math.max(0, slideCount - 1) : slide;
-
       setPage(apiPage);
       setCurrentItems(items);
-      setMobileSlide(slideIndex);
     } finally {
       setLoading(false);
       setPageFetching(false);
@@ -315,42 +326,24 @@ export default function CategoryRelatedBlogsSection({ categoryId }: { categoryId
   }
 
   useEffect(() => {
-    void switchBatch(0, 0);
+    void switchBatch(0);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  useEffect(() => {
-    setMobileSlide((current) => Math.min(current, Math.max(0, mobilePages.length - 1)));
-  }, [mobilePages.length, page]);
-
   function handleNext() {
-    if (isMobile && mobileSlide < mobilePages.length - 1) {
-      setMobileSlide((current) => current + 1);
-      return;
-    }
     if (page < totalPages - 1) {
-      void switchBatch(page + 1, 0);
+      void switchBatch(page + 1);
     }
   }
 
   function handlePrev() {
-    if (isMobile && mobileSlide > 0) {
-      setMobileSlide((current) => current - 1);
-      return;
-    }
     if (page > 0) {
-      void switchBatch(page - 1, 'last');
+      void switchBatch(page - 1);
     }
   }
 
   const isEmpty = !loading && !pageFetching && currentItems.length === 0;
-  const canGoPrev = isMobile ? mobileSlide > 0 || page > 0 : page > 0;
-  const canGoNext = isMobile
-    ? mobileSlide < mobilePages.length - 1 || page < totalPages - 1
-    : page < totalPages - 1;
-  const showControls = !loading && !pageFetching && !isEmpty && (isMobile ? canGoPrev || canGoNext : totalPages > 1);
-  const carouselPage = isMobile ? mobileSlide : page;
-  const carouselTotalPages = isMobile ? mobilePages.length : totalPages;
+  const showControls = !loading && !pageFetching && !isEmpty && !isMobile && totalPages > 1;
 
   return (
     <section className="full-bleed overflow-visible bg-surface pb-8 md:pb-10" aria-labelledby="related-blogs-heading">
@@ -358,7 +351,7 @@ export default function CategoryRelatedBlogsSection({ categoryId }: { categoryId
         <header className="mx-auto w-full text-center">
           <h2
             id="related-blogs-heading"
-            className="text-[26px] font-extrabold leading-tight text-heading md:text-[40px] md:leading-[60px]"
+            className="text-center text-[34px] font-bold leading-[140%] text-[#1E293B]"
           >
             Related Blogs
           </h2>
@@ -374,8 +367,8 @@ export default function CategoryRelatedBlogsSection({ categoryId }: { categoryId
           {loading && currentItems.length === 0 ? (
             isMobile ? (
               <div className="grid grid-cols-1 gap-4">
-                {Array.from({ length: MOBILE_SLIDE_SIZE }).map((_, i) => (
-                  <SkeletonCard key={i} />
+                {Array.from({ length: MOBILE_VISIBLE_COUNT }).map((_, i) => (
+                  <SkeletonCard key={i} mobile />
                 ))}
               </div>
             ) : (
@@ -390,36 +383,39 @@ export default function CategoryRelatedBlogsSection({ categoryId }: { categoryId
           ) : isMobile ? (
             pageFetching ? (
               <div className="grid grid-cols-1 gap-4">
-                {Array.from({ length: MOBILE_SLIDE_SIZE }).map((_, i) => (
-                  <SkeletonCard key={i} />
+                {Array.from({ length: MOBILE_VISIBLE_COUNT }).map((_, i) => (
+                  <SkeletonCard key={i} mobile />
                 ))}
               </div>
             ) : (
-              <CategoryCarouselTrack
-                key={`related-blogs-mobile-${page}`}
-                page={mobileSlide}
-                clipX={false}
-                slideGap={16}
-              >
-                {mobilePages.map((slideItems, slideIndex) => (
-                  <BlogMobileGrid key={`${page}-${slideIndex}`} items={slideItems} />
-                ))}
-              </CategoryCarouselTrack>
+              <BlogMobileGrid items={mobileItems} />
             )
           ) : (
             <BlogMasonryGrid items={currentItems} />
           )}
         </div>
 
+        {!loading && !pageFetching && !isEmpty && isMobile ? (
+          <div className="mt-10 flex justify-center md:hidden">
+            <Link
+              href="/blogs"
+              className="inline-flex items-center gap-2 text-[14px] font-semibold text-brand underline-offset-4 transition hover:underline"
+            >
+              View More
+              <ViewMoreChevronIcon className="shrink-0 text-brand" />
+            </Link>
+          </div>
+        ) : null}
+
         {showControls && (
           <div className="mt-10">
             <CategoryCarouselControls
-              page={carouselPage}
-              totalPages={carouselTotalPages}
+              page={page}
+              totalPages={totalPages}
               onPrev={handlePrev}
               onNext={handleNext}
-              canGoPrev={canGoPrev}
-              canGoNext={canGoNext}
+              canGoPrev={page > 0}
+              canGoNext={page < totalPages - 1}
               prevLabel="Previous blogs"
               nextLabel="Next blogs"
             />

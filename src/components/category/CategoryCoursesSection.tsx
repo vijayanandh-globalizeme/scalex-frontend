@@ -47,6 +47,10 @@ export interface CategoryCoursesSectionProps {
   compactTop?: boolean;
   /** Soft gray section background (e.g. blog detail page). */
   mutedBackground?: boolean;
+  /** Optional extra section classes (e.g. page-specific spacing). */
+  className?: string;
+  /** Optional extra heading classes (e.g. page-specific mobile spacing). */
+  headingClassName?: string;
 }
 
 function SkeletonCard() {
@@ -81,6 +85,8 @@ export default function CategoryCoursesSection({
   loadMoreStep,
   compactTop = false,
   mutedBackground = false,
+  className,
+  headingClassName,
 }: CategoryCoursesSectionProps) {
   const [courses, setCourses] = useState<Course[]>([]);
   const [visibleCount, setVisibleCount] = useState(initialVisibleCount ?? FETCH_LIMIT);
@@ -257,16 +263,16 @@ export default function CategoryCoursesSection({
     <section
       ref={sectionRef}
       id="courses"
-      className={`full-bleed relative z-0 overflow-visible pb-10 md:pb-12 ${
+      className={`full-bleed relative z-0 overflow-visible pb-16 md:pb-20 ${
         mutedBackground ? 'bg-[#F5F6F8]' : 'bg-white'
-      } ${compactTop || mutedBackground ? 'pt-[14px] md:pt-[30px]' : 'pt-12 md:pt-24'}`}
+      } ${compactTop || mutedBackground ? 'pt-[14px] md:pt-[30px]' : 'pt-12 md:pt-24'} ${className ?? ''}`}
       aria-labelledby="category-courses-heading"
     >
       <div className="site-container">
         <header className={`mx-auto mt-0 max-w-4xl text-center ${compactTop || mutedBackground ? '' : 'md:mt-8 lg:mt-10'}`}>
           <h2
             id="category-courses-heading"
-            className="section-heading text-center text-heading"
+            className={`section-heading text-center text-heading ${headingClassName ?? ''}`}
           >
             {heading ?? `Explore all ${categoryName} courses`}
           </h2>
@@ -300,7 +306,7 @@ export default function CategoryCoursesSection({
         </div>
 
         {!loading && hasMore && (
-          <div className={`flex justify-center ${compactTop || mutedBackground ? 'mt-4 mb-[20px] md:mt-5' : 'mt-10 md:mt-12'}`}>
+          <div className={`flex justify-center ${compactTop || mutedBackground ? 'mb-[20px]' : ''}`}>
             <button
               type="button"
               onClick={handleViewMore}

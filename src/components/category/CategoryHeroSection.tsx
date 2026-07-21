@@ -1,11 +1,11 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import CategoryCollaborationCard from './CategoryCollaborationCard';
 import CategoryTitleUnderline from './CategoryTitleUnderline';
-import { HeroMediaColumn, ScrollToAnchor } from '@/components/shared';
+import { CollaborationStrip, HeroMediaColumn, ScrollToAnchor } from '@/components/shared';
 import type { HeroBadge } from '@/components/shared';
 import type { ApiCategoryDetail } from '@/services/categoryApi';
 import type { LayoutSettings } from '@/services/layoutApi';
+import { defaultHeroContent } from '@/components/hero/defaultHeroContent';
 import { AVATAR_SRCS } from '@/lib/coursePropsFromApi';
 import { withNewTabLinks } from '@/lib/richText';
 import { CourseBrochureCta } from '@/components/course-detail';
@@ -55,21 +55,6 @@ const TECHNICAL_HERO_COLLABORATION_LOGOS = [
   { alt: 'Amazon', src: '/images/ama.png' },
   { alt: 'Microsoft', src: '/images/course/google.png' },
 ];
-
-const DEFAULT_COLLABORATION: CategoryPageContent['collaboration'] = {
-  lineBefore: 'In Collaboration with ',
-  lineHighlight: 'World-Class',
-  lineAfter: ' Certifying Bodies',
-  logos: [
-    { alt: 'Google', src: '/images/hero/google.png' },
-    { alt: 'Stanford', src: '/images/hero/stanford.png' },
-    { alt: 'IBM', src: '/images/hero/ibm.png' },
-    { alt: 'Infosys', src: '/images/hero/infosys.png' },
-    { alt: 'Capgemini', src: '/images/hero/google.png' },
-    { alt: 'Deloitte', src: '/images/hero/google.png' },
-    { alt: 'TCS', src: '/images/hero/tcs.png' },
-  ],
-};
 
 
 function HomeIcon({ className }: { className?: string }) {
@@ -404,7 +389,7 @@ export default function CategoryHeroSection({
 
       <div className="absolute inset-x-0 bottom-0 z-20 translate-y-[70%]">
         <div className="site-container">
-          <CategoryCollaborationCard collaboration={DEFAULT_COLLABORATION} />
+          <CollaborationStrip collaboration={defaultHeroContent.collaboration} />
         </div>
       </div>
     </section>

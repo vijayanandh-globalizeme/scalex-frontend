@@ -1,4 +1,5 @@
 import type { CategoryPageContent } from '@/components/category/CategoryHeroSection';
+import { defaultHeroContent } from '@/components/hero/defaultHeroContent';
 
 const DEFAULT_HERO_REVIEWS: CategoryPageContent['reviews'] = [
   {
@@ -48,21 +49,6 @@ const AGILE_SCRUM_FEATURES = [
   'Earn 20 PDUs & 16 SEUs',
 ];
 
-const DEFAULT_COLLABORATION: CategoryPageContent['collaboration'] = {
-  lineBefore: 'In Collaboration with ',
-  lineHighlight: 'World-Class',
-  lineAfter: ' Certifying Bodies',
-  logos: [
-    { alt: 'Google', src: '/images/hero/google.png' },
-    { alt: 'Stanford', src: '/images/hero/stanford.png' },
-    { alt: 'IBM', src: '/images/hero/ibm.png' },
-    { alt: 'Infosys', src: '/images/hero/infosys.png' },
-    { alt: 'Claude', src: '/images/hero/google.png' },
-    { alt: 'Capgemini', src: '/images/hero/google.png' },
-    { alt: 'Deloitte', src: '/images/hero/google.png' },
-    { alt: 'TCS', src: '/images/hero/tcs.png' },
-  ],
-};
 
 function createCategory(
   slug: string,
@@ -86,7 +72,7 @@ function createCategory(
     secondaryCta: { href: '/contact', label: 'Get Free Career Guidance' },
     reviews: DEFAULT_HERO_REVIEWS,
     learnersStat: DEFAULT_LEARNERS_STAT,
-    collaboration: DEFAULT_COLLABORATION,
+    collaboration: defaultHeroContent.collaboration,
   };
 }
 

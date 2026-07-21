@@ -142,11 +142,11 @@ export default function CategoryExploreAllSection({ excludeId }: { excludeId?: s
         <header className="mx-auto max-w-6xl text-center">
           <h2
             id="explore-categories-heading"
-            className="text-[26px] font-extrabold leading-tight text-heading md:text-[40px] md:leading-[60px]"
+            className="text-center text-[34px] font-bold leading-[140%] text-[#1E293B]"
           >
             Explore All Course Categories
           </h2>
-          <p className="mt-3 text-[15px] font-medium leading-[140%] text-muted md:text-[18px]">
+          <p className="mb-4 mt-3 text-[15px] font-medium leading-[140%] text-muted md:mb-6 md:text-[18px]">
             Dive into specialized categories and find the specific guidance you need to master your field.
           </p>
         </header>

@@ -160,7 +160,7 @@ function ExpertCtaFullBleed({ content, headingId }: { content: ExpertCtaContent;
               ))}
             </h2>
             {subheading ? (
-              <p className="mt-4 text-[16px] font-medium leading-[1.6] text-white/80 md:text-[17px]">
+              <p className="mt-4 text-[16px] font-semibold leading-normal tracking-[-0.48px] text-[#E5E5E5]">
                 {subheading}
               </p>
             ) : null}
