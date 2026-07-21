@@ -172,7 +172,7 @@ function TrendingBlogsSection({ blogs }: { blogs: TrendingBlogCardData[] }) {
     <section className="full-bleed bg-[#F5F6F8] pt-3 pb-12 md:pt-4 md:pb-16">
       <div className="site-container">
         {/* Header */}
-        <div className="mb-10 text-center">
+        <div className="mb-4 text-center md:mb-10">
           <h2 className="text-[24px] font-extrabold text-heading md:text-[36px]">
             Trending Blogs that enhance your skills
           </h2>
@@ -180,7 +180,7 @@ function TrendingBlogsSection({ blogs }: { blogs: TrendingBlogCardData[] }) {
         </div>
 
         {/* Slider track — outer padding for shadows; inner clip for slide overflow */}
-        <div className="px-3 py-6">
+        <div className="px-3 pt-3 pb-6 md:py-6">
           <div className="overflow-x-clip">
           <div
             className="flex items-stretch gap-6 transition-transform duration-500 ease-in-out"
@@ -627,7 +627,7 @@ export default function BlogDetailPage() {
               Blogs
             </Link>
             <span className="text-white/40">&gt;</span>
-            <span className="max-w-[240px] truncate font-medium text-[#FF002C]">{blog.title}</span>
+            <span className="max-w-[240px] truncate font-medium capitalize text-[#FF002C]">{blog.title}</span>
           </nav>
 
           <div className="flex flex-col gap-8 lg:flex-row lg:items-stretch lg:gap-10">
@@ -637,20 +637,19 @@ export default function BlogDetailPage() {
                 {/* Category badge */}
                 {blog.category ? (
                   <span
-                    className="mb-5 inline-flex h-[28px] items-center justify-center rounded-[14px] bg-[#FFDEE4] px-[12px] pl-[14px] text-[11px] font-medium leading-normal text-[#1E293B]"
-                    style={{ fontFamily: 'Inter, sans-serif' }}
+                    className="mb-5 inline-flex h-[28px] items-center justify-center rounded-[14px] bg-[#FFDEE4] px-[12px] pl-[14px] text-[11px] font-medium capitalize leading-normal text-[#1E293B]"
                   >
                     {blog.category.name}
                   </span>
                 ) : null}
 
                 {/* Title */}
-                <h1 className="text-[22px] font-extrabold leading-[1.2] text-white md:text-[32px] lg:text-[40px]">
+                <h1 className="text-[28px] font-extrabold capitalize leading-[34px] text-[#E5E5E5] md:text-[36px] md:leading-[44px] lg:text-[42px] lg:leading-[52px]">
                   {blog.title}
                 </h1>
 
                 {/* Short description */}
-                <p className="mb-[30px] pt-[20px] text-[15px] leading-[1.7] text-[#BEBEBE] md:text-[16px]">
+                <p className="mb-[30px] pt-[20px] text-[18px] font-medium leading-[26px] text-[#BEBEBE]">
                   {blog.shortDescription}
                 </p>
               </div>
@@ -739,9 +738,9 @@ export default function BlogDetailPage() {
                 {tocItems.length > 0 ? (
                   <div className="rounded-2xl border border-zinc-100 bg-white shadow-sm overflow-hidden">
                     {/* Header */}
-                    <div className="flex items-center gap-2 px-4 py-3 border-b border-zinc-100">
+                    <div className="flex items-center gap-2 border-b border-zinc-100 bg-[#F8F9FB] px-4 py-3">
                       <span className="text-[16px]">📋</span>
-                      <h3 className="text-[14px] font-bold text-heading">{blog.content?.tableTitle || 'Table of Contents'}</h3>
+                      <h3 className="text-[14px] font-bold text-heading">{blog.content?.tableTitle || 'Table of contents'}</h3>
                     </div>
 
                     {/* Items */}
@@ -761,16 +760,16 @@ export default function BlogDetailPage() {
                                 window.scrollTo({ top, behavior: 'smooth' });
                               }
                             }}
-                            className={`flex items-center gap-3 px-4 py-3 text-[13px] transition-colors border-b border-zinc-100 last:border-b-0 ${
+                            className={`flex items-center gap-3 px-4 py-3 text-[12px] font-normal leading-normal transition-colors border-b border-zinc-100 last:border-b-0 ${
                               isActive
-                                ? 'border-l-[3px] border-l-brand bg-[#FFF5F6] font-bold text-heading'
-                                : 'border-l-[3px] border-l-transparent text-muted hover:bg-zinc-50'
+                                ? 'border-l-[3px] border-l-brand bg-[#FFF5F6] text-[#788593]'
+                                : 'border-l-[3px] border-l-transparent text-[#788593] hover:bg-zinc-50'
                             }`}
                           >
-                            <span className={`shrink-0 text-[12px] font-bold w-5 ${isActive ? 'text-brand' : 'text-zinc-400'}`}>
+                            <span className={`shrink-0 w-5 text-[12px] font-normal ${isActive ? 'text-brand' : 'text-[#788593]'}`}>
                               {String(i + 1).padStart(2, '0')}
                             </span>
-                            <span className="leading-snug">{label}</span>
+                            <span className="leading-normal">{label}</span>
                           </a>
                         );
                       })}
@@ -804,7 +803,7 @@ export default function BlogDetailPage() {
               {/* Blog content */}
               <div
                 ref={contentRef}
-                className="blog-article-content max-w-none min-w-0 break-words space-y-4 text-[17px] leading-[26px] text-[#46505F] font-medium [&_h2]:mt-6 [&_h2]:mb-3 [&_h2]:text-[22px] [&_h2]:font-extrabold [&_h2]:text-heading [&_h3]:mt-5 [&_h3]:text-[18px] [&_h3]:font-bold [&_h3]:text-heading [&_p]:mt-3 [&_ul]:mt-3 [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:mt-3 [&_ol]:list-decimal [&_ol]:pl-5 [&_li]:mt-1 [&_a]:text-brand [&_a]:underline [&_a]:break-all [&_strong]:font-semibold [&_strong]:text-heading [&_table]:mt-4 [&_table]:w-full [&_table]:overflow-hidden [&_table]:rounded-xl [&_table]:border [&_table]:border-zinc-200 [&_th]:bg-[#1A1A2E] [&_th]:px-4 [&_th]:py-3 [&_th]:text-left [&_th]:text-white [&_td]:border-t [&_td]:border-zinc-100 [&_td]:px-4 [&_td]:py-2.5 [&_img]:mt-4 [&_img]:rounded-xl [&_img]:max-w-full [&_pre]:overflow-x-auto [&_pre]:whitespace-pre-wrap [&_code]:break-words"
+                className="blog-article-content max-w-none min-w-0 break-words space-y-4 text-[#46505F] font-medium [&_h2]:mt-6 [&_h2]:mb-3 [&_h2]:text-[26px] [&_h2]:font-bold [&_h2]:leading-[34px] [&_h2]:text-[#1E293B] [&_h3]:mt-5 [&_h3]:text-[18px] [&_h3]:font-bold [&_h3]:text-heading [&_p]:mt-3 [&_p]:text-[15px] [&_p]:leading-[22px] [&_p:first-of-type]:text-[17px] [&_p:first-of-type]:leading-[26px] [&_ul]:mt-3 [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:text-[15px] [&_ul]:leading-[22px] [&_ol]:mt-3 [&_ol]:list-decimal [&_ol]:pl-5 [&_ol]:text-[15px] [&_ol]:leading-[22px] [&_li]:mt-1 [&_li]:text-[15px] [&_li]:leading-[22px] [&_a]:text-brand [&_a]:underline [&_a]:break-all [&_strong]:font-semibold [&_strong]:text-heading [&_table]:mt-4 [&_table]:w-full [&_table]:overflow-hidden [&_table]:rounded-xl [&_table]:border [&_table]:border-zinc-200 [&_th]:bg-[#1A1A2E] [&_th]:px-4 [&_th]:py-3 [&_th]:text-left [&_th]:text-white [&_td]:border-t [&_td]:border-zinc-100 [&_td]:px-4 [&_td]:py-2.5 [&_img]:mt-4 [&_img]:rounded-xl [&_img]:max-w-full [&_pre]:overflow-x-auto [&_pre]:whitespace-pre-wrap [&_code]:break-words"
                 style={{ overflowWrap: 'break-word' }}
                 dangerouslySetInnerHTML={{ __html: blog.content?.content ? sanitizeBlogContent(blog.content.content) : '' }}
               />
