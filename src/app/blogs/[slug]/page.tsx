@@ -627,7 +627,7 @@ export default function BlogDetailPage() {
               Blogs
             </Link>
             <span className="text-white/40">&gt;</span>
-            <span className="max-w-[240px] truncate font-medium capitalize text-[#FF002C]">{blog.title}</span>
+            <span className="max-w-[240px] truncate font-medium capitalize text-white">{blog.title}</span>
           </nav>
 
           <div className="flex flex-col gap-8 lg:flex-row lg:items-stretch lg:gap-10">
