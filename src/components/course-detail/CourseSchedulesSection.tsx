@@ -88,6 +88,17 @@ function SlotsIcon({ className }: { className?: string }) {
   );
 }
 
+function FireIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} width="10" height="10" viewBox="0 0 12 14" fill="none" aria-hidden>
+      <path
+        d="M6 0.5C6 2.5 3.5 3.8 3.5 6.2C3.5 7.8 4.6 9 6 9C7.4 9 8.5 7.8 8.5 6.2C10 7.2 10.5 8.7 10.5 9.8C10.5 12 8.5 13.5 6 13.5C3.5 13.5 1.5 12 1.5 9.5C1.5 6.5 4 5.2 6 0.5Z"
+        fill="currentColor"
+      />
+    </svg>
+  );
+}
+
 function ChevronDownIcon({ className }: { className?: string }) {
   return (
     <svg className={className} width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden>
@@ -378,22 +389,22 @@ function MetaItem({
 
 function QuantityStepper({ value, onChange }: { value: number; onChange: (n: number) => void }) {
   return (
-    <div className="mt-5 inline-flex w-fit max-w-fit shrink-0 grow-0 items-stretch overflow-hidden rounded-md border border-[#EBEBEB] bg-white md:rounded-lg">
+    <div className="inline-flex w-fit max-w-fit shrink-0 grow-0 items-stretch overflow-hidden rounded-md border border-[#EBEBEB] bg-white md:rounded-lg">
       <button
         type="button"
         onClick={() => onChange(Math.max(1, value - 1))}
-        className="btn-mui-ink-tint flex h-7 w-7 shrink-0 grow-0 basis-7 items-center justify-center p-0 text-[13px] leading-none text-brand md:h-8 md:w-8 md:basis-8 md:text-[16px]"
+        className="btn-mui-ink-tint flex h-8 w-8 shrink-0 grow-0 basis-8 items-center justify-center p-0 text-[14px] leading-none text-brand md:h-9 md:w-9 md:basis-9 md:text-[17px]"
         aria-label="Decrease"
       >
         −
       </button>
-      <span className="flex h-7 w-7 shrink-0 grow-0 basis-7 items-center justify-center border-x border-zinc-200 text-[12px] font-medium leading-none text-heading md:h-8 md:w-8 md:basis-8 md:text-[13px]">
+      <span className="flex h-8 w-8 shrink-0 grow-0 basis-8 items-center justify-center border-x border-zinc-200 text-[13px] font-medium leading-none text-heading md:h-9 md:w-9 md:basis-9 md:text-[14px]">
         {value}
       </span>
       <button
         type="button"
         onClick={() => onChange(value + 1)}
-        className="btn-mui-ink-tint flex h-7 w-7 shrink-0 grow-0 basis-7 items-center justify-center p-0 text-[13px] leading-none text-brand md:h-8 md:w-8 md:basis-8 md:text-[16px]"
+        className="btn-mui-ink-tint flex h-8 w-8 shrink-0 grow-0 basis-8 items-center justify-center p-0 text-[14px] leading-none text-brand md:h-9 md:w-9 md:basis-9 md:text-[17px]"
         aria-label="Increase"
       >
         +
@@ -437,14 +448,15 @@ function ScheduleCard({ batch, quantity, onQuantityChange, onEnroll }: {
   return (
     <article className={SCHEDULE_CARD}>
       {batch.isTrending ? (
-        <span className="absolute top-2 right-3 rounded-lg bg-[#FFF6F7] px-2 py-0.5 text-[10px] font-medium text-brand max-md:top-1.5 max-md:right-2 max-md:text-[9px]">
-          Trending
+        <span className="absolute top-0 right-4 z-10 inline-flex items-center gap-1 rounded-b-lg bg-brand px-2.5 py-1 text-[10px] font-semibold tracking-wide text-white shadow-[0_4px_10px_rgba(253,2,45,0.35)] max-md:right-3 max-md:px-2 max-md:py-0.5 max-md:text-[9px]">
+          <FireIcon className="shrink-0" />
+          Fast filling
         </span>
       ) : null}
       <span className="absolute inset-y-0 left-0 w-1 rounded-l-[20px] bg-brand" aria-hidden />
-      <div className="flex flex-col xl:flex-row">
+      <div className="relative flex flex-col xl:flex-row">
         <div className="min-w-0 flex-1">
-          <div className="flex items-start justify-between gap-2 border-b border-zinc-100 py-3 pr-3 pl-[22px] md:py-5 md:pr-5 md:pl-[30px]">
+          <div className="flex items-center justify-between gap-2 border-b border-zinc-100 py-3 pr-3 pl-[22px] md:py-5 md:pr-5 md:pl-[30px]">
             <div className="min-w-0 flex-1 pr-2">
               <span className="inline-flex items-center gap-1.5 rounded-lg bg-[#FFF6F7] px-2 py-0.5 text-[11px] font-medium leading-[140%] text-brand max-md:py-0.5 max-md:text-[10px]">
                 <span className="h-1.5 w-1.5 rounded-full bg-brand" aria-hidden />
@@ -458,7 +470,9 @@ function ScheduleCard({ batch, quantity, onQuantityChange, onEnroll }: {
                 <span className="truncate">{timeLabel}</span>
               </p>
             </div>
-            <QuantityStepper value={quantity} onChange={onQuantityChange} />
+            <div className="shrink-0 xl:absolute xl:left-1/2 xl:-translate-x-1/2">
+              <QuantityStepper value={quantity} onChange={onQuantityChange} />
+            </div>
           </div>
 
           <div className="grid grid-cols-2 gap-x-3 gap-y-2.5 py-3 pr-3 pl-[22px] md:flex md:flex-row md:gap-0 md:py-5 md:pr-5 md:pl-[35px]">
