@@ -20,7 +20,7 @@ const CAREER_CARD =
   'overflow-hidden rounded-[20px] border border-[#EBEBEB] bg-white shadow-[0_4px_4px_0_rgba(30,41,59,0.08),0_4px_4px_0_rgba(30,41,59,0.03)]';
 
 const TAB_BAR_SCROLL =
-  'flex h-[48px] items-stretch gap-6 overflow-x-auto rounded-lg bg-[#FCFCFC] px-5 shadow-[0_4px_4px_0_rgba(30,41,59,0.08),4px_-4px_4px_0_rgba(30,41,59,0.03)] [-ms-overflow-style:none] [scrollbar-width:none] md:gap-10 md:px-6 [&::-webkit-scrollbar]:hidden';
+  'inline-flex max-w-full h-[48px] items-stretch gap-6 overflow-x-auto rounded-lg bg-[#FCFCFC] px-5 shadow-[0_4px_4px_0_rgba(30,41,59,0.08),4px_-4px_4px_0_rgba(30,41,59,0.03)] [-ms-overflow-style:none] [scrollbar-width:none] md:gap-10 md:px-6 [&::-webkit-scrollbar]:hidden';
 
 const CAREER_COLUMN_DIVIDER =
   'relative before:pointer-events-none before:absolute before:bg-[#EBEBEB] before:content-[""] max-md:before:top-0 max-md:before:left-1/2 max-md:before:h-px max-md:before:w-[80%] max-md:before:-translate-x-1/2 md:before:top-1/2 md:before:left-0 md:before:h-[80%] md:before:w-px md:before:-translate-y-1/2';
@@ -133,7 +133,7 @@ export default function CourseCareerSection({
     >
       <h3 className="text-[20px] font-semibold leading-[140%] text-heading">{CAREER_SECTION_TITLE}</h3>
 
-      <div className={`mt-4 ${CAREER_CARD}`} role="tablist" aria-label={CAREER_SECTION_TITLE}>
+      <div className="mt-4" role="tablist" aria-label={CAREER_SECTION_TITLE}>
         <div className={TAB_BAR_SCROLL}>
           {careerTabs.map((tab) => {
             const isActive = tab.id === activeTabId;
