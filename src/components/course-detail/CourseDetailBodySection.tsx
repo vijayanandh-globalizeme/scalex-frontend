@@ -73,6 +73,17 @@ export default async function CourseDetailBodySection({
     courseUri === 'devops-certification-training' && categoryUri === 'devops';
   const isCsmPage =
     courseUri === 'certified-scrum-master' && categoryUri === 'agile-and-scrum';
+  const isAcsmPage =
+    courseUri === 'advance-certified-scrum-master' && categoryUri === 'agile-and-scrum';
+  const sidebarContent = isAcsmPage
+    ? {
+        ...sidebar,
+        mentorship: {
+          ...sidebar.mentorship,
+          imageSrc: '/images/per-6.png',
+        },
+      }
+    : sidebar;
 
   const awardsSection = (
     <AwardsSection
@@ -207,6 +218,11 @@ export default async function CourseDetailBodySection({
               reviews={reviews}
               settings={settings ?? {}}
               videoUrl={reviewsVideoUrl}
+              ratingClassName={
+                isAcsmPage
+                  ? 'text-[16px] font-semibold leading-normal text-[#1E293B]'
+                  : undefined
+              }
             />
 
             {!isDevopsPage ? awardsSection : null}
@@ -242,7 +258,7 @@ export default async function CourseDetailBodySection({
               shortName={courseDetails?.shortName}
             />
           </div>
-          <CourseDetailSidebar sidebar={sidebar} courseId={courseId} brochureUrl={brochureUrl} />
+          <CourseDetailSidebar sidebar={sidebarContent} courseId={courseId} brochureUrl={brochureUrl} />
 
 
         </div>

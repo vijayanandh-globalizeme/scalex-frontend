@@ -217,12 +217,15 @@ export function ReviewPlatformRow({
   settings,
   className,
   align = 'start',
+  ratingClassName,
 }: {
   reviews?: ReviewPlatform[];
   settings?: LayoutSettings;
   className?: string;
   /** Home page uses center; course reviews use start. */
   align?: 'start' | 'center';
+  /** Override rating text styling (e.g. page-specific size). */
+  ratingClassName?: string;
 }) {
   const items = settings
     ? REVIEW_PLATFORM_CONFIG.flatMap((cfg) => {
@@ -269,7 +272,14 @@ export function ReviewPlatformRow({
           </span>
           <div className="flex w-full min-w-0 flex-wrap items-center justify-center gap-1.5">
             <PlatformStarIcon />
-            <span className="text-[16px] font-semibold leading-normal text-heading md:text-[20px]">{review.rating}</span>
+            <span
+              className={
+                ratingClassName ??
+                'text-[16px] font-semibold leading-normal text-heading md:text-[20px]'
+              }
+            >
+              {review.rating}
+            </span>
             {review.url ? (
               <a
                 href={review.url}

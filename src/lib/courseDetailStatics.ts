@@ -86,7 +86,7 @@ export const UNLOCK_COURSE_BANNER = {
   headingLines: ["Ready to unlock your full potential", "on your Job?"],
   ctaLabel: "Contact with us",
   ctaHref: "#contact",
-  imageSrc: "/images/hero/person.png",
+  imageSrc: "/images/per-5.png",
   imageAlt: "Learning advisor ready to help",
 };
 

@@ -149,11 +149,13 @@ export default function CourseReviewsClient({
   reviews,
   settings,
   videoUrl,
+  ratingClassName,
 }: {
   title: string;
   reviews: ApiReview[];
   settings: LayoutSettings;
   videoUrl?: string | null;
+  ratingClassName?: string;
 }) {
   const typeMap = useMemo(() => new Map(REVIEWS_TYPE.map((t) => [t.id, t])), []);
 
@@ -244,6 +246,7 @@ export default function CourseReviewsClient({
 
       <ReviewPlatformRow
         settings={settings}
+        ratingClassName={ratingClassName}
         className="mt-5 grid grid-cols-2 gap-y-5 rounded-[20px] border border-[#EBEBEB] bg-white px-5 py-5 shadow-[0_4px_14px_-4px_rgba(30,41,59,0.10),0_4px_4px_0_rgba(30,41,59,0.03)] sm:flex sm:flex-row sm:items-center sm:justify-between sm:gap-6 sm:px-8 sm:py-6"
       />
     </div>
