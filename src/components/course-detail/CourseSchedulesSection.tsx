@@ -525,7 +525,10 @@ function ScheduleCard({ batch, quantity, onQuantityChange, onEnroll }: {
               <span>24/7<br />Support</span>
             </div>
             {isSoldOut ? (
-              <span className="mt-3 inline-flex w-[139px] items-center justify-center rounded-lg bg-zinc-100 px-4 py-[11px] text-[14px] font-medium leading-[18px] text-muted max-md:mt-0 max-md:w-auto max-md:px-3 max-md:py-2 max-md:text-[11px]">
+              <span
+                aria-disabled="true"
+                className="btn-brand-outline mt-3 inline-flex w-[139px] cursor-not-allowed items-center justify-center px-4 py-[11px] text-[14px] font-medium leading-[18px] max-md:mt-0 max-md:w-auto max-md:px-3 max-md:py-2 max-md:text-[11px]"
+              >
                 Sold Out
               </span>
             ) : (

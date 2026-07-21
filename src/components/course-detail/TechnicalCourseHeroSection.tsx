@@ -219,11 +219,11 @@ function RankedContent({ rankedContent, rankingLine }: { rankedContent?: string;
   if (rankedContent) {
     const parts = rankedContent.split(/\*\*(.+?)\*\*/g);
     return (
-      <p className="mt-6 text-[16px] font-bold leading-normal">
+      <p className="mt-6 text-[16px] font-bold leading-normal [&_a]:text-brand [&_a]:no-underline [&_a]:hover:underline [&_a]:underline-offset-2">
         {parts.map((part, i) =>
           i % 2 === 1
-            ? <span key={i} className="text-brand">{part}</span>
-            : <span key={i} className="text-heading">{part}</span>,
+            ? <span key={i} className="text-brand" dangerouslySetInnerHTML={{ __html: withNewTabLinks(part) }} />
+            : <span key={i} className="text-heading" dangerouslySetInnerHTML={{ __html: withNewTabLinks(part) }} />,
         )}
       </p>
     );
