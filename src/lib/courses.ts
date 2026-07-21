@@ -39,8 +39,7 @@ export interface CourseDetailContent {
   /** Absent when the course has no training-partner logo uploaded. */
   licensedPartner?: {
     label: string;
-    logoSrc: string;
-    logoAlt: string;
+    logos: { src: string; alt: string }[];
   } | null;
   enterprise: {
     headingHighlight: string;
@@ -132,8 +131,7 @@ const COURSES: Record<string, CourseDetailContent> = {
     secondaryCta: { href: '#schedules', label: 'View Schedules' },
     licensedPartner: {
       label: 'Licensed Training Partner',
-      logoSrc: '/images/course/scrum-alliance.png',
-      logoAlt: 'Scrum Alliance',
+      logos: [{ src: '/images/course/scrum-alliance.png', alt: 'Scrum Alliance' }],
     },
     enterprise: {
       headingHighlight: 'Enterprise Training',

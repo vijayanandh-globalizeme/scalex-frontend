@@ -179,8 +179,7 @@ function buildTechnicalCourse(def: TechnicalCourseDefinition): TechnicalCourseCo
     secondaryCta: { href: '#schedules', label: 'View Schedule' },
     licensedPartner: {
       label: 'Industry-Aligned Curriculum',
-      logoSrc: '/images/course/google.png',
-      logoAlt: 'Industry partners',
+      logos: [{ src: '/images/course/google.png', alt: 'Industry partners' }],
     },
     enterprise: {
       headingHighlight: 'Enterprise Training',

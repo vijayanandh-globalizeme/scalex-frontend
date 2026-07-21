@@ -344,7 +344,7 @@ export default function CourseDetailHeroSection({
             />
             {licensedPartner ? (
               <div className="mt-5 lg:mt-6" aria-label="Licensed training partner">
-                <CourseLicensedPartnerStrip {...licensedPartner} embedded />
+                <CourseLicensedPartnerStrip {...licensedPartner} />
               </div>
             ) : null}
             </div>

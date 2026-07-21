@@ -11,7 +11,6 @@ import { GuidanceSection, defaultGuidanceContent } from '@/components/guidance';
 import { WhyScaleXSection, defaultWhyScaleXContent } from '@/components/why-scalex';
 import { fetchCategoryByUri } from '@/services/categoryApi';
 import { fetchSetting } from '@/services/layoutApi';
-import { defaultHeroBadges, defaultHeroContent } from '@/components/hero/defaultHeroContent';
 import { SITE_NAME } from '@/lib/site';
 
 type PageProps = {
@@ -49,8 +48,7 @@ export default async function CategoryPage({ params }: PageProps) {
   if (!category) notFound();
 
   const settings = settingsData ?? {};
-  const isAgileScrum = categoryUri === 'agile-and-scrum';
-  const agileHeroBadges = [
+  const categoryHeroBadges = [
     {
       id: 'learners-1',
       variant: 'learners' as const,
@@ -79,19 +77,15 @@ export default async function CategoryPage({ params }: PageProps) {
       <CategoryHeroSection
         category={category}
         settings={settings}
-        heroBadges={isAgileScrum ? agileHeroBadges : defaultHeroBadges}
-        heroFigureSrc={
-          category.posterImage?.url ??
-          (isAgileScrum ? '/images/category/agile-scrum-hero.png' : defaultHeroContent.figure.src)
-        }
-        mediaVariant={isAgileScrum ? 'photo' : 'figure'}
-        backgroundImage={isAgileScrum ? undefined : defaultHeroContent.backgroundImage}
+        heroBadges={categoryHeroBadges}
+        heroFigureSrc={category.posterImage?.url ?? '/images/category/agile-scrum-hero.png'}
+        mediaVariant="photo"
       />
       <CategoryCoursesSection
         categoryId={category.id}
         categoryName={category.name}
-        className={isAgileScrum ? 'md:mt-[50px]' : undefined}
-        headingClassName={isAgileScrum ? 'max-md:mt-[130px]' : undefined}
+        className="md:mt-[50px]"
+        headingClassName="max-md:mt-[130px]"
       />
       <CategoryExpertCtaSection />
       <CategoryExploreAllSection excludeId={category.id} />

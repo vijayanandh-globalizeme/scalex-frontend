@@ -114,11 +114,13 @@ function buildBaseProps(
     learnersStat:  buildLearnersStat(settings),
     primaryCta:    { href: schedulePath, label: 'View Schedules' },
     secondaryCta:  { href: '#schedules', label: 'View Schedules' },
-    licensedPartner: course.companyLogos[0]
+    licensedPartner: course.companyLogos.length
       ? {
-          label:   'Licensed Training Partner',
-          logoSrc: course.companyLogos[0].url,
-          logoAlt: 'Training partner',
+          label: 'Licensed Training Partner',
+          logos: course.companyLogos.slice(0, 2).map((logo) => ({
+            src: logo.url,
+            alt: 'Training partner',
+          })),
         }
       : null,
     enterprise: {

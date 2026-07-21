@@ -1,39 +1,30 @@
 import Image from 'next/image';
 
-export interface CourseLicensedPartnerStripProps {
-  label: string;
-  logoSrc: string;
-  logoAlt: string;
-  /** When true, renders inline inside the hero grid (no outer section padding). */
-  embedded?: boolean;
+export interface CourseLicensedPartnerLogo {
+  src: string;
+  alt: string;
 }
 
-export default function CourseLicensedPartnerStrip({
-  label,
-  logoSrc,
-  logoAlt,
-  embedded = false,
-}: CourseLicensedPartnerStripProps) {
-  const content = (
-    <div
-      className={`flex flex-wrap items-center gap-x-4 gap-y-2 ${embedded ? 'w-full justify-center' : 'justify-center'}`}
-    >
-      <p className="shrink-0 text-[18px] font-medium leading-[18px] tracking-[-0.18px] text-black">
-        {label}
-      </p>
-      <div className="relative h-[48px] w-[220px] shrink-0 md:h-[52px] md:w-[240px]">
-        <Image src={logoSrc} alt={logoAlt} fill sizes="240px" className="object-contain object-center" />
-      </div>
-    </div>
-  );
+export interface CourseLicensedPartnerStripProps {
+  label: string;
+  logos: CourseLicensedPartnerLogo[];
+}
 
-  if (embedded) {
-    return content;
-  }
+export default function CourseLicensedPartnerStrip({ label, logos }: CourseLicensedPartnerStripProps) {
+  if (!logos.length) return null;
 
   return (
-    <section className="full-bleed py-8 md:py-10" aria-label="Licensed training partner">
-      <div className="site-container">{content}</div>
-    </section>
+    <div className="flex justify-center">
+      <div className="inline-flex flex-col items-start">
+        <p className="text-[18px] font-medium leading-normal text-[#1E293B]">{label}</p>
+        <div className="mt-3 flex items-center gap-8">
+          {logos.map((logo) => (
+            <div key={logo.src} className="relative h-8 w-24">
+              <Image src={logo.src} alt={logo.alt} fill sizes="96px" className="object-contain object-left" />
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
   );
 }
