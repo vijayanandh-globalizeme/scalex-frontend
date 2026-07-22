@@ -128,7 +128,7 @@ export default async function CourseDetailBodySection({
     : (reviewVideoUrl ?? reviewsFallback.videoUrl);
 
   return (
-    <section className="full-bleed overflow-visible bg-[#F5F6F8] pb-16 pt-1" aria-label="Course details">
+    <section className="full-bleed overflow-visible bg-[#F5F6F8] pb-1 md:pb-0 pt-1" aria-label="Course details">
       <CourseDetailStickyNav items={navItems} phone={phone ?? ''} />
 
       <div className="site-container pb-15 pt-4">
@@ -186,7 +186,10 @@ export default async function CourseDetailBodySection({
             ) : null}
             
             {isTechnical && details?.eligibility ? (
-              <CourseEligibilityRequirementsSection eligibilityRequirements={details.eligibility} />
+              <CourseEligibilityRequirementsSection
+                eligibilityRequirements={details.eligibility}
+                personImageSrc={isDevopsPage ? '/images/eligibilty-req.png' : undefined}
+              />
             ) : null}
 
             {hasBootcamp ? (
@@ -218,11 +221,7 @@ export default async function CourseDetailBodySection({
               reviews={reviews}
               settings={settings ?? {}}
               videoUrl={reviewsVideoUrl}
-              ratingClassName={
-                isAcsmPage
-                  ? 'text-[16px] font-semibold leading-normal text-[#1E293B]'
-                  : undefined
-              }
+              ratingClassName="text-[16px] font-semibold leading-normal text-[#1E293B]"
             />
 
             {!isDevopsPage ? awardsSection : null}

@@ -218,18 +218,31 @@ export default function CourseReviewsClient({
           </div>
         </div>
 
-        <CategoryCarouselControls
-          page={page}
-          totalPages={totalPages}
-          onPrev={() => setPage((p) => Math.max(0, p - 1))}
-          onNext={() => setPage((p) => Math.min(totalPages - 1, p + 1))}
-          prevLabel="Previous reviews"
-          nextLabel="Next reviews"
-        />
+        <div className="hidden md:flex">
+          <CategoryCarouselControls
+            page={page}
+            totalPages={totalPages}
+            onPrev={() => setPage((p) => Math.max(0, p - 1))}
+            onNext={() => setPage((p) => Math.min(totalPages - 1, p + 1))}
+            prevLabel="Previous reviews"
+            nextLabel="Next reviews"
+          />
+        </div>
       </div>
 
       <div className="mt-5 pt-4 flex flex-col gap-4 md:flex-row md:gap-5">
         <VideoCard video={{ ...REVIEW_VIDEO_SECTION, videoUrl: videoUrl ?? REVIEW_VIDEO_SECTION.videoUrl }} />
+
+        <div className="flex justify-end md:hidden">
+          <CategoryCarouselControls
+            page={page}
+            totalPages={totalPages}
+            onPrev={() => setPage((p) => Math.max(0, p - 1))}
+            onNext={() => setPage((p) => Math.min(totalPages - 1, p + 1))}
+            prevLabel="Previous reviews"
+            nextLabel="Next reviews"
+          />
+        </div>
 
         <div className="min-w-0 flex-1 overflow-x-clip">
           <CategoryCarouselTrack page={page} className="pb-2" clipX={false}>

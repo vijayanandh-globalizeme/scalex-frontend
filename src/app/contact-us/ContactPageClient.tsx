@@ -40,9 +40,9 @@ export default function ContactPageClient({
   return (
     <>
       {/* Hero Banner */}
-      <section ref={heroRef} className="full-bleed relative overflow-x-clip overflow-y-visible pb-8 md:pb-16 lg:pb-20" style={{ paddingTop: '75px' }}>
-        {/* Decorative background */}
-        <div className="category-hero-bg pointer-events-none absolute inset-0" aria-hidden />
+      <section ref={heroRef} className="full-bleed relative overflow-x-clip overflow-y-visible bg-[#F5F6F8] pb-0 md:bg-transparent md:pb-16 lg:pb-20" style={{ paddingTop: '75px' }}>
+        {/* Decorative background — gradient on desktop only */}
+        <div className="category-hero-bg pointer-events-none absolute inset-0 max-md:hidden" aria-hidden />
 
         <div className="site-container relative z-10">
           {/* Breadcrumb */}
@@ -205,7 +205,7 @@ export default function ContactPageClient({
       </section>
 
       {/* Enquiry Section */}
-      <section className="full-bleed bg-[#F5F6F8] py-14 md:py-20">
+      <section className="full-bleed bg-[#F5F6F8] pt-0 pb-14 md:py-20">
         <div className="site-container">
           <div className="mb-10 text-center">
             <h2 style={{ color: '#1E293B', fontFamily: 'Inter', fontSize: '32px', fontWeight: 700, lineHeight: '1.2' }}>

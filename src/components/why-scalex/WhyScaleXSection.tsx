@@ -85,7 +85,7 @@ export default function WhyScaleXSection({
     <header className={`w-full ${isEmbedded ? 'text-left' : 'text-center'}`}>
       <h2
         id={headingId}
-        className={`section-heading inline-flex flex-wrap items-center gap-x-2 text-heading ${
+        className={`section-heading inline-flex flex-wrap items-center gap-x-2 text-[#1E293B] ${
           isEmbedded ? 'text-left' : 'justify-center text-center'
         }`}
       >
@@ -113,9 +113,9 @@ export default function WhyScaleXSection({
     </header>
   );
 
-  const rowLabelClassName = isEmbedded
-    ? 'text-[16px] font-medium text-body'
-    : 'text-[16px] font-medium text-heading';
+  const rowLabelClassName = 'text-[18px] font-semibold leading-normal text-[#1E293B]';
+  const rowTitleClassName = 'text-[15px] font-semibold leading-snug text-[#1E293B] md:text-[16px]';
+  const cardHeaderClassName = `${cardHeaderHeight} mb-4 flex shrink-0 items-center text-[18px] font-semibold leading-normal text-[#1E293B] md:mb-5`;
 
   const comparisonGrid = (
     <div className={`w-full ${isEmbedded ? 'mt-6 md:mt-8' : 'mx-auto mt-6 max-w-[1080px] md:mt-8'}`}>
@@ -123,7 +123,7 @@ export default function WhyScaleXSection({
         {/* Row labels — desktop only; padding + flex rows match cards for straight alignment */}
         <div className="hidden shrink-0 flex-col pt-4 pb-6 md:pt-5 md:pb-7 lg:flex lg:w-[148px]">
           <div
-            className={`${cardHeaderHeight} mb-4 flex shrink-0 items-center justify-end pr-4 text-right md:mb-5 ${rowLabelClassName}`}
+            className={`${cardHeaderClassName} justify-end pr-4 text-right`}
           >
             Features
           </div>
@@ -147,20 +147,18 @@ export default function WhyScaleXSection({
                 : OTHERS_CARD_CLASS
             } flex flex-col px-6 pt-4 pb-6 md:px-7 md:pt-5 md:pb-7`}
           >
-            <h3
-              className={`${cardHeaderHeight} mb-4 flex shrink-0 items-center justify-center text-[18px] font-semibold text-heading md:mb-5 md:text-[20px]`}
-            >
+            <h3 className={`${cardHeaderClassName} justify-center`}>
               {othersLabel}
             </h3>
             <ul className="flex flex-1 flex-col">
               {rows.map((row) => (
                 <li
                   key={`others-${row.id}`}
-                  className={`flex ${ROW_MIN_HEIGHT} flex-1 items-center gap-3`}
+                  className={`flex ${ROW_MIN_HEIGHT} flex-1 items-start gap-3`}
                 >
                   <CrossIcon className="h-5 w-5 shrink-0" />
                   <div className="min-w-0">
-                    <p className="text-[15px] font-semibold leading-snug text-heading md:text-[16px]">
+                    <p className={rowTitleClassName}>
                       {row.others.title}
                     </p>
                     <p className="mt-1 text-[13px] leading-relaxed text-muted md:text-[14px]">
@@ -188,18 +186,18 @@ export default function WhyScaleXSection({
                   className="h-[40px] w-auto max-w-[130px] object-contain"
                 />
               ) : (
-                <h3 className="text-[18px] font-semibold text-heading md:text-[20px]">ScaleX</h3>
+                <h3 className="text-[18px] font-semibold text-[#1E293B] md:text-[20px]">ScaleX</h3>
               )}
             </div>
             <ul className="flex flex-1 flex-col">
               {rows.map((row) => (
                 <li
                   key={`scalex-${row.id}`}
-                  className={`flex ${ROW_MIN_HEIGHT} flex-1 items-center gap-3`}
+                  className={`flex ${ROW_MIN_HEIGHT} flex-1 items-start gap-3`}
                 >
                   <CheckBadgeIcon className="h-[22px] w-[22px] shrink-0" />
                   <div className="min-w-0">
-                    <p className="text-[15px] font-semibold leading-snug md:text-[16px]">
+                    <p className={rowTitleClassName}>
                       {row.scalex.title}
                     </p>
                     <p className="mt-1 text-[13px] leading-relaxed text-muted md:text-[14px]">

@@ -139,6 +139,9 @@ export default function CourseDetailHeroSection({
     [],
   );
 
+  const isAcsmPage =
+    slug === 'advance-certified-scrum-master' && categorySlug === 'agile-and-scrum';
+
   return (
     <section
       ref={sectionRef}
@@ -356,7 +359,13 @@ export default function CourseDetailHeroSection({
             }}
             className="gsap-reveal-pending relative z-20 overflow-visible pb-6 lg:mb-[-125px] lg:col-span-2 lg:col-start-1 lg:row-start-2"
           >
-            <CourseEnterpriseCard {...enterprise} courseId={courseId} />
+            <CourseEnterpriseCard
+              {...enterprise}
+              courseId={courseId}
+              {...(isAcsmPage
+                ? { logoMarqueeSize: 'md', logoMarqueeClassName: '[&_img]:origin-center [&_img]:scale-[1.35]' }
+                : {})}
+            />
           </div>
         </div>
       </div>

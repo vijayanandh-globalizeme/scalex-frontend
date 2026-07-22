@@ -272,7 +272,7 @@ function PlacementStageContent({ stage }: { stage: ApiRoadmap }) {
           {ROADMAP_HIRING_PARTNER_LOGOS.map((logo, index) => (
             <Fragment key={logo.alt}>
               {index === 4 && <div className="w-full" />}
-              <div className="relative h-8 w-20">
+              <div className="relative h-[30px] w-20">
                 <Image src={logo.src} alt={logo.alt} fill className="object-contain" sizes="80px" />
               </div>
             </Fragment>

@@ -4,6 +4,9 @@ import { withNewTabLinks } from '@/lib/richText';
 
 type ApiEligibility = NonNullable<ApiCourseDetails['eligibility']>;
 
+const PERSON_IMAGE_SIZE_PX = 220;
+const PERSON_HEAD_OUTSIDE_PX = Math.round(PERSON_IMAGE_SIZE_PX * 0.1);
+
 const SECTION_CARD =
   'rounded-[20px] border border-[#EBEBEB] bg-white shadow-[0_4px_4px_0_rgba(30,41,59,0.08),0_4px_4px_0_rgba(30,41,59,0.03)]';
 
@@ -63,8 +66,10 @@ function CertificateGraphic({ certificationImage }: { certificationImage: ApiEli
 
 export default function CourseEligibilityRequirementsSection({
   eligibilityRequirements,
+  personImageSrc = '/images/hero/person.png',
 }: {
   eligibilityRequirements: ApiEligibility | null;
+  personImageSrc?: string;
 }) {
   if (!eligibilityRequirements) return null;
 
@@ -111,7 +116,11 @@ export default function CourseEligibilityRequirementsSection({
         <CertificateGraphic certificationImage={certificationImage} />
       </div>
 
-      <div className="relative mt-8 min-h-[200px] overflow-visible rounded-[20px] border border-[#DCDCDC] bg-[linear-gradient(79deg,#FFF_49.08%,#FFD3D3_108.27%)] py-6 pl-6 pr-[10px] md:py-7 md:pl-8 md:pr-[10px]">
+      <div
+        className="relative mt-8 overflow-visible"
+        style={{ paddingTop: PERSON_HEAD_OUTSIDE_PX }}
+      >
+        <div className="relative min-h-[200px] overflow-visible rounded-[20px] border border-[#DCDCDC] bg-[linear-gradient(79deg,#FFF_49.08%,#FFD3D3_108.27%)] py-6 pl-6 pr-[10px] md:py-7 md:pl-8 md:pr-[10px]">
         <div className="relative z-10 w-full max-w-full md:max-w-[calc(100%-220px)]">
           <h3 className="text-[20px] font-semibold leading-[140%] text-heading">{subTitle}</h3>
           <div className="mt-4 grid gap-x-10 gap-y-2.5 sm:grid-cols-2">
@@ -131,15 +140,20 @@ export default function CourseEligibilityRequirementsSection({
           </div>
         </div>
 
-        <div className="pointer-events-none absolute bottom-0 right-0 z-20 hidden h-[220px] w-[220px] md:block">
+        <div
+          className="pointer-events-none absolute bottom-0 right-0 z-20 hidden w-[220px] flex-col justify-end overflow-visible md:flex"
+          style={{ height: PERSON_IMAGE_SIZE_PX }}
+        >
           <Image
-            src="/images/hero/person.png"
+            src={personImageSrc}
             alt="Professional in business attire"
             width={440}
             height={440}
-            className="h-full w-full object-contain object-bottom"
+            className="w-full shrink-0 object-contain object-bottom"
+            style={{ height: PERSON_IMAGE_SIZE_PX + PERSON_HEAD_OUTSIDE_PX }}
             sizes="220px"
           />
+        </div>
         </div>
       </div>
     </div>
