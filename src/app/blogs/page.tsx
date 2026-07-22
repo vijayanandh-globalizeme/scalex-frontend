@@ -350,7 +350,7 @@ export default function BlogsPage() {
                         style={{ flex: `0 0 ${totalHero > 1 ? `${100 / totalHero}%` : '100%'}` }}
                       >
                         <div className="md:hidden">
-                          <TrendingBlogCard blog={toTrendingBlogCard(b)} footerClassName="max-md:mt-2 max-md:pt-2" />
+                          <TrendingBlogCard blog={toTrendingBlogCard(b)} equalFooterSpacing />
                         </div>
                         <Link
                           href={featured.href}
@@ -498,7 +498,7 @@ export default function BlogsPage() {
                 <div className="interactive-card-media relative h-[180px] w-full">
                   <Image src={b.featureImage?.url ?? DEFAULT_BLOG_IMAGE} alt={b.title} fill className="object-cover" sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw" />
                 </div>
-                <div className="flex flex-1 flex-col justify-between p-5">
+                <div className="flex flex-1 flex-col gap-4 px-5 pt-5 pb-4">
                   <div>
                     <div className="mb-3 flex w-full items-center gap-3">
                       <span
@@ -520,9 +520,9 @@ export default function BlogsPage() {
                     </div>
                     <h3 className="interactive-card-title line-clamp-2 min-h-[42px] text-[15px] font-bold leading-snug text-heading">{b.title}</h3>
                     <p className="mt-2 line-clamp-3 min-h-[62px] text-[13px] leading-[1.6] text-muted">{b.shortDescription}</p>
-                    <div className="mb-4 mt-4 border-b border-[#EBEBEB]" aria-hidden />
                   </div>
-                  <div className="mt-4 flex items-center justify-between">
+                  <div className="border-b border-[#EBEBEB]" aria-hidden />
+                  <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       <div className="relative h-8 w-8 shrink-0 overflow-hidden rounded-full bg-zinc-100">
                         <Image src={b.trainerAvatar?.url ?? DEFAULT_AUTHOR_AVATAR} alt={b.trainerName ?? ''} fill className="object-cover" sizes="32px" />
