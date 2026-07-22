@@ -174,10 +174,10 @@ export default function CourseDetailStickyNav({
                   data-navid={item.id}
                   type="button"
                   onClick={() => scrollToSection(item)}
-                  className={`flex shrink-0 cursor-pointer items-center border-0 border-b-[3px] bg-transparent p-0 text-[14px] font-medium whitespace-nowrap transition-colors ${
+                  className={`flex shrink-0 cursor-pointer items-center border-0 border-b-[3px] bg-transparent p-0 text-[16px] font-medium whitespace-nowrap text-[#1E293B] transition-colors ${
                     isActive
-                      ? 'border-b-brand text-brand'
-                      : 'border-b-transparent text-heading hover:text-brand'
+                      ? 'border-b-brand'
+                      : 'border-b-transparent hover:text-brand'
                   }`}
                 >
                   {item.label}

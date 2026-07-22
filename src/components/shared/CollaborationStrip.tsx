@@ -1,4 +1,9 @@
 import LogoMarquee, { type LogoMarqueeItem } from './LogoMarquee';
+import {
+  HOME_LOGO_MARQUEE_CLASSNAME,
+  HOME_LOGO_MARQUEE_SIZE,
+  HOME_LOGO_MARQUEE_WRAPPER_CLASS,
+} from './homeLogoMarquee';
 
 export type CollaborationContent = {
   lineBefore: string;
@@ -23,12 +28,12 @@ export default function CollaborationStrip({
         <span className="font-semibold text-brand">{collaboration.lineHighlight}</span>
         {collaboration.lineAfter}
       </p>
-      <div className="w-full min-w-0 overflow-hidden py-5">
+      <div className={HOME_LOGO_MARQUEE_WRAPPER_CLASS}>
         <LogoMarquee
           logos={collaboration.logos}
-          size="md"
+          size={HOME_LOGO_MARQUEE_SIZE}
           largeOnMobile
-          className="[&_img]:scale-110"
+          className={HOME_LOGO_MARQUEE_CLASSNAME}
           ariaLabel="Certifying body partners"
         />
       </div>

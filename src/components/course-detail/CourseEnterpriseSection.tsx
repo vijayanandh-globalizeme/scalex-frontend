@@ -1,4 +1,9 @@
 import { LogoMarquee } from '@/components/shared';
+import {
+  HOME_LOGO_MARQUEE_CLASSNAME,
+  HOME_LOGO_MARQUEE_SIZE,
+  HOME_LOGO_MARQUEE_WRAPPER_CLASS,
+} from '@/components/shared/homeLogoMarquee';
 import type { CoursePartnerLogo } from '@/lib/courses';
 import { COURSE_SECTION_CARD } from './courseSectionCard';
 import CourseBrochureCta from './CourseBrochureCta';
@@ -9,6 +14,9 @@ export interface CourseEnterpriseCardProps {
   cta: { label: string; href: string };
   partners: CoursePartnerLogo[];
   courseId?: string | null;
+  logoMarqueeSize?: 'sm' | 'md' | 'lg' | 'xl';
+  logoMarqueeClassName?: string;
+  logoMarqueeWrapperClassName?: string;
 }
 
 function ArrowRightIcon({ className }: { className?: string }) {
@@ -33,6 +41,9 @@ export function CourseEnterpriseCard({
   cta,
   partners,
   courseId = null,
+  logoMarqueeSize = HOME_LOGO_MARQUEE_SIZE,
+  logoMarqueeClassName = HOME_LOGO_MARQUEE_CLASSNAME,
+  logoMarqueeWrapperClassName = HOME_LOGO_MARQUEE_WRAPPER_CLASS,
 }: CourseEnterpriseCardProps) {
   return (
     <div
@@ -59,12 +70,13 @@ export function CourseEnterpriseCard({
       </div>
 
       {partners.length > 0 ? (
-        <div className="flex min-w-0 flex-col overflow-x-clip">
+        <div className={logoMarqueeWrapperClassName}>
           <LogoMarquee
             logos={toMarqueeLogos(partners)}
             ariaLabel="Enterprise training partners"
-            size="xl"
+            size={logoMarqueeSize}
             largeOnMobile
+            className={logoMarqueeClassName}
           />
         </div>
       ) : null}

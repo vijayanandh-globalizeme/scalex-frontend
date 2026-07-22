@@ -186,7 +186,10 @@ export default async function CourseDetailBodySection({
             ) : null}
             
             {isTechnical && details?.eligibility ? (
-              <CourseEligibilityRequirementsSection eligibilityRequirements={details.eligibility} />
+              <CourseEligibilityRequirementsSection
+                eligibilityRequirements={details.eligibility}
+                personImageSrc={isDevopsPage ? '/images/eligibilty-req.png' : undefined}
+              />
             ) : null}
 
             {hasBootcamp ? (
@@ -218,11 +221,7 @@ export default async function CourseDetailBodySection({
               reviews={reviews}
               settings={settings ?? {}}
               videoUrl={reviewsVideoUrl}
-              ratingClassName={
-                isAcsmPage
-                  ? 'text-[16px] font-semibold leading-normal text-[#1E293B]'
-                  : undefined
-              }
+              ratingClassName="text-[16px] font-semibold leading-normal text-[#1E293B]"
             />
 
             {!isDevopsPage ? awardsSection : null}

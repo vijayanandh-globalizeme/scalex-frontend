@@ -4,7 +4,12 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRef } from 'react';
 import CategoryTitleUnderline from '@/components/category/CategoryTitleUnderline';
-import { LogoMarquee } from '@/components/shared';
+import { LogoMarquee, useAeroSize } from '@/components/shared';
+import {
+  HOME_LOGO_MARQUEE_CLASSNAME,
+  HOME_LOGO_MARQUEE_SIZE,
+  HOME_LOGO_MARQUEE_WRAPPER_CLASS,
+} from '@/components/shared/homeLogoMarquee';
 import type { HeroBadge } from '@/components/hero/HeroSection';
 import { useGsapScrollRevealStagger } from '@/hooks/useGsapScrollReveal';
 import type { TechnicalCourseContent } from '@/lib/technicalCourses';
@@ -109,43 +114,61 @@ function AwardBadgeIcon({ className }: { className?: string }) {
 }
 
 function FloatingBadge({ badge }: { badge: HeroBadge }) {
+  const isTopLeftPrimary = badge.id === 'learners-1' || badge.id === 'package';
+  const isMidLeftSecondary = badge.id === 'learners-2' || badge.id === 'partners';
+
+  const isSalary = badge.id === 'salary';
+
   const placement =
     badge.placement === 'top-left'
-      ? 'left-0 top-10 xl:-left-6 xl:top-25'
+      ? isTopLeftPrimary
+        ? 'left-0 top-10 -translate-x-[20px] translate-y-[20px] xl:-left-6 xl:top-25'
+        : 'left-0 top-10 xl:-left-6 xl:top-25'
       : badge.placement === 'mid-left'
-        ? 'left-0 top-[60%] -translate-y-1/2 xl:-left-10'
-        : badge.placement === 'bottom-right'
-          ? 'bottom-32 -right-8 md:bottom-28 md:-right-10'
-          : 'bottom-10 left-[42%] -translate-x-1/2 md:-bottom-2';
+        ? isMidLeftSecondary
+          ? '-left-10 top-[60%] -translate-x-[30px] -translate-y-1/2 xl:-left-20'
+          : 'left-0 top-[60%] -translate-y-1/2 xl:-left-10'
+      : badge.placement === 'bottom-right'
+        ? isSalary
+          ? 'bottom-[30px] right-2 md:-right-10'
+          : 'bottom-6 right-2 md:bottom-28 md:-right-10'
+        : 'bottom-10 left-[42%] -translate-x-1/2 md:-bottom-2';
 
   const iconBg =
     badge.variant === 'learners'
       ? 'bg-[#CEFAFE] text-[#0092B8]'
       : 'bg-[#DBEAFE] text-[#155DFC]';
 
-  const sizeClass =
-    badge.variant === 'mentors'
-      ? 'h-[62px] w-[162px] px-3 py-2'
+  const sizeClass = isSalary
+    ? 'h-[70px] w-[200px] px-3.5 py-2.5'
+    : badge.variant === 'mentors'
+      ? 'h-[62px] w-[180px] px-3 py-2'
       : 'max-w-[200px] px-3 py-2.5 md:px-4 md:py-3';
+
+  const alignClass = badge.variant === 'mentors' ? 'h-full items-center' : 'items-start';
 
   return (
     <div
       className={`absolute z-30 rounded-xl border border-zinc-100 bg-white shadow-lg shadow-zinc-900/8 ${sizeClass} ${placement}`}
     >
-      <div className="flex items-start gap-2.5">
+      <div className={`flex gap-2.5 ${alignClass}`}>
         <div
-          className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full ${iconBg}`}
+          className={`flex shrink-0 items-center justify-center rounded-full ${iconBg} ${isSalary ? 'h-10 w-10' : 'h-9 w-9'}`}
           aria-hidden
         >
           {badge.variant === 'learners' ? (
             <UsersBadgeIcon className="h-[18px] w-[18px]" />
           ) : (
-            <AwardBadgeIcon className="h-[18px] w-[18px]" />
+            <AwardBadgeIcon className={`${isSalary ? 'h-5 w-5' : 'h-[18px] w-[18px]'}`} />
           )}
         </div>
         <div className="min-w-0">
-          <p className="text-[12px] font-medium leading-[16px] text-subtle">{badge.title}</p>
-          <p className="text-[14px] font-bold leading-[20px] text-strong">{badge.subtitle}</p>
+          <p className={`font-medium text-subtle ${isSalary ? 'text-[13px] leading-[18px]' : 'text-[12px] leading-[16px]'}`}>
+            {badge.title}
+          </p>
+          <p className={`font-bold text-strong ${isSalary ? 'text-[15px] leading-[22px]' : 'text-[14px] leading-[20px]'}`}>
+            {badge.subtitle}
+          </p>
         </div>
       </div>
     </div>
@@ -158,6 +181,7 @@ function HeroMediaColumn({
   badges,
   aeroSrc = '/images/hero/aero-bg-v2.png',
   aeroShiftRight = false,
+  figureAlign = 'right',
 }: {
   figureSrc: string;
   figureAlt: string;
@@ -165,39 +189,65 @@ function HeroMediaColumn({
   aeroSrc?: string | null;
   /** CSM only — nudge aero further right */
   aeroShiftRight?: boolean;
+  /** DevOps — anchor figure and gradient pill to the left */
+  figureAlign?: 'left' | 'right';
 }) {
+  const isLeft = figureAlign === 'left';
+  const aeroSize = useAeroSize();
+  const aeroRight = aeroShiftRight ? aeroSize.right - 40 : aeroSize.right;
+
   return (
-    <div className="relative mx-auto w-full min-w-0 max-w-md overflow-visible lg:mx-0 lg:max-w-none lg:-translate-x-[10%]">
-      <div className="relative ml-auto mr-0 h-[537px] w-full max-w-[420px] overflow-visible lg:max-w-[480px]">
+    <div
+      className={`relative mx-auto w-full min-w-0 max-w-md overflow-visible lg:mx-0 lg:max-w-none ${isLeft ? 'lg:translate-x-0' : 'lg:-translate-x-[10%]'}`}
+    >
+      <div
+        className={`relative h-[537px] w-full max-w-[420px] overflow-visible lg:max-w-[480px] ${isLeft ? 'ml-0 mr-auto' : 'ml-auto mr-0'}`}
+      >
         {aeroSrc ? (
-          <div
-            className="pointer-events-none absolute z-0 hidden lg:block"
-            style={{
-              top: 78,
-              right: aeroShiftRight ? -190 : -150,
-              width: 400,
-              height: 490,
-            }}
-            aria-hidden
-          >
-            <Image
-              src={aeroSrc}
-              alt=""
-              width={400}
-              height={490}
-              sizes="400px"
-              className="h-full w-full object-contain object-center"
-            />
+          <div className="pointer-events-none absolute inset-0 z-0" aria-hidden>
+            <div
+              className="absolute lg:hidden"
+              style={{ top: 66, right: aeroShiftRight ? -190 : -150, width: 260, height: 320 }}
+            >
+              <Image
+                src={aeroSrc}
+                alt=""
+                width={260}
+                height={320}
+                sizes="260px"
+                className="h-full w-full object-contain object-center"
+              />
+            </div>
+            <div
+              className="absolute hidden lg:block"
+              style={{
+                top: aeroSize.top,
+                right: aeroRight,
+                width: aeroSize.width,
+                height: aeroSize.height,
+              }}
+            >
+              <Image
+                src={aeroSrc}
+                alt=""
+                width={aeroSize.width}
+                height={aeroSize.height}
+                sizes={`${aeroSize.width}px`}
+                className="h-full w-full object-contain object-center"
+              />
+            </div>
           </div>
         ) : null}
         <div
-          className="absolute right-5 bottom-0 z-[1] h-[537px] w-[min(100%,389px)] rounded-t-[400px] shadow-inner shadow-black/5"
+          className={`absolute bottom-0 z-[1] h-[537px] w-[min(100%,389px)] rounded-t-[400px] shadow-inner shadow-black/5 ${isLeft ? 'left-[10px]' : 'right-5'}`}
           style={{
             background: 'linear-gradient(180deg, #BB9255 -140.92%, #FADCBA 165.92%)',
           }}
           aria-hidden
         />
-        <div className="absolute bottom-0 right-2 z-[5] aspect-[350/544] w-[min(90%,350px)] lg:right-6">
+        <div
+          className={`absolute bottom-0 z-[5] aspect-[350/544] w-[min(90%,350px)] ${isLeft ? 'left-[10px]' : 'right-2 lg:right-6'}`}
+        >
           <Image
             src={figureSrc}
             alt={figureAlt}
@@ -258,7 +308,7 @@ export default function TechnicalCourseHeroSection(course: TechnicalCourseConten
   } = course;
   const isCsmPage = slug === 'certified-scrum-master' && categorySlug === 'agile-and-scrum';
   const isDevopsPage = slug === 'devops-certification-training' && categorySlug === 'devops';
-  const heroFigureSrc = isDevopsPage ? '/images/cc-1.png' : '/images/hero/person.png';
+  const heroFigureSrc = isDevopsPage ? '/images/hero-1.png' : '/images/hero/person.png';
 
   const sectionRef = useRef<HTMLElement>(null);
   const rowRefs = useRef<(HTMLDivElement | null)[]>([]);
@@ -495,9 +545,10 @@ export default function TechnicalCourseHeroSection(course: TechnicalCourseConten
               figureAlt="Technical course learner"
               badges={heroBadges}
               aeroShiftRight={isCsmPage}
+              figureAlign={isDevopsPage ? 'left' : 'right'}
             />
             {collaboration.length > 0 ? (
-              <div className="mt-6 flex justify-center">
+              <div className={`mt-6 flex ${isDevopsPage ? 'justify-start pl-[30px]' : 'justify-center'}`}>
                 <div className="inline-flex flex-col items-start">
                   <p className="text-[18px] font-medium leading-normal text-[#1E293B]">In Collaboration with</p>
                   <div className="mt-3 flex items-center gap-8">
@@ -525,15 +576,19 @@ export default function TechnicalCourseHeroSection(course: TechnicalCourseConten
               <span className="text-[#1E293B]">Our </span>
               <span className="text-[#FD022D]">Hiring Partners</span>
             </p>
-            <LogoMarquee
-              logos={hiringPartners.map((partner) => ({
-                id: partner.id,
-                src: partner.logoSrc,
-                alt: partner.logoAlt,
-              }))}
-              className="py-2"
-              ariaLabel="Hiring partners"
-            />
+            <div className={HOME_LOGO_MARQUEE_WRAPPER_CLASS}>
+              <LogoMarquee
+                logos={hiringPartners.map((partner) => ({
+                  id: partner.id,
+                  src: partner.logoSrc,
+                  alt: partner.logoAlt,
+                }))}
+                size={HOME_LOGO_MARQUEE_SIZE}
+                largeOnMobile
+                className={HOME_LOGO_MARQUEE_CLASSNAME}
+                ariaLabel="Hiring partners"
+              />
+            </div>
           </div>
         </div>
       </div>

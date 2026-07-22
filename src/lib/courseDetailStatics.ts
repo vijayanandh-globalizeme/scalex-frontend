@@ -13,13 +13,11 @@ export const ROADMAP_HIRING_PARTNERS_TITLE = "Our Hiring Partners";
 
 export const ROADMAP_HIRING_PARTNER_LOGOS: { src: string; alt: string }[] = [
   { src: "/images/course/google.png", alt: "Google" },
-  { src: "/images/course/amazon.png", alt: "Amazon" },
   { src: "/images/course/ibm.png", alt: "IBM" },
-  { src: "/images/course/walmart.png", alt: "Walmart" },
-  { src: "/images/course/sapient.png", alt: "Sapient" },
-  { src: "/images/course/hsbc.png", alt: "HSBC" },
-  { src: "/images/course/accenture.png", alt: "Accenture" },
+  { src: "/images/course/info.png", alt: "Infosys" },
   { src: "/images/course/claude.png", alt: "Claude" },
+  { src: "/images/course/capgem.png", alt: "Capgemini" },
+  { src: "/images/course/tcs.png", alt: "TCS" },
 ];
 
 export const CAREER_SECTION_TITLE = "Accelerate Your Career";
