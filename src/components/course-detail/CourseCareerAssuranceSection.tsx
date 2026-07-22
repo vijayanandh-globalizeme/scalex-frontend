@@ -161,11 +161,11 @@ export default function CourseCareerAssuranceSection() {
       }
     >
       {/* Outer wrapper — overflow-visible so person head pokes above card */}
-      <div className="relative" style={{ paddingTop: '72px' }}>
+      <div className="relative" style={{ paddingTop: '0' }}>
         {/* Dark card background — clipped to card bounds */}
         <div
           className="absolute inset-x-0 bottom-0 overflow-hidden rounded-[20px] border border-[#EBEBEB] shadow-[0_4px_4px_0_rgba(30,41,59,0.11),0_4px_4px_0_rgba(30,41,59,0.03)]"
-          style={{ top: '72px' }}
+          style={{ top: '0' }}
           aria-hidden
         >
           <div className="absolute inset-0 bg-[linear-gradient(88deg,#0D0D0D_88.67%,#FD022D_106.46%)]" />
@@ -174,9 +174,9 @@ export default function CourseCareerAssuranceSection() {
         {/* Person — absolute, bottom-0, extends above card by 43px */}
         <div
           className="absolute bottom-0 z-[5]"
-          style={{ left: 'var(--assurance-person-left)', width: '297px', height: '502px' }}
-        >
-          <ScaleXMark className="pointer-events-none absolute bottom-[80px] right-[-80px] z-[1] h-[280px] w-[260px] opacity-[0.18]" />
+          style={{ left: 'var(--assurance-person-left)', width: '282px', height: '302px' }}
+        > 
+          <ScaleXMark className="pointer-events-none absolute bottom-[28px] right-[-36px] z-[1] h-[200px] w-[200px] opacity-[0.18]" />
           <div className="relative z-10 h-full w-full">
             <Image
               src={content.imageSrc}
@@ -189,13 +189,9 @@ export default function CourseCareerAssuranceSection() {
         </div>
 
         {/* Content */}
-        <div className="relative z-10 flex min-h-[430px] flex-col justify-end px-6 pt-[210px] pb-8 sm:py-8 sm:pr-8 sm:pl-[var(--assurance-content-left)] sm:pt-8">
+        <div className="relative z-10 flex flex-col justify-end px-6 pt-[210px] pb-8 sm:py-8 sm:pr-8 sm:pl-[var(--assurance-content-left)] sm:pt-8">
           <div className="w-full sm:w-[350px] sm:ml-[150px]">
           <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
-            <span className="inline-flex items-center gap-0" aria-hidden>
-              <ScaleWordmark className="h-[18px] w-[82px] shrink-0 sm:h-[23px] sm:w-[102px]" />
-              <ScaleXMark className="h-[38px] w-[35px] shrink-0 sm:h-[51px] sm:w-[47px]" />
-            </span>
             <h2
               id="career-assurance-heading"
               className="text-[16px] font-semibold leading-[140%] text-white sm:text-[18px]"

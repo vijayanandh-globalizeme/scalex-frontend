@@ -250,8 +250,6 @@ export const CAREER_ASSURANCE = {
   features: [
     { id: 'hiring-partners', label: 'Exclusive Access to 1200+ Hiring Partners' },
     { id: 'fresher-drives', label: 'Exclusive Access to Fresher Hiring Drives' },
-    { id: 'pre-interview', label: 'Pre-Interview Dedicated Support' },
-    { id: 'post-placement', label: '6-Month Post-Placement Support' },
   ],
   ctaLabel: 'Download Placement Report 2026',
   imageSrc: '/images/julio-lopez.png',
