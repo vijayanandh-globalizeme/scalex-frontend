@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { Fragment, useRef, useState } from 'react';
+import { Fragment, useId, useRef, useState } from 'react';
 import type { ApiRoadmap, ApiOtherDetail } from '@/services/courseApi';
 import { withNewTabLinks } from '@/lib/richText';
 import { COURSE_SECTION_CARD } from './courseSectionCard';
@@ -48,6 +48,30 @@ function DarkCircleCheckIcon() {
         <defs><clipPath id="dcc"><rect width="15" height="15" fill="white" /></clipPath></defs>
       </svg>
     </span>
+  );
+}
+
+function PlacementTrackFeatureIcon() {
+  const clipId = useId();
+
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden>
+      <g clipPath={`url(#${clipId})`}>
+        <path
+          d="M8.83968 17.9912C13.7188 17.9912 17.6794 13.9608 17.6794 8.99561C17.6794 4.03039 13.7188 0 8.83968 0C3.96052 0 0 4.03039 0 8.99561C0 13.9608 3.96052 17.9912 8.83968 17.9912ZM8.83968 16.4919C4.76649 16.4919 1.47328 13.1407 1.47328 8.99561C1.47328 4.85057 4.76649 1.49927 8.83968 1.49927C12.9129 1.49927 16.2061 4.85057 16.2061 8.99561C16.2061 13.1407 12.9129 16.4919 8.83968 16.4919Z"
+          fill="#FD022D"
+        />
+        <path
+          d="M4.1418 7.63761C4.54911 7.63761 4.8871 7.29366 4.8871 6.87916C4.8871 6.45583 4.54911 6.11188 4.1418 6.11188C3.73447 6.11188 3.39648 6.45583 3.39648 6.87916C3.39648 7.29366 3.73447 7.63761 4.1418 7.63761ZM6.08306 5.45044C6.49037 5.45044 6.82836 5.10649 6.82836 4.69198C6.82836 4.27748 6.49037 3.93353 6.08306 3.93353C5.67573 3.93353 5.33775 4.27748 5.33775 4.69198C5.33775 5.10649 5.67573 5.45044 6.08306 5.45044ZM8.83029 4.61261C9.23765 4.61261 9.57558 4.26866 9.57558 3.85416C9.57558 3.43965 9.23765 3.0957 8.83029 3.0957C8.42297 3.0957 8.08498 3.43965 8.08498 3.85416C8.08498 4.26866 8.42297 4.61261 8.83029 4.61261ZM11.5775 5.45044C11.9849 5.45044 12.3228 5.10649 12.3228 4.69198C12.3228 4.27748 11.9849 3.93353 11.5775 3.93353C11.1702 3.93353 10.8322 4.27748 10.8322 4.69198C10.8322 5.10649 11.1702 5.45044 11.5775 5.45044ZM13.5188 7.63761C13.9261 7.63761 14.2641 7.29366 14.2641 6.87916C14.2641 6.45583 13.9261 6.11188 13.5188 6.11188C13.1115 6.11188 12.7734 6.45583 12.7734 6.87916C12.7734 7.29366 13.1115 7.63761 13.5188 7.63761ZM8.83029 14.5078C9.58428 14.5078 9.96561 14.0139 10.2515 13.3613L12.1582 9.18096C12.2535 8.95167 12.1928 8.74001 12.0455 8.643C11.8895 8.53716 11.6816 8.54599 11.4995 8.72237L8.11098 11.8356C7.617 12.2942 7.44367 12.6293 7.44367 13.132C7.44367 13.8816 8.05898 14.5078 8.83029 14.5078Z"
+          fill="#FD022D"
+        />
+      </g>
+      <defs>
+        <clipPath id={clipId}>
+          <rect width="18" height="18" fill="white" />
+        </clipPath>
+      </defs>
+    </svg>
   );
 }
 
@@ -254,10 +278,12 @@ function PlacementStageContent({ stage }: { stage: ApiRoadmap }) {
         {features.map((feature, i) => (
           <div key={i} className="flex flex-col gap-2" style={{ maxWidth: '264px' }}>
             <span className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#FFF0F0]">
-              <i className={`fa fa-${feature.icon} text-[16px] text-[#FD022D]`} aria-hidden />
+              <PlacementTrackFeatureIcon />
             </span>
             <div>
-              <p className="text-[14px] font-bold leading-[140%] text-[#1E293B]">{feature.title}</p>
+              <p className="text-[16px] font-semibold leading-[140%] text-[#1E293B]" style={{ fontFamily: 'Inter' }}>
+                {feature.title}
+              </p>
               <p
                 className="mt-1 text-[13px] font-normal leading-[150%] text-[#788593] [&_a]:text-brand [&_a]:no-underline [&_a]:hover:underline [&_a]:underline-offset-2"
                 dangerouslySetInnerHTML={{ __html: withNewTabLinks(feature.content) }}
@@ -268,12 +294,12 @@ function PlacementStageContent({ stage }: { stage: ApiRoadmap }) {
       </div>
       <div className="mt-10">
         <p className="text-[18px] font-medium leading-[140%] text-[#1E293B]" style={{ fontFamily: 'Inter' }}>{ROADMAP_HIRING_PARTNERS_TITLE}</p>
-        <div className="mt-5 flex flex-wrap items-center gap-x-8 gap-y-4 pb-[50px]">
+        <div className="mt-5 flex flex-wrap items-center gap-x-12 gap-y-5 pb-[50px]">
           {ROADMAP_HIRING_PARTNER_LOGOS.map((logo, index) => (
             <Fragment key={logo.alt}>
               {index === 4 && <div className="w-full" />}
-              <div className="relative h-[30px] w-20">
-                <Image src={logo.src} alt={logo.alt} fill className="object-contain" sizes="80px" />
+              <div className="relative h-[38px] w-[104px]">
+                <Image src={logo.src} alt={logo.alt} fill className="object-contain" sizes="104px" />
               </div>
             </Fragment>
           ))}
