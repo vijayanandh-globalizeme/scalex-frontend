@@ -63,6 +63,7 @@ export function CourseEnterpriseCard({
           <LogoMarquee
             logos={toMarqueeLogos(partners)}
             ariaLabel="Enterprise training partners"
+            size="xl"
             largeOnMobile
           />
         </div>

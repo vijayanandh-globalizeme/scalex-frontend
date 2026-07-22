@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from 'react';
 import { CarouselNavIcon } from '@/components/category/CategoryCarouselNav';
 import CategoryCoursesSection from '@/components/category/CategoryCoursesSection';
 import { GuidanceSection, defaultGuidanceContent } from '@/components/guidance';
+import TrendingBlogCard, { toTrendingBlogCard } from '@/components/blogs/TrendingBlogCard';
 import { getBlogs, getTrendingBlogs, getBlogCategories, type ApiBlogListItem, type ApiBlogCategory } from '@/app/actions/blogActions';
 
 const PAGE_SIZE = 9;
@@ -109,7 +110,7 @@ function getPageNumbers(current: number, total: number): (number | '...')[] {
 
 export default function BlogsPage() {
   // Hero — trending blogs
-  const [heroBlogs, setHeroBlogs] = useState<FeaturedBlog[]>([]);
+  const [heroBlogs, setHeroBlogs] = useState<ApiBlogListItem[]>([]);
   const [heroPage, setHeroPage] = useState(0);
 
   // Categories
@@ -130,14 +131,14 @@ export default function BlogsPage() {
   const [loading, setLoading] = useState(true);
   const allBlogsSectionRef = useRef<HTMLElement>(null);
   const scrollAfterLoadRef = useRef(false);
-  const heroSlideRefs = useRef<(HTMLAnchorElement | null)[]>([]);
+  const heroSlideRefs = useRef<(HTMLDivElement | null)[]>([]);
   const [mobileHeroHeight, setMobileHeroHeight] = useState<number | undefined>();
 
   const isSearchActive = submittedQuery !== '';
 
   // Load hero + categories once
   useEffect(() => {
-    getTrendingBlogs({ limit: 10 }).then((res) => setHeroBlogs(res.items.map(toFeaturedBlog)));
+    getTrendingBlogs({ limit: 10 }).then((res) => setHeroBlogs(res.items));
     getBlogCategories().then(setCategories);
   }, []);
 
@@ -324,28 +325,41 @@ export default function BlogsPage() {
                   className="object-contain"
                 />
               </div>
-              <div className="interactive-card relative rounded-2xl border border-[#E2E8F0] bg-white shadow-[0_4px_24px_0_rgba(30,41,59,0.08)]" style={{ position: 'relative', zIndex: 20 }}>
+              <div className="relative rounded-2xl md:border md:border-[#E2E8F0] md:bg-white md:shadow-[0_4px_24px_0_rgba(30,41,59,0.08)]" style={{ position: 'relative', zIndex: 20 }}>
+                <div className="max-md:pb-3">
                 <div
                   className="overflow-hidden rounded-2xl transition-[height] duration-300 md:!h-auto"
                   style={mobileHeroHeight ? { height: mobileHeroHeight } : undefined}
                 >
                   <div
                     className="flex items-start transition-transform duration-500 ease-in-out"
-                    style={{ transform: `translateX(-${heroPage * 100}%)` }}
+                    style={{
+                      width: totalHero > 1 ? `${totalHero * 100}%` : '100%',
+                      transform: totalHero > 1 ? `translateX(-${(heroPage * 100) / totalHero}%)` : undefined,
+                    }}
                   >
-                    {heroBlogs.map((b, index) => (
-                      <Link
+                    {heroBlogs.map((b, index) => {
+                      const featured = toFeaturedBlog(b);
+                      return (
+                      <div
                         key={b.id}
                         ref={(el) => {
                           heroSlideRefs.current[index] = el;
                         }}
-                        href={b.href}
-                        className="flex w-full shrink-0 flex-col bg-white md:flex-row"
+                        className="box-border shrink-0 grow-0 max-md:px-0 md:w-full"
+                        style={{ flex: `0 0 ${totalHero > 1 ? `${100 / totalHero}%` : '100%'}` }}
                       >
+                        <div className="md:hidden">
+                          <TrendingBlogCard blog={toTrendingBlogCard(b)} footerClassName="max-md:mt-2 max-md:pt-2" />
+                        </div>
+                        <Link
+                          href={featured.href}
+                          className="hidden w-full shrink-0 flex-col bg-white md:flex md:flex-row"
+                        >
                       <div className="interactive-card-media shrink-0 overflow-hidden">
                         <Image
-                          src={b.imageSrc}
-                          alt={b.imageAlt}
+                          src={featured.imageSrc}
+                          alt={featured.imageAlt}
                           width={460}
                           height={290}
                           className="h-[200px] w-full object-cover md:h-[290px] md:w-[460px]"
@@ -354,21 +368,21 @@ export default function BlogsPage() {
                       <div className="flex min-w-0 flex-col gap-3 px-5 pt-5 pb-2 md:flex-1 md:justify-between md:gap-0 md:px-8 md:pt-8 md:pb-5">
                         <div className="flex flex-col gap-2">
                           <div className="flex items-center gap-2">
-                            <span className="text-[11px] font-semibold uppercase leading-normal tracking-widest text-[#C85050]">{b.tag}</span>
+                            <span className="text-[11px] font-semibold uppercase leading-normal tracking-widest text-[#C85050]">{featured.tag}</span>
                             <span className="text-[#C85050]">•</span>
-                            <span className="text-[11px] font-semibold uppercase leading-normal tracking-widest text-[#C85050]">{b.readTime}</span>
+                            <span className="text-[11px] font-semibold uppercase leading-normal tracking-widest text-[#C85050]">{featured.readTime}</span>
                           </div>
-                          <h2 className="interactive-card-title line-clamp-2 min-h-[64px] text-[24px] font-bold capitalize leading-[32px] text-[#1E293B] md:min-h-0">{b.title}</h2>
-                          <p className="line-clamp-3 min-h-[68px] text-[14px] leading-[1.6] text-muted md:min-h-0 md:mt-3">{b.excerpt}</p>
+                          <h2 className="interactive-card-title line-clamp-2 min-h-[64px] text-[24px] font-bold capitalize leading-[32px] text-[#1E293B] md:min-h-0">{featured.title}</h2>
+                          <p className="line-clamp-3 min-h-[68px] text-[14px] leading-[1.6] text-muted md:min-h-0 md:mt-3">{featured.excerpt}</p>
                         </div>
                         <div className="flex flex-wrap items-center justify-between gap-2 md:mt-6 md:gap-4">
                           <div className="flex items-center gap-3">
                             <div className="relative h-9 w-9 shrink-0 overflow-hidden rounded-full bg-zinc-100">
-                              <Image src={b.author.avatarSrc} alt={b.author.name} fill className="object-cover" sizes="36px" />
+                              <Image src={featured.author.avatarSrc} alt={featured.author.name} fill className="object-cover" sizes="36px" />
                             </div>
                             <div>
-                              <p className="text-[13px] font-semibold leading-tight text-heading">{b.author.name}</p>
-                              <p className="text-[12px] text-muted">{b.date} · {b.publication}</p>
+                              <p className="text-[13px] font-semibold leading-tight text-heading">{featured.author.name}</p>
+                              <p className="text-[12px] text-muted">{featured.date} · {featured.publication}</p>
                             </div>
                           </div>
                           <span className="inline-flex items-center gap-2 text-center text-[14px] font-semibold leading-normal text-brand">
@@ -379,9 +393,11 @@ export default function BlogsPage() {
                           </span>
                         </div>
                       </div>
-                    </Link>
-                  ))}
+                        </Link>
+                      </div>
+                    );})}
                   </div>
+                </div>
                 </div>
               </div>
 

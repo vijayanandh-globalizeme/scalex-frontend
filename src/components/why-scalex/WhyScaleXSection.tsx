@@ -113,9 +113,7 @@ export default function WhyScaleXSection({
     </header>
   );
 
-  const rowLabelClassName = isEmbedded
-    ? 'text-[16px] font-medium text-body'
-    : 'text-[16px] font-medium text-heading';
+  const rowLabelClassName = 'text-[18px] font-semibold leading-normal text-[#1E293B]';
 
   const comparisonGrid = (
     <div className={`w-full ${isEmbedded ? 'mt-6 md:mt-8' : 'mx-auto mt-6 max-w-[1080px] md:mt-8'}`}>
@@ -148,7 +146,7 @@ export default function WhyScaleXSection({
             } flex flex-col px-6 pt-4 pb-6 md:px-7 md:pt-5 md:pb-7`}
           >
             <h3
-              className={`${cardHeaderHeight} mb-4 flex shrink-0 items-center justify-center text-[18px] font-semibold text-heading md:mb-5 md:text-[20px]`}
+              className={`${cardHeaderHeight} mb-4 flex shrink-0 items-center justify-center text-[18px] font-semibold leading-normal text-[#1E293B] md:mb-5`}
             >
               {othersLabel}
             </h3>
@@ -156,7 +154,7 @@ export default function WhyScaleXSection({
               {rows.map((row) => (
                 <li
                   key={`others-${row.id}`}
-                  className={`flex ${ROW_MIN_HEIGHT} flex-1 items-center gap-3`}
+                  className={`flex ${ROW_MIN_HEIGHT} flex-1 items-start gap-3`}
                 >
                   <CrossIcon className="h-5 w-5 shrink-0" />
                   <div className="min-w-0">
@@ -195,7 +193,7 @@ export default function WhyScaleXSection({
               {rows.map((row) => (
                 <li
                   key={`scalex-${row.id}`}
-                  className={`flex ${ROW_MIN_HEIGHT} flex-1 items-center gap-3`}
+                  className={`flex ${ROW_MIN_HEIGHT} flex-1 items-start gap-3`}
                 >
                   <CheckBadgeIcon className="h-[22px] w-[22px] shrink-0" />
                   <div className="min-w-0">

@@ -12,12 +12,13 @@ export interface LogoMarqueeItem {
   height?: number;
 }
 
-type LogoMarqueeSize = 'sm' | 'md' | 'lg';
+type LogoMarqueeSize = 'sm' | 'md' | 'lg' | 'xl';
 
 const sizeClasses: Record<LogoMarqueeSize, string> = {
   sm: 'h-[33px] min-w-[60px] max-w-[130px] px-2',
   md: 'h-9 min-w-[100px] max-w-[160px] px-3',
   lg: 'h-11 min-w-[120px] max-w-[200px] px-3',
+  xl: 'h-14 min-w-[140px] max-w-[240px] px-3',
 };
 
 /** ~2 large logos visible per mobile viewport; desktop marquee sizes unchanged. */
@@ -25,18 +26,21 @@ const largeMobileSizeClasses: Record<LogoMarqueeSize, string> = {
   sm: 'h-[27px] w-[56px] min-w-[56px] max-w-[56px] md:h-[33px] md:w-auto md:min-w-[60px] md:max-w-[130px] md:px-2',
   md: 'h-[26px] w-[65px] min-w-[65px] max-w-[65px] md:h-9 md:w-auto md:min-w-[100px] md:max-w-[160px] md:px-3',
   lg: 'h-[34px] w-[84px] min-w-[84px] max-w-[84px] md:h-11 md:w-auto md:min-w-[120px] md:max-w-[200px] md:px-3',
+  xl: 'h-[40px] w-[96px] min-w-[96px] max-w-[96px] md:h-14 md:w-auto md:min-w-[140px] md:max-w-[240px] md:px-3',
 };
 
 const imageSizes: Record<LogoMarqueeSize, { width: number; height: number; sizes: string }> = {
   sm: { width: 56, height: 27, sizes: '(max-width: 767px) 56px, 130px' },
   md: { width: 65, height: 26, sizes: '(max-width: 767px) 65px, 160px' },
   lg: { width: 84, height: 34, sizes: '(max-width: 767px) 84px, 200px' },
+  xl: { width: 96, height: 40, sizes: '(max-width: 767px) 96px, 240px' },
 };
 
 const desktopImageSizes: Record<LogoMarqueeSize, { width: number; height: number }> = {
   sm: { width: 130, height: 33 },
   md: { width: 160, height: 36 },
   lg: { width: 200, height: 44 },
+  xl: { width: 240, height: 56 },
 };
 
 const TRACK_GAP_CLASS = 'items-center gap-6 md:gap-14 lg:gap-16';
