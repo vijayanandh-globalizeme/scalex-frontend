@@ -11,7 +11,7 @@ import { GuidanceSection, defaultGuidanceContent } from '@/components/guidance';
 import { WhyScaleXSection, defaultWhyScaleXContent } from '@/components/why-scalex';
 import { fetchCategoryByUri } from '@/services/categoryApi';
 import { fetchSetting } from '@/services/layoutApi';
-import { SITE_NAME } from '@/lib/site';
+import { SITE_NAME, getSiteOrigin } from '@/lib/site';
 
 type PageProps = {
   params: Promise<{ categoryUri: string }>;
@@ -23,16 +23,27 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   if (!category) return { title: 'Category Not Found' };
 
-  const title = category.seo?.metaTitle ?? `${category.name} Courses`;
+  const title       = category.seo?.metaTitle       ?? `${category.name} Courses`;
   const description = category.seo?.metaDescription ?? category.description;
+  const canonical   = `${getSiteOrigin()}/${categoryUri}`;
+  const shareImage  = category.posterImage ? { url: category.posterImage.url, alt: category.name } : undefined;
 
   return {
     title,
     description,
     keywords: category.seo?.metaKeywords ?? category.name,
+    alternates: { canonical },
     openGraph: {
       title: `${title} | ${SITE_NAME}`,
       description,
+      url: canonical,
+      images: shareImage ? [shareImage] : undefined,
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${title} | ${SITE_NAME}`,
+      description,
+      images: shareImage ? [shareImage] : undefined,
     },
   };
 }
