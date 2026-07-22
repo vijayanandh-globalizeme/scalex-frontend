@@ -60,10 +60,31 @@ function ClockIcon() {
 export default function TrendingBlogCard({
   blog,
   footerClassName,
+  equalFooterSpacing = false,
 }: {
   blog: TrendingBlogCardData;
   footerClassName?: string;
+  equalFooterSpacing?: boolean;
 }) {
+  const profileFooter = (
+    <div className="flex items-center justify-between">
+      <div className="flex items-center gap-2">
+        <div className="relative h-8 w-8 shrink-0 overflow-hidden rounded-full bg-zinc-100">
+          <Image src={blog.author.avatarSrc} alt={blog.author.name} fill className="object-cover" sizes="32px" />
+        </div>
+        <div>
+          <p className="text-[13px] font-semibold text-heading">{blog.author.name}</p>
+          <p className="text-[11px] text-muted">{blog.author.date}</p>
+        </div>
+      </div>
+      <span className="inline-flex items-center text-brand">
+        <svg className="btn-arrow-icon" width="14" height="12" viewBox="0 0 18 15" fill="currentColor" aria-hidden>
+          <path d="M10.6333 15c.2326 0 .4361-.0891.63-.2771l6.4459-6.5599c.1938-.188.2908-.4156.2908-.663s-.097-.475-.2908-.663L11.2827.2968C11.0694.0792 10.8659 0 10.6333 0c-.475 0-.8434.3562-.8434.851 0 .2375.0775.465.2326.6234l2.1714 2.2559 4.0419 3.7698-4.0419 3.7697-2.1714 2.256c-.1551.1484-.2326.3859-.2326.6233 0 .495.3684.851.8434.851ZM.853 8.3806h12.2617l3.1211-.1979c.3974-.0297.6688-.277.6688-.6827 0-.4057-.2714-.6531-.6688-.6828l-3.1211-.1978H.853C.349 6.6194 0 6.9855 0 7.5c0 .5145.349.8806.853.8806Z" />
+        </svg>
+      </span>
+    </div>
+  );
+
   return (
     <Link
       href={blog.href}
@@ -73,31 +94,34 @@ export default function TrendingBlogCard({
       <div className="interactive-card-media relative h-[200px] shrink-0 overflow-hidden rounded-t-2xl">
         <Image src={blog.imageSrc} alt={blog.title} fill className="object-cover" />
       </div>
-      <div className="flex flex-1 flex-col p-5">
-        <div className="mb-3 flex flex-wrap items-center gap-2">
-          <span className="rounded-full bg-[#FFF0F3] px-3 py-1 text-[12px] font-semibold text-brand">{blog.category}</span>
-          <span className="flex items-center gap-1 text-[12px] text-muted"><EyeIcon /> {blog.views}</span>
-          <span className="flex items-center gap-1 text-[12px] text-muted"><ClockIcon /> {blog.readTime}</span>
-        </div>
-        <h3 className="interactive-card-title mb-2 line-clamp-2 min-h-[2.75rem] text-[15px] font-bold leading-snug text-heading">{blog.title}</h3>
-        <p className="line-clamp-2 min-h-[2.5rem] flex-1 text-[13px] leading-snug text-muted">{blog.excerpt}</p>
-        <div className={`mt-4 flex items-center justify-between border-t border-zinc-100 pt-4 ${footerClassName ?? ''}`}>
-          <div className="flex items-center gap-2">
-            <div className="relative h-8 w-8 shrink-0 overflow-hidden rounded-full bg-zinc-100">
-              <Image src={blog.author.avatarSrc} alt={blog.author.name} fill className="object-cover" sizes="32px" />
+      {equalFooterSpacing ? (
+        <div className="flex flex-1 flex-col gap-4 px-5 pt-5 pb-4">
+          <div>
+            <div className="mb-3 flex flex-wrap items-center gap-2">
+              <span className="rounded-full bg-[#FFF0F3] px-3 py-1 text-[12px] font-semibold text-brand">{blog.category}</span>
+              <span className="flex items-center gap-1 text-[12px] text-muted"><EyeIcon /> {blog.views}</span>
+              <span className="flex items-center gap-1 text-[12px] text-muted"><ClockIcon /> {blog.readTime}</span>
             </div>
-            <div>
-              <p className="text-[13px] font-semibold text-heading">{blog.author.name}</p>
-              <p className="text-[11px] text-muted">{blog.author.date}</p>
-            </div>
+            <h3 className="interactive-card-title mb-2 line-clamp-2 min-h-[2.75rem] text-[15px] font-bold leading-snug text-heading">{blog.title}</h3>
+            <p className="line-clamp-2 min-h-[2.5rem] text-[13px] leading-snug text-muted">{blog.excerpt}</p>
           </div>
-          <span className="inline-flex items-center text-brand">
-            <svg className="btn-arrow-icon" width="14" height="12" viewBox="0 0 18 15" fill="currentColor" aria-hidden>
-              <path d="M10.6333 15c.2326 0 .4361-.0891.63-.2771l6.4459-6.5599c.1938-.188.2908-.4156.2908-.663s-.097-.475-.2908-.663L11.2827.2968C11.0694.0792 10.8659 0 10.6333 0c-.475 0-.8434.3562-.8434.851 0 .2375.0775.465.2326.6234l2.1714 2.2559 4.0419 3.7698-4.0419 3.7697-2.1714 2.256c-.1551.1484-.2326.3859-.2326.6233 0 .495.3684.851.8434.851ZM.853 8.3806h12.2617l3.1211-.1979c.3974-.0297.6688-.277.6688-.6827 0-.4057-.2714-.6531-.6688-.6828l-3.1211-.1978H.853C.349 6.6194 0 6.9855 0 7.5c0 .5145.349.8806.853.8806Z" />
-            </svg>
-          </span>
+          <div className="border-b border-[#EBEBEB]" aria-hidden />
+          {profileFooter}
         </div>
-      </div>
+      ) : (
+        <div className="flex flex-1 flex-col p-5">
+          <div className="mb-3 flex flex-wrap items-center gap-2">
+            <span className="rounded-full bg-[#FFF0F3] px-3 py-1 text-[12px] font-semibold text-brand">{blog.category}</span>
+            <span className="flex items-center gap-1 text-[12px] text-muted"><EyeIcon /> {blog.views}</span>
+            <span className="flex items-center gap-1 text-[12px] text-muted"><ClockIcon /> {blog.readTime}</span>
+          </div>
+          <h3 className="interactive-card-title mb-2 line-clamp-2 min-h-[2.75rem] text-[15px] font-bold leading-snug text-heading">{blog.title}</h3>
+          <p className="line-clamp-2 min-h-[2.5rem] flex-1 text-[13px] leading-snug text-muted">{blog.excerpt}</p>
+          <div className={`mt-4 border-t border-zinc-100 pt-4 ${footerClassName ?? ''}`}>
+            {profileFooter}
+          </div>
+        </div>
+      )}
     </Link>
   );
 }

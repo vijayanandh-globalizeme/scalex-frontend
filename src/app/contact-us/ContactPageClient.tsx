@@ -40,9 +40,9 @@ export default function ContactPageClient({
   return (
     <>
       {/* Hero Banner */}
-      <section ref={heroRef} className="full-bleed relative overflow-x-clip overflow-y-visible bg-[#F5F6F8] pb-0 md:bg-transparent md:pb-16 lg:pb-20" style={{ paddingTop: '75px' }}>
-        {/* Decorative background — gradient on desktop only */}
-        <div className="category-hero-bg pointer-events-none absolute inset-0 max-md:hidden" aria-hidden />
+      <section ref={heroRef} className="full-bleed relative overflow-x-clip overflow-y-visible pb-10 md:pb-20 lg:pb-24" style={{ paddingTop: '75px' }}>
+        {/* Decorative background — pink gradient (mobile + desktop) */}
+        <div className="category-hero-bg pointer-events-none absolute inset-0" aria-hidden />
 
         <div className="site-container relative z-10">
           {/* Breadcrumb */}
@@ -163,7 +163,7 @@ export default function ContactPageClient({
 
             {/* Right: India Map */}
             <div ref={heroRightRef} className="gsap-reveal-pending relative flex items-center justify-center">
-              <div className="relative w-full max-w-[700px] overflow-hidden md:rounded-2xl md:border md:border-zinc-100 md:bg-white md:p-6 md:shadow-[0_4px_24px_0_rgba(30,41,59,0.08)] md:h-[652px]">
+              <div className="relative w-full max-w-[700px] overflow-hidden rounded-2xl border border-zinc-100 bg-white p-6 shadow-[0_4px_24px_0_rgba(30,41,59,0.08)] min-h-[520px] md:h-[652px]">
                 <div className="relative mx-auto aspect-[547/700] w-full max-w-[547px] -translate-y-3 md:mt-0 md:-translate-y-6 md:px-5">
                   <Image
                     src="/images/map.png"
@@ -193,7 +193,7 @@ export default function ContactPageClient({
                   </div>
                 </div>
 
-                <div className="absolute bottom-7 right-4 max-md:hidden">
+                <div className="absolute bottom-7 right-4">
                   <span className="rounded-full bg-red-50 px-4 py-1.5 text-[13px] font-semibold text-brand">
                     Our Presence in India
                   </span>
@@ -205,7 +205,7 @@ export default function ContactPageClient({
       </section>
 
       {/* Enquiry Section */}
-      <section className="full-bleed bg-[#F5F6F8] pt-0 pb-14 md:py-20">
+      <section className="full-bleed bg-[#F5F6F8] pt-6 pb-14 md:py-20">
         <div className="site-container">
           <div className="mb-10 text-center">
             <h2 style={{ color: '#1E293B', fontFamily: 'Inter', fontSize: '32px', fontWeight: 700, lineHeight: '1.2' }}>
