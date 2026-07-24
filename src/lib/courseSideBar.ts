@@ -8,7 +8,6 @@ export const sidebar: {
   brochureCtaLabel: string;
   mentorship: {
     title: string;
-    phone: string;
     imageSrc: string;
     imageAlt: string;
   };
@@ -27,8 +26,7 @@ export const sidebar: {
   brochureCtaLabel: 'Download Brochure',
   mentorship: {
     title:    'Free 1-on-1 Mentorship',
-    phone:    '+91 - 93245 67345',
-    imageSrc: '/images/hero/person.png',
+    imageSrc: '/images/hero/per-6.png',
     imageAlt: 'Mentor',
   },
 };

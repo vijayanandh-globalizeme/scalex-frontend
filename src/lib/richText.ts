@@ -1,12 +1,32 @@
-/** Forces any admin-authored `<a>` tags to open in a new tab, regardless of what attributes were typed. */
+import sanitizeHtml from 'sanitize-html';
+
+const ALLOWED_TAGS = sanitizeHtml.defaults.allowedTags.concat(['span', 'img', 'u', 'ins', 'del', 'sub', 'sup']);
+
+const ALLOWED_ATTRIBUTES = {
+  ...sanitizeHtml.defaults.allowedAttributes,
+  '*': ['style', 'class', 'id'],
+  a: ['href', 'name', 'target', 'rel'],
+  img: ['src', 'alt', 'width', 'height'],
+};
+
+/**
+ * Sanitizes admin-authored rich text before it is injected via
+ * dangerouslySetInnerHTML, and forces every `<a>` to open in a new tab.
+ *
+ * Admin content is free-typed HTML and occasionally malformed (e.g. an
+ * unclosed `<a>` tag). sanitize-html parses it through the same tree-based
+ * rules a browser uses, so the output is always well-formed — an unclosed or
+ * mistyped tag gets auto-closed/dropped here instead of silently swallowing
+ * every element that follows it on the page (which otherwise causes a
+ * hydration mismatch, since the server and client would disagree on where
+ * that tag actually closes).
+ */
 export function withNewTabLinks(html: string): string {
-  return html.replace(/<a\b([^>]*)>/gi, (_match, attrs: string) => {
-    let nextAttrs = /\btarget\s*=/i.test(attrs)
-      ? attrs.replace(/\btarget\s*=\s*(["']).*?\1/i, 'target="_blank"')
-      : `${attrs} target="_blank"`;
-    nextAttrs = /\brel\s*=/i.test(nextAttrs)
-      ? nextAttrs.replace(/\brel\s*=\s*(["']).*?\1/i, 'rel="noopener noreferrer"')
-      : `${nextAttrs} rel="noopener noreferrer"`;
-    return `<a${nextAttrs}>`;
+  return sanitizeHtml(html, {
+    allowedTags: ALLOWED_TAGS,
+    allowedAttributes: ALLOWED_ATTRIBUTES,
+    transformTags: {
+      a: sanitizeHtml.simpleTransform('a', { target: '_blank', rel: 'noopener noreferrer' }, true),
+    },
   });
 }

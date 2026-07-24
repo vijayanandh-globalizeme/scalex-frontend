@@ -467,7 +467,6 @@ export interface CourseBodyContent {
     brochureCtaLabel: string;
     mentorship: {
       title: string;
-      phone: string;
       imageSrc: string;
       imageAlt: string;
     };
@@ -1279,7 +1278,6 @@ const CSM_BODY: CourseBodyContent = {
     brochureCtaLabel: 'Download Brochure',
     mentorship: {
       title: 'Free 1-on-1 Mentorship',
-      phone: '+91 - 93245 67345',
       imageSrc: '/images/hero/person.png',
       imageAlt: 'Mentor',
     },

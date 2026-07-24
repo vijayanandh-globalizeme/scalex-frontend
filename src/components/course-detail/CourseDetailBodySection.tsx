@@ -69,21 +69,7 @@ export default async function CourseDetailBodySection({
   // When courseDetails is available derive from templateType, otherwise use the prop
   const isTechnical  = courseDetails ? isTechnicalFromDetails : isTechnicalProp;
   const hasBootcamp  = templateType === 'BOOTCAMP';
-  const isDevopsPage =
-    courseUri === 'devops-certification-training' && categoryUri === 'devops';
-  const isCsmPage =
-    courseUri === 'certified-scrum-master' && categoryUri === 'agile-and-scrum';
-  const isAcsmPage =
-    courseUri === 'advance-certified-scrum-master' && categoryUri === 'agile-and-scrum';
-  const sidebarContent = isAcsmPage
-    ? {
-        ...sidebar,
-        mentorship: {
-          ...sidebar.mentorship,
-          imageSrc: '/images/per-6.png',
-        },
-      }
-    : sidebar;
+  const sidebarContent = sidebar;
 
   const awardsSection = (
     <AwardsSection
@@ -113,19 +99,15 @@ export default async function CourseDetailBodySection({
 
   const reviewsFallback = getStaticCourseReviews(courseUri);
   // CSM + DevOps: same “What Our Learners Saying” UI/content.
-  const useSharedReviewsUi = isCsmPage || isDevopsPage;
+  
   const reviews =
-    useSharedReviewsUi && reviewsFallback.reviews.length > 0
+    reviewsFallback.reviews.length > 0
       ? reviewsFallback.reviews
       : apiReviews.length > 0
         ? apiReviews
         : reviewsFallback.reviews;
-  const reviewsHeading = useSharedReviewsUi
-    ? reviewsFallback.title
-    : reviewsTitle || reviewsFallback.title || 'What Our Learners Saying';
-  const reviewsVideoUrl = useSharedReviewsUi
-    ? (reviewsFallback.videoUrl ?? reviewVideoUrl)
-    : (reviewVideoUrl ?? reviewsFallback.videoUrl);
+  const reviewsHeading = reviewsTitle ?? 'What Our Learners Saying';
+  const reviewsVideoUrl = reviewVideoUrl ?? reviewsFallback.videoUrl;
 
   return (
     <section className="full-bleed overflow-visible bg-[#F5F6F8] pb-1 md:pb-0 pt-1" aria-label="Course details">
@@ -188,7 +170,7 @@ export default async function CourseDetailBodySection({
             {isTechnical && details?.eligibility ? (
               <CourseEligibilityRequirementsSection
                 eligibilityRequirements={details.eligibility}
-                personImageSrc={isDevopsPage ? '/images/eligibilty-req.png' : undefined}
+                personImageSrc="/images/eligibilty-req.png"
               />
             ) : null}
 
@@ -209,7 +191,8 @@ export default async function CourseDetailBodySection({
             ) : null}
 
             {!isTechnical && details?.eligibility ? (
-              <CourseEligibilityRequirementsSection eligibilityRequirements={details.eligibility} />
+              <CourseEligibilityRequirementsSection eligibilityRequirements={details.eligibility}
+                personImageSrc="/images/eligibilty-req.png"/>
             ) : null}
 
             {isTechnical && startedAt ? (
@@ -224,7 +207,7 @@ export default async function CourseDetailBodySection({
               ratingClassName="text-[16px] font-semibold leading-normal text-[#1E293B]"
             />
 
-            {!isDevopsPage ? awardsSection : null}
+            {!isTechnicalFromDetails ? awardsSection : null}
 
             {details?.credentials && details.otherDetails ? (
               <CourseCredentialsSection
@@ -240,7 +223,7 @@ export default async function CourseDetailBodySection({
             <CourseBatchRequestBanner banner={EXPERTS_COURSE_BANNER} className="pb-6 md:pb-8" courseId={courseId} />
 
             <WhyScaleXSection {...courseWhyScaleXContent} id="why-scalex" variant="embedded" />
-            {isDevopsPage ? awardsSection : null}
+            {isTechnicalFromDetails ? awardsSection : null}
             <CourseAboutCertificationSection title={aboutTitle} content={aboutContent} />
             
             {courseUri && categoryUri ? (
@@ -257,7 +240,12 @@ export default async function CourseDetailBodySection({
               shortName={courseDetails?.shortName}
             />
           </div>
-          <CourseDetailSidebar sidebar={sidebarContent} courseId={courseId} brochureUrl={brochureUrl} />
+          <CourseDetailSidebar
+            sidebar={sidebarContent}
+            courseId={courseId}
+            brochureUrl={brochureUrl}
+            mentorshipPhone={settings?.CONTACT_PHONE_NO}
+          />
 
 
         </div>

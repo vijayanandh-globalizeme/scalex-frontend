@@ -93,8 +93,10 @@ function MentorshipPhoneIcon({ className }: { className?: string }) {
 
 function MentorshipCard({
   mentorship,
+  phone,
 }: {
   mentorship: CourseBodyContent['sidebar']['mentorship'];
+  phone: string;
 }) {
   return (
     <div className="relative overflow-visible">
@@ -113,11 +115,11 @@ function MentorshipCard({
           <div className="relative z-10 min-w-0">
             <p className="text-[12px] font-medium leading-[140%] text-[#E5E5E5]">{mentorship.title}</p>
             <a
-              href={`tel:${mentorship.phone.replace(/[^\d+]/g, '')}`}
+              href={`tel:${phone.replace(/[^\d+]/g, '')}`}
               className="mt-1.5 inline-flex items-center gap-1.5 text-[12px] font-medium leading-[140%] text-white transition hover:text-white/90"
             >
               <MentorshipPhoneIcon className="h-[11px] w-[11px] shrink-0" />
-              {mentorship.phone}
+              {phone}
             </a>
           </div>
         </div>
@@ -125,6 +127,8 @@ function MentorshipCard({
     </div>
   );
 }
+
+const DEFAULT_MENTORSHIP_PHONE = '+91 98480 32919';
 
 function ArrowRightIcon({ className }: { className?: string }) {
   return (
@@ -140,12 +144,14 @@ export default function CourseDetailSidebar({
   brochureUrl = null,
   stickyTop = 'calc(4rem + 4.5rem)',
   width = 'w-[246px]',
+  mentorshipPhone,
 }: {
   sidebar: CourseBodyContent['sidebar'];
   courseId?: string | null;
   brochureUrl?: string | null;
   stickyTop?: string;
   width?: string;
+  mentorshipPhone?: string;
 }) {
   const [agreed, setAgreed] = useState(false);
   const [name, setName] = useState('');
@@ -289,7 +295,7 @@ export default function CourseDetailSidebar({
         </div>
 
         <div className="relative z-50 -ml-[44px] mt-[50px] overflow-visible pl-[44px]">
-          <MentorshipCard mentorship={sidebar.mentorship} />
+          <MentorshipCard mentorship={sidebar.mentorship} phone={mentorshipPhone || DEFAULT_MENTORSHIP_PHONE} />
         </div>
       </div>
     </aside>
