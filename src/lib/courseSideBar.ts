@@ -26,7 +26,7 @@ export const sidebar: {
   brochureCtaLabel: 'Download Brochure',
   mentorship: {
     title:    'Free 1-on-1 Mentorship',
-    imageSrc: '/images/hero/per-6.png',
+    imageSrc: '/images/per-6.png',
     imageAlt: 'Mentor',
   },
 };
