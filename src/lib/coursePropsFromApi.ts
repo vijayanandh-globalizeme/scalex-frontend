@@ -1,6 +1,8 @@
 import type { ApiCourseOverview } from '@/services/courseApi';
 import type { LayoutSettings } from '@/services/layoutApi';
-import type { CourseDetailContent } from '@/lib/courses';
+import type { GroupedCompanyLogos } from '@/services/companyRelationApi';
+import type { LogoMarqueeItem } from '@/components/shared/LogoMarquee';
+import type { CourseDetailContent, CoursePartnerLogo } from '@/lib/courses';
 import type { TechnicalCourseContent } from '@/lib/technicalCourses';
 
 // ── Defaults ──────────────────────────────────────────────────────────────────
@@ -32,6 +34,15 @@ export const AVATAR_SRCS = [
 ];
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
+
+function toPartnerLogos(logos: LogoMarqueeItem[]): CoursePartnerLogo[] {
+  return logos.map((logo) => ({
+    id: logo.id ?? logo.src ?? '',
+    name: logo.alt,
+    logoSrc: logo.src ?? '',
+    logoAlt: logo.alt,
+  }));
+}
 
 function buildReviews(settings: LayoutSettings) {
   const reviews = [];
@@ -93,6 +104,7 @@ function buildBaseProps(
   courseUri: string,
   settings: LayoutSettings,
   scheduleBasePath?: string,
+  companyLogos?: GroupedCompanyLogos,
 ): Omit<CourseDetailContent, 'slug' | 'categorySlug'> {
   const schedulePath = scheduleBasePath
     ? `${scheduleBasePath}/schedule`
@@ -127,7 +139,7 @@ function buildBaseProps(
       headingHighlight: 'Enterprise Training',
       headingRest:      'Solutions Trusted by Top Companies',
       cta:              { label: 'Skill Up Your Team', href: '/enterprise' },
-      partners:         ENTERPRISE_PARTNERS,
+      partners:         companyLogos?.ENTERPRISE.length ? toPartnerLogos(companyLogos.ENTERPRISE) : ENTERPRISE_PARTNERS,
     },
     form: {
       title: "We're Here to Guide Your Success",
@@ -152,11 +164,12 @@ export function buildCourseDetailProps(
   courseUri: string,
   settings: LayoutSettings,
   scheduleBasePath?: string,
+  companyLogos?: GroupedCompanyLogos,
 ): CourseDetailContent {
   return {
     slug:         courseUri,
     categorySlug: categoryUri,
-    ...buildBaseProps(course, categoryUri, courseUri, settings, scheduleBasePath),
+    ...buildBaseProps(course, categoryUri, courseUri, settings, scheduleBasePath, companyLogos),
   };
 }
 
@@ -166,11 +179,12 @@ export function buildTechnicalCourseProps(
   courseUri: string,
   settings: LayoutSettings,
   scheduleBasePath?: string,
+  companyLogos?: GroupedCompanyLogos,
 ): TechnicalCourseContent {
   return {
     slug:         courseUri,
     categorySlug: categoryUri,
-    ...buildBaseProps(course, categoryUri, courseUri, settings, scheduleBasePath),
+    ...buildBaseProps(course, categoryUri, courseUri, settings, scheduleBasePath, companyLogos),
     heroTitle:  course.title,
     startedAt:  course.startedAt,
     featureRows: [
@@ -187,6 +201,6 @@ export function buildTechnicalCourseProps(
       alt: 'Collaboration partner',
       src: logo.url,
     })),
-    hiringPartners: HIRING_PARTNERS,
+    hiringPartners: companyLogos?.HIRING.length ? toPartnerLogos(companyLogos.HIRING) : HIRING_PARTNERS,
   };
 }

@@ -10,6 +10,7 @@ import { WhyScaleXSection, defaultWhyScaleXContent } from '@/components/why-scal
 import { GuidanceSection, defaultGuidanceContent } from '@/components/guidance';
 import { SITE_DESCRIPTION, SITE_NAME } from '@/lib/site';
 import { fetchSetting, type LayoutSettings } from '@/services/layoutApi';
+import { fetchCompanyLogos } from '@/services/companyRelationApi';
 import { fetchAllCategories } from '@/services/categoryApi';
 import type { MegaMenuCategory } from '@/lib/allCoursesMegaMenu';
 import LiveSessionsSection from '@/components/live-sessions/LiveSessionsSection';
@@ -26,7 +27,11 @@ export const metadata: Metadata = {
 };
 
 export default async function HomePage() {
-  const [allCategories, settingsData] = await Promise.all([fetchAllCategories(), fetchSetting()]);
+  const [allCategories, settingsData, companyLogos] = await Promise.all([
+    fetchAllCategories(),
+    fetchSetting(),
+    fetchCompanyLogos(),
+  ]);
   const settings: LayoutSettings | undefined = settingsData ?? undefined;
   const categories: MegaMenuCategory[] = allCategories.slice(0, TOP_CATEGORIES_COUNT).map((cat) => ({
     id: cat.id,
@@ -36,15 +41,34 @@ export default async function HomePage() {
     courses: [],
   }));
 
+  const heroContent = {
+    ...defaultHeroContent,
+    collaboration: {
+      ...defaultHeroContent.collaboration,
+      logos: companyLogos.COLLABORATE.length ? companyLogos.COLLABORATE : defaultHeroContent.collaboration.logos,
+    },
+  };
+  const workforceContent = {
+    ...defaultWorkforceContent,
+    partners: companyLogos.ENTERPRISE.length
+      ? companyLogos.ENTERPRISE.map((logo) => ({
+          id: logo.id ?? logo.src ?? '',
+          name: logo.alt,
+          logoSrc: logo.src ?? '',
+          logoAlt: logo.alt,
+        }))
+      : defaultWorkforceContent.partners,
+  };
+
   return (
     <>
-      <HeroSection {...defaultHeroContent} />
+      <HeroSection {...heroContent} />
       <CoursesSection {...defaultCoursesContent} layoutCategories={categories} />
       <TestimonialsSectionServer settings={settings} />
       <SuccessStoriesSectionServer settings={settings} />
       <AwardsSection {...defaultAwardsContent} />
       <LiveSessionsSection />
-      <WorkforceSection {...defaultWorkforceContent} />
+      <WorkforceSection {...workforceContent} />
       <MentorsSectionServer />
       <WhyScaleXSection {...defaultWhyScaleXContent} />
       <GuidanceSection {...defaultGuidanceContent} />

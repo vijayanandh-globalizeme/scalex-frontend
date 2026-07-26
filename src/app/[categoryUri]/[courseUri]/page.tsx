@@ -11,6 +11,7 @@ import JsonLd from '@/components/seo/JsonLd';
 import { getCourseOverview } from '@/app/actions/courseActions';
 import { buildCourseDetailProps, buildTechnicalCourseProps } from '@/lib/coursePropsFromApi';
 import { fetchSetting } from '@/services/layoutApi';
+import { fetchCompanyLogos } from '@/services/companyRelationApi';
 import { SITE_NAME, getSiteOrigin } from '@/lib/site';
 import type { ApiCourseOverview } from '@/services/courseApi';
 
@@ -107,9 +108,10 @@ const DEFAULT_FORM = {
 export default async function CourseDetailPage({ params }: PageProps) {
   const { categoryUri, courseUri } = await params;
 
-  const [course, settingsData] = await Promise.all([
+  const [course, settingsData, companyLogos] = await Promise.all([
     getCourseOverview(courseUri, categoryUri),
     fetchSetting(),
+    fetchCompanyLogos(),
   ]);
 
   if (!course) notFound();
@@ -128,7 +130,7 @@ export default async function CourseDetailPage({ params }: PageProps) {
   );
 
   if (isTechnical) {
-    const props = buildTechnicalCourseProps(course, categoryUri, courseUri, settings);
+    const props = buildTechnicalCourseProps(course, categoryUri, courseUri, settings, undefined, companyLogos);
     return (
       <CourseDetailPageShell form={DEFAULT_FORM}>
         {jsonLd}
@@ -139,7 +141,7 @@ export default async function CourseDetailPage({ params }: PageProps) {
     );
   }
 
-  const props = buildCourseDetailProps(course, categoryUri, courseUri, settings);
+  const props = buildCourseDetailProps(course, categoryUri, courseUri, settings, undefined, companyLogos);
   return (
     <CourseDetailPageShell form={DEFAULT_FORM}>
       {jsonLd}

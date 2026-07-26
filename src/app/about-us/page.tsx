@@ -7,10 +7,14 @@ import { ReviewPlatformRowServer } from '@/components/testimonials';
 import { AwardsSection, defaultAwardsContent } from '@/components/awards';
 import { defaultHeroContent } from '@/components/hero';
 import { fetchSetting } from '@/services/layoutApi';
+import { fetchCompanyLogos } from '@/services/companyRelationApi';
 import AboutHero from './AboutHero';
 
 export default async function AboutPage() {
-  const settings = await fetchSetting();
+  const [settings, companyLogos] = await Promise.all([fetchSetting(), fetchCompanyLogos()]);
+  const collaborationLogos = companyLogos.COLLABORATE.length
+    ? companyLogos.COLLABORATE
+    : defaultHeroContent.collaboration.logos;
   return (
     <>
       <AboutHero />
@@ -234,7 +238,7 @@ export default async function AboutPage() {
             </p>
             <div className="w-full min-w-0 overflow-hidden py-5">
               <LogoMarquee
-                logos={defaultHeroContent.collaboration.logos}
+                logos={collaborationLogos}
                 size="md"
                 largeOnMobile
                 className="[&_img]:scale-110"

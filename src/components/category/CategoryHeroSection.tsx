@@ -219,6 +219,8 @@ interface CategoryHeroSectionProps {
     src: string;
     className?: string;
   };
+  /** COLLABORATE-type company logos for the "In Collaboration with" marquee. Falls back to the static hero logos when empty. */
+  collaborationLogos?: CategoryLogo[];
 }
 
 export default function CategoryHeroSection({
@@ -228,6 +230,7 @@ export default function CategoryHeroSection({
   heroFigureSrc,
   mediaVariant = 'figure',
   backgroundImage,
+  collaborationLogos,
 }: CategoryHeroSectionProps) {
   const features = category.highlights
     ? category.highlights
@@ -389,7 +392,12 @@ export default function CategoryHeroSection({
 
       <div className="absolute inset-x-0 bottom-0 z-20 translate-y-[70%]">
         <div className="site-container">
-          <CollaborationStrip collaboration={defaultHeroContent.collaboration} />
+          <CollaborationStrip
+            collaboration={{
+              ...defaultHeroContent.collaboration,
+              logos: collaborationLogos?.length ? collaborationLogos : defaultHeroContent.collaboration.logos,
+            }}
+          />
         </div>
       </div>
     </section>

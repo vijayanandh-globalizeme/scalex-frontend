@@ -11,6 +11,7 @@ import { GuidanceSection, defaultGuidanceContent } from '@/components/guidance';
 import { WhyScaleXSection, defaultWhyScaleXContent } from '@/components/why-scalex';
 import { fetchCategoryByUri } from '@/services/categoryApi';
 import { fetchSetting } from '@/services/layoutApi';
+import { fetchCompanyLogos } from '@/services/companyRelationApi';
 import { SITE_NAME, getSiteOrigin } from '@/lib/site';
 
 type PageProps = {
@@ -51,9 +52,10 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 export default async function CategoryPage({ params }: PageProps) {
   const { categoryUri } = await params;
 
-  const [category, settingsData] = await Promise.all([
+  const [category, settingsData, companyLogos] = await Promise.all([
     fetchCategoryByUri(categoryUri),
     fetchSetting(),
+    fetchCompanyLogos(),
   ]);
 
   if (!category) notFound();
@@ -91,6 +93,7 @@ export default async function CategoryPage({ params }: PageProps) {
         heroBadges={categoryHeroBadges}
         heroFigureSrc={category.posterImage?.url ?? '/images/category/agile-scrum-hero.png'}
         mediaVariant="photo"
+        collaborationLogos={companyLogos.COLLABORATE}
       />
       <CategoryCoursesSection
         categoryId={category.id}
