@@ -31,13 +31,18 @@ export interface Webinar {
   courseId: string | null;
 }
 
-export async function fetchWebinars(limit = 10): Promise<Webinar[]> {
-  const json = await get<WebinarApiResponse>(`webinar?limit=${limit}&offset=0`, {
+export interface WebinarListResult {
+  items: Webinar[];
+  total: number;
+}
+
+export async function fetchWebinars(limit = 10, offset = 0): Promise<WebinarListResult> {
+  const json = await get<WebinarApiResponse>(`webinar?limit=${limit}&offset=${offset}`, {
     revalidate: 300,
     tags: ['webinars-list'],
   });
-  if (!json?.success) return [];
-  return (json.data?.data ?? []).map((item) => ({
+  if (!json?.success) return { items: [], total: 0 };
+  const items = (json.data?.data ?? []).map((item) => ({
     id: item.id,
     title: item.title,
     startedAt: item.startedAt,
@@ -47,4 +52,5 @@ export async function fetchWebinars(limit = 10): Promise<Webinar[]> {
     slug: item.course ? `${item.course.categoryUri}/${item.course.uri}` : '',
     courseId: item.course?.id ?? null,
   }));
+  return { items, total: json.data?.total ?? items.length };
 }

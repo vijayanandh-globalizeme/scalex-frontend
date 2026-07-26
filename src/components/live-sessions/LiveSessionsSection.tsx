@@ -10,6 +10,9 @@ import { useCourseBrochureModal } from '@/components/course-detail';
 const HEADING = 'Upcoming Live Sessions';
 const SUBHEADING = 'Join our expert-led live webinars and accelerate your career growth.';
 
+const INITIAL_COUNT = 3;
+const LOAD_MORE_COUNT = 6;
+
 interface LiveSession {
   id: string;
   title: string;
@@ -89,6 +92,25 @@ function ArrowRightIcon({ className }: { className?: string }) {
   );
 }
 
+function ViewMoreChevronIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      className={className}
+      xmlns="http://www.w3.org/2000/svg"
+      width="18"
+      height="11"
+      viewBox="0 0 18 11"
+      fill="none"
+      aria-hidden
+    >
+      <path
+        d="M7.50374 9C7.69084 9 7.87795 8.92839 8.00517 8.79244L13.7979 3.11657C13.9251 2.99489 14 2.83742 14 2.65849C14 2.2863 13.7081 2 13.3189 2C13.1318 2 12.9597 2.07158 12.8325 2.1861L7.09959 7.79038H7.9004L2.16753 2.1861C2.04778 2.07158 1.87565 2 1.68106 2C1.29188 2 1 2.2863 1 2.65849C1 2.83742 1.07484 2.99489 1.20207 3.12372L6.99482 8.79244C7.13701 8.92839 7.30915 9 7.50374 9Z"
+        fill="currentColor"
+      />
+    </svg>
+  );
+}
+
 function SessionCard({ session }: { session: LiveSession }) {
   const { openBrochureModal } = useCourseBrochureModal();
   return (
@@ -137,15 +159,33 @@ function SessionCard({ session }: { session: LiveSession }) {
 
 export default function LiveSessionsSection() {
   const [sessions, setSessions] = useState<LiveSession[]>([]);
+  const [total, setTotal] = useState(0);
+  const [hasExpanded, setHasExpanded] = useState(false);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
   const rowRefs = useRef<(HTMLDivElement | null)[]>([]);
   const cols = useGridColumns();
 
   useEffect(() => {
-    getWebinars(3).then((data) => {
-      setSessions(data.map(mapWebinar));
+    getWebinars(INITIAL_COUNT, 0).then(({ items, total }) => {
+      setSessions(items.map(mapWebinar));
+      setTotal(total);
     });
   }, []);
+
+  async function handleViewMore() {
+    if (isLoadingMore || hasExpanded) return;
+    setIsLoadingMore(true);
+    try {
+      const { items } = await getWebinars(LOAD_MORE_COUNT, sessions.length);
+      setSessions((prev) => [...prev, ...items.map(mapWebinar)]);
+    } finally {
+      setHasExpanded(true);
+      setIsLoadingMore(false);
+    }
+  }
+
+  const hasMore = !hasExpanded && total > sessions.length;
 
   const sessionRows = useMemo(() => {
     const rows: LiveSession[][] = [];
@@ -166,6 +206,7 @@ export default function LiveSessionsSection() {
       delay: 0.1,
       ease: 'power2.out',
       start: 'top 88%',
+      skipRevealed: true,
     },
     [sessionRows.length, cols],
   );
@@ -204,6 +245,20 @@ export default function LiveSessionsSection() {
             </div>
           ))}
         </div>
+
+        {hasMore && (
+          <div className="mt-10 flex justify-center">
+            <button
+              type="button"
+              onClick={handleViewMore}
+              disabled={isLoadingMore}
+              className="inline-flex items-center gap-2 text-[14px] font-semibold text-brand underline-offset-4 transition hover:underline disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              {isLoadingMore ? 'Loading...' : 'View More Webinar'}
+              <ViewMoreChevronIcon className="shrink-0 text-brand" />
+            </button>
+          </div>
+        )}
       </div>
     </section>
   );
