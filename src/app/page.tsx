@@ -41,7 +41,7 @@ export default async function HomePage() {
       <HeroSection {...defaultHeroContent} />
       <CoursesSection {...defaultCoursesContent} layoutCategories={categories} />
       <TestimonialsSectionServer settings={settings} />
-      <SuccessStoriesSectionServer />
+      <SuccessStoriesSectionServer settings={settings} />
       <AwardsSection {...defaultAwardsContent} />
       <LiveSessionsSection />
       <WorkforceSection {...defaultWorkforceContent} />

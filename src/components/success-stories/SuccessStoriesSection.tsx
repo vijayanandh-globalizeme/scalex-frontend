@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
 import type { Reviewer } from '@/services/peopleApi';
+import { VideoModal } from '@/components/shared';
 
 export type { Reviewer as SuccessStory };
 
@@ -87,6 +88,8 @@ function VideoThumbnail({
   /** When true, fills up to max width while keeping aspect ratio (mobile). */
   responsive?: boolean;
 }) {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   return (
     <div className={`relative isolate ${responsive ? 'w-full max-w-[432px]' : 'shrink-0'}`}>
       <span
@@ -112,24 +115,20 @@ function VideoThumbnail({
           priority={false}
         />
         {videoUrl ? (
-          <a
-            href={videoUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Play testimonial video"
-            className="absolute inset-0 z-10 flex items-center justify-center"
-          >
-            <span className="flex h-14 w-14 items-center justify-center rounded-full bg-brand text-white shadow-lg transition hover:scale-105">
-              <PlayIcon className="ml-0.5 h-6 w-6" />
-            </span>
-          </a>
-        ) : (
-          <span className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center">
-            <span className="flex h-14 w-14 items-center justify-center rounded-full bg-brand text-white shadow-lg">
-              <PlayIcon className="ml-0.5 h-6 w-6" />
-            </span>
-          </span>
-        )}
+          <>
+            <button
+              type="button"
+              onClick={() => setIsModalOpen(true)}
+              aria-label="Play testimonial video"
+              className="absolute inset-0 z-10 flex items-center justify-center"
+            >
+              <span className="flex h-14 w-14 items-center justify-center rounded-full bg-brand text-white shadow-lg transition hover:scale-105">
+                <PlayIcon className="ml-0.5 h-6 w-6" />
+              </span>
+            </button>
+            <VideoModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} videoUrl={videoUrl} />
+          </>
+        ) : null}
       </div>
     </div>
   );

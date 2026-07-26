@@ -107,7 +107,6 @@ export const CUSTOMIZE_BATCH_BANNER = {
 export const REVIEW_VIDEO_SECTION = {
   thumbnailSrc: "/images/Alex.png",
   thumbnailAlt: "Alex video testimonial",
-  videoUrl: "#",
 };
 
 export const CREDENTIALS_FEATURES: {

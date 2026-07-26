@@ -9,6 +9,5 @@ export const defaultSuccessStoriesContent: Omit<SuccessStoriesSectionProps, 'sto
   featureMedia: {
     src: '/images/Alex.png',
     alt: ' EdgeX learner sharing their success story',
-    videoUrl: 'https://example.com/testimonials/feature',
   },
 };

@@ -107,7 +107,7 @@ export default async function CourseDetailBodySection({
         ? apiReviews
         : reviewsFallback.reviews;
   const reviewsHeading = reviewsTitle ?? 'What Our Learners Saying';
-  const reviewsVideoUrl = reviewVideoUrl ?? reviewsFallback.videoUrl;
+  const reviewsVideoUrl = reviewVideoUrl ?? settings?.VIDEO_REVIEW_URL ?? reviewsFallback.videoUrl;
 
   return (
     <section className="full-bleed overflow-visible bg-[#F5F6F8] pb-1 md:pb-0 pt-1" aria-label="Course details">

@@ -6,9 +6,11 @@ import { SuccessStoriesSectionServer } from '@/components/success-stories';
 import { ReviewPlatformRowServer } from '@/components/testimonials';
 import { AwardsSection, defaultAwardsContent } from '@/components/awards';
 import { defaultHeroContent } from '@/components/hero';
+import { fetchSetting } from '@/services/layoutApi';
 import AboutHero from './AboutHero';
 
-export default function AboutPage() {
+export default async function AboutPage() {
+  const settings = await fetchSetting();
   return (
     <>
       <AboutHero />
@@ -287,7 +289,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <SuccessStoriesSectionServer compact />
+      <SuccessStoriesSectionServer compact settings={settings ?? undefined} />
 
       <div className="full-bleed bg-surface pt-0 pb-6">
         <div className="site-container">

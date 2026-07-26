@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useId, useMemo, useState } from 'react';
+import { VideoModal } from '@/components/shared';
 import {
   CategoryCarouselControls,
   CategoryCarouselTrack,
@@ -119,6 +120,8 @@ function ReviewCard({ review, typeMap }: { review: ApiReview; typeMap: Map<strin
 
 
 function VideoCard({ video }: { video: { thumbnailSrc: string; thumbnailAlt: string; videoUrl?: string | null } }) {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   return (
     <div className="interactive-card interactive-card-media relative h-[282px] w-full max-w-full overflow-hidden rounded-[20px] md:max-w-[295px]">
       <Image
@@ -129,17 +132,23 @@ function VideoCard({ video }: { video: { thumbnailSrc: string; thumbnailAlt: str
         sizes="295px"
       />
       <div className="absolute inset-0 bg-[rgba(30,41,59,0.40)]" aria-hidden />
-      <Link
-        href={video.videoUrl ?? '#'}
-        className="absolute inset-0 z-10 flex items-center justify-center"
-        aria-label="Play video testimonial"
-      >
-        <span className="flex h-14 w-14 items-center justify-center rounded-full bg-brand text-white shadow-[0_4px_12px_rgba(253,2,45,0.35)]">
-          <svg width="16" height="18" viewBox="0 0 16 18" fill="currentColor" aria-hidden>
-            <path d="M2 1.5v15l12-7.5L2 1.5z" />
-          </svg>
-        </span>
-      </Link>
+      {video.videoUrl ? (
+        <>
+          <button
+            type="button"
+            onClick={() => setIsModalOpen(true)}
+            className="absolute inset-0 z-10 flex items-center justify-center"
+            aria-label="Play video testimonial"
+          >
+            <span className="flex h-14 w-14 items-center justify-center rounded-full bg-brand text-white shadow-[0_4px_12px_rgba(253,2,45,0.35)]">
+              <svg width="16" height="18" viewBox="0 0 16 18" fill="currentColor" aria-hidden>
+                <path d="M2 1.5v15l12-7.5L2 1.5z" />
+              </svg>
+            </span>
+          </button>
+          <VideoModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} videoUrl={video.videoUrl} />
+        </>
+      ) : null}
     </div>
   );
 }
@@ -231,7 +240,7 @@ export default function CourseReviewsClient({
       </div>
 
       <div className="mt-5 pt-4 flex flex-col gap-4 md:flex-row md:gap-5">
-        <VideoCard video={{ ...REVIEW_VIDEO_SECTION, videoUrl: videoUrl ?? REVIEW_VIDEO_SECTION.videoUrl }} />
+        <VideoCard video={{ ...REVIEW_VIDEO_SECTION, videoUrl }} />
 
         <div className="flex justify-end md:hidden">
           <CategoryCarouselControls

@@ -22,6 +22,7 @@ export type LayoutSettings = {
   CONTACT_ADDRESS_COUNTRY?: string;
   CONTACT_ADDRESS_PINCODE?: string;
   TOTAL_LEARNERS?: string;
+  VIDEO_REVIEW_URL?: string;
   GOOGLE_REVIEW?: ReviewEntry;
   FACEBOOK_REVIEW?: ReviewEntry;
   TRUST_PILOT_REVIEW?: ReviewEntry;
