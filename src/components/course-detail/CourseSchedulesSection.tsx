@@ -440,6 +440,7 @@ function ScheduleCard({ batch, quantity, onQuantityChange, onEnroll }: {
   const endLabel = formatDate(batch.endDate);
   const dateRange = startLabel === endLabel ? startLabel : `${startLabel} - ${endLabel}`;
   const isSoldOut = batch.availability === 'SOLD_OUT';
+  const isUpcoming = batch.availability === 'UPCOMING';
   const timeLabel = `${batch.timezone}: ${formatTime(batch.startTime)} - ${formatTime(batch.endTime)}`;
   const dayLabel = batch.dayType === 'WEEKDAY' ? 'Weekday Batch' : 'Weekend Batch';
   const tod = getTimeOfDay(batch.startTime);
@@ -447,7 +448,7 @@ function ScheduleCard({ batch, quantity, onQuantityChange, onEnroll }: {
 
   return (
     <article className={SCHEDULE_CARD}>
-      {batch.isTrending ? (
+      {batch.fastFilling ? (
         <span className="absolute top-0 right-4 z-10 inline-flex items-center gap-1 rounded-b-lg bg-brand px-2.5 py-1 text-[10px] font-semibold tracking-wide text-white shadow-[0_4px_10px_rgba(253,2,45,0.35)] max-md:right-3 max-md:px-2 max-md:py-0.5 max-md:text-[9px]">
           <FireIcon className="shrink-0" />
           Fast filling
@@ -538,12 +539,12 @@ function ScheduleCard({ batch, quantity, onQuantityChange, onEnroll }: {
               <span className="text-zinc-300" aria-hidden>|</span>
               <span>24/7<br />Support</span>
             </div>
-            {isSoldOut ? (
+            {isSoldOut || isUpcoming ? (
               <span
                 aria-disabled="true"
                 className="btn-brand-outline mt-3 inline-flex w-[139px] cursor-not-allowed items-center justify-center px-4 py-[11px] text-[14px] font-medium leading-[18px] max-md:mt-0 max-md:w-auto max-md:px-3 max-md:py-2 max-md:text-[11px]"
               >
-                Sold Out
+                {isSoldOut ? 'Sold Out' : 'Upcoming'}
               </span>
             ) : (
               <button

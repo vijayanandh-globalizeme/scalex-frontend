@@ -264,7 +264,7 @@ type CoursesApiResponse = {
 
 export type ApiCourseBatch = {
   id: string;
-  isTrending: boolean;
+  fastFilling: boolean;
   availability: string;
   label?: string;
   dayType: string;
