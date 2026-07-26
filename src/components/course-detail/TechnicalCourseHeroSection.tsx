@@ -295,7 +295,7 @@ export default function TechnicalCourseHeroSection(course: TechnicalCourseConten
     breadcrumbs,
     heroTitle,
     shortDescription,
-    featureRows,
+    features,
     rankedContent,
     rankingLine,
     reviews,
@@ -451,26 +451,29 @@ export default function TechnicalCourseHeroSection(course: TechnicalCourseConten
               ) : null}
             </div>
 
-            <ul className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2" role="list">
-              {featureRows.map(([left, right]) => (
-                <li key={left} className="contents">
-                  <span className="flex min-w-0 items-start gap-2.5">
+            {shortDescription ? (
+              <p
+                className="mt-5 max-w-xl text-[15px] font-semibold leading-6 text-muted [&_a]:text-brand [&_a]:no-underline [&_a]:hover:underline [&_a]:underline-offset-2 md:text-[18px]"
+                dangerouslySetInnerHTML={{ __html: withNewTabLinks(shortDescription) }}
+              />
+            ) : null}
+
+            {features.length > 0 ? (
+              <ul
+                className="mt-6 grid grid-cols-1 gap-x-8 gap-y-3 sm:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)]"
+                role="list"
+              >
+                {features.map((feature) => (
+                  <li key={feature} className="flex min-w-0 items-start gap-2.5">
                     <CheckIcon className="mt-0.5 shrink-0" />
                     <span
-                      className="min-w-0 text-[16px] font-medium leading-[152%] text-heading [&_a]:text-brand [&_a]:no-underline [&_a]:hover:underline [&_a]:underline-offset-2"
-                      dangerouslySetInnerHTML={{ __html: withNewTabLinks(left) }}
+                      className="min-w-0 text-[16px] font-medium leading-[152%] text-heading [&_a]:text-brand [&_a]:no-underline [&_a]:hover:underline [&_a]:underline-offset-2 md:text-[18px]"
+                      dangerouslySetInnerHTML={{ __html: withNewTabLinks(feature) }}
                     />
-                  </span>
-                  <span className="flex min-w-0 items-start gap-2.5">
-                    <CheckIcon className="mt-0.5 shrink-0" />
-                    <span
-                      className="min-w-0 text-[16px] font-medium leading-[152%] text-heading [&_a]:text-brand [&_a]:no-underline [&_a]:hover:underline [&_a]:underline-offset-2"
-                      dangerouslySetInnerHTML={{ __html: withNewTabLinks(right) }}
-                    />
-                  </span>
-                </li>
-              ))}
-            </ul>
+                  </li>
+                ))}
+              </ul>
+            ) : null}
 
             <RankedContent rankedContent={rankedContent} rankingLine={rankingLine} />
 
