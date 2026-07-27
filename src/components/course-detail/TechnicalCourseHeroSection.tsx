@@ -451,13 +451,6 @@ export default function TechnicalCourseHeroSection(course: TechnicalCourseConten
               ) : null}
             </div>
 
-            {shortDescription ? (
-              <p
-                className="mt-5 max-w-xl text-[15px] font-semibold leading-6 text-muted [&_a]:text-brand [&_a]:no-underline [&_a]:hover:underline [&_a]:underline-offset-2 md:text-[18px]"
-                dangerouslySetInnerHTML={{ __html: withNewTabLinks(shortDescription) }}
-              />
-            ) : null}
-
             {features.length > 0 ? (
               <ul
                 className="mt-6 grid grid-cols-1 gap-x-8 gap-y-3 sm:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)]"
