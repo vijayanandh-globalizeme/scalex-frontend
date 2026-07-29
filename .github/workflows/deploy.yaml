@@ -1,0 +1,56 @@
+name: Deploy via Bastion
+
+on:
+  push:
+    branches:
+      - dev
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Start ssh-agent and add private key
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.BASTION_PRIVATE_KEY }}
+
+      - name: Deploy through bastion
+        env:
+          BASTION_HOST: ${{ secrets.BASTION_HOST }}
+          BASTION_USER: ${{ secrets.BASTION_USER }}
+          PRIVATE_HOST: ${{ secrets.PRIVATE_HOST }}
+          PRIVATE_USER: ${{ secrets.PRIVATE_USER }}
+          APP_DIR: /home/ubuntu/scalex/scalex-admin
+        run: |
+          set -e
+
+          echo "Deploying to ${APP_DIR} via bastion ${BASTION_HOST}"
+
+          ssh -T -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null \
+            -o ProxyCommand="ssh -T -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -W %h:%p ${BASTION_USER}@${BASTION_HOST}" \
+            "${PRIVATE_USER}@${PRIVATE_HOST}" <<EOF
+            set -e
+            cd "${APP_DIR}"
+            git rev-parse --verify HEAD >/dev/null 2>&1 && git rev-parse --verify HEAD > /tmp/orig_head || true
+            trap 'echo "Deployment failed, rolling back"; if [ -f /tmp/orig_head ]; then OLD_HEAD=$(cat /tmp/orig_head); git reset --hard "$OLD_HEAD" || true; fi; pm2 restart edgex-admin --update-env || true; exit 1' ERR
+
+            git fetch origin dev
+            git reset --hard origin/dev
+            git clean -fd
+            pnpm install
+            npm cache clean --force
+            echo "✅ NPM cache cleared"
+            echo "🛠️ Building the project"
+            pnpm run build
+            pm2 restart edgex-frontend --update-env
+          EOF
