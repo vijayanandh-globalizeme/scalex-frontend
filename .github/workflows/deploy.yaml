@@ -30,7 +30,7 @@ jobs:
           BASTION_USER: ${{ secrets.BASTION_USER }}
           PRIVATE_HOST: ${{ secrets.PRIVATE_HOST }}
           PRIVATE_USER: ${{ secrets.PRIVATE_USER }}
-          APP_DIR: /home/ubuntu/scalex/scalex-admin
+          APP_DIR: /home/ubuntu/scalex/scalex-frontend
         run: |
           set -e
 
