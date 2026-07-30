@@ -41,6 +41,8 @@ jobs:
             -o ProxyCommand="ssh -T -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -W %h:%p ${BASTION_USER}@${BASTION_HOST}" \
             "${PRIVATE_USER}@${PRIVATE_HOST}" <<EOF
             set -euo pipefail
+            export APP_DIR="${APP_DIR}"
+            export PM2_APP_NAME="${PM2_APP_NAME}"
 
             cd "${APP_DIR}"
             RELEASE_ROOT="${APP_DIR}/releases"
