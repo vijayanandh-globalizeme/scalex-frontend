@@ -241,7 +241,7 @@ export default function LegalPageView({
           {/* Content */}
           <div className="min-w-0 overflow-hidden">
             <div className={`${COURSE_SECTION_CARD} p-6 md:p-8`}>
-              <h1 className="mb-1 text-2xl font-bold leading-tight text-heading md:text-3xl">{title}</h1>
+              <h1 className="mb-1 text-2xl font-bold leading-tight text-heading md:text-3xl">{title} - test</h1>
               <p className="mb-6 text-sm text-muted">Last updated: {updated}</p>
               <div
                 className="prose prose-sm max-w-none text-heading prose-headings:font-semibold prose-headings:text-heading prose-a:text-brand prose-a:underline prose-li:marker:text-brand"
