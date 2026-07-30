@@ -37,69 +37,73 @@ jobs:
 
           echo "Deploying to ${APP_DIR} via bastion ${BASTION_HOST}"
 
+          cat > /tmp/deploy.sh <<'EOF'
+          set -euo pipefail
+          export APP_DIR="${APP_DIR}"
+          export PM2_APP_NAME="${PM2_APP_NAME}"
+
+          cd "${APP_DIR}"
+          RELEASE_ROOT="${APP_DIR}/releases"
+          CURRENT_LINK="${APP_DIR}/current"
+          RELEASE_DIR="${RELEASE_ROOT}/$(date +%Y%m%d%H%M%S)"
+          PREVIOUS_RELEASE=""
+
+          if [ -L "${CURRENT_LINK}" ]; then
+            PREVIOUS_RELEASE="$(readlink -f "${CURRENT_LINK}")"
+          fi
+
+          rollback() {
+            echo "Deployment failed, rolling back"
+            if [ -n "${PREVIOUS_RELEASE}" ] && [ -d "${PREVIOUS_RELEASE}" ]; then
+              rm -f "${CURRENT_LINK}"
+              ln -s "${PREVIOUS_RELEASE}" "${CURRENT_LINK}"
+              if pm2 describe "${PM2_APP_NAME}" >/dev/null 2>&1; then
+                pm2 restart "${PM2_APP_NAME}" --update-env --cwd "${PREVIOUS_RELEASE}" || true
+              else
+                pm2 start "pnpm start" --name "${PM2_APP_NAME}" --cwd "${PREVIOUS_RELEASE}" --update-env || true
+              fi
+            else
+              echo "No previous release found to restore"
+            fi
+            exit 1
+          }
+
+          trap rollback ERR
+
+          mkdir -p "${RELEASE_ROOT}"
+          git fetch origin dev
+          git reset --hard origin/dev
+          git clean -fd
+
+          rm -rf "${RELEASE_DIR}"
+          git worktree add --force --detach "${RELEASE_DIR}" origin/dev
+
+          if [ -f "${APP_DIR}/.env" ]; then
+            cp -a "${APP_DIR}/.env" "${RELEASE_DIR}/.env"
+          fi
+          if [ -f "${APP_DIR}/.env.local" ]; then
+            cp -a "${APP_DIR}/.env.local" "${RELEASE_DIR}/.env.local"
+          fi
+
+          cd "${RELEASE_DIR}"
+          pnpm install
+          npm cache clean --force
+          echo "✅ NPM cache cleared"
+          echo "🛠️ Building the project"
+          pnpm run build
+
+          rm -f "${CURRENT_LINK}"
+          ln -s "${RELEASE_DIR}" "${CURRENT_LINK}"
+
+          if pm2 describe "${PM2_APP_NAME}" >/dev/null 2>&1; then
+            pm2 restart "${PM2_APP_NAME}" --update-env --cwd "${CURRENT_LINK}"
+          else
+            pm2 start "pnpm start" --name "${PM2_APP_NAME}" --cwd "${CURRENT_LINK}" --update-env
+          fi
+          EOF
+
+          scp /tmp/deploy.sh "${PRIVATE_USER}@${PRIVATE_HOST}":/tmp/deploy.sh
+
           ssh -T -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null \
             -o ProxyCommand="ssh -T -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -W %h:%p ${BASTION_USER}@${BASTION_HOST}" \
-            "${PRIVATE_USER}@${PRIVATE_HOST}" <<'EOF'
-            set -euo pipefail
-            export APP_DIR="${APP_DIR}"
-            export PM2_APP_NAME="${PM2_APP_NAME}"
-
-            cd "${APP_DIR}"
-            RELEASE_ROOT="${APP_DIR}/releases"
-            CURRENT_LINK="${APP_DIR}/current"
-            RELEASE_DIR="${RELEASE_ROOT}/$(date +%Y%m%d%H%M%S)"
-            PREVIOUS_RELEASE=""
-
-            if [ -L "${CURRENT_LINK}" ]; then
-              PREVIOUS_RELEASE="$(readlink -f "${CURRENT_LINK}")"
-            fi
-
-            rollback() {
-              echo "Deployment failed, rolling back"
-              if [ -n "${PREVIOUS_RELEASE}" ] && [ -d "${PREVIOUS_RELEASE}" ]; then
-                rm -f "${CURRENT_LINK}"
-                ln -s "${PREVIOUS_RELEASE}" "${CURRENT_LINK}"
-                if pm2 describe "${PM2_APP_NAME}" >/dev/null 2>&1; then
-                  pm2 restart "${PM2_APP_NAME}" --update-env --cwd "${PREVIOUS_RELEASE}" || true
-                else
-                  pm2 start "pnpm start" --name "${PM2_APP_NAME}" --cwd "${PREVIOUS_RELEASE}" --update-env || true
-                fi
-              else
-                echo "No previous release found to restore"
-              fi
-              exit 1
-            }
-
-            trap rollback ERR
-
-            mkdir -p "${RELEASE_ROOT}"
-            git fetch origin dev
-            git reset --hard origin/dev
-            git clean -fd
-
-            rm -rf "${RELEASE_DIR}"
-            git worktree add --force --detach "${RELEASE_DIR}" origin/dev
-
-            if [ -f "${APP_DIR}/.env" ]; then
-              cp -a "${APP_DIR}/.env" "${RELEASE_DIR}/.env"
-            fi
-            if [ -f "${APP_DIR}/.env.local" ]; then
-              cp -a "${APP_DIR}/.env.local" "${RELEASE_DIR}/.env.local"
-            fi
-
-            cd "${RELEASE_DIR}"
-            pnpm install
-            npm cache clean --force
-            echo "✅ NPM cache cleared"
-            echo "🛠️ Building the project"
-            pnpm run build
-
-            rm -f "${CURRENT_LINK}"
-            ln -s "${RELEASE_DIR}" "${CURRENT_LINK}"
-
-            if pm2 describe "${PM2_APP_NAME}" >/dev/null 2>&1; then
-              pm2 restart "${PM2_APP_NAME}" --update-env --cwd "${CURRENT_LINK}"
-            else
-              pm2 start "pnpm start" --name "${PM2_APP_NAME}" --cwd "${CURRENT_LINK}" --update-env
-            fi
-            EOF
+            "${PRIVATE_USER}@${PRIVATE_HOST}" "APP_DIR='${APP_DIR}' PM2_APP_NAME='${PM2_APP_NAME}' bash /tmp/deploy.sh"
