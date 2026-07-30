@@ -39,7 +39,7 @@ jobs:
 
           ssh -T -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null \
             -o ProxyCommand="ssh -T -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -W %h:%p ${BASTION_USER}@${BASTION_HOST}" \
-            "${PRIVATE_USER}@${PRIVATE_HOST}" <<EOF
+            "${PRIVATE_USER}@${PRIVATE_HOST}" <<'EOF'
             set -euo pipefail
             export APP_DIR="${APP_DIR}"
             export PM2_APP_NAME="${PM2_APP_NAME}"
@@ -102,4 +102,4 @@ jobs:
             else
               pm2 start "pnpm start" --name "${PM2_APP_NAME}" --cwd "${CURRENT_LINK}" --update-env
             fi
-          EOF
+            EOF
