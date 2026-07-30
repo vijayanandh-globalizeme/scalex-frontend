@@ -401,12 +401,12 @@ export default function TestimonialsSection({
 
   return (
     <section
-      className="full-bleed relative z-10 overflow-visible bg-[#0D0D0D] pt-8 pb-10 md:pt-10 md:pb-14 lg:pt-12 lg:pb-16"
+      className="full-bleed relative z-10 overflow-visible bg-[#0D0D0D] max-md:pt-15 pb-15 md:pt-10 md:pb-14 lg:pt-12 lg:pb-16"
       aria-labelledby="stories-heading"
     >
       <StoriesDecorIcon className="pointer-events-none absolute bottom-0 right-0 z-0 h-auto w-[120px] md:w-[160px] lg:w-[188px]" />
       <div className="site-container relative z-10">
-        <div className="grid items-start gap-10 lg:grid-cols-[1fr_1.1fr_1fr]">
+        <div className="grid items-start gap-6 md:gap-10 lg:grid-cols-[1fr_1.1fr_1fr]">
           {/* Left: heading & subheading */}
           <div className="text-white lg:self-center">
             <h2 id="stories-heading" className="section-heading font-extrabold leading-tight">

@@ -292,7 +292,7 @@ export default function GuidanceSection({
               : 'grid items-start gap-10 lg:grid-cols-[2fr_3fr] lg:gap-16'
           }
         >
-          <div className="pt-15 text-white md:pt-22">
+          <div className="text-white md:pt-22">
             <h2
               id="guidance-heading"
               className={`whitespace-pre-line font-semibold leading-[140%] text-white ${
@@ -361,7 +361,7 @@ export default function GuidanceSection({
 
   return (
     <section
-      className={`full-bleed relative z-10 overflow-visible bg-[#0D0D0D] pt-0 pb-12 ${className ?? ''}`}
+      className={`full-bleed relative z-10 overflow-visible bg-[#0D0D0D] max-md:pt-15 ${className ?? 'pb-15 md:pb-12'}`}
       aria-labelledby="guidance-heading"
     >
       {content}

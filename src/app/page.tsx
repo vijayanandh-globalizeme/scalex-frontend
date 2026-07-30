@@ -66,7 +66,7 @@ export default async function HomePage() {
       <CoursesSection {...defaultCoursesContent} layoutCategories={categories} />
       <TestimonialsSectionServer settings={settings} />
       <SuccessStoriesSectionServer settings={settings} />
-      <AwardsSection {...defaultAwardsContent} />
+      <AwardsSection {...defaultAwardsContent} className="pb-15 md:pb-0" />
       <LiveSessionsSection />
       <WorkforceSection {...workforceContent} />
       <MentorsSectionServer />
