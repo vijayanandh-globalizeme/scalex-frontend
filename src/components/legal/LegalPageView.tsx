@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { useState, type FormEvent } from 'react';
+import { COURSE_SECTION_CARD } from '@/components/course-detail/courseSectionCard';
 import { sendContact } from '@/app/actions/contactActions';
 import { useLeadSuccess } from '@/components/feedback/LeadSuccessProvider';
 import { useContactFieldErrors, fieldErrorClass } from '@/components/feedback/useContactFieldErrors';
