@@ -31,26 +31,73 @@ jobs:
           PRIVATE_HOST: ${{ secrets.PRIVATE_HOST }}
           PRIVATE_USER: ${{ secrets.PRIVATE_USER }}
           APP_DIR: /home/ubuntu/scalex/scalex-frontend
+          PM2_APP_NAME: scalex-frontend
         run: |
-          set -e
+          set -euo pipefail
 
           echo "Deploying to ${APP_DIR} via bastion ${BASTION_HOST}"
 
           ssh -T -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null \
             -o ProxyCommand="ssh -T -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -W %h:%p ${BASTION_USER}@${BASTION_HOST}" \
             "${PRIVATE_USER}@${PRIVATE_HOST}" <<EOF
-            set -e
-            cd "${APP_DIR}"
-            git rev-parse --verify HEAD >/dev/null 2>&1 && git rev-parse --verify HEAD > /tmp/orig_head || true
-            trap 'echo "Deployment failed, rolling back"; if [ -f /tmp/orig_head ]; then OLD_HEAD=$(cat /tmp/orig_head); git reset --hard "$OLD_HEAD" || true; fi; pm2 restart edgex-admin --update-env || true; exit 1' ERR
+            set -euo pipefail
 
+            cd "${APP_DIR}"
+            RELEASE_ROOT="${APP_DIR}/releases"
+            CURRENT_LINK="${APP_DIR}/current"
+            RELEASE_DIR="${RELEASE_ROOT}/$(date +%Y%m%d%H%M%S)"
+            PREVIOUS_RELEASE=""
+
+            if [ -L "${CURRENT_LINK}" ]; then
+              PREVIOUS_RELEASE="$(readlink -f "${CURRENT_LINK}")"
+            fi
+
+            rollback() {
+              echo "Deployment failed, rolling back"
+              if [ -n "${PREVIOUS_RELEASE}" ] && [ -d "${PREVIOUS_RELEASE}" ]; then
+                rm -f "${CURRENT_LINK}"
+                ln -s "${PREVIOUS_RELEASE}" "${CURRENT_LINK}"
+                if pm2 describe "${PM2_APP_NAME}" >/dev/null 2>&1; then
+                  pm2 restart "${PM2_APP_NAME}" --update-env --cwd "${PREVIOUS_RELEASE}" || true
+                else
+                  pm2 start "pnpm start" --name "${PM2_APP_NAME}" --cwd "${PREVIOUS_RELEASE}" --update-env || true
+                fi
+              else
+                echo "No previous release found to restore"
+              fi
+              exit 1
+            }
+
+            trap rollback ERR
+
+            mkdir -p "${RELEASE_ROOT}"
             git fetch origin dev
             git reset --hard origin/dev
             git clean -fd
+
+            rm -rf "${RELEASE_DIR}"
+            git worktree add --force --detach "${RELEASE_DIR}" origin/dev
+
+            if [ -f "${APP_DIR}/.env" ]; then
+              cp -a "${APP_DIR}/.env" "${RELEASE_DIR}/.env"
+            fi
+            if [ -f "${APP_DIR}/.env.local" ]; then
+              cp -a "${APP_DIR}/.env.local" "${RELEASE_DIR}/.env.local"
+            fi
+
+            cd "${RELEASE_DIR}"
             pnpm install
             npm cache clean --force
             echo "✅ NPM cache cleared"
             echo "🛠️ Building the project"
             pnpm run build
-            pm2 restart edgex-frontend --update-env
+
+            rm -f "${CURRENT_LINK}"
+            ln -s "${RELEASE_DIR}" "${CURRENT_LINK}"
+
+            if pm2 describe "${PM2_APP_NAME}" >/dev/null 2>&1; then
+              pm2 restart "${PM2_APP_NAME}" --update-env --cwd "${CURRENT_LINK}"
+            else
+              pm2 start "pnpm start" --name "${PM2_APP_NAME}" --cwd "${CURRENT_LINK}" --update-env
+            fi
           EOF
