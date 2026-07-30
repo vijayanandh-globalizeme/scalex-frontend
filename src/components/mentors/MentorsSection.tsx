@@ -139,7 +139,7 @@ export default function MentorsSection({
 }: MentorsSectionProps) {
   return (
     <section
-      className="full-bleed relative z-10 overflow-visible bg-white pt-[96px] md:pt-[140px] pb-8 shadow-[0_10px_40px_0_rgba(30,41,59,0.1)] md:pb-16"
+      className="full-bleed relative z-10 overflow-visible bg-white pt-[96px] pb-15 shadow-[0_10px_40px_0_rgba(30,41,59,0.1)] md:pt-[140px] md:pb-16"
       aria-labelledby="mentors-heading"
     >
       <div className="site-container relative z-10">
@@ -167,7 +167,7 @@ export default function MentorsSection({
         ) : null}
 
         {/* Mentors row */}
-        <div className="mt-10 grid grid-cols-2 justify-items-center gap-x-6 gap-y-10 pb-4 md:mt-12 md:grid-cols-3 lg:grid-cols-5">
+        <div className="mt-10 grid grid-cols-2 justify-items-center gap-x-6 gap-y-10 md:mt-12 md:pb-4 md:grid-cols-3 lg:grid-cols-5">
           {mentors.map((m) => (
             <MentorCard key={m.id} mentor={m} />
           ))}

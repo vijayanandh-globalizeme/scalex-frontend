@@ -139,7 +139,7 @@ export default function WorkforceSection({
   const { openBrochureModal } = useCourseBrochureModal();
   return (
     <section
-      className="full-bleed relative z-20 overflow-visible bg-[#0D0D0D] pt-16 pb-10 md:pt-20 md:pb-12 lg:pt-24 lg:pb-14"
+      className="full-bleed relative z-20 overflow-visible bg-[#0D0D0D] max-md:pt-15 pb-15 md:pt-20 md:pb-12 lg:pt-24 lg:pb-14"
       aria-labelledby="workforce-heading"
     >
       <WorkforceDecorIcon className="pointer-events-none absolute bottom-0 left-0 z-0 h-auto w-[120px] md:w-[160px] lg:w-[190px]" />

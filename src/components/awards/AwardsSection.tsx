@@ -345,7 +345,7 @@ export default function AwardsSection({
         {carousel}
 
         {canNavigateMobile ? (
-          <div className="mt-6 pb-8 md:hidden">
+          <div className="mt-6 md:hidden">
             <CarouselControls
               page={index}
               totalPages={maxIndex + 1}

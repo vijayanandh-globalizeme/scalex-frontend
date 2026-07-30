@@ -265,7 +265,7 @@ export default function SuccessStoriesSection({
       className={`full-bleed relative ${
         compact
           ? 'bg-surface pt-[30px] pb-0'
-          : 'bg-surface pt-16 pb-2 md:pt-28 md:pb-10 lg:pt-32 lg:pb-12'
+          : 'bg-surface pt-16 pb-15 md:pt-28 md:pb-10 lg:pt-32 lg:pb-12'
       }`}
       aria-labelledby="success-stories-heading"
     >
@@ -404,7 +404,7 @@ export default function SuccessStoriesSection({
                 </button>
               </div>
             ) : null}
-            <div ref={mobileViewportRef} className="w-full overflow-x-hidden pb-6">
+            <div ref={mobileViewportRef} className="w-full overflow-x-hidden">
               <div
                 className="flex items-stretch pb-2 transition-transform duration-500 ease-out will-change-transform"
                 style={{

@@ -119,7 +119,7 @@ export default function HeroSection(props: HeroSectionProps) {
   return (
     <section
       ref={sectionRef}
-      className="full-bleed relative overflow-x-clip overflow-y-visible bg-surface pt-8 md:pt-29 lg:pt-17"
+      className="full-bleed relative overflow-x-clip overflow-y-visible bg-surface pt-8 pb-15 md:pt-29 md:pb-0 lg:pt-17"
       aria-labelledby="hero-heading"
     >
       {/* Soft glow only — aero lives behind the person in the media column */}
