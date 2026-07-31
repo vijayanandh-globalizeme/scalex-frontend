@@ -392,7 +392,7 @@ export default function BlogDetailPage() {
     <>
       {/* ── Hero ─────────────────────────────────────────────────────────────── */}
       <section
-        className="full-bleed relative max-md:pt-10 pb-15"
+        className="full-bleed relative max-md:pt-10 pb-15 md:pt-10"
         style={{
           background: 'linear-gradient(83deg, #0D0D0D -37.91%, #161A26 28%, #FF002C 212.06%)',
         }}
