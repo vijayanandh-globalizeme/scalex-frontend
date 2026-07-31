@@ -191,7 +191,7 @@ export default async function AboutPage() {
       </section>
 
       {/* What Drives Us Every Day */}
-      <section className="full-bleed bg-surface max-md:pt-15 pb-0 md:py-20 md:pb-10">
+      <section className="full-bleed bg-surface max-md:pt-15 max-md:pb-15 md:py-20 md:pb-10">
         <div className="site-container">
           <h2
             className="mb-10 text-center"
@@ -250,7 +250,7 @@ export default async function AboutPage() {
       </section>
 
       {/* The Minds Behind Scale X Learning */}
-      <section className="full-bleed bg-surface pb-0 pt-0 md:py-20 md:pt-10 md:pb-10">
+      <section className="full-bleed bg-surface max-md:pb-[30px] pt-0 md:py-20 md:pt-10 md:pb-10">
         <div className="site-container">
           <div className="mb-10 text-center">
             <h2 style={{ color: '#1E293B', fontFamily: 'Inter', fontSize: '36px', fontWeight: 700 }}>The Minds Behind Scale X Learning</h2>
@@ -304,7 +304,7 @@ export default async function AboutPage() {
       </div>
 
       {/* Scale X Learning in the News */}
-      <section className="full-bleed bg-surface pb-15 pt-0 md:pb-20 md:pt-10">
+      <section className="full-bleed bg-surface pb-15 max-md:pt-15 md:pb-20 md:pt-10">
         <div className="site-container">
           <h2 className="mb-10 text-center" style={{ color: '#1E293B', fontFamily: 'Inter', fontSize: '36px', fontWeight: 700 }}>
             Scale X Learning in the News

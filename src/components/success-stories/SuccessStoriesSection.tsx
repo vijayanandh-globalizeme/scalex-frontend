@@ -312,7 +312,7 @@ export default function SuccessStoriesSection({
     <section
       className={`full-bleed relative ${
         compact
-          ? 'bg-surface pt-[30px] pb-0'
+          ? 'bg-surface max-md:pt-15 max-md:pb-15 md:pt-[30px] pb-0'
           : 'bg-surface pt-[120px] pb-15 md:pt-28 md:pb-10 lg:pt-32 lg:pb-12'
       }`}
       aria-labelledby="success-stories-heading"
