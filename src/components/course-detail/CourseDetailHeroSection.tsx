@@ -145,7 +145,7 @@ export default function CourseDetailHeroSection({
   return (
     <section
       ref={sectionRef}
-      className="full-bleed relative overflow-x-clip overflow-y-visible bg-[#F5F6F8] pb-6 pt-8 md:overflow-visible md:pb-0 md:pt-10 lg:min-h-[782px]"
+      className="full-bleed relative overflow-x-clip overflow-y-visible bg-[#F5F6F8] max-md:pt-10 pb-0 md:overflow-visible md:pb-0 md:pt-10 lg:min-h-[782px]"
       aria-labelledby="course-hero-heading"
     >
       <div

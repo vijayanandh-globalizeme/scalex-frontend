@@ -126,7 +126,7 @@ function ExpertCtaFullBleed({ content, headingId }: { content: ExpertCtaContent;
 
   return (
     <section
-      className="category-expert-heading full-bleed relative z-20 overflow-visible bg-[#0D0D0D] pt-15 pb-15"
+      className="category-expert-heading full-bleed relative z-20 overflow-visible bg-[#0D0D0D] max-md:pt-15 pb-15"
       aria-labelledby={headingId}
     >
       <div className="site-container relative overflow-visible">

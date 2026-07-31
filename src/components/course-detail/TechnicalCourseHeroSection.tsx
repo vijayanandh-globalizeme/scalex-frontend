@@ -336,7 +336,7 @@ export default function TechnicalCourseHeroSection(course: TechnicalCourseConten
   return (
     <section
       ref={sectionRef}
-      className="full-bleed relative overflow-x-clip overflow-y-visible bg-[#F5F6F8] pb-0 pt-8 md:pt-10"
+      className="full-bleed relative overflow-x-clip overflow-y-visible bg-[#F5F6F8] max-md:pt-10 pb-0 md:pt-10"
       aria-labelledby="technical-course-hero-heading"
     >
       <div

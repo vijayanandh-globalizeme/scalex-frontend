@@ -14,7 +14,7 @@ export default function AboutHero() {
   useGsapScrollReveal(heroRef, heroImagesRef, { y: 50, duration: 1.4, delay: 0.3, start: 'top 95%' });
 
   return (
-    <section ref={heroRef} className="full-bleed relative overflow-x-clip overflow-y-visible pb-0 pt-10 md:pb-12">
+    <section ref={heroRef} className="full-bleed relative overflow-x-clip overflow-y-visible max-md:pt-10 pb-15 md:pb-12 md:pt-10">
       <div className="site-container relative z-10">
         {/* Breadcrumb */}
         <nav className="mb-6 flex items-center gap-2 text-sm text-muted md:mb-10" aria-label="Breadcrumb">

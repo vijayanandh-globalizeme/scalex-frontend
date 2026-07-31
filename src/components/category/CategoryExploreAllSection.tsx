@@ -135,7 +135,7 @@ export default function CategoryExploreAllSection({ excludeId }: { excludeId?: s
 
   return (
     <section
-      className="full-bleed overflow-visible bg-surface pb-6 pt-6 md:pb-8 md:pt-16"
+      className="full-bleed overflow-visible bg-surface pb-0 max-md:pt-15 md:pb-8 md:pt-16"
       aria-labelledby="explore-categories-heading"
     >
       <div className="site-container">

@@ -40,7 +40,7 @@ export default function ContactPageClient({
   return (
     <>
       {/* Hero Banner */}
-      <section ref={heroRef} className="full-bleed relative overflow-x-clip overflow-y-visible pt-10 pb-10 md:pb-20 lg:pb-24">
+      <section ref={heroRef} className="full-bleed relative overflow-x-clip overflow-y-visible max-md:pt-10 pb-15 md:pb-20 md:pt-10 lg:pb-24">
         {/* Decorative background — pink gradient (mobile + desktop) */}
         <div className="category-hero-bg pointer-events-none absolute inset-0" aria-hidden />
 
@@ -206,7 +206,7 @@ export default function ContactPageClient({
       </section>
 
       {/* Enquiry Section */}
-      <section className="full-bleed bg-[#F5F6F8] pt-6 pb-14 md:py-20">
+      <section className="full-bleed bg-[#F5F6F8] pb-15 pt-0 md:py-20">
         <div className="site-container">
           <div className="mb-10 text-center">
             <h2 style={{ color: '#1E293B', fontFamily: 'Inter', fontSize: '32px', fontWeight: 700, lineHeight: '1.2' }}>

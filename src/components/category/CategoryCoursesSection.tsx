@@ -263,9 +263,9 @@ export default function CategoryCoursesSection({
     <section
       ref={sectionRef}
       id="courses"
-      className={`full-bleed relative z-0 overflow-visible pb-16 md:pb-20 ${
+      className={`full-bleed relative z-0 overflow-visible pb-15 md:pb-20 ${
         mutedBackground ? 'bg-[#F5F6F8]' : 'bg-white'
-      } ${compactTop || mutedBackground ? 'pt-[14px] md:pt-[30px]' : 'pt-12 md:pt-24'} ${className ?? ''}`}
+      } ${compactTop || mutedBackground ? 'md:pt-[30px]' : 'max-md:pt-15 md:pt-24'} ${className ?? ''}`}
       aria-labelledby="category-courses-heading"
     >
       <div className="site-container">

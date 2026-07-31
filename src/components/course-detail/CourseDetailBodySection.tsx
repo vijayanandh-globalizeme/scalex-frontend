@@ -110,10 +110,10 @@ export default async function CourseDetailBodySection({
   const reviewsVideoUrl = reviewVideoUrl ?? settings?.VIDEO_REVIEW_URL ?? reviewsFallback.videoUrl;
 
   return (
-    <section className="full-bleed overflow-visible bg-[#F5F6F8] pb-1 md:pb-0 pt-1" aria-label="Course details">
+    <section className="full-bleed overflow-visible bg-[#F5F6F8] pb-0 pt-0 md:pb-0" aria-label="Course details">
       <CourseDetailStickyNav items={navItems} phone={phone ?? ''} />
 
-      <div className="site-container pb-15 pt-4">
+      <div className="site-container pb-15">
         <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_246px] lg:gap-[80px]">
           <div className="min-w-0 space-y-8 overflow-visible">
             {details?.overview && details.otherDetails ? (

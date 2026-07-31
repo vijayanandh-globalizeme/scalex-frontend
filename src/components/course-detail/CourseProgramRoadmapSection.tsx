@@ -144,7 +144,7 @@ function StageSidebar({ stage, stageNumber }: { stage: ApiRoadmap; stageNumber: 
             {stage.sideTitle}
           </p>
           <p
-            className="mt-2 text-[13px] font-normal leading-[150%] text-[#788593] md:mt-3 md:max-w-[220px] md:text-[14px] [&_a]:text-brand [&_a]:no-underline [&_a]:hover:underline [&_a]:underline-offset-2"
+            className="mt-4 text-[13px] font-normal leading-[150%] text-[#788593] md:mt-3 md:max-w-[220px] md:text-[14px] [&_a]:text-brand [&_a]:no-underline [&_a]:hover:underline [&_a]:underline-offset-2"
             dangerouslySetInnerHTML={{ __html: withNewTabLinks(stage.sideDescription) }}
           />
         </div>

@@ -346,7 +346,7 @@ export default function CategoryRelatedBlogsSection({ categoryId }: { categoryId
   const showControls = !loading && !pageFetching && !isEmpty && !isMobile && totalPages > 1;
 
   return (
-    <section className="full-bleed overflow-visible bg-surface pb-8 md:pb-10" aria-labelledby="related-blogs-heading">
+    <section className="full-bleed overflow-visible bg-surface pb-0 md:pb-10" aria-labelledby="related-blogs-heading">
       <div className="site-container">
         <header className="mx-auto w-full text-center">
           <h2

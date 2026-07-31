@@ -68,7 +68,7 @@ function TrendingBlogsSection({ blogs }: { blogs: TrendingBlogCardData[] }) {
   const next = () => setIndex((i) => Math.min(maxIndex, i + 1));
 
   return (
-    <section className="full-bleed bg-[#F5F6F8] pb-12 md:pb-16">
+    <section className="full-bleed bg-[#F5F6F8] pb-15 md:pb-16">
       <div className="site-container">
         {/* Header */}
         <div className="mb-4 text-center md:mb-10">
@@ -143,15 +143,15 @@ function BlogShareCard({ onWhatsApp, onInstagram, onFacebook, onTwitter }: BlogS
   return (
     <div className="rounded-2xl border border-zinc-100 bg-white p-4 shadow-sm">
       <p className="text-[14px] font-bold text-heading mb-4">Share This Article</p>
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between [&_svg]:size-11 lg:[&_svg]:size-8">
         <button type="button" onClick={onWhatsApp} className="hover:scale-110 transition-transform" aria-label="Share on WhatsApp">
-          <svg width="32" height="32" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
             <circle cx="22" cy="22" r="22" fill="#25D366"/>
             <path d="M30.5 13.5A11.9 11.9 0 0022 10C15.37 10 10 15.37 10 22c0 2.12.56 4.18 1.62 6L10 34l6.18-1.6A12 12 0 0022 34c6.63 0 12-5.37 12-12 0-3.2-1.25-6.22-3.5-8.5zm-8.5 18.4a9.93 9.93 0 01-5.07-1.38l-.36-.22-3.74.98 1-3.65-.24-.38A9.94 9.94 0 0112 22c0-5.52 4.48-10 10-10s10 4.48 10 10-4.48 10-10 10zm5.48-7.48c-.3-.15-1.77-.87-2.04-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.49-1.76-1.66-2.06-.17-.3-.02-.46.13-.6.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.67-1.62-.92-2.22-.24-.58-.49-.5-.67-.51-.17-.01-.37-.01-.57-.01-.2 0-.52.07-.8.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.88 1.21 3.07c.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.7.63.71.23 1.36.2 1.87.12.57-.09 1.76-.72 2.01-1.41.25-.7.25-1.29.17-1.41-.07-.12-.27-.2-.57-.35z" fill="white"/>
           </svg>
         </button>
         <button type="button" onClick={handleInstagramClick} className="relative hover:scale-110 transition-transform" aria-label="Copy link to share on Instagram">
-          <svg width="32" height="32" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
             <circle cx="22" cy="22" r="22" fill={`url(#${igGradId})`}/>
             <defs>
               <radialGradient id={igGradId} cx="30%" cy="107%" r="150%">
@@ -173,13 +173,13 @@ function BlogShareCard({ onWhatsApp, onInstagram, onFacebook, onTwitter }: BlogS
           ) : null}
         </button>
         <button type="button" onClick={onFacebook} className="hover:scale-110 transition-transform" aria-label="Share on Facebook">
-          <svg width="32" height="32" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
             <circle cx="22" cy="22" r="22" fill="#1877F2"/>
             <path d="M28 14h-3a5 5 0 00-5 5v3h-3v4h3v8h4v-8h3l1-4h-4v-3a1 1 0 011-1h3v-4z" fill="white"/>
           </svg>
         </button>
         <button type="button" onClick={onTwitter} className="hover:scale-110 transition-transform" aria-label="Share on X">
-          <svg width="32" height="32" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
             <circle cx="22" cy="22" r="22" fill="#0F0F0F"/>
             <path d="M24.2 20.7L31 13h-1.6l-5.9 6.8L18.8 13H13l7.1 10.3L13 31h1.6l6.2-7.2 5 7.2H32L24.2 20.7zm-2.2 2.6l-.7-1L15.2 14.2h2.4l4.6 6.6.7 1 6 8.6h-2.4l-4.5-6.6-.02-.03z" fill="white"/>
           </svg>
@@ -392,12 +392,12 @@ export default function BlogDetailPage() {
     <>
       {/* ── Hero ─────────────────────────────────────────────────────────────── */}
       <section
-        className="full-bleed relative"
+        className="full-bleed relative max-md:pt-10 pb-15"
         style={{
           background: 'linear-gradient(83deg, #0D0D0D -37.91%, #161A26 28%, #FF002C 212.06%)',
         }}
       >
-        <div className="site-container relative z-10 pt-10 pb-20">
+        <div className="site-container relative z-10">
           {/* Breadcrumb */}
           <nav className="mb-6 flex items-center gap-2 text-[13px] text-white/60">
             <Link href="/" className="text-white/60 transition-colors hover:text-white" aria-label="Home">
@@ -510,7 +510,7 @@ export default function BlogDetailPage() {
       </section>
 
       {/* ── Three-column layout ───────────────────────────────────────────────── */}
-      <section className="full-bleed py-12 md:py-16" style={{ background: '#F5F6F8' }}>
+      <section className="full-bleed max-md:pt-15 pb-15 md:py-16" style={{ background: '#F5F6F8' }}>
         <div className="site-container">
           <div className="flex flex-col gap-8 lg:flex-row lg:gap-6">
 
