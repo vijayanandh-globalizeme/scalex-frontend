@@ -262,6 +262,27 @@ body {
     );
   }
 
+  /* Blog detail — readable body copy; never break words mid-letter */
+  .blog-article-content {
+    word-break: normal;
+    overflow-wrap: normal;
+    hyphens: manual;
+  }
+
+  .blog-article-content p,
+  .blog-article-content li,
+  .blog-article-content h2,
+  .blog-article-content h3 {
+    word-break: normal;
+    overflow-wrap: normal;
+    hyphens: manual;
+  }
+
+  .blog-article-content a {
+    word-break: normal;
+    overflow-wrap: normal;
+  }
+
   /* Blog detail — red accent under main section titles (h2) */
   .blog-article-content h2 {
     position: relative;

@@ -36,18 +36,7 @@ function tocAnchorId(label: string) {
     .replace(/^-|-$/g, '');
 }
 
-// Admin content is sometimes authored with &nbsp; between every word (copy-pasted
-// from a fixed-width source). &nbsp; is a non-breaking space that prevents normal
-// word-wrap, so the whole run becomes one "unbreakable word" and overflow-wrap:
-// break-word is forced to split it anywhere — including mid-word.
-function sanitizeBlogContent(html: string) {
-  return html
-    .replace(/&nbsp;/gi, ' ')     // non-breaking spaces → regular spaces
-    .replace(/<br\s*\/?>/gi, ' ') // <br> variants → space
-    .replace(/\r\n|\r|\n/g, ' ')  // raw newlines
-    .replace(/\s{2,}/g, ' ');     // collapse leftover double-spaces
-}
-
+import { sanitizeBlogContent } from '@/lib/sanitizeBlogContent';
 import TrendingBlogCard, { toTrendingBlogCard, type TrendingBlogCardData } from '@/components/blogs/TrendingBlogCard';
 
 function TrendingBlogsSection({ blogs }: { blogs: TrendingBlogCardData[] }) {
@@ -597,8 +586,7 @@ export default function BlogDetailPage() {
               {/* Blog content */}
               <div
                 ref={contentRef}
-                className="blog-article-content max-w-none min-w-0 break-words space-y-4 text-[#46505F] font-medium [&_h2]:mt-6 [&_h2]:mb-3 [&_h2]:text-[26px] [&_h2]:font-bold [&_h2]:leading-[34px] [&_h2]:text-[#1E293B] [&_h3]:mt-5 [&_h3]:text-[18px] [&_h3]:font-bold [&_h3]:text-heading [&_p]:mt-3 [&_p]:text-[15px] [&_p]:leading-[22px] [&_p:first-of-type]:text-[17px] [&_p:first-of-type]:leading-[26px] [&_ul]:mt-3 [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:text-[15px] [&_ul]:leading-[22px] [&_ol]:mt-3 [&_ol]:list-decimal [&_ol]:pl-5 [&_ol]:text-[15px] [&_ol]:leading-[22px] [&_li]:mt-1 [&_li]:text-[15px] [&_li]:leading-[22px] [&_a]:text-brand [&_a]:underline [&_a]:break-all [&_strong]:font-semibold [&_strong]:text-heading [&_table]:mt-4 [&_table]:w-full [&_table]:overflow-hidden [&_table]:rounded-xl [&_table]:border [&_table]:border-zinc-200 [&_th]:bg-[#1A1A2E] [&_th]:px-4 [&_th]:py-3 [&_th]:text-left [&_th]:text-white [&_td]:border-t [&_td]:border-zinc-100 [&_td]:px-4 [&_td]:py-2.5 [&_img]:mt-4 [&_img]:rounded-xl [&_img]:max-w-full [&_pre]:overflow-x-auto [&_pre]:whitespace-pre-wrap [&_code]:break-words"
-                style={{ overflowWrap: 'break-word' }}
+                className="blog-article-content max-w-none min-w-0 break-normal space-y-4 text-[#46505F] font-medium [&_h2]:mt-6 [&_h2]:mb-3 [&_h2]:text-[26px] [&_h2]:font-bold [&_h2]:leading-[34px] [&_h2]:text-[#1E293B] [&_h3]:mt-5 [&_h3]:text-[18px] [&_h3]:font-bold [&_h3]:text-heading [&_p]:mt-3 [&_p]:text-[15px] [&_p]:leading-[22px] [&_p:first-of-type]:text-[17px] [&_p:first-of-type]:leading-[26px] [&_ul]:mt-3 [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:text-[15px] [&_ul]:leading-[22px] [&_ol]:mt-3 [&_ol]:list-decimal [&_ol]:pl-5 [&_ol]:text-[15px] [&_ol]:leading-[22px] [&_li]:mt-1 [&_li]:text-[15px] [&_li]:leading-[22px] [&_a]:text-brand [&_a]:underline [&_a]:break-normal [&_a]:[overflow-wrap:normal] [&_strong]:font-semibold [&_strong]:text-heading [&_table]:mt-4 [&_table]:w-full [&_table]:overflow-hidden [&_table]:rounded-xl [&_table]:border [&_table]:border-zinc-200 [&_th]:bg-[#1A1A2E] [&_th]:px-4 [&_th]:py-3 [&_th]:text-left [&_th]:text-white [&_td]:border-t [&_td]:border-zinc-100 [&_td]:px-4 [&_td]:py-2.5 [&_img]:mt-4 [&_img]:rounded-xl [&_img]:max-w-full [&_pre]:overflow-x-auto [&_pre]:whitespace-pre-wrap [&_code]:break-words"
                 dangerouslySetInnerHTML={{ __html: blog.content?.content ? sanitizeBlogContent(blog.content.content) : '' }}
               />
 
