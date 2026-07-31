@@ -72,7 +72,7 @@ export default async function AboutPage() {
       {/* Who We Are */}
       <section className="full-bleed bg-white max-md:pt-15 pb-0 md:pb-10 md:pt-20">
         <div className="site-container">
-          <div className="mb-12 text-center">
+          <div className="mb-12 mt-12 text-center">
             <h2
               style={{
                 color: '#1E293B',
@@ -131,7 +131,7 @@ export default async function AboutPage() {
       {/* What We Do */}
       <section className="full-bleed bg-white pb-15 pt-0 md:py-10">
         <div className="site-container">
-          <div className="mb-12 text-center">
+          <div className="mb-12 mt-12 text-center">
             <h2
               style={{
                 color: '#1E293B',
