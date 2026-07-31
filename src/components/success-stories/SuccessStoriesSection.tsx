@@ -163,12 +163,16 @@ function TestimonialCardOnly({ story, mobile = false }: { story: Reviewer; mobil
 
   return (
     <article
-      className={`interactive-card flex flex-col overflow-visible border border-[#EBEBEB] bg-white p-5 shadow-[0_4px_4px_0_rgba(30,41,59,0.11),0_4px_4px_0_rgba(30,41,59,0.03)] md:p-6 ${
-        mobile ? 'h-auto w-full gap-4 rounded-lg' : 'h-[280px] rounded-lg'
+      className={`interactive-card flex h-full flex-col overflow-visible border border-[#EBEBEB] bg-white p-5 shadow-[0_4px_4px_0_rgba(30,41,59,0.11),0_4px_4px_0_rgba(30,41,59,0.03)] md:p-6 ${
+        mobile ? 'w-full rounded-lg' : 'rounded-lg'
       }`}
-      style={mobile ? undefined : { width: SLIDE_W, minWidth: SLIDE_W, maxWidth: SLIDE_W, height: SLIDE_H }}
+      style={
+        mobile
+          ? { height: SLIDE_H, minHeight: SLIDE_H }
+          : { width: SLIDE_W, minWidth: SLIDE_W, maxWidth: SLIDE_W, height: SLIDE_H }
+      }
     >
-      <div className={`flex min-h-0 flex-col ${mobile ? '' : 'min-h-0 flex-1'}`}>
+      <div className="flex min-h-0 flex-1 flex-col">
         <p className="text-[13px] leading-[20px] text-body md:text-[14px] md:leading-[22px]">
           {story.review}
         </p>
@@ -309,14 +313,14 @@ export default function SuccessStoriesSection({
       className={`full-bleed relative ${
         compact
           ? 'bg-surface pt-[30px] pb-0'
-          : 'bg-surface pt-16 pb-15 md:pt-28 md:pb-10 lg:pt-32 lg:pb-12'
+          : 'bg-surface pt-[120px] pb-15 md:pt-28 md:pb-10 lg:pt-32 lg:pb-12'
       }`}
       aria-labelledby="success-stories-heading"
     >
       <div className="site-container relative z-10">
         <header
           className={`relative mx-auto w-fit max-w-full text-center ${
-            compact ? 'pt-0' : 'pt-6 md:pt-8 lg:pt-10'
+            compact ? 'pt-0' : 'md:pt-8 lg:pt-10'
           }`}
         >
           <h2
@@ -448,9 +452,9 @@ export default function SuccessStoriesSection({
                 </button>
               </div>
             ) : null}
-            <div ref={mobileViewportRef} className="w-full overflow-x-hidden">
+            <div ref={mobileViewportRef} className="w-full overflow-x-hidden" style={{ height: SLIDE_H }}>
               <div
-                className="flex items-stretch pb-2 transition-transform duration-500 ease-out will-change-transform"
+                className="flex h-full items-stretch pb-2 transition-transform duration-500 ease-out will-change-transform"
                 style={{
                   transform:
                     mobileStepPx > 0
@@ -461,7 +465,7 @@ export default function SuccessStoriesSection({
                 {stories.map((story, storyIndex) => (
                   <div
                     key={story.id}
-                    className="box-border shrink-0 overflow-visible pb-2"
+                    className="box-border flex h-full shrink-0 overflow-visible pb-2"
                     style={
                       mobileSlideWidth > 0
                         ? {
