@@ -5,7 +5,7 @@ import { useEffect, useId, useLayoutEffect, useRef, useState } from 'react';
 import { CategoryCarouselControls } from '@/components/category/CategoryCarouselNav';
 import type { ApiLearner } from '@/services/courseApi';
 import { CAREER_TRANSFORMATIONS_SUBTITLE } from '@/lib/courseDetailStatics';
-import { COURSE_SECTION_CARD } from './courseSectionCard';
+import { COURSE_SECTION_BODY } from './courseSectionCard';
 
 type CareerTransformationStory = {
   id: string;
@@ -91,7 +91,7 @@ function TransformationArrow() {
       viewBox="0 0 39 24"
       fill="none"
       aria-hidden
-      className="mb-6 shrink-0 -translate-y-[10px]"
+      className="mb-4 shrink-0 -translate-y-[6px] scale-90 md:mb-6 md:translate-y-[-10px] md:scale-100"
     >
       <path
         opacity="0.7"
@@ -118,15 +118,19 @@ function TransformationArrow() {
   );
 }
 
-const ROLE_CARD_SIZE = {
-  width: '100px',
-  height: '136px',
-  minWidth: '100px',
-  maxWidth: '100px',
-  minHeight: '136px',
-  maxHeight: '136px',
-  boxSizing: 'border-box' as const,
-};
+function roleCardSurfaceStyle(isAfter: boolean) {
+  const base = {
+    borderRadius: 'var(--Radius-radius-20, 20px)',
+    background: '#FFF',
+    boxShadow:
+      '0 4px 4px 0 rgba(30, 41, 59, 0.08), 0 4px 4px 0 rgba(30, 41, 59, 0.03)',
+    boxSizing: 'border-box' as const,
+  };
+
+  return isAfter
+    ? { ...base, border: '1px solid var(--Primary, #FD022D)' }
+    : { ...base, border: '1px solid #D4D4D4' };
+}
 
 function RoleTransitionCard({
   variant,
@@ -141,41 +145,24 @@ function RoleTransitionCard({
 }) {
   const isAfter = variant === 'after';
 
-  const boxStyle = isAfter
-    ? {
-        ...ROLE_CARD_SIZE,
-        borderRadius: 'var(--Radius-radius-20, 20px)',
-        border: '1px solid var(--Primary, #FD022D)',
-        background: '#FFF',
-        boxShadow:
-          '0 4px 4px 0 rgba(30, 41, 59, 0.08), 0 4px 4px 0 rgba(30, 41, 59, 0.03)',
-      }
-    : {
-        ...ROLE_CARD_SIZE,
-        borderRadius: 'var(--Radius-radius-20, 20px)',
-        border: '1px solid #D4D4D4',
-        background: '#FFF',
-        boxShadow:
-          '0 4px 4px 0 rgba(30, 41, 59, 0.08), 0 4px 4px 0 rgba(30, 41, 59, 0.03)',
-      };
-
   return (
-    <div className="interactive-card box-border flex shrink-0 flex-col items-center px-2 py-3" style={boxStyle}>
+    <div
+      className="interactive-card box-border flex h-[108px] w-[80px] min-h-[108px] max-h-[108px] min-w-[80px] max-w-[80px] shrink-0 flex-col items-center px-1.5 py-2 md:h-[136px] md:w-[100px] md:min-h-[136px] md:max-h-[136px] md:min-w-[100px] md:max-w-[100px] md:px-2 md:py-3"
+      style={roleCardSurfaceStyle(isAfter)}
+    >
       <span
         className={
           isAfter
-            ? 'inline-flex h-[26px] w-[52px] items-center justify-center rounded-[8px] bg-[#E2FFD4] text-[10px] font-medium uppercase leading-[140%] tracking-wide text-[#388E0E]'
-            : 'inline-flex rounded-[8px] bg-[#FFF6F7] px-2 py-0.5 text-[10px] font-medium uppercase leading-[140%] tracking-wide text-[var(--Primary,#FD022D)]'
+            ? 'inline-flex h-[22px] w-[46px] items-center justify-center rounded-[8px] bg-[#E2FFD4] text-[9px] font-medium uppercase leading-[140%] tracking-wide text-[#388E0E] md:h-[26px] md:w-[52px] md:text-[10px]'
+            : 'inline-flex rounded-[8px] bg-[#FFF6F7] px-1.5 py-0.5 text-[9px] font-medium uppercase leading-[140%] tracking-wide text-[var(--Primary,#FD022D)] md:px-2 md:text-[10px]'
         }
       >
         {isAfter ? 'After' : 'Before'}
       </span>
-      <p
-        className="interactive-card-title mt-2 whitespace-pre-line text-center text-[14px] font-medium leading-[140%] text-[#000]"
-      >
+      <p className="interactive-card-title mt-1.5 whitespace-pre-line text-center text-[12px] font-medium leading-[140%] text-[#000] md:mt-2 md:text-[14px]">
         {role}
       </p>
-      <div className="relative mt-auto h-8 w-full pt-2">
+      <div className="relative mt-auto h-6 w-full pt-1 md:h-8 md:pt-2">
         <Image src={logoSrc} alt={logoAlt} fill className="object-contain" sizes="80px" />
       </div>
     </div>
@@ -214,19 +201,10 @@ function StoryPersonImage({ story }: { story: CareerTransformationStory }) {
 function HikeBadge({ hikePercent }: { hikePercent: number }) {
   return (
     <div
-      className="flex shrink-0 items-center justify-center gap-1.5"
-      style={{
-        width: '121px',
-        height: '56px',
-        borderRadius: 'var(--Radius-radius-20, 20px)',
-        border: '1px solid var(--Primary, #FD022D)',
-        background: '#FFF',
-        boxShadow:
-          '0 4px 4px 0 rgba(30, 41, 59, 0.08), 0 4px 4px 0 rgba(30, 41, 59, 0.03)',
-      }}
+      className="flex h-[48px] w-[108px] shrink-0 items-center justify-center gap-1 rounded-[16px] border border-[var(--Primary,#FD022D)] bg-white shadow-[0_4px_4px_0_rgba(30,41,59,0.08),0_4px_4px_0_rgba(30,41,59,0.03)] md:h-[56px] md:w-[121px] md:gap-1.5 md:rounded-[20px]"
     >
       <HikeBadgeIcon />
-      <span className="whitespace-nowrap text-[14px] font-medium leading-[140%] text-[#000]">
+      <span className="whitespace-nowrap text-[12px] font-medium leading-[140%] text-[#000] md:text-[14px]">
         {hikePercent}% Hike
       </span>
     </div>
@@ -236,8 +214,8 @@ function HikeBadge({ hikePercent }: { hikePercent: number }) {
 function TransformationStoryCard({ story }: { story: CareerTransformationStory }) {
   return (
     <article className="relative flex h-full w-full flex-col overflow-visible pt-6">
-      {/* Hike badge */}
-      <div className="pointer-events-none absolute top-[60px] left-1/2 z-30 -translate-x-1/2 max-md:static max-md:pointer-events-auto max-md:mx-auto max-md:mb-4 max-md:translate-x-0 md:left-[155px] md:translate-x-0">
+      {/* Hike badge — sit above the person image, not over the face */}
+      <div className="pointer-events-none absolute top-0 left-1/2 z-[70] -translate-x-1/2 md:top-3 md:left-[155px] md:translate-x-0">
         <HikeBadge hikePercent={story.hikePercent} />
       </div>
 
@@ -258,31 +236,31 @@ function TransformationStoryCard({ story }: { story: CareerTransformationStory }
 
       {/* Card */}
       <div
-        className="interactive-card relative z-0 flex min-h-[210px] w-full flex-1 overflow-visible rounded-[20px] border border-[#DCDCDC]"
+        className="interactive-card relative z-0 mt-[112px] flex min-h-[180px] w-full flex-1 overflow-visible rounded-[16px] border border-[#DCDCDC] md:mt-0 md:min-h-[210px] md:rounded-[20px]"
         style={{ background: 'linear-gradient(259deg, #FFF 64.75%, #FFD3D3 108.27%)' }}
       >
         {/* Person image — mobile */}
-        <div className="pointer-events-none absolute top-0 left-1/2 z-[60] h-[140px] w-[140px] -translate-x-1/2 -translate-y-1/2 md:hidden" aria-hidden>
+        <div className="pointer-events-none absolute top-0 left-1/2 z-[60] h-[110px] w-[110px] -translate-x-1/2 -translate-y-1/2 md:hidden" aria-hidden>
           <Image
             src={story.imageSrc}
             alt={story.imageAlt}
             width={PERSON_IMAGE_WIDTH}
             height={PERSON_IMAGE_HEIGHT}
             className="h-full w-full object-contain object-bottom"
-            sizes="140px"
+            sizes="110px"
           />
         </div>
 
-        <div className="relative z-10 flex w-full min-w-0 max-w-full flex-col gap-6 px-8 py-6 max-md:pt-20 md:grid md:min-h-[210px] md:grid-cols-[minmax(0,1fr)_auto] md:items-center md:gap-6 md:py-7 md:pl-[240px] md:pt-6">
+        <div className="relative z-10 flex w-full min-w-0 max-w-full flex-col gap-4 px-5 py-5 max-md:pt-16 md:grid md:min-h-[210px] md:grid-cols-[minmax(0,1fr)_auto] md:items-center md:gap-6 md:px-8 md:py-7 md:pl-[240px] md:pt-6">
           <div className="min-w-0 md:pl-[66px]">
-            <h3 className="text-[18px] font-bold leading-normal text-[#1E293B] md:text-[20px]">
+            <h3 className="text-[16px] font-bold leading-normal text-[#1E293B] md:text-[20px]">
               {story.name}
             </h3>
-            <p className="mt-3 text-[14px] font-normal leading-[150%] text-[#788593]">{story.quote}</p>
+            <p className="mt-2 text-[13px] font-normal leading-[150%] text-[#788593] md:mt-3 md:text-[14px]">{story.quote}</p>
           </div>
 
-          <div className="flex min-w-0 items-end justify-center gap-1.5 md:justify-end">
-            <div className="translate-y-[26px] shrink-0">
+          <div className="flex min-w-0 items-end justify-center gap-1 md:justify-end md:gap-1.5">
+            <div className="translate-y-[18px] shrink-0 md:translate-y-[26px]">
               <RoleTransitionCard
                 variant="before"
                 role={story.before.role}
@@ -291,7 +269,7 @@ function TransformationStoryCard({ story }: { story: CareerTransformationStory }
               />
             </div>
             <TransformationArrow />
-            <div className="translate-x-[15px] -translate-y-[20px] shrink-0">
+            <div className="translate-x-[10px] -translate-y-[14px] shrink-0 md:translate-x-[15px] md:-translate-y-[20px]">
               <RoleTransitionCard
                 variant="after"
                 role={story.after.role}
@@ -361,7 +339,7 @@ export default function CourseCareerTransformationsSection({
   return (
     <section
       id="career-transformations"
-      className={`relative isolate scroll-mt-[116px] overflow-visible px-6 py-5 md:px-8 md:py-6 ${COURSE_SECTION_CARD}`}
+      className={`relative isolate scroll-mt-[116px] overflow-visible ${COURSE_SECTION_BODY}`}
       aria-labelledby="career-transformations-heading"
     >
       <div className="relative z-40 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">

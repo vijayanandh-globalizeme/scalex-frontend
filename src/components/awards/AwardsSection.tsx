@@ -293,7 +293,7 @@ export default function AwardsSection({
     return (
       <section
         id={id}
-        className={`scroll-mt-[116px] rounded-[20px] bg-transparent py-5 md:py-6 ${className ?? ''}`}
+        className={`scroll-mt-[116px] rounded-[20px] bg-transparent max-md:pt-[28px] max-md:mb-0 max-md:pb-15 md:pt-0 md:pb-6 ${className ?? ''}`}
         aria-labelledby={headingId}
       >
         <div className="flex items-center justify-between gap-4">

@@ -401,7 +401,7 @@ export default function TestimonialsSection({
 
   return (
     <section
-      className="full-bleed relative z-10 overflow-visible bg-[#0D0D0D] max-md:pt-15 pb-15 md:pt-10 md:pb-14 lg:pt-12 lg:pb-16"
+      className="full-bleed relative z-10 overflow-visible bg-[#0D0D0D] max-md:pt-15 pb-0 md:pt-10 md:pb-14 lg:pt-12 lg:pb-16"
       aria-labelledby="stories-heading"
     >
       <StoriesDecorIcon className="pointer-events-none absolute bottom-0 right-0 z-0 h-auto w-[120px] md:w-[160px] lg:w-[188px]" />
@@ -468,7 +468,7 @@ export default function TestimonialsSection({
           </div>
 
           {/* Right: stat badges in a staggered / zig-zag layout */}
-          <div className="flex flex-col items-center gap-7 sm:items-start">
+          <div className="flex flex-col items-center gap-4 sm:gap-7 sm:items-start">
             {stats.map((s, i) => {
               const offset =
                 i === 0

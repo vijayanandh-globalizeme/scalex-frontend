@@ -218,7 +218,7 @@ export default function LegalPageView({
     .replace(/\s{2,}/g, ' ');        // collapse leftover double-spaces
 
   return (
-    <section className="full-bleed bg-[#F5F6F8] pb-16 pt-6">
+    <section className="full-bleed bg-[#F5F6F8] max-md:pt-15 pb-15">
       <div className="site-container">
         {/* Breadcrumb */}
         <nav className="mb-6 flex items-center gap-2 text-sm text-muted" aria-label="Breadcrumb">

@@ -7,7 +7,7 @@ import CourseBrochureCta from './CourseBrochureCta';
 import {
   COURSE_INNER_CARD,
   COURSE_ROW_DIVIDER_FULL,
-  COURSE_SECTION_CARD,
+  COURSE_SECTION_BODY,
   COURSE_TOP_DIVIDER_FULL,
   COURSE_ACCORDION_PANEL,
   COURSE_ACCORDION_PANEL_OPEN,
@@ -72,7 +72,7 @@ export default function CourseContentSection({
   const hasMore  = courseContent.length > DEFAULT_VISIBLE;
 
   return (
-    <div id="course-content" className={`scroll-mt-[116px] ${COURSE_SECTION_CARD} px-6 py-5 md:px-8 md:py-6`}>
+    <div id="course-content" className={`scroll-mt-[116px] ${COURSE_SECTION_BODY}`}>
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <h2 className="section-heading text-heading">{title ?? COURSE_CONTENT_TITLE}</h2>
         {syllabusUrl ? (

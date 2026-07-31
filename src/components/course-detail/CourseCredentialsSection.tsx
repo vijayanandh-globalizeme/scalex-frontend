@@ -5,7 +5,7 @@ import { useState } from 'react';
 import type { ApiCourseDetails, ApiOtherDetail } from '@/services/courseApi';
 import { CREDENTIALS_FEATURES } from '@/lib/courseDetailStatics';
 import { withNewTabLinks } from '@/lib/richText';
-import { COURSE_SECTION_CARD } from './courseSectionCard';
+import { COURSE_SECTION_BODY } from './courseSectionCard';
 
 const TAB_BAR_SCROLL =
   'inline-flex max-w-full h-[48px] items-stretch gap-6 overflow-x-auto rounded-lg bg-[#FCFCFC] px-5 shadow-[0_4px_4px_0_rgba(30,41,59,0.08),4px_-4px_4px_0_rgba(30,41,59,0.03)] [-ms-overflow-style:none] [scrollbar-width:none] md:gap-10 md:px-6 [&::-webkit-scrollbar]:hidden';
@@ -112,7 +112,7 @@ export default function CourseCredentialsSection({
   const imageAlt = activeTab?.title  ?? CREDENTIALS_FEATURES.certificateImageAlt;
 
   return (
-    <div className={`${COURSE_SECTION_CARD} px-6 py-5 md:px-8 md:py-6`}>
+    <div className={COURSE_SECTION_BODY}>
       <h2 className="section-heading text-heading">{credentials.title}</h2>
       <p
         className="mt-2 max-w-[864px] text-[18px] font-medium leading-[140%] text-muted [&_a]:text-brand [&_a]:no-underline [&_a]:hover:underline [&_a]:underline-offset-2"

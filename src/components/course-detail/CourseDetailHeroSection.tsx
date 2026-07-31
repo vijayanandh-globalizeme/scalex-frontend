@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRef } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import CategoryTitleUnderline from '@/components/category/CategoryTitleUnderline';
 import type { CourseDetailContent } from '@/lib/courses';
 import { useGsapScrollRevealStagger } from '@/hooks/useGsapScrollReveal';
@@ -12,6 +12,7 @@ import { ScrollToAnchor } from '@/components/shared';
 import CourseLeadForm from './CourseLeadForm';
 import CourseLicensedPartnerStrip from './CourseLicensedPartnerStrip';
 import { CourseEnterpriseCard } from './CourseEnterpriseSection';
+import { COURSE_ENTERPRISE_HERO_SLOT, COURSE_HERO_FORM_SLOT } from './courseSectionCard';
 
 function HomeIcon({ className }: { className?: string }) {
   return (
@@ -123,20 +124,34 @@ export default function CourseDetailHeroSection({
   const sectionRef = useRef<HTMLElement>(null);
   const rowRefs = useRef<(HTMLDivElement | null)[]>([]);
   const { openBrochureModal } = useCourseBrochureModal();
+  const [isMobileHero, setIsMobileHero] = useState(() => {
+    if (typeof window === 'undefined') return false;
+    return window.matchMedia('(max-width: 767px)').matches;
+  });
 
   rowRefs.current.length = 3;
+
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 767px)');
+    const sync = () => setIsMobileHero(mq.matches);
+    sync();
+    mq.addEventListener('change', sync);
+    return () => mq.removeEventListener('change', sync);
+  }, []);
 
   useGsapScrollRevealStagger(
     sectionRef,
     rowRefs,
-    {
-      y: 48,
-      duration: 1.6,
-      delay: 0.55,
-      ease: 'power2.out',
-      start: 'top 88%',
-    },
-    [],
+    isMobileHero
+      ? { disableAnimation: true }
+      : {
+          y: 48,
+          duration: 1.6,
+          delay: 0.55,
+          ease: 'power2.out',
+          start: 'top 88%',
+        },
+    [isMobileHero],
   );
 
   const isAcsmPage =
@@ -145,7 +160,7 @@ export default function CourseDetailHeroSection({
   return (
     <section
       ref={sectionRef}
-      className="full-bleed relative overflow-x-clip overflow-y-visible bg-[#F5F6F8] pb-6 pt-8 md:overflow-visible md:pb-0 md:pt-10 lg:min-h-[782px]"
+      className="full-bleed relative overflow-x-clip overflow-y-visible bg-[#F5F6F8] max-md:min-h-[900px] max-md:pt-10 max-md:pb-15 pb-0 md:overflow-visible md:pb-0 md:pt-10 lg:min-h-[782px]"
       aria-labelledby="course-hero-heading"
     >
       <div
@@ -187,7 +202,7 @@ export default function CourseDetailHeroSection({
           ))}
         </nav>
 
-        <div className="grid grid-cols-1 items-start gap-y-[50px] lg:grid-cols-[minmax(0,690px)_minmax(0,1fr)] lg:gap-x-8 xl:gap-x-12">
+        <div className="course-detail-hero-grid grid grid-cols-1 items-start max-md:gap-y-8 md:gap-y-8 lg:grid-cols-[minmax(0,690px)_minmax(0,1fr)] lg:gap-x-8 lg:gap-y-0 xl:gap-x-12">
           <div
             ref={(el) => {
               rowRefs.current[0] = el;
@@ -317,10 +332,10 @@ export default function CourseDetailHeroSection({
             ref={(el) => {
               rowRefs.current[1] = el;
             }}
-            className={`gsap-reveal-pending relative mx-auto flex w-full flex-col overflow-visible lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:mx-0 lg:ml-auto ${
+            className={`gsap-reveal-pending ${COURSE_HERO_FORM_SLOT} ${
               slug === 'certified-scrum-master' && categorySlug === 'agile-and-scrum'
-                ? 'max-w-[480px] lg:-translate-x-[10%]'
-                : 'max-w-[528px]'
+                ? 'lg:max-w-[480px] lg:-translate-x-[10%]'
+                : 'lg:max-w-[528px]'
             }`}
           >
             {/* Aero behind form — same as home hero (CSM only) */}
@@ -357,7 +372,7 @@ export default function CourseDetailHeroSection({
             ref={(el) => {
               rowRefs.current[2] = el;
             }}
-            className="gsap-reveal-pending relative z-20 overflow-visible pb-6 lg:mb-[-125px] lg:col-span-2 lg:col-start-1 lg:row-start-2"
+            className={`gsap-reveal-pending overflow-visible ${COURSE_ENTERPRISE_HERO_SLOT}`}
           >
             <CourseEnterpriseCard
               {...enterprise}

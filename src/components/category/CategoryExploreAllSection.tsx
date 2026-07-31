@@ -50,12 +50,15 @@ function ExploreArrowIcon({ className }: { className?: string }) {
   );
 }
 
+const CATEGORY_CARD_SHADOW =
+  'shadow-[0_4px_4px_0_rgba(30,41,59,0.08),0_4px_4px_0_rgba(30,41,59,0.03)] hover:shadow-[0_8px_32px_0_rgba(30,41,59,0.14)]';
+
 function CategoryCard({ item }: { item: ExploreCategoryItem }) {
   return (
     <Link
       href={item.href}
       prefetch
-      className="interactive-card group flex w-full items-center gap-4 rounded-xl border border-zinc-200/90 bg-white p-5"
+      className={`interactive-card group flex w-full items-center gap-4 overflow-visible rounded-xl border border-[#EBEBEB] bg-white p-5 transition-shadow duration-300 ${CATEGORY_CARD_SHADOW}`}
     >
       <CategoryIcon fill={item.iconBg} icon={item.icon} />
       <span className="min-w-0 flex-1">
@@ -135,7 +138,7 @@ export default function CategoryExploreAllSection({ excludeId }: { excludeId?: s
 
   return (
     <section
-      className="full-bleed overflow-visible bg-surface pb-6 pt-6 md:pb-8 md:pt-16"
+      className="full-bleed overflow-visible bg-surface max-md:pt-15 max-md:pb-15 md:pb-8 md:pt-16"
       aria-labelledby="explore-categories-heading"
     >
       <div className="site-container">
@@ -159,11 +162,11 @@ export default function CategoryExploreAllSection({ excludeId }: { excludeId?: s
           </div>
         ) : (
           <div className="mt-6 overflow-visible md:mt-6">
-            <CategoryCarouselTrack page={page} className="px-0.5 pb-2" slideGap={slideGap}>
+            <CategoryCarouselTrack page={page} className="overflow-visible px-2 pb-4 pt-1" slideGap={slideGap}>
               {pages.map((pageItems, pageIndex) => (
                 <div
                   key={pageIndex}
-                  className="grid w-full grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-4 lg:gap-6"
+                  className="grid w-full grid-cols-1 gap-4 p-1 sm:grid-cols-2 sm:gap-5 lg:grid-cols-4 lg:gap-6"
                 >
                   {pageItems.map((item) => (
                     <CategoryCard key={item.id} item={item} />

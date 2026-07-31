@@ -263,9 +263,9 @@ export default function CategoryCoursesSection({
     <section
       ref={sectionRef}
       id="courses"
-      className={`full-bleed relative z-0 overflow-visible pb-16 md:pb-20 ${
+      className={`full-bleed relative z-0 overflow-visible pb-15 md:pb-20 ${
         mutedBackground ? 'bg-[#F5F6F8]' : 'bg-white'
-      } ${compactTop || mutedBackground ? 'pt-[14px] md:pt-[30px]' : 'pt-12 md:pt-24'} ${className ?? ''}`}
+      } ${compactTop || mutedBackground ? 'md:pt-[30px]' : 'max-md:pt-15 md:pt-24'} ${className ?? ''}`}
       aria-labelledby="category-courses-heading"
     >
       <div className="site-container">
@@ -281,7 +281,7 @@ export default function CategoryCoursesSection({
           </p>
         </header>
 
-        <div ref={gridContainerRef} className={`mt-[45px] ${compactTop || mutedBackground ? 'pb-2' : 'pb-4 md:pb-6'}`}>
+        <div ref={gridContainerRef} className={`mt-[45px] ${compactTop || mutedBackground ? 'pb-10' : 'pb-4 md:pb-6'}`}>
           {loading ? (
             <div className="grid grid-cols-1 gap-x-3 gap-y-[30px] md:grid-cols-2 lg:grid-cols-3">
               {Array.from({ length: FETCH_LIMIT }).map((_, i) => (

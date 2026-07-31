@@ -336,7 +336,7 @@ export default function TechnicalCourseHeroSection(course: TechnicalCourseConten
   return (
     <section
       ref={sectionRef}
-      className="full-bleed relative overflow-x-clip overflow-y-visible bg-[#F5F6F8] pb-0 pt-8 md:pt-10"
+      className="full-bleed relative overflow-x-clip overflow-y-visible bg-[#F5F6F8] max-md:pt-10 max-md:pb-15 pb-0 md:pt-10"
       aria-labelledby="technical-course-hero-heading"
     >
       <div
@@ -566,7 +566,7 @@ export default function TechnicalCourseHeroSection(course: TechnicalCourseConten
           </div>
         </div>
 
-        <div className="relative z-20 mt-10 mb-[-42px] md:mt-12">
+        <div className="relative z-20 mt-10 max-md:mb-0 md:mt-12 md:mb-[-42px]">
           <div className="rounded-[20px] border border-[#EBEBEB] bg-white px-6 py-5 shadow-[0_4px_4px_0_rgba(30,41,59,0.11),0_4px_4px_0_rgba(30,41,59,0.03)] md:px-10 md:py-6">
             <p className="mb-5 text-center text-[20px] font-semibold leading-normal">
               <span className="text-[#1E293B]">Our </span>

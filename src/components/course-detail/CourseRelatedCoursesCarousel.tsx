@@ -37,7 +37,7 @@ export default function CourseRelatedCoursesCarousel({
   }, [totalPages]);
 
   return (
-    <div className="mt-[80px] overflow-visible">
+    <div className="mt-[60px] overflow-visible">
       <div className="flex items-center justify-between gap-4">
         {title ? <h2 className="section-heading text-heading">{title}</h2> : <span />}
         {totalPages > 1 ? (
@@ -52,7 +52,7 @@ export default function CourseRelatedCoursesCarousel({
         ) : null}
       </div>
 
-      <CategoryCarouselTrack page={page} className="mt-6 pb-6">
+      <CategoryCarouselTrack page={page} className="mt-6 max-md:pb-0 pb-6">
         {pages.map((pageCourses, pageIndex) => (
           <div
             key={pageIndex}

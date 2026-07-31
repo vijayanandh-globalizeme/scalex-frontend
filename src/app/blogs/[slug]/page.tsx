@@ -3,13 +3,12 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
-import { useState, useEffect, useRef, useId, type FormEvent } from 'react';
+import { useState, useEffect, useRef, useId } from 'react';
 import { GuidanceSection, defaultGuidanceContent } from '@/components/guidance';
-import { sendContact } from '@/app/actions/contactActions';
-import { useLeadSuccess } from '@/components/feedback/LeadSuccessProvider';
-import { useContactFieldErrors, fieldErrorClass } from '@/components/feedback/useContactFieldErrors';
 import CategoryCoursesSection from '@/components/category/CategoryCoursesSection';
+import CourseAssistForm from '@/components/course-detail/CourseAssistForm';
 import { useCourseBrochureModal } from '@/components/course-detail';
+import { sidebar as courseAssistSidebar } from '@/lib/courseSideBar';
 import {
   getBlogByUri,
   getRelatedBlogs,
@@ -37,18 +36,7 @@ function tocAnchorId(label: string) {
     .replace(/^-|-$/g, '');
 }
 
-// Admin content is sometimes authored with &nbsp; between every word (copy-pasted
-// from a fixed-width source). &nbsp; is a non-breaking space that prevents normal
-// word-wrap, so the whole run becomes one "unbreakable word" and overflow-wrap:
-// break-word is forced to split it anywhere — including mid-word.
-function sanitizeBlogContent(html: string) {
-  return html
-    .replace(/&nbsp;/gi, ' ')     // non-breaking spaces → regular spaces
-    .replace(/<br\s*\/?>/gi, ' ') // <br> variants → space
-    .replace(/\r\n|\r|\n/g, ' ')  // raw newlines
-    .replace(/\s{2,}/g, ' ');     // collapse leftover double-spaces
-}
-
+import { sanitizeBlogContent } from '@/lib/sanitizeBlogContent';
 import TrendingBlogCard, { toTrendingBlogCard, type TrendingBlogCardData } from '@/components/blogs/TrendingBlogCard';
 
 function TrendingBlogsSection({ blogs }: { blogs: TrendingBlogCardData[] }) {
@@ -80,7 +68,7 @@ function TrendingBlogsSection({ blogs }: { blogs: TrendingBlogCardData[] }) {
   const next = () => setIndex((i) => Math.min(maxIndex, i + 1));
 
   return (
-    <section className="full-bleed bg-[#F5F6F8] pt-3 pb-12 md:pt-4 md:pb-16">
+    <section className="full-bleed bg-[#F5F6F8] pb-15 md:pb-16">
       <div className="site-container">
         {/* Header */}
         <div className="mb-4 text-center md:mb-10">
@@ -133,122 +121,6 @@ function TrendingBlogsSection({ blogs }: { blogs: TrendingBlogCardData[] }) {
   );
 }
 
-// ─── Blog sidebar lead form ─────────────────────────────────────────────────────
-
-function BlogAssistForm() {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState('');
-  const [purpose, setPurpose] = useState('');
-  const [agreed, setAgreed] = useState(false);
-  const [status, setStatus] = useState<'idle' | 'submitting' | 'error'>('idle');
-  const [errorMessage, setErrorMessage] = useState('');
-  const { showLeadSuccess } = useLeadSuccess();
-  const { fieldErrors, setFieldErrors, clearFieldError } = useContactFieldErrors();
-
-  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    if (status === 'submitting') return;
-    setStatus('submitting');
-    setFieldErrors({});
-    const result = await sendContact({ name, email, phone, purpose });
-    if (result.success) {
-      setStatus('idle');
-      setName('');
-      setEmail('');
-      setPhone('');
-      setPurpose('');
-      showLeadSuccess();
-    } else {
-      setStatus('error');
-      setErrorMessage(result.message);
-      setFieldErrors(result.fieldErrors);
-    }
-  }
-
-  const fieldBaseCls =
-    'w-full rounded-lg border border-zinc-200 px-3 py-2.5 text-[14px] font-normal leading-[18px] tracking-[-0.14px] text-heading focus:border-brand focus:outline-none';
-  const inputCls =
-    `${fieldBaseCls} placeholder:text-[#788593] placeholder:text-[14px] placeholder:font-normal placeholder:leading-[18px] placeholder:tracking-[-0.14px]`;
-  const selectCls = `${fieldBaseCls} bg-white ${purpose ? 'text-heading' : 'text-[#788593]'}`;
-
-  return (
-    <div className="rounded-xl border border-zinc-100 bg-white p-5 shadow-sm">
-      <h3 className="mb-4 text-[16px] font-medium leading-normal text-[#1E293B]">Let us assist you</h3>
-      <form className="space-y-3" onSubmit={handleSubmit}>
-        <div>
-          <input
-            type="text"
-            required
-            placeholder="Full Name"
-            value={name}
-            onChange={(e) => { setName(e.target.value); clearFieldError('name'); }}
-            className={`${inputCls} ${fieldErrorClass(!!fieldErrors.name)}`}
-          />
-          {fieldErrors.name ? <p className="mt-1 text-[11px] font-medium text-brand">{fieldErrors.name}</p> : null}
-        </div>
-        <div>
-          <input
-            type="email"
-            required
-            placeholder="Email ID"
-            value={email}
-            onChange={(e) => { setEmail(e.target.value); clearFieldError('email'); }}
-            className={`${inputCls} ${fieldErrorClass(!!fieldErrors.email)}`}
-          />
-          {fieldErrors.email ? <p className="mt-1 text-[11px] font-medium text-brand">{fieldErrors.email}</p> : null}
-        </div>
-        <div>
-          <input
-            type="tel"
-            required
-            placeholder="Contact Number"
-            value={phone}
-            onChange={(e) => { setPhone(e.target.value); clearFieldError('phone'); }}
-            className={`${inputCls} ${fieldErrorClass(!!fieldErrors.phone)}`}
-          />
-          {fieldErrors.phone ? <p className="mt-1 text-[11px] font-medium text-brand">{fieldErrors.phone}</p> : null}
-        </div>
-        <div>
-          <select
-            required
-            value={purpose}
-            onChange={(e) => { setPurpose(e.target.value); clearFieldError('purpose'); }}
-            className={`${selectCls} ${fieldErrorClass(!!fieldErrors.purpose)}`}
-          >
-            <option value="" disabled>Purpose</option>
-            <option>Course Enquiry</option>
-            <option>Career Guidance</option>
-            <option>Corporate Training</option>
-            <option>Other</option>
-          </select>
-          {fieldErrors.purpose ? <p className="mt-1 text-[11px] font-medium text-brand">{fieldErrors.purpose}</p> : null}
-        </div>
-        <label className="flex items-start gap-2 cursor-pointer">
-          <input type="checkbox" checked={agreed} onChange={(e) => setAgreed(e.target.checked)} className="mt-0.5 accent-brand" />
-          <span className="text-[12px] font-normal leading-[16px] text-[#1E293B]">
-            I agree to ScaleX&apos;s{' '}
-            <Link href="/terms-of-use" target="_blank" rel="noopener noreferrer" className="hover:underline active:underline">
-              Terms &amp; Conditions
-            </Link>{' '}
-            &amp;{' '}
-            <Link href="/privacy-policy" target="_blank" rel="noopener noreferrer" className="hover:underline active:underline">
-              Privacy Policy.
-            </Link>
-          </span>
-        </label>
-        <button type="submit" disabled={!agreed || status === 'submitting'} className="group w-full rounded-lg bg-brand py-2.5 text-[13px] font-semibold text-white hover:bg-brand/90 transition-colors flex items-center justify-center gap-2 disabled:cursor-not-allowed disabled:opacity-60">
-          {status === 'submitting' ? 'Submitting…' : 'Talk To Us'}
-          <svg className="btn-arrow-icon shrink-0" width="14" height="14" viewBox="0 0 18 15" fill="currentColor" aria-hidden><path d="M10.6333 15c.2326 0 .4361-.0891.63-.2771l6.4459-6.5599c.1938-.188.2908-.4156.2908-.663s-.097-.475-.2908-.663L11.2827.2968C11.0694.0792 10.8659 0 10.6333 0c-.475 0-.8434.3562-.8434.851 0 .2375.0775.465.2326.6234l2.1714 2.2559 4.0419 3.7698-4.0419 3.7697-2.1714 2.256c-.1551.1484-.2326.3859-.2326.6233 0 .495.3684.851.8434.851ZM.853 8.3806h12.2617l3.1211-.1979c.3974-.0297.6688-.277.6688-.6827 0-.4057-.2714-.6531-.6688-.6828l-3.1211-.1978H.853C.349 6.6194 0 6.9855 0 7.5c0 .5145.349.8806.853.8806Z"/></svg>
-        </button>
-        {status === 'error' && Object.keys(fieldErrors).length === 0 ? (
-          <p className="text-[12px] font-medium text-brand">{errorMessage || 'Something went wrong. Please try again.'}</p>
-        ) : null}
-      </form>
-    </div>
-  );
-}
-
 // ─── Blog sidebar cards ─────────────────────────────────────────────────────────
 
 type BlogShareHandlers = {
@@ -271,15 +143,15 @@ function BlogShareCard({ onWhatsApp, onInstagram, onFacebook, onTwitter }: BlogS
   return (
     <div className="rounded-2xl border border-zinc-100 bg-white p-4 shadow-sm">
       <p className="text-[14px] font-bold text-heading mb-4">Share This Article</p>
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between [&_svg]:size-11 lg:[&_svg]:size-8">
         <button type="button" onClick={onWhatsApp} className="hover:scale-110 transition-transform" aria-label="Share on WhatsApp">
-          <svg width="32" height="32" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
             <circle cx="22" cy="22" r="22" fill="#25D366"/>
             <path d="M30.5 13.5A11.9 11.9 0 0022 10C15.37 10 10 15.37 10 22c0 2.12.56 4.18 1.62 6L10 34l6.18-1.6A12 12 0 0022 34c6.63 0 12-5.37 12-12 0-3.2-1.25-6.22-3.5-8.5zm-8.5 18.4a9.93 9.93 0 01-5.07-1.38l-.36-.22-3.74.98 1-3.65-.24-.38A9.94 9.94 0 0112 22c0-5.52 4.48-10 10-10s10 4.48 10 10-4.48 10-10 10zm5.48-7.48c-.3-.15-1.77-.87-2.04-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.49-1.76-1.66-2.06-.17-.3-.02-.46.13-.6.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.67-1.62-.92-2.22-.24-.58-.49-.5-.67-.51-.17-.01-.37-.01-.57-.01-.2 0-.52.07-.8.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.88 1.21 3.07c.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.7.63.71.23 1.36.2 1.87.12.57-.09 1.76-.72 2.01-1.41.25-.7.25-1.29.17-1.41-.07-.12-.27-.2-.57-.35z" fill="white"/>
           </svg>
         </button>
         <button type="button" onClick={handleInstagramClick} className="relative hover:scale-110 transition-transform" aria-label="Copy link to share on Instagram">
-          <svg width="32" height="32" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
             <circle cx="22" cy="22" r="22" fill={`url(#${igGradId})`}/>
             <defs>
               <radialGradient id={igGradId} cx="30%" cy="107%" r="150%">
@@ -301,13 +173,13 @@ function BlogShareCard({ onWhatsApp, onInstagram, onFacebook, onTwitter }: BlogS
           ) : null}
         </button>
         <button type="button" onClick={onFacebook} className="hover:scale-110 transition-transform" aria-label="Share on Facebook">
-          <svg width="32" height="32" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
             <circle cx="22" cy="22" r="22" fill="#1877F2"/>
             <path d="M28 14h-3a5 5 0 00-5 5v3h-3v4h3v8h4v-8h3l1-4h-4v-3a1 1 0 011-1h3v-4z" fill="white"/>
           </svg>
         </button>
         <button type="button" onClick={onTwitter} className="hover:scale-110 transition-transform" aria-label="Share on X">
-          <svg width="32" height="32" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
             <circle cx="22" cy="22" r="22" fill="#0F0F0F"/>
             <path d="M24.2 20.7L31 13h-1.6l-5.9 6.8L18.8 13H13l7.1 10.3L13 31h1.6l6.2-7.2 5 7.2H32L24.2 20.7zm-2.2 2.6l-.7-1L15.2 14.2h2.4l4.6 6.6.7 1 6 8.6h-2.4l-4.5-6.6-.02-.03z" fill="white"/>
           </svg>
@@ -520,12 +392,12 @@ export default function BlogDetailPage() {
     <>
       {/* ── Hero ─────────────────────────────────────────────────────────────── */}
       <section
-        className="full-bleed relative"
+        className="full-bleed relative max-md:pt-10 pb-15"
         style={{
           background: 'linear-gradient(83deg, #0D0D0D -37.91%, #161A26 28%, #FF002C 212.06%)',
         }}
       >
-        <div className="site-container relative z-10 py-10 md:py-14">
+        <div className="site-container relative z-10">
           {/* Breadcrumb */}
           <nav className="mb-6 flex items-center gap-2 text-[13px] text-white/60">
             <Link href="/" className="text-white/60 transition-colors hover:text-white" aria-label="Home">
@@ -638,7 +510,7 @@ export default function BlogDetailPage() {
       </section>
 
       {/* ── Three-column layout ───────────────────────────────────────────────── */}
-      <section className="full-bleed py-12 md:py-16" style={{ background: '#F5F6F8' }}>
+      <section className="full-bleed max-md:pt-15 pb-15 md:py-16" style={{ background: '#F5F6F8' }}>
         <div className="site-container">
           <div className="flex flex-col gap-8 lg:flex-row lg:gap-6">
 
@@ -714,8 +586,7 @@ export default function BlogDetailPage() {
               {/* Blog content */}
               <div
                 ref={contentRef}
-                className="blog-article-content max-w-none min-w-0 break-words space-y-4 text-[#46505F] font-medium [&_h2]:mt-6 [&_h2]:mb-3 [&_h2]:text-[26px] [&_h2]:font-bold [&_h2]:leading-[34px] [&_h2]:text-[#1E293B] [&_h3]:mt-5 [&_h3]:text-[18px] [&_h3]:font-bold [&_h3]:text-heading [&_p]:mt-3 [&_p]:text-[15px] [&_p]:leading-[22px] [&_p:first-of-type]:text-[17px] [&_p:first-of-type]:leading-[26px] [&_ul]:mt-3 [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:text-[15px] [&_ul]:leading-[22px] [&_ol]:mt-3 [&_ol]:list-decimal [&_ol]:pl-5 [&_ol]:text-[15px] [&_ol]:leading-[22px] [&_li]:mt-1 [&_li]:text-[15px] [&_li]:leading-[22px] [&_a]:text-brand [&_a]:underline [&_a]:break-all [&_strong]:font-semibold [&_strong]:text-heading [&_table]:mt-4 [&_table]:w-full [&_table]:overflow-hidden [&_table]:rounded-xl [&_table]:border [&_table]:border-zinc-200 [&_th]:bg-[#1A1A2E] [&_th]:px-4 [&_th]:py-3 [&_th]:text-left [&_th]:text-white [&_td]:border-t [&_td]:border-zinc-100 [&_td]:px-4 [&_td]:py-2.5 [&_img]:mt-4 [&_img]:rounded-xl [&_img]:max-w-full [&_pre]:overflow-x-auto [&_pre]:whitespace-pre-wrap [&_code]:break-words"
-                style={{ overflowWrap: 'break-word' }}
+                className="blog-article-content max-w-none min-w-0 break-normal space-y-4 text-[#46505F] font-medium [&_h2]:mt-6 [&_h2]:mb-3 [&_h2]:text-[26px] [&_h2]:font-bold [&_h2]:leading-[34px] [&_h2]:text-[#1E293B] [&_h3]:mt-5 [&_h3]:text-[18px] [&_h3]:font-bold [&_h3]:text-heading [&_p]:mt-3 [&_p]:text-[15px] [&_p]:leading-[22px] [&_p:first-of-type]:text-[17px] [&_p:first-of-type]:leading-[26px] [&_ul]:mt-3 [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:text-[15px] [&_ul]:leading-[22px] [&_ol]:mt-3 [&_ol]:list-decimal [&_ol]:pl-5 [&_ol]:text-[15px] [&_ol]:leading-[22px] [&_li]:mt-1 [&_li]:text-[15px] [&_li]:leading-[22px] [&_a]:text-brand [&_a]:underline [&_a]:break-normal [&_a]:[overflow-wrap:normal] [&_strong]:font-semibold [&_strong]:text-heading [&_table]:mt-4 [&_table]:w-full [&_table]:overflow-hidden [&_table]:rounded-xl [&_table]:border [&_table]:border-zinc-200 [&_th]:bg-[#1A1A2E] [&_th]:px-4 [&_th]:py-3 [&_th]:text-left [&_th]:text-white [&_td]:border-t [&_td]:border-zinc-100 [&_td]:px-4 [&_td]:py-2.5 [&_img]:mt-4 [&_img]:rounded-xl [&_img]:max-w-full [&_pre]:overflow-x-auto [&_pre]:whitespace-pre-wrap [&_code]:break-words"
                 dangerouslySetInnerHTML={{ __html: blog.content?.content ? sanitizeBlogContent(blog.content.content) : '' }}
               />
 
@@ -763,10 +634,17 @@ export default function BlogDetailPage() {
             </article>
 
             {/* ── RIGHT SIDEBAR ─────────────────────────────────────────────────── */}
-            <aside className="hidden lg:block lg:w-[240px] shrink-0">
+            <aside className="hidden lg:block lg:w-[246px] shrink-0">
               <div className="sticky top-24 space-y-5">
-                {/* Lead form */}
-                <BlogAssistForm />
+                <CourseAssistForm
+                  config={{
+                    assistTitle: courseAssistSidebar.assistTitle,
+                    purposes: courseAssistSidebar.purposes,
+                    termsHref: courseAssistSidebar.termsHref,
+                    privacyHref: courseAssistSidebar.privacyHref,
+                    ctaLabel: courseAssistSidebar.ctaLabel,
+                  }}
+                />
 
                 {/* Course card */}
                 <div className="relative overflow-hidden p-5" style={{ width: '246px', height: '180px', borderRadius: '20px', border: '1px solid #EBEBEB', background: '#0D0D0D', boxShadow: '0 4px 4px 0 rgba(30, 41, 59, 0.08), 0 4px 4px 0 rgba(30, 41, 59, 0.03)' }}>

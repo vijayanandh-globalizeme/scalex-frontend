@@ -41,6 +41,11 @@ function CallIcon({ className }: { className?: string }) {
   );
 }
 
+function getVisibleNavItems(items: readonly CourseNavItem[]) {
+  const visible = items.filter((item) => document.getElementById(getNavTargetId(item)));
+  return visible.length > 0 ? visible : items;
+}
+
 export default function CourseDetailStickyNav({
   items,
   phone,
@@ -48,10 +53,17 @@ export default function CourseDetailStickyNav({
   items: readonly CourseNavItem[];
   phone: string;
 }) {
+  const [visibleItems, setVisibleItems] = useState(items);
   const [activeId, setActiveId] = useState(items[0]?.id ?? 'overview');
   const pendingScrollIdRef = useRef<string | null>(null);
   const scrollIdleTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const navScrollRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const next = getVisibleNavItems(items);
+    setVisibleItems(next);
+    setActiveId((current) => (next.some((item) => item.id === current) ? current : next[0]?.id ?? current));
+  }, [items]);
 
   useEffect(() => {
     const stickyOffset = HEADER_HEIGHT_PX + NAV_HEIGHT_PX;
@@ -89,7 +101,7 @@ export default function CourseDetailStickyNav({
 
       const scrollLine = window.scrollY + stickyOffset + 2;
 
-      const sections = items
+      const sections = visibleItems
         .map((item) => ({ item, top: getSectionTop(item) }))
         .filter((entry): entry is { item: CourseNavItem; top: number } => entry.top !== null)
         .sort((a, b) => a.top - b.top);
@@ -141,7 +153,7 @@ export default function CourseDetailStickyNav({
       window.removeEventListener('resize', updateActiveFromScroll);
       window.removeEventListener('scrollend', releasePendingScroll);
     };
-  }, [items]);
+  }, [visibleItems]);
 
   function scrollToSection(item: CourseNavItem) {
     const targetId = getNavTargetId(item);
@@ -161,11 +173,11 @@ export default function CourseDetailStickyNav({
   }
 
   return (
-    <nav className="sticky top-16 z-40 mb-12" aria-label="Course sections">
+    <nav className="sticky top-16 z-40 max-md:mb-8 mb-12" aria-label="Course sections">
       <div className="full-bleed bg-[#fcfcfc] shadow-[0_4px_4px_0_rgba(30,41,59,0.08),4px_-4px_4px_0_rgba(30,41,59,0.03)]">
         <div className="site-container">
           <div ref={navScrollRef} className="flex h-[52px] w-full items-stretch gap-6 overflow-x-auto [-ms-overflow-style:none] [scrollbar-width:none] lg:justify-between lg:gap-0 [&::-webkit-scrollbar]:hidden">
-            {items.map((item) => {
+            {visibleItems.map((item) => {
               const isActive = activeId === item.id;
 
               return (

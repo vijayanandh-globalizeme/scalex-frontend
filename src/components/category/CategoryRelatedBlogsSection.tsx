@@ -15,7 +15,7 @@ const DEFAULT_BLOG_IMAGE = '/images/course/course-1.png';
 const BLOG_CARD_WIDTH = 'max-w-[412px] w-full';
 const BLOG_IMAGE_H = 170;
 const BLOG_IMAGE_OVERFLOW_PX = Math.round(BLOG_IMAGE_H * 0.1);
-const MOBILE_BLOG_IMAGE_H = 100;
+const MOBILE_BLOG_IMAGE_H = 170;
 const MOBILE_BLOG_IMAGE_OVERFLOW_PX = Math.round(MOBILE_BLOG_IMAGE_H * 0.1);
 const SOLID_CARD_HEIGHT = 'min-h-[196px]';
 type BlogVariant = 'default' | 'solid-red' | 'solid-tan' | 'solid-teal';
@@ -112,9 +112,9 @@ function WhiteBlogCard({ blog, mobile = false }: { blog: BlogItem; mobile?: bool
   const widthClass = mobile ? 'w-full' : BLOG_CARD_WIDTH;
 
   return (
-    <article className={`overflow-visible ${widthClass}`}>
+    <article className={`${mobile ? 'overflow-hidden' : 'overflow-visible'} ${widthClass}`}>
       <div
-        className={`interactive-card flex flex-col overflow-visible rounded-2xl border border-zinc-100 bg-white pt-0 ${
+        className={`interactive-card flex flex-col overflow-hidden rounded-2xl border border-zinc-100 bg-white pt-0 ${
           mobile ? 'px-3 pb-4' : 'px-4 pb-6'
         }`}
       >
@@ -122,7 +122,7 @@ function WhiteBlogCard({ blog, mobile = false }: { blog: BlogItem; mobile?: bool
           className={`interactive-card-media relative z-10 w-full overflow-hidden rounded-2xl ${mobile ? 'mb-3' : 'mb-4'}`}
           style={{
             height: imageH,
-            marginTop: -imageOverflow,
+            ...(mobile ? {} : { marginTop: -imageOverflow }),
           }}
         >
           <Image
@@ -202,10 +202,10 @@ function ViewMoreChevronIcon({ className }: { className?: string }) {
 
 function BlogMobileGrid({ items }: { items: BlogItem[] }) {
   return (
-    <div className="grid grid-cols-1 gap-4 overflow-visible">
+    <div className="grid grid-cols-1 gap-4 overflow-hidden">
       {items.map((blog) => (
-        <div key={blog.id} className="min-w-0 overflow-visible">
-          <BlogCard blog={blog} />
+        <div key={blog.id} className="min-w-0 overflow-hidden">
+          <BlogCard blog={blog} mobile />
         </div>
       ))}
     </div>
@@ -255,11 +255,11 @@ function SkeletonCard({ mobile = false }: { mobile?: boolean }) {
   const imageOverflow = mobile ? MOBILE_BLOG_IMAGE_OVERFLOW_PX : BLOG_IMAGE_OVERFLOW_PX;
 
   return (
-    <div className="animate-pulse overflow-visible">
-      <div className={`overflow-visible rounded-2xl bg-surface-raised pt-0 ${mobile ? 'px-3 pb-4' : 'px-4 pb-6'}`}>
+    <div className={`animate-pulse ${mobile ? 'overflow-hidden' : 'overflow-visible'}`}>
+      <div className={`overflow-hidden rounded-2xl bg-surface-raised pt-0 ${mobile ? 'px-3 pb-4' : 'px-4 pb-6'}`}>
         <div
           className={`mb-4 w-full rounded-2xl bg-muted/20 ${mobile ? 'mb-3' : ''}`}
-          style={{ height: imageH, marginTop: -imageOverflow }}
+          style={{ height: imageH, ...(mobile ? {} : { marginTop: -imageOverflow }) }}
         />
         <div className="h-4 w-4/5 rounded bg-muted/20" />
         <div className="h-4 w-2/3 rounded bg-muted/20" />
@@ -346,7 +346,7 @@ export default function CategoryRelatedBlogsSection({ categoryId }: { categoryId
   const showControls = !loading && !pageFetching && !isEmpty && !isMobile && totalPages > 1;
 
   return (
-    <section className="full-bleed overflow-visible bg-surface pb-8 md:pb-10" aria-labelledby="related-blogs-heading">
+    <section className="full-bleed max-md:overflow-hidden bg-surface max-md:pt-15 pb-0 md:overflow-visible md:pb-10" aria-labelledby="related-blogs-heading">
       <div className="site-container">
         <header className="mx-auto w-full text-center">
           <h2
@@ -355,14 +355,14 @@ export default function CategoryRelatedBlogsSection({ categoryId }: { categoryId
           >
             Related Blogs
           </h2>
-          <p className="mt-3 whitespace-nowrap text-center text-[16px] font-medium leading-[140%] text-muted md:text-[18px]">
+          <p className="mt-3 text-center text-[16px] font-medium leading-[140%] break-words text-muted md:text-[18px]">
             Go deeper into specialized topics with our latest blog posts, designed to help you navigate your career path with confidence.
           </p>
         </header>
 
         <div
-          className="mt-6 overflow-visible md:mt-8"
-          style={{ paddingTop: BLOG_IMAGE_OVERFLOW_PX }}
+          className="mt-6 md:mt-8"
+          style={{ paddingTop: isMobile ? 0 : BLOG_IMAGE_OVERFLOW_PX }}
         >
           {loading && currentItems.length === 0 ? (
             isMobile ? (

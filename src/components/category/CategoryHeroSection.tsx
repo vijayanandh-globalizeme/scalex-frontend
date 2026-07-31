@@ -285,8 +285,8 @@ export default function CategoryHeroSection({
 
   return (
     <section
-      className={`full-bleed relative overflow-visible bg-[#F5F6F8] pt-6 md:pt-8 ${
-        mediaVariant === 'photo' ? 'pb-16 md:pb-20 lg:min-h-[625px]' : 'pb-2'
+      className={`full-bleed relative overflow-visible bg-[#F5F6F8] max-md:pt-10 pb-0 md:pt-8 ${
+        mediaVariant === 'photo' ? 'md:pb-20 lg:min-h-[625px]' : 'pb-2 md:pb-2'
       }`}
       aria-labelledby="category-hero-heading"
     >
@@ -369,6 +369,7 @@ export default function CategoryHeroSection({
               badges={heroBadges}
               variant={mediaVariant}
               disableGsap
+              className={mediaVariant === 'photo' ? 'max-md:pb-[30px]' : undefined}
             />
             {mediaVariant === 'photo' && (
               <div className="mt-6 flex justify-center">
