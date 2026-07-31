@@ -281,7 +281,7 @@ export default function CategoryCoursesSection({
           </p>
         </header>
 
-        <div ref={gridContainerRef} className={`mt-[45px] ${compactTop || mutedBackground ? 'pb-2' : 'pb-4 md:pb-6'}`}>
+        <div ref={gridContainerRef} className={`mt-[45px] ${compactTop ? 'pb-10' : mutedBackground ? 'pb-2' : 'pb-4 md:pb-6'}`}>
           {loading ? (
             <div className="grid grid-cols-1 gap-x-3 gap-y-[30px] md:grid-cols-2 lg:grid-cols-3">
               {Array.from({ length: FETCH_LIMIT }).map((_, i) => (
