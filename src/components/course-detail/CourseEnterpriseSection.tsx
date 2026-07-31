@@ -84,14 +84,16 @@ export function CourseEnterpriseCard({
   );
 }
 
-/** Spacer below hero — matches category courses section top padding for overlapping card. */
+/** Spacer below hero — reserves room for the overlapping enterprise card (desktop). */
 export default function CourseEnterpriseSection({ compact = false }: { compact?: boolean }) {
   return (
     <section
-      className={`full-bleed relative z-0 overflow-visible bg-[#F5F6F8] pb-0 md:pb-12 ${
-        compact ? 'md:pt-14' : 'md:pt-20'
+      className={`full-bleed relative z-0 overflow-visible bg-[#F5F6F8] pb-0 md:pb-12 lg:pt-0 ${
+        compact ? 'pt-14' : 'pt-20'
       }`}
       aria-hidden
-    />
+    >
+      <div className="site-container hidden lg:block lg:pt-20" aria-hidden />
+    </section>
   );
 }
