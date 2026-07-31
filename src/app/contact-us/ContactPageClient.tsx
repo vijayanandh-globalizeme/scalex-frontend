@@ -206,7 +206,7 @@ export default function ContactPageClient({
       </section>
 
       {/* Enquiry Section */}
-      <section className="full-bleed bg-[#F5F6F8] pb-15 pt-0 md:py-20">
+      <section className="full-bleed bg-[#F5F6F8] pb-15 max-md:pt-15 md:py-20">
         <div className="site-container">
           <div className="mb-10 text-center">
             <h2 style={{ color: '#1E293B', fontFamily: 'Inter', fontSize: '32px', fontWeight: 700, lineHeight: '1.2' }}>
