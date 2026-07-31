@@ -355,7 +355,7 @@ export default function CategoryRelatedBlogsSection({ categoryId }: { categoryId
           >
             Related Blogs
           </h2>
-          <p className="mt-3 whitespace-nowrap text-center text-[16px] font-medium leading-[140%] text-muted md:text-[18px]">
+          <p className="mt-3 text-center text-[16px] font-medium leading-[140%] break-words text-muted md:text-[18px]">
             Go deeper into specialized topics with our latest blog posts, designed to help you navigate your career path with confidence.
           </p>
         </header>

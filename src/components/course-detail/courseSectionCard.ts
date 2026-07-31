@@ -4,6 +4,17 @@ export const COURSE_SECTION_CARD =
 /** White course body section — card shell + standard padding + mobile bottom spacing. */
 export const COURSE_SECTION_BODY = `${COURSE_SECTION_CARD} px-6 py-5 md:px-8 md:py-6 max-md:mb-15`;
 
+/** Enterprise Training hero card — shared shell; mobile keeps clear gap above/below. */
+export const COURSE_ENTERPRISE_CARD = `${COURSE_SECTION_CARD} max-md:overflow-hidden max-md:pb-15`;
+
+/** Desktop grid slot for enterprise card below course hero form. */
+export const COURSE_ENTERPRISE_HERO_SLOT =
+  'relative z-20 max-md:mt-0 lg:col-span-2 lg:col-start-1 lg:row-start-2 lg:mt-6 lg:mb-[-20px] lg:pb-6';
+
+/** Lead form column in course hero — normal stack on mobile, no overlap. */
+export const COURSE_HERO_FORM_SLOT =
+  'relative mx-auto flex w-full flex-col max-md:mt-0 max-md:max-w-[528px] lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:mx-0 lg:ml-auto';
+
 export const COURSE_INNER_CARD =
   'overflow-hidden rounded-[20px] border border-[#EBEBEB] bg-white shadow-[0_4px_4px_0_rgba(30,41,59,0.08),0_4px_4px_0_rgba(30,41,59,0.03)]';
 

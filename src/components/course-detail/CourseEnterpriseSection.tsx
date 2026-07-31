@@ -5,7 +5,7 @@ import {
   HOME_LOGO_MARQUEE_WRAPPER_CLASS,
 } from '@/components/shared/homeLogoMarquee';
 import type { CoursePartnerLogo } from '@/lib/courses';
-import { COURSE_SECTION_CARD } from './courseSectionCard';
+import { COURSE_ENTERPRISE_CARD } from './courseSectionCard';
 import CourseBrochureCta from './CourseBrochureCta';
 
 export interface CourseEnterpriseCardProps {
@@ -47,7 +47,7 @@ export function CourseEnterpriseCard({
 }: CourseEnterpriseCardProps) {
   return (
     <div
-      className={`relative z-10 flex w-full min-w-0 flex-col overflow-visible ${COURSE_SECTION_CARD} gap-4 px-5 py-6 md:px-[68px] md:py-8`}
+      className={`relative z-10 flex w-full min-w-0 flex-col gap-4 px-5 py-6 md:px-[68px] md:py-8 ${COURSE_ENTERPRISE_CARD}`}
       aria-labelledby="course-enterprise-heading"
     >
       <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between md:gap-6">

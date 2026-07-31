@@ -189,7 +189,7 @@ export default function CourseCareerAssuranceSection() {
         </div>
 
         {/* Content */}
-        <div className="relative z-10 flex flex-col justify-end px-6 py-6 sm:py-8 sm:pr-8 sm:pl-[var(--assurance-content-left)] sm:pt-8">
+        <div className="relative z-10 mt-15 flex flex-col justify-end px-6 py-6 sm:py-8 sm:pr-8 sm:pl-[var(--assurance-content-left)] sm:pt-8">
           <div className="w-full sm:w-[350px] sm:ml-[150px]">
           <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
             <h2

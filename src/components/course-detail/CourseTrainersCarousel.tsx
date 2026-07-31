@@ -124,7 +124,7 @@ export default function CourseTrainersCarousel({
 
   return (
     <div id="trainers" className="scroll-mt-[116px] mb-0">
-      <div className="py-5 md:py-6">
+      <div className="pt-5 pb-15 md:pt-6">
         <div className="flex items-center justify-between gap-4">
           <h2 className="section-heading text-heading">{title}</h2>
           {totalPages > 1 ? (

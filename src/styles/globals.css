@@ -944,6 +944,16 @@ body {
   will-change: auto;
 }
 
+/* Course hero stacks vertically on mobile — skip reveal offset so the lead form never overlaps content above. */
+@media (max-width: 767px) {
+  .course-detail-hero-grid .gsap-reveal-pending {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    will-change: auto;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .gsap-reveal-pending {
     opacity: 1;

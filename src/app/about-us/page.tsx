@@ -103,7 +103,7 @@ export default async function AboutPage() {
             </p>
           </div>
           <div className="grid items-start gap-4 lg:gap-12 lg:grid-cols-2">
-            <div className="relative overflow-hidden rounded-2xl" style={{ height: '380px' }}>
+            <div className="relative h-[260px] overflow-hidden rounded-2xl md:h-[320px]">
               <Image src="/images/who-we.png" alt="Who We Are — Scale X Learning team" fill className="object-cover" />
             </div>
             <div>
@@ -183,7 +183,7 @@ export default async function AboutPage() {
                 </div>
               ))}
             </div>
-            <div className="relative overflow-hidden rounded-2xl" style={{ height: '480px' }}>
+            <div className="relative h-[260px] overflow-hidden rounded-2xl md:h-[400px]">
               <Image src="/images/what-do.png" alt="What We Do — Scale X Learning" fill className="object-cover" />
             </div>
           </div>
@@ -304,7 +304,7 @@ export default async function AboutPage() {
       </div>
 
       {/* Scale X Learning in the News */}
-      <section className="full-bleed bg-surface pb-15 max-md:pt-15 md:pb-20 md:pt-10">
+      <section className="full-bleed bg-surface pb-15 max-md:pt-15 md:pb-20 md:pt-20">
         <div className="site-container">
           <h2 className="mb-10 text-center" style={{ color: '#1E293B', fontFamily: 'Inter', fontSize: '36px', fontWeight: 700 }}>
             Scale X Learning in the News

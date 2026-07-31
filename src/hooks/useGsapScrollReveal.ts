@@ -10,6 +10,8 @@ type GsapScrollRevealOptions = {
   delay?: number;
   ease?: string;
   start?: string;
+  /** Show content immediately without scroll-driven motion (e.g. mobile hero stacks). */
+  disableAnimation?: boolean;
   /** Skip rows already marked gsap-reveal-done (e.g. "View More" expansions). */
   skipRevealed?: boolean;
   /** Duration for rows revealed via expand/load-more. */
@@ -48,6 +50,11 @@ export function useGsapScrollRevealStagger(
       : targets;
 
     if (pendingTargets.length === 0) return;
+
+    if (options?.disableAnimation) {
+      pendingTargets.forEach((target) => markRevealDone(target));
+      return;
+    }
 
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (prefersReducedMotion) {
@@ -129,6 +136,7 @@ export function useGsapScrollRevealStagger(
       doneBeforeCleanup.forEach(markRevealDone);
     };
   }, [
+    options?.disableAnimation,
     options?.delay,
     options?.duration,
     options?.ease,

@@ -52,7 +52,7 @@ export default function CourseWebinarCtaSection({
   return (
     <section
       id="webinar-cta"
-      className="relative scroll-mt-[116px] pt-0 md:pt-[22px]"
+      className="relative mb-15 scroll-mt-[116px] pt-0 md:pt-[22px]"
       aria-labelledby="webinar-cta-heading"
       style={
         {

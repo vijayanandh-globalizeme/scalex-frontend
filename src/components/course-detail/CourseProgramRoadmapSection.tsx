@@ -85,10 +85,10 @@ function StageSidebarIcon({ icon, theme }: { icon: string; theme: StageTheme }) 
   };
   return (
     <div
-      className="flex h-[60px] w-[60px] items-center justify-center rounded-full"
+      className="flex h-[40px] w-[40px] items-center justify-center rounded-full md:h-[60px] md:w-[60px]"
       style={{ background: gradients[theme] }}
     >
-      <i className={`fa fa-${icon} text-[24px] text-white`} aria-hidden />
+      <i className={`fa fa-${icon} text-[16px] text-white md:text-[24px]`} aria-hidden />
     </div>
   );
 }
@@ -299,7 +299,7 @@ function PlacementStageContent({ stage }: { stage: ApiRoadmap }) {
       </div>
       <div className="mt-10">
         <p className="text-[18px] font-medium leading-[140%] text-[#1E293B]" style={{ fontFamily: 'Inter' }}>{ROADMAP_HIRING_PARTNERS_TITLE}</p>
-        <div className="mt-5 flex flex-wrap items-center gap-x-12 gap-y-5 pb-[50px]">
+        <div className="mt-5 flex flex-wrap items-center gap-x-12 gap-y-5 pb-[50px] max-md:justify-around">
           {ROADMAP_HIRING_PARTNER_LOGOS.map((logo, index) => (
             <Fragment key={logo.alt}>
               {index === 4 && <div className="w-full" />}
