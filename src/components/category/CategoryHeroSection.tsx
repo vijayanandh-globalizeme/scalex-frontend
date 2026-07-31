@@ -369,6 +369,7 @@ export default function CategoryHeroSection({
               badges={heroBadges}
               variant={mediaVariant}
               disableGsap
+              className={mediaVariant === 'photo' ? 'max-md:pb-[30px]' : undefined}
             />
             {mediaVariant === 'photo' && (
               <div className="mt-6 flex justify-center">

@@ -161,7 +161,7 @@ export default function CourseDetailStickyNav({
   }
 
   return (
-    <nav className="sticky top-16 z-40 mb-12" aria-label="Course sections">
+    <nav className="sticky top-16 z-40 max-md:mb-4 mb-12" aria-label="Course sections">
       <div className="full-bleed bg-[#fcfcfc] shadow-[0_4px_4px_0_rgba(30,41,59,0.08),4px_-4px_4px_0_rgba(30,41,59,0.03)]">
         <div className="site-container">
           <div ref={navScrollRef} className="flex h-[52px] w-full items-stretch gap-6 overflow-x-auto [-ms-overflow-style:none] [scrollbar-width:none] lg:justify-between lg:gap-0 [&::-webkit-scrollbar]:hidden">
