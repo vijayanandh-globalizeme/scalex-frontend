@@ -237,7 +237,7 @@ export default function BlogsPage() {
     <>
       {/* Hero Section */}
       <section
-        className="full-bleed relative z-10 min-h-[594px] overflow-visible max-md:pt-10 max-md:pb-15 md:h-[594px]"
+        className="full-bleed relative z-10 min-h-[594px] overflow-visible max-md:pt-10 max-md:pb-15 md:h-[594px] md:pt-10"
       >
         <div className="blogs-hero-bg pointer-events-none absolute inset-0" aria-hidden />
         {/* Decorative ScaleX watermark */}
