@@ -301,6 +301,12 @@ body {
     background: #FD022D;
   }
 
+  @media (max-width: 767px) {
+    .blog-detail-page h2 {
+      margin-top: 0 !important;
+    }
+  }
+
   .header-fluid-text {
     font-size: clamp(14px, calc(8px + 0.416666vw), 16px);
     line-height: 1.35;

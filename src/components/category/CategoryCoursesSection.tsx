@@ -306,7 +306,7 @@ export default function CategoryCoursesSection({
         </div>
 
         {!loading && hasMore && (
-          <div className={`flex justify-center ${compactTop || mutedBackground ? 'mb-[20px]' : ''}`}>
+          <div className={`flex justify-center ${compactTop || mutedBackground ? 'max-md:mb-[20px] md:mb-0' : ''}`}>
             <button
               type="button"
               onClick={handleViewMore}
