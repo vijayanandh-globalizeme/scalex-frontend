@@ -40,7 +40,7 @@ export default function ContactPageClient({
   return (
     <>
       {/* Hero Banner */}
-      <section ref={heroRef} className="full-bleed relative overflow-x-clip overflow-y-visible pb-10 md:pb-20 lg:pb-24" style={{ paddingTop: '75px' }}>
+      <section ref={heroRef} className="full-bleed relative overflow-x-clip overflow-y-visible pt-10 pb-10 md:pb-20 lg:pb-24">
         {/* Decorative background — pink gradient (mobile + desktop) */}
         <div className="category-hero-bg pointer-events-none absolute inset-0" aria-hidden />
 

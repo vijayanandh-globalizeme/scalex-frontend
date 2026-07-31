@@ -237,7 +237,7 @@ export default function BlogsPage() {
     <>
       {/* Hero Section */}
       <section
-        className="full-bleed relative z-10 min-h-[594px] overflow-visible pt-4 pb-0 md:h-[594px] md:pt-6"
+        className="full-bleed relative z-10 min-h-[594px] overflow-visible pt-10 pb-0 md:h-[594px]"
       >
         <div className="blogs-hero-bg pointer-events-none absolute inset-0" aria-hidden />
         {/* Decorative ScaleX watermark */}
@@ -258,7 +258,7 @@ export default function BlogsPage() {
           </nav>
 
           {/* Heading */}
-          <div className="mb-4 pt-8 text-center md:pt-12 md:pb-6">
+          <div className="mb-4 pt-6 text-center md:pt-10 md:pb-6">
             <h1 className="text-[28px] font-bold leading-[1.3] text-heading md:text-[40px] md:font-extrabold md:leading-[60px]">
               Your Gateway to{' '}
               <span className="relative inline-block whitespace-nowrap pb-[23px] align-top">

@@ -525,7 +525,7 @@ export default function BlogDetailPage() {
           background: 'linear-gradient(83deg, #0D0D0D -37.91%, #161A26 28%, #FF002C 212.06%)',
         }}
       >
-        <div className="site-container relative z-10 py-10 md:py-14">
+        <div className="site-container relative z-10 pt-10 pb-20">
           {/* Breadcrumb */}
           <nav className="mb-6 flex items-center gap-2 text-[13px] text-white/60">
             <Link href="/" className="text-white/60 transition-colors hover:text-white" aria-label="Home">
