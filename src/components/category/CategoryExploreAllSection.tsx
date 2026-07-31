@@ -51,14 +51,14 @@ function ExploreArrowIcon({ className }: { className?: string }) {
 }
 
 const CATEGORY_CARD_SHADOW =
-  'shadow-[0_4px_4px_0_rgba(30,41,59,0.08),0_4px_4px_0_rgba(30,41,59,0.03)] hover:shadow-[0_8px_32px_0_rgba(30,41,59,0.14)]';
+  'max-md:!shadow-[0_2px_8px_0_rgba(30,41,59,0.10)] max-md:hover:!shadow-[0_2px_8px_0_rgba(30,41,59,0.10)] md:shadow-[0_4px_4px_0_rgba(30,41,59,0.08),0_4px_4px_0_rgba(30,41,59,0.03)] md:hover:shadow-[0_8px_32px_0_rgba(30,41,59,0.14)]';
 
 function CategoryCard({ item }: { item: ExploreCategoryItem }) {
   return (
     <Link
       href={item.href}
       prefetch
-      className={`interactive-card group flex w-full items-center gap-4 overflow-visible rounded-xl border border-[#EBEBEB] bg-white p-5 transition-shadow duration-300 ${CATEGORY_CARD_SHADOW}`}
+      className={`interactive-card group flex w-full max-w-full items-center gap-4 overflow-visible rounded-xl border border-[#EBEBEB] bg-white p-5 transition-shadow duration-300 ${CATEGORY_CARD_SHADOW}`}
     >
       <CategoryIcon fill={item.iconBg} icon={item.icon} />
       <span className="min-w-0 flex-1">
@@ -93,20 +93,25 @@ export default function CategoryExploreAllSection({ excludeId }: { excludeId?: s
   const [page, setPage] = useState(0);
   const [pageSize, setPageSize] = useState(MOBILE_PAGE_SIZE);
   const [slideGap, setSlideGap] = useState(16);
+  const [isMobile, setIsMobile] = useState(false);
   const [, startTransition] = useTransition();
 
   useEffect(() => {
+    const mobileMq = window.matchMedia('(max-width: 767px)');
     const sm = window.matchMedia('(min-width: 640px)');
     const lg = window.matchMedia('(min-width: 1024px)');
     const update = () => {
+      setIsMobile(mobileMq.matches);
       setPageSize(sm.matches ? DESKTOP_PAGE_SIZE : MOBILE_PAGE_SIZE);
       setSlideGap(lg.matches ? 24 : sm.matches ? 20 : 16);
       setPage(0);
     };
     update();
+    mobileMq.addEventListener('change', update);
     sm.addEventListener('change', update);
     lg.addEventListener('change', update);
     return () => {
+      mobileMq.removeEventListener('change', update);
       sm.removeEventListener('change', update);
       lg.removeEventListener('change', update);
     };
@@ -161,23 +166,38 @@ export default function CategoryExploreAllSection({ excludeId }: { excludeId?: s
             ))}
           </div>
         ) : (
-          <div className="mt-6 overflow-visible md:mt-6">
-            <CategoryCarouselTrack page={page} className="overflow-visible px-2 pb-4 pt-1" slideGap={slideGap}>
-              {pages.map((pageItems, pageIndex) => (
-                <div
-                  key={pageIndex}
-                  className="grid w-full grid-cols-1 gap-4 p-1 sm:grid-cols-2 sm:gap-5 lg:grid-cols-4 lg:gap-6"
-                >
-                  {pageItems.map((item) => (
+          <div className="explore-categories-carousel mt-6 md:mt-6">
+            {isMobile ? (
+              <div className="max-md:px-2 max-md:pb-4">
+                <div className="grid grid-cols-1 gap-4">
+                  {(pages[page] ?? []).map((item) => (
                     <CategoryCard key={item.id} item={item} />
                   ))}
                 </div>
-              ))}
-            </CategoryCarouselTrack>
+              </div>
+            ) : (
+              <CategoryCarouselTrack
+                page={page}
+                clipX={false}
+                className="overflow-visible px-2 pb-4 pt-1"
+                slideGap={slideGap}
+              >
+                {pages.map((pageItems, pageIndex) => (
+                  <div
+                    key={pageIndex}
+                    className="grid w-full grid-cols-1 gap-4 p-1 sm:grid-cols-2 sm:gap-5 lg:grid-cols-4 lg:gap-6"
+                  >
+                    {pageItems.map((item) => (
+                      <CategoryCard key={item.id} item={item} />
+                    ))}
+                  </div>
+                ))}
+              </CategoryCarouselTrack>
+            )}
           </div>
         )}
 
-        {!loading && totalPages > 1 && <div className="mt-6">
+        {!loading && totalPages > 1 && <div className="mt-6 max-md:mt-4">
           <CategoryCarouselControls
             page={page}
             totalPages={totalPages}

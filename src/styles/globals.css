@@ -305,6 +305,15 @@ body {
     .blog-detail-page h2 {
       margin-top: 0 !important;
     }
+
+    /* Explore categories — keep card + shadow fully visible inside clipped viewport */
+    .explore-categories-carousel .interactive-card {
+      box-shadow: 0 2px 8px 0 rgba(30, 41, 59, 0.1) !important;
+    }
+
+    .explore-categories-carousel .interactive-card:hover {
+      box-shadow: 0 2px 8px 0 rgba(30, 41, 59, 0.1) !important;
+    }
   }
 
   .header-fluid-text {
