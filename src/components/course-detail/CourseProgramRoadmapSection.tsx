@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { Fragment, useId, useRef, useState } from 'react';
 import type { ApiRoadmap, ApiOtherDetail } from '@/services/courseApi';
 import { withNewTabLinks } from '@/lib/richText';
-import { COURSE_SECTION_CARD } from './courseSectionCard';
+import { COURSE_SECTION_BODY } from './courseSectionCard';
 import {
   ROADMAP_SHOW_MORE_LABEL,
   ROADMAP_HIRING_PARTNERS_TITLE,
@@ -352,7 +352,7 @@ export default function CourseProgramRoadmapSection({
   };
 
   return (
-    <section id="roadmap" className={`scroll-mt-[116px] px-6 py-5 md:px-8 md:py-6 ${COURSE_SECTION_CARD}`} aria-labelledby="program-roadmap-heading">
+    <section id="roadmap" className={`scroll-mt-[116px] ${COURSE_SECTION_BODY}`} aria-labelledby="program-roadmap-heading">
       {roadmap.map((stage, index) => {
         const stageNumber = String(index + 1).padStart(2, '0');
         const isLast = index === roadmap.length - 1;

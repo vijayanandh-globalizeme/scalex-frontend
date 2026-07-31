@@ -6,7 +6,7 @@ import { COURSE_FAQ_TITLE } from '@/lib/courseDetailStatics';
 import {
   COURSE_INNER_CARD,
   COURSE_ROW_DIVIDER_FULL,
-  COURSE_SECTION_CARD,
+  COURSE_SECTION_BODY,
   COURSE_TOP_DIVIDER_FULL,
   COURSE_ACCORDION_PANEL,
   COURSE_ACCORDION_PANEL_OPEN,
@@ -64,7 +64,7 @@ export default function CourseFaqsSection({ faqs, title }: { faqs: FaqGroup[]; t
   }
 
   return (
-    <div id="faqs" className={`scroll-mt-[116px] ${COURSE_SECTION_CARD} px-6 py-5 md:px-8 md:py-6`}>
+    <div id="faqs" className={`scroll-mt-[116px] ${COURSE_SECTION_BODY}`}>
       <h2 className="section-heading text-heading">{title ?? COURSE_FAQ_TITLE}</h2>
 
       {/* Category tabs */}

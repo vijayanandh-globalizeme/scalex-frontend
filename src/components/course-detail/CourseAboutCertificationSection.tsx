@@ -10,7 +10,7 @@ export default function CourseAboutCertificationSection({
   if (!title && !content) return null;
 
   return (
-    <div className={`mt-[80px] ${COURSE_SECTION_CARD} px-6 py-5 md:px-8 md:py-6`}>
+    <div className={`max-md:mt-[60px] md:mt-[80px] ${COURSE_SECTION_CARD} px-6 py-5 md:px-8 md:py-6`}>
       {title ? (
         <h2 className="section-heading text-heading">{title}</h2>
       ) : null}

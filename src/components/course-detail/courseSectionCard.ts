@@ -1,6 +1,9 @@
 export const COURSE_SECTION_CARD =
   'rounded-[20px] border border-[#EBEBEB] bg-white shadow-[0_4px_4px_0_rgba(30,41,59,0.08),0_4px_4px_0_rgba(30,41,59,0.03)]';
 
+/** White course body section — card shell + standard padding + mobile bottom spacing. */
+export const COURSE_SECTION_BODY = `${COURSE_SECTION_CARD} px-6 py-5 md:px-8 md:py-6 max-md:mb-15`;
+
 export const COURSE_INNER_CARD =
   'overflow-hidden rounded-[20px] border border-[#EBEBEB] bg-white shadow-[0_4px_4px_0_rgba(30,41,59,0.08),0_4px_4px_0_rgba(30,41,59,0.03)]';
 

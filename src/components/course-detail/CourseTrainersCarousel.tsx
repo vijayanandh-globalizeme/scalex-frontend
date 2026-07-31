@@ -150,7 +150,7 @@ export default function CourseTrainersCarousel({
         </CategoryCarouselTrack>
       </div>
 
-      {cta ? <CourseBatchRequestBanner banner={cta} className="pb-6 md:pb-8" /> : null}
+      {cta ? <CourseBatchRequestBanner banner={cta} className="max-md:pb-0 md:pb-8" /> : null}
     </div>
   );
 }

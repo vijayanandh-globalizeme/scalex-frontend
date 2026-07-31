@@ -62,7 +62,7 @@ export default function CourseBatchRequestBanner({
   courseId?: string | null;
 }) {
   return (
-    <div className={`relative overflow-visible pt-0 sm:pt-[18px] ${className ?? ''}`}>
+    <div className={`relative overflow-visible max-md:mb-15 max-md:py-0 pt-0 sm:pt-[18px] max-md:pb-0 md:pb-8 ${className ?? ''}`}>
       {/* Mobile: text + CTA only (image shown on sm+) */}
       <div className="block sm:hidden rounded-[20px] overflow-hidden border border-[#EBEBEB] bg-[linear-gradient(88deg,#0D0D0D_88.67%,#FD022D_106.46%)] shadow-[0_4px_4px_0_rgba(30,41,59,0.11),0_4px_4px_0_rgba(30,41,59,0.03)]">
         <div className="px-6 py-6">

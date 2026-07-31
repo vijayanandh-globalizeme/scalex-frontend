@@ -1,14 +1,12 @@
 import Image from 'next/image';
 import type { ApiCourseDetails } from '@/services/courseApi';
 import { withNewTabLinks } from '@/lib/richText';
+import { COURSE_SECTION_BODY } from './courseSectionCard';
 
 type ApiEligibility = NonNullable<ApiCourseDetails['eligibility']>;
 
 const PERSON_IMAGE_SIZE_PX = 220;
 const PERSON_HEAD_OUTSIDE_PX = Math.round(PERSON_IMAGE_SIZE_PX * 0.1);
-
-const SECTION_CARD =
-  'rounded-[20px] border border-[#EBEBEB] bg-white shadow-[0_4px_4px_0_rgba(30,41,59,0.08),0_4px_4px_0_rgba(30,41,59,0.03)]';
 
 function RequirementIcon({ icon }: { icon: string }) {
   return (
@@ -86,7 +84,7 @@ export default function CourseEligibilityRequirementsSection({
   return (
     <div
       id="eligibility"
-      className={`scroll-mt-[116px] overflow-visible px-6 py-5 md:px-8 md:py-6 ${SECTION_CARD}`}
+      className={`scroll-mt-[116px] overflow-visible ${COURSE_SECTION_BODY}`}
     >
       <h2 className="section-heading text-heading">{title}</h2>
       <p

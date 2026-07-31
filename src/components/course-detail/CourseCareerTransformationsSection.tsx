@@ -5,7 +5,7 @@ import { useEffect, useId, useLayoutEffect, useRef, useState } from 'react';
 import { CategoryCarouselControls } from '@/components/category/CategoryCarouselNav';
 import type { ApiLearner } from '@/services/courseApi';
 import { CAREER_TRANSFORMATIONS_SUBTITLE } from '@/lib/courseDetailStatics';
-import { COURSE_SECTION_CARD } from './courseSectionCard';
+import { COURSE_SECTION_BODY } from './courseSectionCard';
 
 type CareerTransformationStory = {
   id: string;
@@ -339,7 +339,7 @@ export default function CourseCareerTransformationsSection({
   return (
     <section
       id="career-transformations"
-      className={`relative isolate scroll-mt-[116px] overflow-visible px-6 py-5 md:px-8 md:py-6 ${COURSE_SECTION_CARD}`}
+      className={`relative isolate scroll-mt-[116px] overflow-visible ${COURSE_SECTION_BODY}`}
       aria-labelledby="career-transformations-heading"
     >
       <div className="relative z-40 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">

@@ -187,7 +187,7 @@ export default function CourseDetailHeroSection({
           ))}
         </nav>
 
-        <div className="grid grid-cols-1 items-start gap-y-5 lg:grid-cols-[minmax(0,690px)_minmax(0,1fr)] lg:gap-x-8 lg:gap-y-0 xl:gap-x-12">
+        <div className="grid grid-cols-1 items-start max-md:gap-y-5 md:gap-y-8 lg:grid-cols-[minmax(0,690px)_minmax(0,1fr)] lg:gap-x-8 lg:gap-y-0 xl:gap-x-12">
           <div
             ref={(el) => {
               rowRefs.current[0] = el;
@@ -357,7 +357,7 @@ export default function CourseDetailHeroSection({
             ref={(el) => {
               rowRefs.current[2] = el;
             }}
-            className="gsap-reveal-pending relative z-20 overflow-visible max-md:-mt-12 max-md:pb-[120px] pb-6 lg:mb-[-125px] lg:col-span-2 lg:col-start-1 lg:row-start-2"
+            className="gsap-reveal-pending relative z-20 overflow-visible max-md:-mt-12 max-md:pb-[110px] lg:mt-6 lg:mb-[-20px] lg:pb-6 lg:col-span-2 lg:col-start-1 lg:row-start-2"
           >
             <CourseEnterpriseCard
               {...enterprise}

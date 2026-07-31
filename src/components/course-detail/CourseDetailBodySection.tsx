@@ -116,10 +116,10 @@ export default async function CourseDetailBodySection({
       <div className="site-container pb-15">
         <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_246px] lg:gap-[80px]">
           <div className="min-w-0 space-y-8 overflow-visible">
-            {details?.overview && details.otherDetails ? (
+            {details?.overview ? (
               <CourseOverviewSection
                 overview={details.overview}
-                careerTabs={details.otherDetails.filter((d) => d.type === 'OVERVIEW')}
+                careerTabs={details.otherDetails?.filter((d) => d.type === 'OVERVIEW') ?? []}
                 variant={isTechnical ? 'technical' : 'default'}
                 courseId={courseId}
               />
@@ -156,7 +156,7 @@ export default async function CourseDetailBodySection({
             ) : null}
 
             {courseUri && categoryUri ? (
-              <div id="schedules">
+              <div id="schedules" className="max-md:mb-15">
                 <CourseSchedulesSection
                   courseUri={courseUri}
                   categoryUri={categoryUri}
@@ -187,7 +187,7 @@ export default async function CourseDetailBodySection({
             ) : null}
 
             {!isTechnical ? (
-              <CourseBatchRequestBanner banner={UNLOCK_COURSE_BANNER} className="pb-6 md:pb-8" courseId={courseId} />
+              <CourseBatchRequestBanner banner={UNLOCK_COURSE_BANNER} className="max-md:pb-0 md:pb-8" courseId={courseId} />
             ) : null}
 
             {!isTechnical && details?.eligibility ? (
@@ -220,7 +220,7 @@ export default async function CourseDetailBodySection({
                 <CourseFaqsSection faqs={details.courseFaq} title={faqTitle} />
             ) : null}
 
-            <CourseBatchRequestBanner banner={EXPERTS_COURSE_BANNER} className="pb-6 md:pb-8" courseId={courseId} />
+            <CourseBatchRequestBanner banner={EXPERTS_COURSE_BANNER} className="max-md:pb-0 md:pb-8" courseId={courseId} />
 
             <WhyScaleXSection {...courseWhyScaleXContent} id="why-scalex" variant="embedded" />
             {isTechnicalFromDetails ? awardsSection : null}
