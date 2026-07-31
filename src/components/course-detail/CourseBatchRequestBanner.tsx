@@ -62,22 +62,10 @@ export default function CourseBatchRequestBanner({
   courseId?: string | null;
 }) {
   return (
-    <div className={`relative overflow-visible pt-[18px] ${className ?? ''}`}>
-      {/* Mobile: stacked two-row layout */}
+    <div className={`relative overflow-visible pt-0 sm:pt-[18px] ${className ?? ''}`}>
+      {/* Mobile: text + CTA only (image shown on sm+) */}
       <div className="block sm:hidden rounded-[20px] overflow-hidden border border-[#EBEBEB] bg-[linear-gradient(88deg,#0D0D0D_88.67%,#FD022D_106.46%)] shadow-[0_4px_4px_0_rgba(30,41,59,0.11),0_4px_4px_0_rgba(30,41,59,0.03)]">
-        <div className="relative mx-auto h-[180px] w-[155px]">
-          <BatchDecorIcon className="pointer-events-none absolute bottom-5 left-[28%] z-0 h-auto w-[9rem] opacity-80" />
-          <div className="relative z-10 h-full w-full">
-            <Image
-              src={banner.imageSrc}
-              alt={banner.imageAlt}
-              fill
-              sizes="155px"
-              className="object-contain object-bottom"
-            />
-          </div>
-        </div>
-        <div className="px-6 pb-6">
+        <div className="px-6 py-6">
           <p className="text-[16px] font-semibold leading-normal tracking-[-0.54px] text-[#E5E5E5]">
             {banner.headingLines.map((line) => (
               <span key={line} className="block">{line}</span>

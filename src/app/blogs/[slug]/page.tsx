@@ -68,7 +68,7 @@ function TrendingBlogsSection({ blogs }: { blogs: TrendingBlogCardData[] }) {
   const next = () => setIndex((i) => Math.min(maxIndex, i + 1));
 
   return (
-    <section className="full-bleed bg-[#F5F6F8] pt-3 pb-12 md:pt-4 md:pb-16">
+    <section className="full-bleed bg-[#F5F6F8] pb-12 md:pb-16">
       <div className="site-container">
         {/* Header */}
         <div className="mb-4 text-center md:mb-10">

@@ -119,32 +119,37 @@ function StageSidebarArrow({ theme }: { theme: StageTheme }) {
 
 function StageSidebar({ stage, stageNumber }: { stage: ApiRoadmap; stageNumber: string }) {
   const theme = getTheme(stage.type);
-  const [first, ...rest] = stage.sideTitle.split(' ');
 
   const numberEl =
     theme === 'learning' ? (
-      <p className="mt-2 bg-clip-text text-[64px] font-bold leading-none text-transparent" style={{ backgroundImage: LEARNING_GRADIENT }}>{stageNumber}</p>
+      <p className="bg-clip-text text-[52px] font-bold leading-none text-transparent md:text-[64px]" style={{ backgroundImage: LEARNING_GRADIENT }}>{stageNumber}</p>
     ) : theme === 'interview' ? (
-      <p className="mt-2 text-[64px] font-bold leading-none">
+      <p className="text-[52px] font-bold leading-none md:text-[64px]">
         <span style={{ color: '#FFB700' }}>{stageNumber.slice(0, -1)}</span>
         <span className="bg-clip-text text-transparent" style={{ backgroundImage: 'linear-gradient(99deg, #FFB700 47.39%, #00C017 187.55%)' }}>{stageNumber.slice(-1)}</span>
       </p>
     ) : (
-      <p className="mt-2 bg-clip-text text-[64px] font-bold leading-none text-transparent" style={{ backgroundImage: 'linear-gradient(99deg, #FFB700 -19.21%, #00C017 33.47%)' }}>{stageNumber}</p>
+      <p className="bg-clip-text text-[52px] font-bold leading-none text-transparent md:text-[64px]" style={{ backgroundImage: 'linear-gradient(99deg, #FFB700 -19.21%, #00C017 33.47%)' }}>{stageNumber}</p>
     );
 
   return (
-    <div className="relative shrink-0 md:w-[250px]">
-      <StageSidebarIcon icon={stage.icon} theme={theme} />
-      <p className="mt-6 pl-[7px] text-[16px] font-semibold uppercase leading-[140%] text-[#788593]" style={{ fontFamily: 'Inter' }}>Stage</p>
-      {numberEl}
-      <p className="mt-3 text-[34px] font-bold leading-[140%] text-[#1E293B]" style={{ fontFamily: 'Inter' }}>
-        {first}<br />{rest.join(' ')}
-      </p>
-      <p
-        className="mt-3 max-w-[220px] text-[14px] font-normal leading-[150%] text-[#788593] [&_a]:text-brand [&_a]:no-underline [&_a]:hover:underline [&_a]:underline-offset-2"
-        dangerouslySetInnerHTML={{ __html: withNewTabLinks(stage.sideDescription) }}
-      />
+    <div className="relative w-full shrink-0 md:w-[250px]">
+      <div className="flex items-start gap-4 md:gap-5">
+        <div className="flex shrink-0 flex-col items-center gap-4">
+          {numberEl}
+          <StageSidebarIcon icon={stage.icon} theme={theme} />
+        </div>
+        <div className="min-w-0 flex-1 pt-1 md:pt-2">
+          <p className="text-[22px] font-bold leading-[130%] text-[#1E293B] md:text-[34px] md:leading-[140%]" style={{ fontFamily: 'Inter' }}>
+            {stage.sideTitle}
+          </p>
+          <p
+            className="mt-2 text-[13px] font-normal leading-[150%] text-[#788593] md:mt-3 md:max-w-[220px] md:text-[14px] [&_a]:text-brand [&_a]:no-underline [&_a]:hover:underline [&_a]:underline-offset-2"
+            dangerouslySetInnerHTML={{ __html: withNewTabLinks(stage.sideDescription) }}
+          />
+        </div>
+      </div>
+
       <StageSidebarArrow theme={theme} />
     </div>
   );
@@ -276,11 +281,11 @@ function PlacementStageContent({ stage }: { stage: ApiRoadmap }) {
       <h4 className="text-[20px] font-semibold leading-[140%] text-[#1E293B]" style={{ fontFamily: 'Inter' }}>{stage.heading}</h4>
       <div className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-2">
         {features.map((feature, i) => (
-          <div key={i} className="flex flex-col gap-2" style={{ maxWidth: '264px' }}>
+          <div key={i} className="flex w-full max-w-full items-start gap-3">
             <span className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#FFF0F0]">
               <PlacementTrackFeatureIcon />
             </span>
-            <div>
+            <div className="min-w-0 flex-1">
               <p className="text-[16px] font-semibold leading-[140%] text-[#1E293B]" style={{ fontFamily: 'Inter' }}>
                 {feature.title}
               </p>

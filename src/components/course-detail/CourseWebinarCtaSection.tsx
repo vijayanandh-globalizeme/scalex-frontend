@@ -61,21 +61,9 @@ export default function CourseWebinarCtaSection({
         } as CSSProperties
       }
     >
-      {/* Mobile: two-row stacked layout */}
+      {/* Mobile: text + CTA only (image shown on sm+) */}
       <div className="block sm:hidden rounded-[20px] overflow-hidden border border-[#EBEBEB] bg-[linear-gradient(88deg,#0D0D0D_88.67%,#FD022D_106.46%)] shadow-[0_4px_4px_0_rgba(30,41,59,0.11),0_4px_4px_0_rgba(30,41,59,0.03)]">
-        <div className="relative mx-auto h-[220px] w-[180px]">
-          <ScaleXMark className="pointer-events-none absolute bottom-[30px] right-[-40px] z-[1] h-[160px] w-[150px] opacity-[0.18]" />
-          <div className="relative z-10 h-full w-full">
-            <Image
-              src={content.imageSrc}
-              alt={content.imageAlt}
-              fill
-              sizes="180px"
-              className="object-contain object-bottom"
-            />
-          </div>
-        </div>
-        <div className="px-6 pb-6">
+        <div className="px-6 py-6">
           <p
             id="webinar-cta-heading"
             className="text-[16px] font-semibold leading-normal tracking-[-0.54px] text-[#E5E5E5]"
