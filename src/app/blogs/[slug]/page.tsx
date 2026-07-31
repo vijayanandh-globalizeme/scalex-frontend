@@ -3,13 +3,12 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
-import { useState, useEffect, useRef, useId, type FormEvent } from 'react';
+import { useState, useEffect, useRef, useId } from 'react';
 import { GuidanceSection, defaultGuidanceContent } from '@/components/guidance';
-import { sendContact } from '@/app/actions/contactActions';
-import { useLeadSuccess } from '@/components/feedback/LeadSuccessProvider';
-import { useContactFieldErrors, fieldErrorClass } from '@/components/feedback/useContactFieldErrors';
 import CategoryCoursesSection from '@/components/category/CategoryCoursesSection';
+import CourseAssistForm from '@/components/course-detail/CourseAssistForm';
 import { useCourseBrochureModal } from '@/components/course-detail';
+import { sidebar as courseAssistSidebar } from '@/lib/courseSideBar';
 import {
   getBlogByUri,
   getRelatedBlogs,
@@ -130,122 +129,6 @@ function TrendingBlogsSection({ blogs }: { blogs: TrendingBlogCardData[] }) {
         ) : null}
       </div>
     </section>
-  );
-}
-
-// ─── Blog sidebar lead form ─────────────────────────────────────────────────────
-
-function BlogAssistForm() {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState('');
-  const [purpose, setPurpose] = useState('');
-  const [agreed, setAgreed] = useState(false);
-  const [status, setStatus] = useState<'idle' | 'submitting' | 'error'>('idle');
-  const [errorMessage, setErrorMessage] = useState('');
-  const { showLeadSuccess } = useLeadSuccess();
-  const { fieldErrors, setFieldErrors, clearFieldError } = useContactFieldErrors();
-
-  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    if (status === 'submitting') return;
-    setStatus('submitting');
-    setFieldErrors({});
-    const result = await sendContact({ name, email, phone, purpose });
-    if (result.success) {
-      setStatus('idle');
-      setName('');
-      setEmail('');
-      setPhone('');
-      setPurpose('');
-      showLeadSuccess();
-    } else {
-      setStatus('error');
-      setErrorMessage(result.message);
-      setFieldErrors(result.fieldErrors);
-    }
-  }
-
-  const fieldBaseCls =
-    'w-full rounded-lg border border-zinc-200 px-3 py-2.5 text-[14px] font-normal leading-[18px] tracking-[-0.14px] text-heading focus:border-brand focus:outline-none';
-  const inputCls =
-    `${fieldBaseCls} placeholder:text-[#788593] placeholder:text-[14px] placeholder:font-normal placeholder:leading-[18px] placeholder:tracking-[-0.14px]`;
-  const selectCls = `${fieldBaseCls} bg-white ${purpose ? 'text-heading' : 'text-[#788593]'}`;
-
-  return (
-    <div className="rounded-xl border border-zinc-100 bg-white p-5 shadow-sm">
-      <h3 className="mb-4 text-[16px] font-medium leading-normal text-[#1E293B]">Let us assist you</h3>
-      <form className="space-y-3" onSubmit={handleSubmit}>
-        <div>
-          <input
-            type="text"
-            required
-            placeholder="Full Name"
-            value={name}
-            onChange={(e) => { setName(e.target.value); clearFieldError('name'); }}
-            className={`${inputCls} ${fieldErrorClass(!!fieldErrors.name)}`}
-          />
-          {fieldErrors.name ? <p className="mt-1 text-[11px] font-medium text-brand">{fieldErrors.name}</p> : null}
-        </div>
-        <div>
-          <input
-            type="email"
-            required
-            placeholder="Email ID"
-            value={email}
-            onChange={(e) => { setEmail(e.target.value); clearFieldError('email'); }}
-            className={`${inputCls} ${fieldErrorClass(!!fieldErrors.email)}`}
-          />
-          {fieldErrors.email ? <p className="mt-1 text-[11px] font-medium text-brand">{fieldErrors.email}</p> : null}
-        </div>
-        <div>
-          <input
-            type="tel"
-            required
-            placeholder="Contact Number"
-            value={phone}
-            onChange={(e) => { setPhone(e.target.value); clearFieldError('phone'); }}
-            className={`${inputCls} ${fieldErrorClass(!!fieldErrors.phone)}`}
-          />
-          {fieldErrors.phone ? <p className="mt-1 text-[11px] font-medium text-brand">{fieldErrors.phone}</p> : null}
-        </div>
-        <div>
-          <select
-            required
-            value={purpose}
-            onChange={(e) => { setPurpose(e.target.value); clearFieldError('purpose'); }}
-            className={`${selectCls} ${fieldErrorClass(!!fieldErrors.purpose)}`}
-          >
-            <option value="" disabled>Purpose</option>
-            <option>Course Enquiry</option>
-            <option>Career Guidance</option>
-            <option>Corporate Training</option>
-            <option>Other</option>
-          </select>
-          {fieldErrors.purpose ? <p className="mt-1 text-[11px] font-medium text-brand">{fieldErrors.purpose}</p> : null}
-        </div>
-        <label className="flex items-start gap-2 cursor-pointer">
-          <input type="checkbox" checked={agreed} onChange={(e) => setAgreed(e.target.checked)} className="mt-0.5 accent-brand" />
-          <span className="text-[12px] font-normal leading-[16px] text-[#1E293B]">
-            I agree to ScaleX&apos;s{' '}
-            <Link href="/terms-of-use" target="_blank" rel="noopener noreferrer" className="hover:underline active:underline">
-              Terms &amp; Conditions
-            </Link>{' '}
-            &amp;{' '}
-            <Link href="/privacy-policy" target="_blank" rel="noopener noreferrer" className="hover:underline active:underline">
-              Privacy Policy.
-            </Link>
-          </span>
-        </label>
-        <button type="submit" disabled={!agreed || status === 'submitting'} className="group w-full rounded-lg bg-brand py-2.5 text-[13px] font-semibold text-white hover:bg-brand/90 transition-colors flex items-center justify-center gap-2 disabled:cursor-not-allowed disabled:opacity-60">
-          {status === 'submitting' ? 'Submitting…' : 'Talk To Us'}
-          <svg className="btn-arrow-icon shrink-0" width="14" height="14" viewBox="0 0 18 15" fill="currentColor" aria-hidden><path d="M10.6333 15c.2326 0 .4361-.0891.63-.2771l6.4459-6.5599c.1938-.188.2908-.4156.2908-.663s-.097-.475-.2908-.663L11.2827.2968C11.0694.0792 10.8659 0 10.6333 0c-.475 0-.8434.3562-.8434.851 0 .2375.0775.465.2326.6234l2.1714 2.2559 4.0419 3.7698-4.0419 3.7697-2.1714 2.256c-.1551.1484-.2326.3859-.2326.6233 0 .495.3684.851.8434.851ZM.853 8.3806h12.2617l3.1211-.1979c.3974-.0297.6688-.277.6688-.6827 0-.4057-.2714-.6531-.6688-.6828l-3.1211-.1978H.853C.349 6.6194 0 6.9855 0 7.5c0 .5145.349.8806.853.8806Z"/></svg>
-        </button>
-        {status === 'error' && Object.keys(fieldErrors).length === 0 ? (
-          <p className="text-[12px] font-medium text-brand">{errorMessage || 'Something went wrong. Please try again.'}</p>
-        ) : null}
-      </form>
-    </div>
   );
 }
 
@@ -763,10 +646,17 @@ export default function BlogDetailPage() {
             </article>
 
             {/* ── RIGHT SIDEBAR ─────────────────────────────────────────────────── */}
-            <aside className="hidden lg:block lg:w-[240px] shrink-0">
+            <aside className="hidden lg:block lg:w-[246px] shrink-0">
               <div className="sticky top-24 space-y-5">
-                {/* Lead form */}
-                <BlogAssistForm />
+                <CourseAssistForm
+                  config={{
+                    assistTitle: courseAssistSidebar.assistTitle,
+                    purposes: courseAssistSidebar.purposes,
+                    termsHref: courseAssistSidebar.termsHref,
+                    privacyHref: courseAssistSidebar.privacyHref,
+                    ctaLabel: courseAssistSidebar.ctaLabel,
+                  }}
+                />
 
                 {/* Course card */}
                 <div className="relative overflow-hidden p-5" style={{ width: '246px', height: '180px', borderRadius: '20px', border: '1px solid #EBEBEB', background: '#0D0D0D', boxShadow: '0 4px 4px 0 rgba(30, 41, 59, 0.08), 0 4px 4px 0 rgba(30, 41, 59, 0.03)' }}>
