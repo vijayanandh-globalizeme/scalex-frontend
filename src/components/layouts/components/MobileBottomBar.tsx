@@ -33,7 +33,7 @@ export default function MobileBottomBar({ phone }: Props) {
             href={phone ? `tel:${phone.replace(/\s/g, '')}` : 'tel:'}
             className="flex flex-1 items-center justify-center rounded-md bg-brand px-3 py-2 text-[13px] font-semibold text-white transition active:scale-95"
           >
-            Talk to Advisor
+            Chat with us
           </a>
           <Link
             href="/contact-us"

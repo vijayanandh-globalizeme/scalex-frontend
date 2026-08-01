@@ -16,7 +16,11 @@ const MainLayout = async ({ children }: { children: ReactNode }) => {
     <LeadSuccessProvider>
       <CourseBrochureModalProvider form={DEFAULT_LEAD_FORM}>
         <div className="flex min-h-screen flex-col overflow-x-clip">
-          <Header megaMenuCategories={megaMenuCategories} otherMenus={otherMenus} />
+          <Header
+            megaMenuCategories={megaMenuCategories}
+            otherMenus={otherMenus}
+            phone={settings.CONTACT_PHONE_NO ?? '+91 98480 32919'}
+          />
           <main id="main-content" className="min-w-0 flex-1 overflow-visible">
             {children}
           </main>

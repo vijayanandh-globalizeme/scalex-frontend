@@ -160,25 +160,6 @@ function ChatFabIcon({ className }: { className?: string }) {
 const FAB_BUTTON_CLASS =
   'flex h-12 w-12 items-center justify-center rounded-full bg-transparent transition hover:scale-105';
 
-function MobileFabRow({ whatsAppHref }: { whatsAppHref: string }) {
-  return (
-    <div className="fixed bottom-20 left-0 right-0 z-50 flex items-center justify-between px-4 sm:hidden">
-      <a
-        href={whatsAppHref}
-        target="_blank"
-        rel="noopener noreferrer"
-        className={`${FAB_BUTTON_CLASS} shadow-lg hover:shadow-xl`}
-        aria-label="Chat on WhatsApp"
-      >
-        <WhatsAppFabIcon />
-      </a>
-      <button type="button" className={FAB_BUTTON_CLASS} aria-label="Open chat">
-        <ChatFabIcon />
-      </button>
-    </div>
-  );
-}
-
 function WhatsAppFab({ href }: { href: string }) {
   return (
     <a
@@ -340,7 +321,6 @@ const Footer = ({
         </div>
       </footer>
 
-      <MobileFabRow whatsAppHref={whatsAppHref} />
       <WhatsAppFab href={whatsAppHref} />
       <ChatFab />
       <MobileBottomBar phone={phone} />
