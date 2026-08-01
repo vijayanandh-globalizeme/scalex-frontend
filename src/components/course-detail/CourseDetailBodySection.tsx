@@ -187,7 +187,7 @@ export default async function CourseDetailBodySection({
             ) : null}
 
             {!isTechnical ? (
-              <CourseBatchRequestBanner banner={UNLOCK_COURSE_BANNER} className="max-md:pb-0 md:pb-8" courseId={courseId} />
+              <CourseBatchRequestBanner banner={UNLOCK_COURSE_BANNER} courseId={courseId} />
             ) : null}
 
             {!isTechnical && details?.eligibility ? (
@@ -220,7 +220,7 @@ export default async function CourseDetailBodySection({
                 <CourseFaqsSection faqs={details.courseFaq} title={faqTitle} />
             ) : null}
 
-            <CourseBatchRequestBanner banner={EXPERTS_COURSE_BANNER} className="max-md:pb-0 md:pb-8" courseId={courseId} />
+            <CourseBatchRequestBanner banner={EXPERTS_COURSE_BANNER} courseId={courseId} />
 
             <WhyScaleXSection {...courseWhyScaleXContent} id="why-scalex" variant="embedded" />
             {isTechnicalFromDetails ? awardsSection : null}

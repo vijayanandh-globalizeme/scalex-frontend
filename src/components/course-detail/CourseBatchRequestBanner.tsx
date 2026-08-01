@@ -62,7 +62,7 @@ export default function CourseBatchRequestBanner({
   courseId?: string | null;
 }) {
   return (
-    <div className={`relative overflow-visible max-md:mt-15 max-md:mb-15 max-md:py-0 pt-0 sm:pt-[18px] max-md:pb-0 md:pb-8 ${className ?? ''}`}>
+    <div className={`relative overflow-visible max-md:mt-15 max-md:py-0 pt-0 sm:pt-[18px] pb-0 ${className ?? ''}`}>
       {/* Mobile: text + CTA only (image shown on sm+) */}
       <div className="block sm:hidden rounded-[20px] overflow-hidden border border-[#EBEBEB] bg-[linear-gradient(88deg,#0D0D0D_88.67%,#FD022D_106.46%)] shadow-[0_4px_4px_0_rgba(30,41,59,0.11),0_4px_4px_0_rgba(30,41,59,0.03)]">
         <div className="px-6 py-6">
@@ -85,7 +85,7 @@ export default function CourseBatchRequestBanner({
 
       {/* Desktop: side-by-side absolute layout */}
       <div
-        className="relative hidden sm:block h-[176px] overflow-visible"
+        className="relative hidden sm:block h-[176px] overflow-hidden"
         style={
           {
             '--batch-person-left': 'max(0.75rem, 12.5%)',
@@ -95,11 +95,11 @@ export default function CourseBatchRequestBanner({
       >
         <div className={BATCH_BANNER_SURFACE} aria-hidden />
         <div
-          className="absolute bottom-0 z-[1] h-[194px] w-[clamp(11rem,28%,15rem)]"
+          className="absolute bottom-0 z-[1] h-[176px] w-[clamp(11rem,28%,15rem)]"
           style={{ left: 'var(--batch-person-left)' }}
         >
           <BatchDecorIcon className="pointer-events-none absolute bottom-5 left-[28%] z-0 h-auto w-[clamp(7.5rem,42%,9.5rem)]" />
-          <div className="relative z-10 h-[194px] w-[clamp(7.5rem,62%,9.6875rem)] overflow-visible">
+          <div className="relative z-10 h-[176px] w-[clamp(7.5rem,62%,9.6875rem)] overflow-hidden">
             <Image
               src={banner.imageSrc}
               alt={banner.imageAlt}

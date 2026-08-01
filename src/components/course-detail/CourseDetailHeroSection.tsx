@@ -160,7 +160,7 @@ export default function CourseDetailHeroSection({
   return (
     <section
       ref={sectionRef}
-      className="full-bleed relative overflow-x-clip overflow-y-visible bg-[#F5F6F8] max-md:min-h-[900px] max-md:pt-10 max-md:pb-15 pb-0 md:overflow-visible md:pb-0 md:pt-10 lg:min-h-[782px]"
+      className="full-bleed relative overflow-x-clip overflow-y-visible bg-[#F5F6F8] max-md:min-h-[900px] max-md:pt-10 max-md:pb-15 pb-0 md:overflow-visible md:pb-0 md:pt-10 lg:min-h-[782px] lg:overflow-visible lg:pb-0"
       aria-labelledby="course-hero-heading"
     >
       <div

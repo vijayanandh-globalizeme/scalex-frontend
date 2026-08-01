@@ -301,6 +301,21 @@ body {
     background: #FD022D;
   }
 
+  @media (max-width: 767px) {
+    .blog-detail-page h2 {
+      margin-top: 0 !important;
+    }
+
+    /* Explore categories — keep card + shadow fully visible inside clipped viewport */
+    .explore-categories-carousel .interactive-card {
+      box-shadow: 0 2px 8px 0 rgba(30, 41, 59, 0.1) !important;
+    }
+
+    .explore-categories-carousel .interactive-card:hover {
+      box-shadow: 0 2px 8px 0 rgba(30, 41, 59, 0.1) !important;
+    }
+  }
+
   .header-fluid-text {
     font-size: clamp(14px, calc(8px + 0.416666vw), 16px);
     line-height: 1.35;

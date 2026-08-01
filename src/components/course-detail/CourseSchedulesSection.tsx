@@ -457,7 +457,7 @@ function ScheduleCard({ batch, quantity, onQuantityChange, onEnroll }: {
       <span className="absolute inset-y-0 left-0 w-1 rounded-l-[20px] bg-brand" aria-hidden />
       <div className="relative flex flex-col xl:flex-row">
         <div className="min-w-0 flex-1">
-          <div className="flex items-center justify-between gap-2 border-b border-zinc-100 py-3 pr-3 pl-[22px] md:py-5 md:pr-5 md:pl-[30px]">
+          <div className="relative flex items-center justify-between gap-2 border-b border-zinc-100 py-3 pr-3 pl-[22px] md:py-5 md:pr-5 md:pl-[30px]">
             <div className="min-w-0 flex-1 pr-2">
               <span className="inline-flex items-center gap-1.5 rounded-lg bg-[#FFF6F7] px-2 py-0.5 text-[11px] font-medium leading-[140%] text-brand max-md:py-0.5 max-md:text-[10px]">
                 <span className="h-1.5 w-1.5 rounded-full bg-brand" aria-hidden />
@@ -471,7 +471,7 @@ function ScheduleCard({ batch, quantity, onQuantityChange, onEnroll }: {
                 <span className="truncate">{timeLabel}</span>
               </p>
             </div>
-            <div className="shrink-0 xl:absolute xl:left-1/2 xl:-translate-x-1/2">
+            <div className="shrink-0 xl:absolute xl:left-1/2 xl:top-1/2 xl:-translate-x-1/2 xl:-translate-y-1/2">
               <QuantityStepper value={quantity} onChange={onQuantityChange} />
             </div>
           </div>
@@ -720,7 +720,7 @@ export default function CourseSchedulesSection({
         </div>
       ) : null}
 
-      <div className={`overflow-visible max-md:mt-15 mt-8 ${COURSE_SECTION_CARD} px-5 pt-15 pb-0 md:px-6`}>
+      <div className={`overflow-visible max-md:mt-15 mt-8 ${COURSE_SECTION_CARD} px-5 pt-5 pb-5 md:px-6 md:pt-6 md:pb-6`}>
         {/* Header */}
         
         <div className="flex flex-wrap items-center gap-3">

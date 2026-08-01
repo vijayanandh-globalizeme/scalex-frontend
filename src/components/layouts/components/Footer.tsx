@@ -125,23 +125,70 @@ function buildAddress(settings: LayoutSettings): string {
     .join(', ');
 }
 
+function WhatsAppFabIcon({ className }: { className?: string }) {
+  return (
+    <Image
+      src="/images/whatspp.svg"
+      alt=""
+      width={40}
+      height={40}
+      className={`pointer-events-none object-contain ${className ?? 'h-10 w-10'}`}
+      sizes="40px"
+    />
+  );
+}
+
+function ChatFabIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="35"
+      height="30"
+      viewBox="0 0 35 30"
+      fill="none"
+      className={`pointer-events-none ${className ?? 'h-9 w-auto'}`}
+      aria-hidden
+    >
+      <path
+        d="M34.449 13.855C34.449 21.8771 27.2107 27.7101 17.2171 27.7101C13.9404 27.7101 10.9468 27.1196 8.37022 25.9818C6.83617 27.0619 4.73618 27.7101 2.68085 27.7101C1.69787 27.7101 1.34043 27.0042 2.01064 26.4282C2.90426 25.6216 3.2766 24.8872 3.2766 23.7638C3.2766 21.1857 0 19.6303 0 13.855C0 5.81853 7.2383 0 17.2171 0C27.1957 0 34.449 5.81853 34.449 13.855ZM22.2362 13.9126C22.2362 15.108 23.2341 16.0729 24.4702 16.0729C25.6915 16.0729 26.7043 15.108 26.7043 13.9126C26.7043 12.7172 25.6915 11.7523 24.4702 11.7523C23.2341 11.7523 22.2362 12.7172 22.2362 13.9126ZM15.0723 13.9126C15.0723 15.108 16.0702 16.0729 17.3065 16.0729C18.5276 16.0729 19.5255 15.108 19.5255 13.9126C19.5255 12.7172 18.5276 11.7523 17.3065 11.7523C16.0702 11.7523 15.0723 12.7172 15.0723 13.9126ZM7.89362 13.9126C7.89362 15.108 8.90638 16.0729 10.1277 16.0729C11.3638 16.0729 12.3617 15.108 12.3617 13.9126C12.3617 12.7172 11.349 11.7523 10.1277 11.7523C8.90638 11.7523 7.89362 12.7172 7.89362 13.9126Z"
+        fill="#4ECC5C"
+      />
+    </svg>
+  );
+}
+
+const FAB_BUTTON_CLASS =
+  'flex h-12 w-12 items-center justify-center rounded-full bg-transparent transition hover:scale-105';
+
+function MobileFabRow({ whatsAppHref }: { whatsAppHref: string }) {
+  return (
+    <div className="fixed bottom-20 left-0 right-0 z-50 flex items-center justify-between px-4 sm:hidden">
+      <a
+        href={whatsAppHref}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={`${FAB_BUTTON_CLASS} shadow-lg hover:shadow-xl`}
+        aria-label="Chat on WhatsApp"
+      >
+        <WhatsAppFabIcon />
+      </a>
+      <button type="button" className={FAB_BUTTON_CLASS} aria-label="Open chat">
+        <ChatFabIcon />
+      </button>
+    </div>
+  );
+}
+
 function WhatsAppFab({ href }: { href: string }) {
   return (
     <a
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className="fixed bottom-6 left-4 z-50 flex h-12 w-12 items-center justify-center rounded-full bg-transparent shadow-lg transition hover:scale-105 hover:shadow-xl md:left-6"
+      className={`${FAB_BUTTON_CLASS} fixed bottom-6 left-4 z-50 hidden shadow-lg hover:shadow-xl sm:flex md:left-6`}
       aria-label="Chat on WhatsApp"
     >
-      <Image
-        src="/images/whatspp.svg"
-        alt=""
-        width={40}
-        height={40}
-        className="pointer-events-none h-10 w-10 object-contain"
-        sizes="40px"
-      />
+      <WhatsAppFabIcon />
     </a>
   );
 }
@@ -150,23 +197,10 @@ function ChatFab() {
   return (
     <button
       type="button"
-      className="fixed bottom-20 right-4 z-50 flex h-16 w-16 items-center justify-center rounded-full bg-transparent transition hover:scale-105 sm:bottom-6 md:right-6"
+      className={`${FAB_BUTTON_CLASS} fixed bottom-6 right-4 z-50 hidden sm:flex md:right-6`}
       aria-label="Open chat"
     >
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="35"
-        height="30"
-        viewBox="0 0 35 30"
-        fill="none"
-        className="pointer-events-none h-[36px] w-auto"
-        aria-hidden
-      >
-        <path
-          d="M34.449 13.855C34.449 21.8771 27.2107 27.7101 17.2171 27.7101C13.9404 27.7101 10.9468 27.1196 8.37022 25.9818C6.83617 27.0619 4.73618 27.7101 2.68085 27.7101C1.69787 27.7101 1.34043 27.0042 2.01064 26.4282C2.90426 25.6216 3.2766 24.8872 3.2766 23.7638C3.2766 21.1857 0 19.6303 0 13.855C0 5.81853 7.2383 0 17.2171 0C27.1957 0 34.449 5.81853 34.449 13.855ZM22.2362 13.9126C22.2362 15.108 23.2341 16.0729 24.4702 16.0729C25.6915 16.0729 26.7043 15.108 26.7043 13.9126C26.7043 12.7172 25.6915 11.7523 24.4702 11.7523C23.2341 11.7523 22.2362 12.7172 22.2362 13.9126ZM15.0723 13.9126C15.0723 15.108 16.0702 16.0729 17.3065 16.0729C18.5276 16.0729 19.5255 15.108 19.5255 13.9126C19.5255 12.7172 18.5276 11.7523 17.3065 11.7523C16.0702 11.7523 15.0723 12.7172 15.0723 13.9126ZM7.89362 13.9126C7.89362 15.108 8.90638 16.0729 10.1277 16.0729C11.3638 16.0729 12.3617 15.108 12.3617 13.9126C12.3617 12.7172 11.349 11.7523 10.1277 11.7523C8.90638 11.7523 7.89362 12.7172 7.89362 13.9126Z"
-          fill="#4ECC5C"
-        />
-      </svg>
+      <ChatFabIcon className="h-[36px] w-auto" />
     </button>
   );
 }
@@ -306,6 +340,7 @@ const Footer = ({
         </div>
       </footer>
 
+      <MobileFabRow whatsAppHref={whatsAppHref} />
       <WhatsAppFab href={whatsAppHref} />
       <ChatFab />
       <MobileBottomBar phone={phone} />
