@@ -100,6 +100,7 @@ export default function LogoMarquee({
   reverse = false,
   className = '',
   largeOnMobile = false,
+  trackGapClassName = TRACK_GAP_CLASS,
 }: {
   logos: LogoMarqueeItem[];
   ariaLabel?: string;
@@ -108,6 +109,8 @@ export default function LogoMarquee({
   className?: string;
   /** Larger logo slots on mobile (~2 visible); marquee on all breakpoints. */
   largeOnMobile?: boolean;
+  /** Flex gap classes for spacing between logo slots. */
+  trackGapClassName?: string;
 }) {
   const viewportRef = useRef<HTMLDivElement>(null);
   const measureRef = useRef<HTMLDivElement>(null);
@@ -156,7 +159,7 @@ export default function LogoMarquee({
     styles.track,
     loopPx > 0 ? styles.trackLoopReady : '',
     reverse ? styles.trackReverse : '',
-    TRACK_GAP_CLASS,
+    trackGapClassName,
   ]
     .filter(Boolean)
     .join(' ');
@@ -165,7 +168,7 @@ export default function LogoMarquee({
     <div ref={viewportRef} className={`${marqueeClass} ${className}`} aria-label={ariaLabel}>
       <div
         ref={measureRef}
-        className={`pointer-events-none absolute flex opacity-0 ${TRACK_GAP_CLASS}`}
+        className={`pointer-events-none absolute flex opacity-0 ${trackGapClassName}`}
         aria-hidden
       >
         {logos.map((logo) => (

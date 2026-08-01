@@ -250,7 +250,7 @@ export default function AwardsSection({
   const carousel = (
     <div
       ref={viewportRef}
-      className={`relative overflow-hidden pt-14 ${isEmbedded ? 'mt-6' : 'mt-10 md:mt-12'}`}
+      className={`relative overflow-hidden max-md:pt-10 md:pt-14 ${isEmbedded ? 'mt-6' : 'mt-10 md:mt-12'}`}
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
     >

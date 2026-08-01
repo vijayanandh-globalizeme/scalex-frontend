@@ -77,6 +77,7 @@ export function CourseEnterpriseCard({
             size={logoMarqueeSize}
             largeOnMobile
             className={logoMarqueeClassName}
+            trackGapClassName="items-center gap-10 md:gap-14 lg:gap-16"
           />
         </div>
       ) : null}
