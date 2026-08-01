@@ -61,10 +61,13 @@ export default function TrendingBlogCard({
   blog,
   footerClassName,
   equalFooterSpacing = false,
+  mobileFlat = false,
 }: {
   blog: TrendingBlogCardData;
   footerClassName?: string;
   equalFooterSpacing?: boolean;
+  /** Mobile carousel: flat border card without outside shadow (prevents clip) */
+  mobileFlat?: boolean;
 }) {
   const profileFooter = (
     <div className="flex items-center justify-between">
@@ -88,7 +91,9 @@ export default function TrendingBlogCard({
   return (
     <Link
       href={blog.href}
-      className="interactive-card flex h-full w-full flex-col rounded-2xl bg-white"
+      className={`interactive-card flex h-full w-full flex-col rounded-2xl bg-white ${
+        mobileFlat ? 'trending-blog-card--flat-mobile' : ''
+      }`}
       style={{ minWidth: 0 }}
     >
       <div className="interactive-card-media relative h-[200px] shrink-0 overflow-hidden rounded-t-2xl">

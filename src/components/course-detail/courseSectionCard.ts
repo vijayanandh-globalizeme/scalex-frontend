@@ -5,7 +5,7 @@ export const COURSE_SECTION_CARD =
 export const COURSE_SECTION_BODY = `${COURSE_SECTION_CARD} px-6 py-5 md:px-8 md:py-6 max-md:mb-15`;
 
 /** Enterprise Training hero card — shared shell; mobile keeps clear gap above/below. */
-export const COURSE_ENTERPRISE_CARD = `${COURSE_SECTION_CARD} max-md:overflow-hidden max-md:pb-15`;
+export const COURSE_ENTERPRISE_CARD = `${COURSE_SECTION_CARD} max-md:overflow-hidden max-md:pb-6`;
 
 /** Desktop grid slot for enterprise card — ~30% of card height overlaps section below. */
 export const COURSE_ENTERPRISE_HERO_SLOT =

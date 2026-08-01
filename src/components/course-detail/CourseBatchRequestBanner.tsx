@@ -62,11 +62,11 @@ export default function CourseBatchRequestBanner({
   courseId?: string | null;
 }) {
   return (
-    <div className={`relative overflow-visible max-md:mt-15 max-md:py-0 pt-0 sm:pt-[18px] pb-0 ${className ?? ''}`}>
-      {/* Mobile: text + CTA only (image shown on sm+) */}
+    <div className={`relative overflow-visible max-md:mb-[20px] max-md:py-0 pt-0 sm:pt-[18px] pb-0 ${className ?? ''}`}>
+      {/* Mobile: text left, CTA right */}
       <div className="block sm:hidden rounded-[20px] overflow-hidden border border-[#EBEBEB] bg-[linear-gradient(88deg,#0D0D0D_88.67%,#FD022D_106.46%)] shadow-[0_4px_4px_0_rgba(30,41,59,0.11),0_4px_4px_0_rgba(30,41,59,0.03)]">
-        <div className="px-6 py-6">
-          <p className="text-[16px] font-semibold leading-normal tracking-[-0.54px] text-[#E5E5E5]">
+        <div className="flex items-center justify-between gap-3 px-4 py-4">
+          <p className="min-w-0 flex-1 text-[14px] font-semibold leading-snug tracking-[-0.54px] text-[#E5E5E5]">
             {banner.headingLines.map((line) => (
               <span key={line} className="block">{line}</span>
             ))}
@@ -75,7 +75,7 @@ export default function CourseBatchRequestBanner({
             href={banner.ctaHref}
             type="contact"
             courseId={courseId}
-            className="btn-brand mt-4 inline-flex h-10 w-full items-center justify-center gap-2 rounded-lg px-5 text-[14px] font-medium leading-[18px] text-white"
+            className="btn-brand inline-flex h-9 shrink-0 items-center justify-center gap-1.5 rounded-lg px-3 text-[12px] font-medium leading-[18px] whitespace-nowrap text-white"
           >
             {banner.ctaLabel}
             <ArrowRightIcon className="btn-arrow-icon shrink-0 text-white" />

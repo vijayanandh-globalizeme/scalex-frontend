@@ -114,10 +114,7 @@ export default function CourseEligibilityRequirementsSection({
         <CertificateGraphic certificationImage={certificationImage} />
       </div>
 
-      <div
-        className="relative mt-8 overflow-visible"
-        style={{ paddingTop: PERSON_HEAD_OUTSIDE_PX }}
-      >
+      <div className="relative max-md:mt-0 max-md:pt-[10px] mt-8 overflow-visible md:pt-[22px]">
         <div className="relative min-h-[200px] overflow-visible rounded-[20px] border border-[#DCDCDC] bg-[linear-gradient(79deg,#FFF_49.08%,#FFD3D3_108.27%)] py-6 pl-6 pr-[10px] md:py-7 md:pl-8 md:pr-[10px]">
         <div className="relative z-10 w-full max-w-full md:max-w-[calc(100%-220px)]">
           <h3 className="text-[20px] font-semibold leading-[140%] text-heading">{subTitle}</h3>

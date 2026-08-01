@@ -163,8 +163,10 @@ function TestimonialCardOnly({ story, mobile = false }: { story: Reviewer; mobil
 
   return (
     <article
-      className={`interactive-card flex h-full flex-col overflow-visible border border-[#EBEBEB] bg-white p-5 shadow-[0_4px_4px_0_rgba(30,41,59,0.11),0_4px_4px_0_rgba(30,41,59,0.03)] md:p-6 ${
-        mobile ? 'w-full rounded-lg' : 'rounded-lg'
+      className={`flex h-full flex-col overflow-visible border border-[#EBEBEB] bg-white p-5 md:p-6 ${
+        mobile
+          ? 'success-story-review-card w-full rounded-lg shadow-[0_2px_8px_0_rgba(30,41,59,0.1)]'
+          : 'interactive-card rounded-lg shadow-[0_4px_4px_0_rgba(30,41,59,0.11),0_4px_4px_0_rgba(30,41,59,0.03)]'
       }`}
       style={
         mobile
@@ -310,9 +312,9 @@ export default function SuccessStoriesSection({
 
   return (
     <section
-      className={`full-bleed relative ${
+      className={`full-bleed relative overflow-visible ${
         compact
-          ? 'bg-surface max-md:pt-15 max-md:pb-15 md:pt-[30px] pb-0'
+          ? 'bg-surface max-md:pt-15 max-md:pb-8 md:pt-[30px] pb-0'
           : 'bg-surface pt-[120px] pb-15 md:pt-28 md:pb-10 lg:pt-32 lg:pb-12'
       }`}
       aria-labelledby="success-stories-heading"
@@ -452,34 +454,39 @@ export default function SuccessStoriesSection({
                 </button>
               </div>
             ) : null}
-            <div ref={mobileViewportRef} className="w-full overflow-x-hidden" style={{ height: SLIDE_H }}>
+            <div className="success-stories-mobile-carousel w-full max-md:overflow-visible">
               <div
-                className="flex h-full items-stretch pb-2 transition-transform duration-500 ease-out will-change-transform"
-                style={{
-                  transform:
-                    mobileStepPx > 0
-                      ? `translate3d(-${index * mobileStepPx}px, 0, 0)`
-                      : undefined,
-                }}
+                ref={mobileViewportRef}
+                className="w-full max-md:overflow-x-hidden max-md:px-0.5 max-md:pb-6 max-md:pt-1"
               >
-                {stories.map((story, storyIndex) => (
-                  <div
-                    key={story.id}
-                    className="box-border flex h-full shrink-0 overflow-visible pb-2"
-                    style={
-                      mobileSlideWidth > 0
-                        ? {
-                            width: mobileSlideWidth,
-                            flex: `0 0 ${mobileSlideWidth}px`,
-                            marginRight:
-                              storyIndex < stories.length - 1 ? SLIDE_GAP : 0,
-                          }
-                        : { flex: '0 0 100%', width: '100%' }
-                    }
-                  >
-                    <TestimonialCardOnly story={story} mobile />
-                  </div>
-                ))}
+                <div
+                  className="flex items-stretch transition-transform duration-500 ease-out will-change-transform"
+                  style={{
+                    transform:
+                      mobileStepPx > 0
+                        ? `translate3d(-${index * mobileStepPx}px, 0, 0)`
+                        : undefined,
+                  }}
+                >
+                  {stories.map((story, storyIndex) => (
+                    <div
+                      key={story.id}
+                      className="box-border flex shrink-0 overflow-visible py-1"
+                      style={
+                        mobileSlideWidth > 0
+                          ? {
+                              width: mobileSlideWidth,
+                              flex: `0 0 ${mobileSlideWidth}px`,
+                              marginRight:
+                                storyIndex < stories.length - 1 ? SLIDE_GAP : 0,
+                            }
+                          : { flex: '0 0 100%', width: '100%' }
+                      }
+                    >
+                      <TestimonialCardOnly story={story} mobile />
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           </div>

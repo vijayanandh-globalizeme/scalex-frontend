@@ -72,7 +72,7 @@ export default async function AboutPage() {
       {/* Who We Are */}
       <section className="full-bleed bg-white max-md:pt-15 pb-0 md:pb-10 md:pt-20">
         <div className="site-container">
-          <div className="mb-12 mt-12 text-center">
+          <div className="mb-12 text-center">
             <h2
               style={{
                 color: '#1E293B',
@@ -295,9 +295,9 @@ export default async function AboutPage() {
 
       <SuccessStoriesSectionServer compact settings={settings ?? undefined} />
 
-      <div className="full-bleed bg-surface pb-0 pt-0">
-        <div className="site-container">
-          <div className="rounded-2xl border border-zinc-100 bg-white px-0 py-6 shadow-sm md:px-10">
+      <div className="full-bleed bg-surface pt-0 max-md:overflow-visible md:pb-0">
+        <div className="site-container max-md:overflow-visible">
+          <div className="overflow-visible rounded-2xl border border-zinc-100 bg-white px-4 py-6 max-md:pb-8 max-md:shadow-[0_2px_8px_0_rgba(30,41,59,0.1)] md:px-10 md:shadow-sm">
             <ReviewPlatformRowServer />
           </div>
         </div>
@@ -306,7 +306,7 @@ export default async function AboutPage() {
       {/* Scale X Learning in the News */}
       <section className="full-bleed bg-surface pb-15 max-md:pt-15 md:pb-20 md:pt-20">
         <div className="site-container">
-          <h2 className="mb-10 text-center" style={{ color: '#1E293B', fontFamily: 'Inter', fontSize: '36px', fontWeight: 700 }}>
+          <h2 className="mb-5 text-center" style={{ color: '#1E293B', fontFamily: 'Inter', fontSize: '36px', fontWeight: 700 }}>
             Scale X Learning in the News
           </h2>
           <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">

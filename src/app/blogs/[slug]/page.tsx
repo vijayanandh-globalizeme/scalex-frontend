@@ -68,8 +68,8 @@ function TrendingBlogsSection({ blogs }: { blogs: TrendingBlogCardData[] }) {
   const next = () => setIndex((i) => Math.min(maxIndex, i + 1));
 
   return (
-    <section className="full-bleed bg-[#F5F6F8] pb-15 md:pb-16">
-      <div className="site-container">
+    <section className="full-bleed overflow-visible bg-[#F5F6F8] pb-15 md:pb-16">
+      <div className="site-container max-md:overflow-visible">
         {/* Header */}
         <div className="mb-4 text-center md:mb-10">
           <h2 className="text-[24px] font-extrabold text-heading md:text-[36px]">
@@ -78,16 +78,16 @@ function TrendingBlogsSection({ blogs }: { blogs: TrendingBlogCardData[] }) {
           <p className="mt-2 text-[15px] text-muted">Find the right course that leaps your career</p>
         </div>
 
-        {/* Slider track — outer padding for shadows; inner clip for slide overflow */}
-        <div className="px-3 pt-3 pb-6 md:py-6">
-          <div className="overflow-x-clip">
+        {/* Slider track — mobile: no clip so card edges stay clean; desktop: clip slides */}
+        <div className="trending-blogs-carousel max-md:overflow-visible px-2 pt-2 pb-2 md:px-3 md:py-6">
+          <div className="max-md:overflow-visible md:overflow-x-clip">
           <div
             className="flex items-stretch gap-6 transition-transform duration-500 ease-in-out"
             style={{ transform: `translateX(calc(-${index} * (100% / ${perPage} + 24px / ${perPage})))` }}
           >
             {blogs.map((blog) => (
-              <div key={blog.id} className="flex shrink-0 self-stretch" style={{ width: `calc((100% - ${(perPage - 1) * 24}px) / ${perPage})` }}>
-                <TrendingBlogCard blog={blog} footerClassName="max-md:mt-2 max-md:pt-2" />
+              <div key={blog.id} className="flex shrink-0 self-stretch max-md:px-0.5" style={{ width: `calc((100% - ${(perPage - 1) * 24}px) / ${perPage})` }}>
+                <TrendingBlogCard blog={blog} footerClassName="max-md:mt-2 max-md:pt-2" mobileFlat />
               </div>
             ))}
           </div>
@@ -95,7 +95,7 @@ function TrendingBlogsSection({ blogs }: { blogs: TrendingBlogCardData[] }) {
         </div>
 
         {canNavigate ? (
-          <div className="mt-2 flex justify-end gap-3 md:mt-8">
+          <div className="flex justify-end gap-3 md:mt-8">
             <button
               onClick={prev}
               disabled={index === 0}
@@ -586,7 +586,7 @@ export default function BlogDetailPage() {
               {/* Blog content */}
               <div
                 ref={contentRef}
-                className="blog-article-content max-w-none min-w-0 break-normal space-y-4 text-[#46505F] font-medium max-md:[&_h2]:!mt-0 md:[&_h2]:mt-6 [&_h2]:mb-3 [&_h2]:text-[26px] [&_h2]:font-bold [&_h2]:leading-[34px] [&_h2]:text-[#1E293B] [&_h3]:mt-5 [&_h3]:text-[18px] [&_h3]:font-bold [&_h3]:text-heading [&_p]:mt-3 [&_p]:text-[15px] [&_p]:leading-[22px] [&_p:first-of-type]:text-[17px] [&_p:first-of-type]:leading-[26px] [&_ul]:mt-3 [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:text-[15px] [&_ul]:leading-[22px] [&_ol]:mt-3 [&_ol]:list-decimal [&_ol]:pl-5 [&_ol]:text-[15px] [&_ol]:leading-[22px] [&_li]:mt-1 [&_li]:text-[15px] [&_li]:leading-[22px] [&_a]:text-brand [&_a]:underline [&_a]:break-normal [&_a]:[overflow-wrap:normal] [&_strong]:font-semibold [&_strong]:text-heading [&_table]:mt-4 [&_table]:w-full [&_table]:overflow-hidden [&_table]:rounded-xl [&_table]:border [&_table]:border-zinc-200 [&_th]:bg-[#1A1A2E] [&_th]:px-4 [&_th]:py-3 [&_th]:text-left [&_th]:text-white [&_td]:border-t [&_td]:border-zinc-100 [&_td]:px-4 [&_td]:py-2.5 [&_img]:mt-4 [&_img]:rounded-xl [&_img]:max-w-full [&_pre]:overflow-x-auto [&_pre]:whitespace-pre-wrap [&_code]:break-words"
+                className="blog-article-content max-w-none min-w-0 break-normal space-y-4 text-[#46505F] font-medium max-md:[&_h2]:!mt-0 max-md:[&_p.ql-align-justify]:!mt-0 max-md:[&_.ql-align-justify]:!mt-0 md:[&_h2]:mt-6 [&_h2]:mb-3 [&_h2]:text-[26px] [&_h2]:font-bold [&_h2]:leading-[34px] [&_h2]:text-[#1E293B] [&_h3]:mt-5 [&_h3]:text-[18px] [&_h3]:font-bold [&_h3]:text-heading [&_p]:mt-3 [&_p:first-of-type]:!mt-0 [&_p]:text-[15px] [&_p]:leading-[22px] [&_p:first-of-type]:text-[17px] [&_p:first-of-type]:leading-[26px] [&_ul]:mt-3 [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:text-[15px] [&_ul]:leading-[22px] [&_ol]:mt-3 [&_ol]:list-decimal [&_ol]:pl-5 [&_ol]:text-[15px] [&_ol]:leading-[22px] [&_li]:mt-1 [&_li]:text-[15px] [&_li]:leading-[22px] [&_a]:text-brand [&_a]:underline [&_a]:break-normal [&_a]:[overflow-wrap:normal] [&_strong]:font-semibold [&_strong]:text-heading [&_table]:mt-4 [&_table]:w-full [&_table]:overflow-hidden [&_table]:rounded-xl [&_table]:border [&_table]:border-zinc-200 [&_th]:bg-[#1A1A2E] [&_th]:px-4 [&_th]:py-3 [&_th]:text-left [&_th]:text-white [&_td]:border-t [&_td]:border-zinc-100 [&_td]:px-4 [&_td]:py-2.5 [&_img]:mt-4 [&_img]:rounded-xl [&_img]:max-w-full [&_pre]:overflow-x-auto [&_pre]:whitespace-pre-wrap [&_code]:break-words"
                 dangerouslySetInnerHTML={{ __html: blog.content?.content ? sanitizeBlogContent(blog.content.content) : '' }}
               />
 

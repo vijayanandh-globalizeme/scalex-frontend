@@ -281,7 +281,7 @@ export default function CategoryCoursesSection({
           </p>
         </header>
 
-        <div ref={gridContainerRef} className={`mt-[45px] ${compactTop || mutedBackground ? 'pb-10' : 'pb-4 md:pb-6'}`}>
+        <div ref={gridContainerRef} className={`mt-[45px] ${compactTop || mutedBackground ? 'md:pb-10' : 'pb-4 md:pb-6'}`}>
           {loading ? (
             <div className="grid grid-cols-1 gap-x-3 gap-y-[30px] md:grid-cols-2 lg:grid-cols-3">
               {Array.from({ length: FETCH_LIMIT }).map((_, i) => (
@@ -306,12 +306,12 @@ export default function CategoryCoursesSection({
         </div>
 
         {!loading && hasMore && (
-          <div className={`flex justify-center ${compactTop || mutedBackground ? 'max-md:mb-[20px] md:mb-0' : ''}`}>
+          <div className="flex justify-center">
             <button
               type="button"
               onClick={handleViewMore}
               disabled={loadingMore}
-              className="inline-flex items-center gap-2 text-[14px] font-semibold text-brand underline-offset-4 transition hover:underline disabled:opacity-60"
+              className="inline-flex items-center gap-2 text-[14px] font-semibold text-brand underline-offset-4 transition hover:underline disabled:opacity-60 max-md:mt-10"
             >
               {loadingMore ? 'Loading...' : 'View More Courses'}
               {!loadingMore && <ViewMoreChevronIcon className="shrink-0 text-brand" />}

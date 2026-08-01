@@ -12,8 +12,8 @@ import CourseBatchRequestBanner from '@/components/course-detail/CourseBatchRequ
 import type { ApiTrainer } from '@/services/courseApi';
 import { withNewTabLinks } from '@/lib/richText';
 
-const TRAINER_CARD =
-  'interactive-card relative flex h-full flex-col rounded-[20px] border border-[#EBEBEB] bg-white px-5 pb-5 pt-12 text-center';
+const TRAINER_CARD_BASE =
+  'relative flex h-full flex-col overflow-visible rounded-[20px] border border-[#EBEBEB] bg-white px-5 pb-5 pt-12 text-center';
 
 function BriefcaseIcon() {
   return (
@@ -33,7 +33,9 @@ function TrainerCard({ trainer }: { trainer: ApiTrainer }) {
   const experienceValue = experienceMatch?.[1] ?? trainer.experience;
 
   return (
-    <article className={TRAINER_CARD}>
+    <article
+      className={`trainer-card ${TRAINER_CARD_BASE} max-md:shadow-[0_2px_8px_0_rgba(30,41,59,0.10)] md:interactive-card`}
+    >
       <div className="interactive-card-media absolute top-0 left-1/2 h-[72px] w-[72px] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-full border border-[#FD022D] bg-zinc-100">
         <Image
           src={trainer.avatar?.url ?? '/images/avatar-placeholder.png'}
@@ -123,8 +125,8 @@ export default function CourseTrainersCarousel({
   }, [totalPages]);
 
   return (
-    <div id="trainers" className="scroll-mt-[116px] mb-0">
-      <div className="pt-5 pb-15 md:pt-6">
+    <div id="trainers" className="scroll-mt-[116px] mb-0 max-md:mb-[20px] overflow-visible">
+      <div className="overflow-visible max-md:pb-0 pb-15 md:pt-6">
         <div className="flex items-center justify-between gap-4">
           <h2 className="section-heading text-heading">{title}</h2>
           {totalPages > 1 ? (
@@ -139,15 +141,23 @@ export default function CourseTrainersCarousel({
           ) : null}
         </div>
 
-        <CategoryCarouselTrack page={page} className="mt-6 pt-10 pb-6">
-          {pages.map((pageTrainers, pageIndex) => (
-            <div key={pageIndex} className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3 lg:gap-6">
-              {pageTrainers.map((trainer) => (
-                <TrainerCard key={trainer.id} trainer={trainer} />
-              ))}
-            </div>
-          ))}
-        </CategoryCarouselTrack>
+        <div className="min-w-0 max-md:overflow-x-clip">
+          <CategoryCarouselTrack
+            page={page}
+            clipX={false}
+            className="trainers-carousel-track mt-6 pt-10 max-md:pb-0 md:pb-6"
+          >
+            {pages.map((pageTrainers, pageIndex) => (
+              <div key={pageIndex} className="grid grid-cols-1 gap-5 overflow-visible md:grid-cols-2 lg:grid-cols-3 lg:gap-6">
+                {pageTrainers.map((trainer) => (
+                  <div key={trainer.id} className="overflow-visible max-md:px-0.5 max-md:pt-1">
+                    <TrainerCard trainer={trainer} />
+                  </div>
+                ))}
+              </div>
+            ))}
+          </CategoryCarouselTrack>
+        </div>
       </div>
 
       {cta ? <CourseBatchRequestBanner banner={cta} /> : null}

@@ -112,7 +112,7 @@ function WhiteBlogCard({ blog, mobile = false }: { blog: BlogItem; mobile?: bool
   const widthClass = mobile ? 'w-full' : BLOG_CARD_WIDTH;
 
   return (
-    <article className={`${mobile ? 'overflow-hidden' : 'overflow-visible'} ${widthClass}`}>
+    <article className={`overflow-visible ${widthClass}`}>
       <div
         className={`interactive-card flex flex-col overflow-hidden rounded-2xl border border-zinc-100 bg-white pt-0 ${
           mobile ? 'px-3 pb-4' : 'px-4 pb-6'
@@ -202,9 +202,9 @@ function ViewMoreChevronIcon({ className }: { className?: string }) {
 
 function BlogMobileGrid({ items }: { items: BlogItem[] }) {
   return (
-    <div className="grid grid-cols-1 gap-4 overflow-hidden">
+    <div className="related-blogs-mobile-grid grid grid-cols-1 gap-4 overflow-visible pb-2">
       {items.map((blog) => (
-        <div key={blog.id} className="min-w-0 overflow-hidden">
+        <div key={blog.id} className="min-w-0 overflow-visible py-1">
           <BlogCard blog={blog} mobile />
         </div>
       ))}
@@ -255,7 +255,7 @@ function SkeletonCard({ mobile = false }: { mobile?: boolean }) {
   const imageOverflow = mobile ? MOBILE_BLOG_IMAGE_OVERFLOW_PX : BLOG_IMAGE_OVERFLOW_PX;
 
   return (
-    <div className={`animate-pulse ${mobile ? 'overflow-hidden' : 'overflow-visible'}`}>
+    <div className={`animate-pulse overflow-visible`}>
       <div className={`overflow-hidden rounded-2xl bg-surface-raised pt-0 ${mobile ? 'px-3 pb-4' : 'px-4 pb-6'}`}>
         <div
           className={`mb-4 w-full rounded-2xl bg-muted/20 ${mobile ? 'mb-3' : ''}`}
@@ -346,7 +346,7 @@ export default function CategoryRelatedBlogsSection({ categoryId }: { categoryId
   const showControls = !loading && !pageFetching && !isEmpty && !isMobile && totalPages > 1;
 
   return (
-    <section className="full-bleed max-md:overflow-hidden bg-surface pb-0 md:overflow-visible md:pb-10" aria-labelledby="related-blogs-heading">
+    <section className="category-related-blogs-section full-bleed max-md:overflow-visible bg-surface max-md:pb-6 md:overflow-visible md:pb-10" aria-labelledby="related-blogs-heading">
       <div className="site-container">
         <header className="mx-auto w-full text-center">
           <h2

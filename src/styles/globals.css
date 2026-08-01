@@ -301,9 +301,19 @@ body {
     background: #FD022D;
   }
 
+  article .blog-article-content > p:first-of-type {
+    margin-top: 0 !important;
+  }
+
   @media (max-width: 767px) {
     .blog-detail-page h2 {
       margin-top: 0 !important;
+    }
+
+    .blog-article-content p.ql-align-justify,
+    .blog-article-content .ql-align-justify {
+      margin-top: 0 !important;
+      margin-bottom: 0 !important;
     }
 
     /* Explore categories — keep card + shadow fully visible inside clipped viewport */
@@ -313,6 +323,40 @@ body {
 
     .explore-categories-carousel .interactive-card:hover {
       box-shadow: 0 2px 8px 0 rgba(30, 41, 59, 0.1) !important;
+    }
+
+    /* Success stories mobile carousel — lighter shadow that fits clipped viewport */
+    .success-stories-mobile-carousel .success-story-review-card {
+      box-shadow: 0 2px 8px 0 rgba(30, 41, 59, 0.1) !important;
+    }
+
+    /* Trending blogs carousel — flat border on mobile (no outside shadow clip) */
+    .trending-blog-card--flat-mobile {
+      border: 1px solid #ebebeb;
+      box-shadow: none !important;
+    }
+
+    /* Related blogs mobile — keep card shadow fully visible */
+    .related-blogs-mobile-grid .interactive-card {
+      box-shadow: 0 2px 8px 0 rgba(30, 41, 59, 0.1) !important;
+    }
+
+    .related-blogs-mobile-grid .interactive-card:hover {
+      box-shadow: 0 2px 8px 0 rgba(30, 41, 59, 0.1) !important;
+    }
+
+    /* Trainers carousel mobile — explicit card shadow (avoids interactive-card clip) */
+    .trainers-carousel-track .trainer-card {
+      box-shadow: 0 2px 8px 0 rgba(30, 41, 59, 0.1) !important;
+    }
+
+    .trainers-carousel-track .trainer-card:hover {
+      box-shadow: 0 2px 8px 0 rgba(30, 41, 59, 0.1) !important;
+    }
+
+    .blogs-hero-mobile-carousel .interactive-card {
+      border: 1px solid #ebebeb;
+      box-shadow: none !important;
     }
   }
 
