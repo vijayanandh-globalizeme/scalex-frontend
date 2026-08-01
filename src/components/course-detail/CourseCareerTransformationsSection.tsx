@@ -215,7 +215,7 @@ function TransformationStoryCard({ story }: { story: CareerTransformationStory }
   return (
     <article className="relative flex h-full w-full flex-col overflow-visible pt-6">
       {/* Hike badge — sit above the person image, not over the face */}
-      <div className="pointer-events-none absolute top-0 left-1/2 z-[70] -translate-x-1/2 md:top-3 md:left-[155px] md:translate-x-0">
+      <div className="pointer-events-none absolute top-6 right-10 z-[70] md:top-3 md:right-auto md:left-[155px]">
         <HikeBadge hikePercent={story.hikePercent} />
       </div>
 
@@ -236,22 +236,22 @@ function TransformationStoryCard({ story }: { story: CareerTransformationStory }
 
       {/* Card */}
       <div
-        className="interactive-card relative z-0 mt-[112px] flex min-h-[180px] w-full flex-1 overflow-visible rounded-[16px] border border-[#DCDCDC] md:mt-0 md:min-h-[210px] md:rounded-[20px]"
+        className="interactive-card relative z-0 mt-[70px] flex min-h-[180px] w-full flex-1 overflow-visible rounded-[16px] border border-[#DCDCDC] md:mt-0 md:min-h-[210px] md:rounded-[20px]"
         style={{ background: 'linear-gradient(259deg, #FFF 64.75%, #FFD3D3 108.27%)' }}
       >
         {/* Person image — mobile */}
-        <div className="pointer-events-none absolute top-0 left-1/2 z-[60] h-[110px] w-[110px] -translate-x-1/2 -translate-y-1/2 md:hidden" aria-hidden>
+        <div className="pointer-events-none absolute top-[-24px] left-4 z-[60] h-[170px] w-[170px] -translate-y-1/2 md:hidden" aria-hidden>
           <Image
             src={story.imageSrc}
             alt={story.imageAlt}
             width={PERSON_IMAGE_WIDTH}
             height={PERSON_IMAGE_HEIGHT}
             className="h-full w-full object-contain object-bottom"
-            sizes="110px"
+            sizes="170px"
           />
         </div>
 
-        <div className="relative z-10 flex w-full min-w-0 max-w-full flex-col gap-4 px-5 py-5 max-md:pt-16 md:grid md:min-h-[210px] md:grid-cols-[minmax(0,1fr)_auto] md:items-center md:gap-6 md:px-8 md:py-7 md:pl-[240px] md:pt-6">
+        <div className="relative z-10 flex w-full min-w-0 max-w-full flex-col gap-4 px-5 py-5 max-md:pt-16 max-md:pb-8 md:grid md:min-h-[210px] md:grid-cols-[minmax(0,1fr)_auto] md:items-center md:gap-6 md:px-8 md:py-7 md:pl-[240px] md:pt-6">
           <div className="min-w-0 md:pl-[66px]">
             <h3 className="text-[16px] font-bold leading-normal text-[#1E293B] md:text-[20px]">
               {story.name}
@@ -375,7 +375,7 @@ export default function CourseCareerTransformationsSection({
       >
         <div
           ref={viewportRef}
-          className="relative z-0 w-full min-w-0 overflow-x-hidden overflow-y-visible max-md:pt-10 md:pt-6"
+          className="relative z-0 w-full min-w-0 overflow-x-hidden overflow-y-visible max-md:pt-6 md:pt-6"
         >
           <div className={`flex items-stretch ${SLIDE_TRANSITION}`} style={trackStyle}>
             {stories.map((story) => (
