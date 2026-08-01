@@ -126,7 +126,7 @@ export default function CourseTrainersCarousel({
 
   return (
     <div id="trainers" className="scroll-mt-[116px] mb-0 max-md:mb-[20px] overflow-visible">
-      <div className="overflow-visible max-md:pb-0 pb-15 md:pt-6">
+      <div className="overflow-visible max-md:pb-0 pb-2 md:pt-6">
         <div className="flex items-center justify-between gap-4">
           <h2 className="section-heading text-heading">{title}</h2>
           {totalPages > 1 ? (
