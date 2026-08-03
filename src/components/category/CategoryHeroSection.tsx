@@ -202,17 +202,17 @@ function LearnersBlock({ count, label, avatarSrcs }: CategoryLearnersStat) {
 
 function FeatureList({ features }: { features: string[] }) {
   return (
-    <ul className="mt-6 grid grid-cols-1 gap-x-20 gap-y-3 lg:gap-x-32" role="list">
+    <ul className="mt-6 grid min-w-0 grid-cols-1 gap-x-20 gap-y-3 lg:gap-x-32" role="list">
       {features.map((feature, i) => (
         <li key={i} className="flex min-w-0 items-start gap-2.5">
           <CheckIcon className="mt-0.5 shrink-0" />
           <span
-            className={`text-[15px] font-medium leading-[152%] text-heading [&_a]:text-brand [&_a]:no-underline [&_a]:hover:underline [&_a]:underline-offset-2 md:text-[18px] ${
+            className={`min-w-0 text-[15px] font-medium leading-[152%] text-heading [&_a]:text-brand [&_a]:no-underline [&_a]:hover:underline [&_a]:underline-offset-2 md:text-[18px] ${
               feature === 'Authorized Scrum Alliance Training' ||
               feature === 'Live CST-Led Online Sessions' ||
               feature === 'All-Inclusive Course Pricing' ||
               feature === '100% Exam Pass Guarantee'
-                ? 'whitespace-nowrap'
+                ? 'md:whitespace-nowrap'
                 : ''
             }`}
             dangerouslySetInnerHTML={{ __html: withNewTabLinks(feature) }}
@@ -311,7 +311,7 @@ export default function CategoryHeroSection({
 
   return (
     <section
-      className={`full-bleed relative overflow-visible bg-[#F5F6F8] max-md:pt-10 pb-0 md:pt-8 ${
+      className={`full-bleed relative overflow-visible bg-[#F5F6F8] max-md:overflow-x-clip max-md:pt-10 pb-0 md:overflow-visible md:pt-8 ${
         mediaVariant === 'photo' ? 'md:pb-20 lg:min-h-[625px]' : 'pb-2 md:pb-2'
       }`}
       aria-labelledby="category-hero-heading"
@@ -337,7 +337,7 @@ export default function CategoryHeroSection({
           </div>
         ) : null}
       </div>
-      <div className="site-container relative z-10">
+      <div className="site-container relative z-10 min-w-0">
         <nav aria-label="Breadcrumb" className="mb-6 flex items-center gap-2 text-[14px] font-medium">
           <Link href="/" className="text-muted transition hover:text-heading" aria-label="Home">
             <HomeIcon className="h-4 w-4" />
@@ -346,8 +346,8 @@ export default function CategoryHeroSection({
           <span className="text-brand">{category.name}</span>
         </nav>
 
-        <div className="grid items-start gap-10 lg:grid-cols-2 lg:gap-8 xl:gap-12">
-          <div className="max-w-2xl">
+        <div className="grid min-w-0 items-start gap-10 max-md:gap-8 lg:grid-cols-2 lg:gap-8 xl:gap-12">
+          <div className="w-full min-w-0 max-w-2xl">
             <h1 id="category-hero-heading" className="text-heading">
               <span className="block text-[32px] font-extrabold leading-tight md:text-[44px] md:leading-[64px] xl:text-[50px] xl:leading-[80px] text-heading">
                 {category.name}
@@ -363,15 +363,18 @@ export default function CategoryHeroSection({
             {features.length > 0 && <FeatureList features={features} />}
 
             {(reviews.length > 0 || learnersStat) && (
-              <div className="mt-5 flex flex-wrap items-center gap-x-10 gap-y-5 lg:mt-6">
+              <div className="mt-5 flex min-w-0 flex-wrap items-center gap-x-10 gap-y-5 lg:mt-6">
                 {reviews.map((review) => (
                   <ReviewBlock key={review.id} review={review} />
                 ))}
               </div>
             )}
 
-            <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:gap-4 lg:mt-6">
-              <ScrollToAnchor targetId="courses" className="btn-brand h-[54px] w-full gap-2 px-6 sm:w-auto md:px-7">
+            <div className="mt-5 flex w-full min-w-0 max-w-full flex-col gap-3 sm:flex-row sm:gap-4 lg:mt-6">
+              <ScrollToAnchor
+                targetId="courses"
+                className="btn-brand box-border h-[54px] w-full min-w-0 max-w-full gap-2 px-6 max-md:px-4 sm:w-auto md:px-7"
+              >
                 Explore Courses
                 <ArrowRightIcon className="btn-arrow-icon shrink-0" />
               </ScrollToAnchor>
@@ -379,7 +382,7 @@ export default function CategoryHeroSection({
                 openModal
                 type="contact"
                 courseId={null}
-                className="btn-brand-outline inline-flex h-[54px] w-full items-center justify-center gap-[18px] px-6 text-sm font-semibold sm:w-auto md:px-8 md:text-[15px]"
+                className="btn-brand-outline inline-flex box-border h-[54px] w-full min-w-0 max-w-full items-center justify-center gap-[18px] px-6 text-sm font-semibold max-md:gap-2 max-md:px-4 max-md:text-[13px] sm:w-auto md:px-8 md:text-[15px]"
               >
                 Get Free Career Guidance
                 <PhoneIcon className="h-5 w-5 text-brand" />
@@ -388,7 +391,7 @@ export default function CategoryHeroSection({
           </div>
 
           {/* Media column */}
-          <div>
+          <div className="min-w-0 max-md:overflow-x-clip">
             <HeroMediaColumn
               imageSrc={heroImage.src}
               imageAlt={heroImage.alt}
