@@ -309,8 +309,8 @@ export default function CategoryHeroSection({
 
   return (
     <section
-      className={`full-bleed relative overflow-visible bg-[#F5F6F8] max-md:overflow-x-clip max-md:pt-10 pb-0 md:overflow-visible md:pt-8 ${
-        mediaVariant === 'photo' ? 'md:pb-20 lg:min-h-[625px]' : 'pb-2 md:pb-2'
+      className={`full-bleed relative overflow-visible bg-[#F5F6F8] max-md:overflow-x-clip max-md:pt-6 pb-0 md:overflow-visible md:pt-8 ${
+        mediaVariant === 'photo' ? 'max-md:pb-[60px] md:pb-20 lg:min-h-[625px]' : 'pb-2 md:pb-2'
       }`}
       aria-labelledby="category-hero-heading"
     >
@@ -344,7 +344,7 @@ export default function CategoryHeroSection({
           <span className="text-brand">{category.name}</span>
         </nav>
 
-        <div className="grid min-w-0 items-start gap-10 max-md:gap-8 lg:grid-cols-2 lg:gap-8 xl:gap-12">
+        <div className="grid min-w-0 items-start gap-10 max-md:gap-6 lg:grid-cols-2 lg:gap-8 xl:gap-12">
           <div className="w-full min-w-0 max-w-2xl">
             <h1 id="category-hero-heading" className="text-heading">
               <span className="block text-[32px] font-extrabold leading-tight md:text-[44px] md:leading-[64px] xl:text-[50px] xl:leading-[80px] text-heading">
@@ -396,10 +396,10 @@ export default function CategoryHeroSection({
               badges={heroBadges}
               variant={mediaVariant}
               disableGsap
-              className={mediaVariant === 'photo' ? 'max-md:pb-[30px]' : undefined}
+              className={mediaVariant === 'photo' ? 'max-md:pb-0' : undefined}
             />
             {mediaVariant === 'photo' && inlineCollaborationLogos.length > 0 && (
-              <div className="mt-6 flex justify-center max-md:relative max-md:z-10">
+              <div className="mt-6 flex justify-center max-md:relative max-md:z-10 max-md:mt-4">
                 <div className="inline-flex flex-wrap items-center justify-center gap-4 max-md:flex-col max-md:gap-3">
                   <p className="whitespace-nowrap text-[16px] font-medium leading-normal text-[#1E293B]">
                     In Collaboration with
@@ -418,7 +418,7 @@ export default function CategoryHeroSection({
         </div>
       </div>
 
-      <div className="relative z-20 max-md:mt-6 md:absolute md:inset-x-0 md:bottom-0 md:translate-y-[70%]">
+      <div className="relative z-20 max-md:mt-4 md:absolute md:inset-x-0 md:bottom-0 md:translate-y-[70%]">
         <div className="site-container">
           <CollaborationStrip collaboration={certifyingBodiesContent} />
         </div>
