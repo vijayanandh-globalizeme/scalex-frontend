@@ -113,14 +113,14 @@ function WhiteBlogCard({ blog, mobile = false }: { blog: BlogItem; mobile?: bool
   const widthClass = mobile ? 'w-full' : BLOG_CARD_WIDTH;
 
   return (
-    <article className={`${mobile ? 'overflow-hidden' : 'overflow-visible'} ${widthClass}`}>
+    <article className={`overflow-visible ${widthClass}`}>
       <div
-        className={`interactive-card flex flex-col rounded-2xl border border-zinc-100 bg-white pt-0 ${
-          mobile ? 'overflow-hidden px-3 pb-4' : 'overflow-visible px-4 pb-5'
+        className={`interactive-card flex flex-col overflow-visible rounded-2xl border border-zinc-100 bg-white pt-0 ${
+          mobile ? 'relative z-[1] px-3 pb-3' : 'px-4 pb-5'
         }`}
       >
         <div
-          className={`interactive-card-media relative z-10 w-full overflow-hidden rounded-2xl ${mobile ? 'mb-3' : 'mb-4'}`}
+          className={`interactive-card-media relative z-10 w-full overflow-hidden rounded-2xl ${mobile ? 'mb-3 mt-[12px]' : 'mb-4'}`}
           style={{
             height: imageH,
             ...(mobile ? {} : { marginTop: -imageOverflow }),
@@ -203,7 +203,7 @@ function ViewMoreChevronIcon({ className }: { className?: string }) {
 
 function BlogMobileGrid({ items }: { items: BlogItem[] }) {
   return (
-    <div className="related-blogs-mobile-grid grid grid-cols-1 gap-4 overflow-visible pb-2">
+    <div className="related-blogs-mobile-grid grid grid-cols-1 gap-4 overflow-visible">
       {items.map((blog) => (
         <div key={blog.id} className="min-w-0 overflow-visible py-1">
           <BlogCard blog={blog} mobile />
@@ -358,8 +358,8 @@ export default function CategoryRelatedBlogsSection({ categoryId }: { categoryId
   const showControls = !loading && !pageFetching && !isEmpty && !isMobile && totalPages > 1;
 
   return (
-    <section className="category-related-blogs-section full-bleed max-md:overflow-visible bg-surface max-md:pb-6 md:overflow-visible md:pb-10" aria-labelledby="related-blogs-heading">
-      <div className="site-container">
+    <section className="category-related-blogs-section full-bleed max-md:relative max-md:z-[1] max-md:overflow-visible bg-surface max-md:pb-6 md:overflow-visible md:pb-10" aria-labelledby="related-blogs-heading">
+      <div className="site-container max-md:overflow-visible">
         <header className="mx-auto w-full text-center">
           <h2
             id="related-blogs-heading"

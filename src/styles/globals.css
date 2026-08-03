@@ -341,6 +341,10 @@ body {
     }
 
     /* Related blogs mobile — keep card shadow fully visible */
+    .related-blogs-mobile-grid > * {
+      overflow: visible;
+    }
+
     .related-blogs-mobile-grid .interactive-card {
       box-shadow: 0 2px 8px 0 rgba(30, 41, 59, 0.1) !important;
     }
