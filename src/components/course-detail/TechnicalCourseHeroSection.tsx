@@ -271,10 +271,10 @@ function HeroMediaColumn({
   return (
     <div
       ref={containerRef}
-      className={`relative mx-auto w-full min-w-0 max-w-md overflow-visible lg:mx-0 lg:max-w-none ${isLeft ? 'lg:translate-x-0' : 'lg:-translate-x-[10%]'}`}
+      className={`relative mx-auto w-full min-w-0 max-w-md overflow-visible max-md:max-w-full lg:mx-0 lg:max-w-none ${isLeft ? 'lg:translate-x-0' : 'lg:-translate-x-[10%]'}`}
     >
       <div
-        className={`relative h-[400px] w-[300px] mx-[32px] overflow-visible lg:h-[537px] lg:w-[444px] lg:left-[80px] lg:mx-0 ${isLeft ? 'lg:ml-0 lg:mr-auto' : 'lg:ml-auto lg:mr-0'}`}
+        className={`relative h-[400px] overflow-visible max-md:mx-auto max-md:w-full max-md:max-w-full md:w-[300px] md:mx-[32px] lg:h-[537px] lg:w-[444px] lg:max-w-none lg:left-[80px] lg:mx-0 ${isLeft ? 'lg:ml-0 lg:mr-auto' : 'lg:ml-auto lg:mr-0'}`}
       >
         {aeroSrc ? (
           <div ref={aeroWrapRef} className="pointer-events-none absolute inset-0 z-0" aria-hidden>
@@ -428,7 +428,7 @@ export default function TechnicalCourseHeroSection(course: TechnicalCourseConten
         style={{ backgroundColor: '#F5F6F8' }}
         aria-hidden
       />
-      <div className="site-container relative z-10">
+      <div className="site-container relative z-10 max-md:min-w-0 max-md:max-w-full">
         <nav aria-label="Breadcrumb" className="mb-6 flex flex-wrap items-center gap-2 text-[14px] font-medium">
           <Link href="/" className="text-muted transition hover:text-heading" aria-label="Home">
             <HomeIcon className="h-4 w-4" />
@@ -449,12 +449,12 @@ export default function TechnicalCourseHeroSection(course: TechnicalCourseConten
           ))}
         </nav>
 
-        <div className="grid min-w-0 items-start gap-10 lg:grid-cols-[minmax(0,690px)_minmax(0,1fr)] lg:gap-8 xl:gap-12">
+        <div className="grid min-w-0 items-start gap-10 max-md:gap-6 lg:grid-cols-[minmax(0,690px)_minmax(0,1fr)] lg:gap-8 xl:gap-12">
           <div
             ref={(el) => {
               rowRefs.current[0] = el;
             }}
-            className="gsap-reveal-pending w-full min-w-0 max-w-[690px]"
+            className="gsap-reveal-pending w-full min-w-0 max-w-[690px] max-md:max-w-full"
           >
             <h1 id="technical-course-hero-heading" className="text-heading">
               <span className="block text-[34px] font-extrabold leading-[1.25] text-heading sm:text-[40px] sm:leading-[60px]">
@@ -470,7 +470,7 @@ export default function TechnicalCourseHeroSection(course: TechnicalCourseConten
               />
             ) : null}
 
-            <div className="mt-[28px] flex flex-wrap items-center gap-3">
+            <div className="mt-[28px] flex min-w-0 max-w-full flex-wrap items-center gap-3">
               <div
                 className="inline-flex shadow-[0_4px_4px_0_rgba(30,41,59,0.08),0_4px_4px_0_rgba(30,41,59,0.03)]"
                 style={{ padding: 1.5, borderRadius: 10, background: 'linear-gradient(to right, #1BA83A, #FD8E0D)' }}
@@ -554,13 +554,13 @@ export default function TechnicalCourseHeroSection(course: TechnicalCourseConten
 
             <RankedContent rankedContent={rankedContent} rankingLine={rankingLine} />
 
-            <div className="mt-[40px] flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:gap-4">
+            <div className="mt-[40px] flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:gap-4 max-md:w-full max-md:min-w-0 max-md:max-w-full">
               {startedAt ? (
                 <CourseBrochureCta
                   openModal
                   type="webinar"
                   courseId={courseId}
-                  className="btn-brand h-[54px] w-full cursor-pointer gap-2 px-6 sm:w-auto md:px-7"
+                  className="btn-brand h-[54px] w-full cursor-pointer gap-2 px-6 max-md:box-border max-md:min-w-0 max-md:max-w-full max-md:px-4 sm:w-auto md:px-7"
                 >
                   Register for FREE Webinar
                   <ArrowRightIcon className="btn-arrow-icon shrink-0" />
@@ -571,7 +571,7 @@ export default function TechnicalCourseHeroSection(course: TechnicalCourseConten
                   type="contact"
                   courseId={courseId}
                   downloadUrl={brochureUrl}
-                  className="btn-brand inline-flex h-[54px] w-full items-center justify-center gap-2 px-6 sm:w-auto md:px-7"
+                  className="btn-brand inline-flex h-[54px] w-full items-center justify-center gap-2 px-6 max-md:box-border max-md:min-w-0 max-md:max-w-full max-md:px-4 sm:w-auto md:px-7"
                 >
                   Download Brochure
                   <ArrowRightIcon className="btn-arrow-icon shrink-0" />
@@ -583,7 +583,7 @@ export default function TechnicalCourseHeroSection(course: TechnicalCourseConten
                   e.preventDefault();
                   document.getElementById('schedules')?.scrollIntoView({ block: 'start' });
                 }}
-                className="btn-brand-outline inline-flex h-[54px] w-full cursor-pointer items-center justify-center gap-[18px] px-6 text-sm font-semibold sm:w-auto md:px-8 md:text-[15px]"
+                className="btn-brand-outline inline-flex h-[54px] w-full cursor-pointer items-center justify-center gap-[18px] px-6 text-sm font-semibold max-md:box-border max-md:min-w-0 max-md:max-w-full max-md:gap-2 max-md:px-4 sm:w-auto md:px-8 md:text-[15px]"
               >
                 View Schedules
                 <EyeIcon className="h-5 w-5 text-brand" />
@@ -618,7 +618,7 @@ export default function TechnicalCourseHeroSection(course: TechnicalCourseConten
             ref={(el) => {
               rowRefs.current[1] = el;
             }}
-            className="gsap-reveal-pending"
+            className="gsap-reveal-pending min-w-0 max-md:w-full max-md:max-w-full max-md:overflow-x-clip"
           >
             <HeroMediaColumn
               figureSrc={heroFigureSrc}
@@ -628,7 +628,11 @@ export default function TechnicalCourseHeroSection(course: TechnicalCourseConten
               figureAlign={isDevopsPage ? 'left' : 'right'}
             />
             {collaboration.length > 0 ? (
-              <div className={`mt-6 flex ${isDevopsPage ? 'justify-start lg:pl-[120px] pl-[30px]' : 'justify-center'}`}>
+              <div
+                className={`mt-6 flex max-md:justify-center max-md:pl-0 ${
+                  isDevopsPage ? 'justify-start md:pl-[30px] lg:pl-[120px]' : 'justify-center'
+                }`}
+              >
                 <div
                   className={`inline-flex flex-col ${isDevopsPage ? 'items-start' : 'items-center lg:items-start'}`}
                 >
