@@ -104,7 +104,7 @@ function VideoThumbnail({
       />
       <div
         className={`interactive-card interactive-card-media relative z-10 shrink-0 overflow-hidden rounded-2xl bg-zinc-200 ${
-          responsive ? `aspect-[432/404] w-full max-w-[432px]` : ''
+          responsive ? `aspect-[3/2] w-full max-w-[432px] md:aspect-[432/404]` : ''
         }`}
         style={
           responsive
