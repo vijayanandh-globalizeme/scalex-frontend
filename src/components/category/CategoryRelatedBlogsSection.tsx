@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import {
   CategoryCarouselControls,
+  CategoryCarouselTrack,
 } from '@/components/category/CategoryCarouselNav';
 import { getBlogs, type ApiBlogListItem } from '@/app/actions/blogActions';
 
@@ -112,14 +113,14 @@ function WhiteBlogCard({ blog, mobile = false }: { blog: BlogItem; mobile?: bool
   const widthClass = mobile ? 'w-full' : BLOG_CARD_WIDTH;
 
   return (
-    <article className={`${mobile ? 'overflow-hidden' : 'overflow-visible'} ${widthClass}`}>
+    <article className={`overflow-visible ${widthClass}`}>
       <div
-        className={`interactive-card flex flex-col rounded-2xl border border-zinc-100 bg-white pt-0 ${
-          mobile ? 'overflow-hidden px-3 pb-4' : 'overflow-visible px-4 pb-6'
+        className={`interactive-card flex flex-col overflow-visible rounded-2xl border border-zinc-100 bg-white pt-0 ${
+          mobile ? 'relative z-[1] px-3 pb-3' : 'px-4 pb-5'
         }`}
       >
         <div
-          className={`interactive-card-media relative z-10 w-full overflow-hidden rounded-2xl ${mobile ? 'mb-3' : 'mb-4'}`}
+          className={`interactive-card-media relative z-10 w-full overflow-hidden rounded-2xl ${mobile ? 'mb-3 mt-[12px]' : 'mb-4'}`}
           style={{
             height: imageH,
             ...(mobile ? {} : { marginTop: -imageOverflow }),
@@ -202,7 +203,7 @@ function ViewMoreChevronIcon({ className }: { className?: string }) {
 
 function BlogMobileGrid({ items }: { items: BlogItem[] }) {
   return (
-    <div className="related-blogs-mobile-grid grid grid-cols-1 gap-4 overflow-visible pb-2">
+    <div className="related-blogs-mobile-grid grid grid-cols-1 gap-4 overflow-visible">
       {items.map((blog) => (
         <div key={blog.id} className="min-w-0 overflow-visible py-1">
           <BlogCard blog={blog} mobile />
@@ -220,11 +221,11 @@ function BlogMasonryGrid({ items }: { items: BlogItem[] }) {
   ].filter((col) => col.some(Boolean));
 
   return (
-    <div className="grid grid-cols-1 gap-4 overflow-visible md:grid-cols-2 lg:grid-cols-3 lg:items-start lg:gap-x-8 lg:gap-y-5">
+    <div className="grid grid-cols-1 gap-5 overflow-visible md:grid-cols-2 lg:grid-cols-3 lg:items-start lg:gap-x-8 lg:gap-y-5">
       {columns.map((column, colIndex) => (
         <div
           key={colIndex}
-          className={`flex flex-col gap-4 lg:gap-5 ${BLOG_CARD_WIDTH} mx-auto lg:mx-0`}
+          className={`flex flex-col gap-5 ${BLOG_CARD_WIDTH} mx-auto lg:mx-0`}
           style={colIndex === 1 ? undefined : { paddingTop: BLOG_IMAGE_OVERFLOW_PX }}
         >
           {column.map((blog, blogIndex) =>
@@ -234,10 +235,8 @@ function BlogMasonryGrid({ items }: { items: BlogItem[] }) {
                 className="overflow-visible"
                 style={
                   colIndex === 1 && blogIndex === 1 && blog.variant === 'default'
-                    ? { paddingTop: 20 }
-                    : blog.variant === 'default' && blogIndex > 0
-                      ? { marginTop: -BLOG_IMAGE_OVERFLOW_PX }
-                      : undefined
+                    ? { paddingTop: BLOG_IMAGE_OVERFLOW_PX }
+                    : undefined
                 }
               >
                 <BlogCard blog={blog} />
@@ -257,7 +256,7 @@ function SkeletonCard({ mobile = false }: { mobile?: boolean }) {
   return (
     <div className={`animate-pulse ${mobile ? 'overflow-hidden' : 'overflow-visible'}`}>
       <div
-        className={`rounded-2xl bg-surface-raised pt-0 ${mobile ? 'overflow-hidden px-3 pb-4' : 'overflow-visible px-4 pb-6'}`}
+        className={`rounded-2xl bg-surface-raised pt-0 ${mobile ? 'overflow-hidden px-3 pb-4' : 'overflow-visible px-4 pb-5'}`}
       >
         <div
           className={`mb-4 w-full rounded-2xl bg-muted/20 ${mobile ? 'mb-3' : ''}`}
@@ -271,18 +270,28 @@ function SkeletonCard({ mobile = false }: { mobile?: boolean }) {
   );
 }
 
+function BlogDesktopSkeletonGrid() {
+  return (
+    <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+      {Array.from({ length: FETCH_LIMIT }).map((_, i) => (
+        <SkeletonCard key={i} />
+      ))}
+    </div>
+  );
+}
+
 export default function CategoryRelatedBlogsSection({ categoryId }: { categoryId?: string }) {
   const [loading, setLoading] = useState(true);
   const [pageFetching, setPageFetching] = useState(false);
   const [page, setPage] = useState(0);
   const [isMobile, setIsMobile] = useState(true);
   const [totalPages, setTotalPages] = useState(0);
-  const [currentItems, setCurrentItems] = useState<BlogItem[]>([]);
+  const [pageCache, setPageCache] = useState<Record<number, BlogItem[]>>({});
 
   const cache = useRef<Map<number, BlogItem[]>>(new Map());
   const mobileItems = useMemo(
-    () => currentItems.slice(0, MOBILE_VISIBLE_COUNT),
-    [currentItems],
+    () => (pageCache[0] ?? []).slice(0, MOBILE_VISIBLE_COUNT),
+    [pageCache],
   );
 
   useEffect(() => {
@@ -305,51 +314,52 @@ export default function CategoryRelatedBlogsSection({ categoryId }: { categoryId
     });
     const mapped = items.map((b, i) => apiBlogToItem(b, pageIndex * FETCH_LIMIT + i));
     cache.current.set(pageIndex, mapped);
+    setPageCache((current) => ({ ...current, [pageIndex]: mapped }));
     setTotalPages(total > 0 ? Math.ceil(total / FETCH_LIMIT) : 0);
     return mapped;
   }
 
-  async function switchBatch(apiPage: number) {
-    const isFirstLoad = currentItems.length === 0;
-    if (isFirstLoad) {
-      setLoading(true);
-    } else {
-      setPageFetching(true);
-    }
-
+  async function ensurePage(pageIndex: number) {
+    if (cache.current.has(pageIndex)) return;
+    setPageFetching(true);
     try {
-      const items = await fetchBlogPage(apiPage);
-      setPage(apiPage);
-      setCurrentItems(items);
+      await fetchBlogPage(pageIndex);
     } finally {
-      setLoading(false);
       setPageFetching(false);
     }
   }
 
   useEffect(() => {
-    void switchBatch(0);
+    void (async () => {
+      setLoading(true);
+      try {
+        await fetchBlogPage(0);
+      } finally {
+        setLoading(false);
+      }
+    })();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  function handleNext() {
-    if (page < totalPages - 1) {
-      void switchBatch(page + 1);
-    }
+  async function handleNext() {
+    if (page >= totalPages - 1) return;
+    const nextPage = page + 1;
+    await ensurePage(nextPage);
+    setPage(nextPage);
   }
 
   function handlePrev() {
     if (page > 0) {
-      void switchBatch(page - 1);
+      setPage((current) => current - 1);
     }
   }
 
-  const isEmpty = !loading && !pageFetching && currentItems.length === 0;
+  const isEmpty = !loading && !pageFetching && (pageCache[0]?.length ?? 0) === 0;
   const showControls = !loading && !pageFetching && !isEmpty && !isMobile && totalPages > 1;
 
   return (
-    <section className="category-related-blogs-section full-bleed max-md:overflow-visible bg-surface max-md:pb-6 md:overflow-visible md:pb-10" aria-labelledby="related-blogs-heading">
-      <div className="site-container">
+    <section className="category-related-blogs-section full-bleed max-md:relative max-md:z-[1] max-md:overflow-visible bg-surface max-md:pb-6 md:overflow-visible md:pb-10" aria-labelledby="related-blogs-heading">
+      <div className="site-container max-md:overflow-visible">
         <header className="mx-auto w-full text-center">
           <h2
             id="related-blogs-heading"
@@ -366,7 +376,7 @@ export default function CategoryRelatedBlogsSection({ categoryId }: { categoryId
           className="mt-6 md:mt-8"
           style={{ paddingTop: isMobile ? 0 : BLOG_IMAGE_OVERFLOW_PX }}
         >
-          {loading && currentItems.length === 0 ? (
+          {loading ? (
             isMobile ? (
               <div className="grid grid-cols-1 gap-4">
                 {Array.from({ length: MOBILE_VISIBLE_COUNT }).map((_, i) => (
@@ -374,11 +384,7 @@ export default function CategoryRelatedBlogsSection({ categoryId }: { categoryId
                 ))}
               </div>
             ) : (
-              <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-                {Array.from({ length: FETCH_LIMIT }).map((_, i) => (
-                  <SkeletonCard key={i} />
-                ))}
-              </div>
+              <BlogDesktopSkeletonGrid />
             )
           ) : isEmpty ? (
             <p className="py-16 text-center text-[15px] text-muted">No blogs found.</p>
@@ -393,7 +399,17 @@ export default function CategoryRelatedBlogsSection({ categoryId }: { categoryId
               <BlogMobileGrid items={mobileItems} />
             )
           ) : (
-            <BlogMasonryGrid items={currentItems} />
+            <CategoryCarouselTrack page={page} className="overflow-y-visible">
+              {Array.from({ length: Math.max(totalPages, 1) }, (_, pageIndex) => (
+                <div key={pageIndex} className="box-border w-full min-w-0 max-w-full">
+                  {pageCache[pageIndex] ? (
+                    <BlogMasonryGrid items={pageCache[pageIndex]} />
+                  ) : (
+                    <BlogDesktopSkeletonGrid />
+                  )}
+                </div>
+              ))}
+            </CategoryCarouselTrack>
           )}
         </div>
 

@@ -250,15 +250,15 @@ export default async function AboutPage() {
       </section>
 
       {/* The Minds Behind Scale X Learning */}
-      <section className="full-bleed bg-surface max-md:pb-[30px] pt-0 md:py-20 md:pt-10 md:pb-10">
-        <div className="site-container">
+      <section className="full-bleed bg-surface pt-0 max-md:relative max-md:z-[1] max-md:overflow-visible md:py-20 md:pt-10 md:pb-10">
+        <div className="site-container max-md:overflow-visible">
           <div className="mb-10 text-center">
             <h2 style={{ color: '#1E293B', fontFamily: 'Inter', fontSize: '36px', fontWeight: 700 }}>The Minds Behind Scale X Learning</h2>
             <p className="mt-3" style={{ color: '#788593', textAlign: 'center', fontFamily: 'Inter', fontSize: '18px', fontStyle: 'normal', fontWeight: 500, lineHeight: '26px' }}>
               Visionary leaders with decades of combined experience in ed-tech, corporate training, and professional development.
             </p>
           </div>
-          <div className="grid grid-cols-1 gap-5 sm:grid-cols-3 lg:grid-cols-5">
+          <div className="about-us-minds-grid grid grid-cols-1 gap-5 sm:grid-cols-3 lg:grid-cols-5 max-md:overflow-visible">
             {[
               { img: '/images/pranee.png', name: 'Praneeth Kuridi', role: 'Founder & CEO', bio: '12+ years in tech education and enterprise training leadership across India.' },
               { img: '/images/naray.png', name: 'Narayana Ajay', role: 'Co-Founder & CTO', bio: 'Technology architect driving EdgeX platform innovation and AI-powered learning.' },
@@ -266,7 +266,7 @@ export default async function AboutPage() {
               { img: '/images/ram.png', name: 'Ram Charan', role: 'VP — Enterprise Sales', bio: 'Grew EdgeX enterprise client portfolio to 100+ organisations across India.' },
               { img: '/images/aninth.png', name: 'Anitha Reddy', role: 'Head — Career Success', bio: 'Mentored 5,000+ professionals through career transitions and salary negotiations.' },
             ].map((person) => (
-              <div key={person.name} className="interactive-card flex flex-col rounded-2xl border border-zinc-100 bg-white p-5">
+              <div key={person.name} className="interactive-card flex flex-col overflow-visible rounded-2xl border border-zinc-100 bg-white p-5 max-md:relative max-md:z-[1]">
                 <div className="flex flex-col items-center text-center">
                   <div className="interactive-card-media relative h-28 w-28 overflow-hidden rounded-full mb-3">
                     <Image src={person.img} alt={person.name} fill className="object-cover" />
@@ -295,9 +295,9 @@ export default async function AboutPage() {
 
       <SuccessStoriesSectionServer compact settings={settings ?? undefined} />
 
-      <div className="full-bleed bg-surface pt-0 max-md:overflow-visible md:pb-0">
+      <div className="full-bleed bg-surface pt-0 max-md:overflow-visible max-md:pb-4 md:pb-0">
         <div className="site-container max-md:overflow-visible">
-          <div className="overflow-visible rounded-2xl border border-zinc-100 bg-white px-4 py-6 max-md:pb-8 max-md:shadow-[0_2px_8px_0_rgba(30,41,59,0.1)] md:px-10 md:shadow-sm">
+          <div className="relative z-10 overflow-visible rounded-2xl border border-zinc-100 bg-white px-4 py-6 max-md:pb-8 max-md:shadow-[0_4px_14px_-4px_rgba(30,41,59,0.10),0_4px_4px_0_rgba(30,41,59,0.03)] md:px-10 md:shadow-sm">
             <ReviewPlatformRowServer />
           </div>
         </div>

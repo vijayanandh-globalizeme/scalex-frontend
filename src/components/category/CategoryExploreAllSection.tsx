@@ -62,7 +62,7 @@ function CategoryCard({ item }: { item: ExploreCategoryItem }) {
     >
       <CategoryIcon fill={item.iconBg} icon={item.icon} />
       <span className="min-w-0 flex-1">
-        <span className="interactive-card-title block text-[15px] font-bold leading-snug text-heading">{item.label}</span>
+        <span className="interactive-card-title block truncate text-[15px] font-bold leading-snug text-heading">{item.label}</span>
         <span className="mt-1.5 inline-flex items-center gap-1 text-[13px] font-medium text-muted transition group-hover:text-subtle">
           Explore
           <ExploreArrowIcon className="btn-arrow-icon shrink-0" />
