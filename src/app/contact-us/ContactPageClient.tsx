@@ -65,7 +65,7 @@ export default function ContactPageClient({
 
         <div className="site-container relative z-10 max-md:min-w-0 max-md:max-w-full">
           {/* Breadcrumb */}
-          <nav className="mb-0 flex items-center gap-2 text-sm text-muted md:mb-8" aria-label="Breadcrumb">
+          <nav className="mb-8 flex items-center gap-2 text-sm text-muted md:mb-8" aria-label="Breadcrumb">
             <Link href="/" className="flex items-center gap-1 hover:text-brand transition-colors">
               <svg width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden>
                 <path d="M2.5 7.5L10 1.667L17.5 7.5V17.5H13.333V12.5H6.667V17.5H2.5V7.5Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
