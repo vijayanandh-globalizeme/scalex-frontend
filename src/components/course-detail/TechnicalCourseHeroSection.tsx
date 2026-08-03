@@ -141,7 +141,7 @@ function FloatingBadge({
           : 'left-0 top-[60%] -translate-y-1/2 xl:-left-10'
         : badge.placement === 'bottom-right'
           ? isSalary
-            ? 'bottom-[30px] right-[-52px] lg:right-2 lg:-right-10'
+            ? 'bottom-[30px] max-md:right-0 max-md:z-40 right-[-52px] lg:right-2 lg:-right-10'
             : 'bottom-6 right-2 lg:bottom-28 lg:-right-10'
           : 'bottom-10 left-[42%] -translate-x-1/2 md:-bottom-2';
 
@@ -160,7 +160,7 @@ function FloatingBadge({
   const alignClass = badge.variant === 'mentors' ? 'items-center' : 'items-start';
 
   return (
-    <div className={`absolute z-30 ${placement} ${mobileVisibility}`}>
+    <div className={`absolute z-30 max-md:z-40 ${placement} ${mobileVisibility}`}>
       <div
         ref={innerRef}
         className={`flex gap-2 rounded-xl border border-zinc-100 bg-white shadow-lg shadow-zinc-900/8 lg:gap-2.5 ${sizeClass} ${alignClass}`}
@@ -274,7 +274,7 @@ function HeroMediaColumn({
       className={`relative mx-auto w-full min-w-0 max-w-md overflow-visible max-md:max-w-full lg:mx-0 lg:max-w-none ${isLeft ? 'lg:translate-x-0' : 'lg:-translate-x-[10%]'}`}
     >
       <div
-        className={`relative h-[400px] overflow-visible max-md:mx-auto max-md:w-full max-md:max-w-full md:w-[300px] md:mx-[32px] lg:h-[537px] lg:w-[444px] lg:max-w-none lg:left-[80px] lg:mx-0 ${isLeft ? 'lg:ml-0 lg:mr-auto' : 'lg:ml-auto lg:mr-0'}`}
+        className={`relative overflow-visible max-md:mx-auto max-md:h-[320px] max-md:w-full max-md:max-w-[260px] md:h-[400px] md:w-[300px] md:mx-[32px] lg:h-[537px] lg:w-[444px] lg:max-w-none lg:left-[80px] lg:mx-0 ${isLeft ? 'lg:ml-0 lg:mr-auto' : 'lg:ml-auto lg:mr-0'}`}
       >
         {aeroSrc ? (
           <div ref={aeroWrapRef} className="pointer-events-none absolute inset-0 z-0" aria-hidden>
@@ -317,14 +317,14 @@ function HeroMediaColumn({
           </div>
         ) : null}
         <div
-          className={`absolute bottom-0 z-[1] h-[400px] w-[min(100%,389px)] rounded-t-[400px] shadow-inner shadow-black/5 lg:h-[537px] ${isLeft ? 'left-[10px]' : 'right-5'}`}
+          className={`absolute bottom-0 z-[1] h-[400px] w-[min(100%,389px)] max-md:left-1/2 max-md:h-[320px] max-md:w-[min(100%,280px)] max-md:-translate-x-1/2 rounded-t-[400px] shadow-inner shadow-black/5 lg:h-[537px] ${isLeft ? 'md:left-[10px]' : 'md:right-5'}`}
           style={{
             background: 'linear-gradient(180deg, #BB9255 -140.92%, #FADCBA 165.92%)',
           }}
           aria-hidden
         />
         <div
-          className={`absolute bottom-0 z-[5] aspect-[350/544] w-[min(90%,350px)] ${isLeft ? 'left-[10px]' : 'right-2 lg:right-6'}`}
+          className={`absolute bottom-0 z-[5] aspect-[350/544] w-[min(90%,350px)] max-md:left-1/2 max-md:w-[min(75%,240px)] max-md:-translate-x-1/2 ${isLeft ? 'md:left-[10px]' : 'md:right-2 lg:right-6'}`}
         >
           <Image
             src={figureSrc}
@@ -420,7 +420,7 @@ export default function TechnicalCourseHeroSection(course: TechnicalCourseConten
   return (
     <section
       ref={sectionRef}
-      className="full-bleed relative overflow-x-clip overflow-y-visible bg-[#F5F6F8] max-md:pt-10 max-md:pb-15 pb-0 md:pt-10"
+      className="full-bleed relative overflow-y-visible bg-[#F5F6F8] max-md:overflow-x-visible max-md:pt-10 max-md:pb-15 pb-0 md:overflow-x-clip md:pt-10"
       aria-labelledby="technical-course-hero-heading"
     >
       <div
@@ -618,7 +618,7 @@ export default function TechnicalCourseHeroSection(course: TechnicalCourseConten
             ref={(el) => {
               rowRefs.current[1] = el;
             }}
-            className="gsap-reveal-pending min-w-0 max-md:w-full max-md:max-w-full max-md:overflow-x-clip"
+            className="gsap-reveal-pending min-w-0 max-md:w-full max-md:max-w-full max-md:overflow-visible"
           >
             <HeroMediaColumn
               figureSrc={heroFigureSrc}
@@ -662,9 +662,9 @@ export default function TechnicalCourseHeroSection(course: TechnicalCourseConten
           </div>
         </div>
 
-        <div className="relative z-20 mt-10 max-md:mb-0 md:mt-12 md:mb-[-42px]">
+        <div className="relative z-20 max-md:mt-15 max-md:mb-0 md:mt-12 md:mb-[-42px]">
           <div className="rounded-[20px] border border-[#EBEBEB] bg-white px-6 py-5 shadow-[0_4px_4px_0_rgba(30,41,59,0.11),0_4px_4px_0_rgba(30,41,59,0.03)] md:px-10 md:py-6">
-            <p className="mb-5 text-center text-[20px] font-semibold leading-normal">
+            <p className="max-md:mb-0 md:mb-5 text-center text-[20px] font-semibold leading-normal">
               <span className="text-[#1E293B]">Our </span>
               <span className="text-[#FD022D]">Hiring Partners</span>
             </p>
