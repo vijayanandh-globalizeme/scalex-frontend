@@ -213,9 +213,9 @@ function HikeBadge({ hikePercent }: { hikePercent: number }) {
 
 function TransformationStoryCard({ story }: { story: CareerTransformationStory }) {
   return (
-    <article className="relative flex h-full w-full flex-col overflow-visible pt-6">
-      {/* Hike badge — sit above the person image, not over the face */}
-      <div className="pointer-events-none absolute top-6 right-10 z-[70] md:top-3 md:right-auto md:left-[155px]">
+    <article className="relative flex h-full w-full flex-col overflow-visible pt-6 max-md:pt-0 md:pt-6">
+      {/* Hike badge — desktop only (mobile sits inside card top-left) */}
+      <div className="pointer-events-none absolute top-0 left-1/2 z-[70] hidden -translate-x-1/2 md:block md:top-3 md:left-[155px] md:translate-x-0">
         <HikeBadge hikePercent={story.hikePercent} />
       </div>
 
@@ -234,48 +234,59 @@ function TransformationStoryCard({ story }: { story: CareerTransformationStory }
         />
       </div>
 
-      {/* Card */}
+      {/* Person image — mobile: outside card, head extends above */}
       <div
-        className="interactive-card relative z-0 mt-[70px] flex min-h-[180px] w-full flex-1 overflow-visible rounded-[16px] border border-[#DCDCDC] md:mt-0 md:min-h-[210px] md:rounded-[20px]"
-        style={{ background: 'linear-gradient(259deg, #FFF 64.75%, #FFD3D3 108.27%)' }}
+        className="pointer-events-none absolute -top-7 right-2 z-[70] h-[150px] w-[120px] md:hidden"
+        aria-hidden
       >
-        {/* Person image — mobile */}
-        <div className="pointer-events-none absolute top-[-24px] left-4 z-[60] h-[170px] w-[170px] -translate-y-1/2 md:hidden" aria-hidden>
-          <Image
-            src={story.imageSrc}
-            alt={story.imageAlt}
-            width={PERSON_IMAGE_WIDTH}
-            height={PERSON_IMAGE_HEIGHT}
-            className="h-full w-full object-contain object-bottom"
-            sizes="170px"
-          />
-        </div>
+        <Image
+          src={story.imageSrc}
+          alt={story.imageAlt}
+          fill
+          className="object-contain object-top"
+          sizes="120px"
+        />
+      </div>
 
-        <div className="relative z-10 flex w-full min-w-0 max-w-full flex-col gap-4 px-5 py-5 max-md:pt-16 max-md:pb-8 md:grid md:min-h-[210px] md:grid-cols-[minmax(0,1fr)_auto] md:items-center md:gap-6 md:px-8 md:py-7 md:pl-[240px] md:pt-6">
-          <div className="min-w-0 md:pl-[66px]">
-            <h3 className="text-[16px] font-bold leading-normal text-[#1E293B] md:text-[20px]">
-              {story.name}
-            </h3>
-            <p className="mt-2 text-[13px] font-normal leading-[150%] text-[#788593] md:mt-3 md:text-[14px]">{story.quote}</p>
+      {/* Card */}
+      <div className="relative w-full">
+        <div
+          className="interactive-card relative z-0 flex min-h-[180px] w-full flex-1 flex-col overflow-hidden rounded-[16px] border border-[#DCDCDC] max-md:mb-5 md:mt-0 md:min-h-[210px] md:overflow-visible md:rounded-[20px]"
+          style={{ background: 'linear-gradient(259deg, #FFF 64.75%, #FFD3D3 108.27%)' }}
+        >
+          {/* Mobile badge — top left inside card */}
+          <div className="relative z-20 px-4 pt-4 md:hidden">
+            <HikeBadge hikePercent={story.hikePercent} />
           </div>
 
-          <div className="flex min-w-0 items-end justify-center gap-1 md:justify-end md:gap-1.5">
-            <div className="translate-y-[18px] shrink-0 md:translate-y-[26px]">
-              <RoleTransitionCard
-                variant="before"
-                role={story.before.role}
-                logoSrc={story.before.companyLogoSrc}
-                logoAlt={story.before.companyLogoAlt}
-              />
+          <div className="relative z-10 flex w-full min-w-0 flex-1 flex-col gap-4 px-5 py-5 max-md:px-0 max-md:pt-[72px] max-md:pb-4 md:grid md:min-h-[210px] md:grid-cols-[minmax(0,1fr)_auto] md:items-center md:gap-6 md:px-8 md:py-7 md:pl-[240px] md:pt-6">
+            <div className="flex min-w-0 items-end justify-center gap-1 max-md:order-1 max-md:w-[calc(100%+96px)] max-md:-translate-x-[48px] max-md:px-5 md:order-2 md:justify-end md:gap-1.5 md:translate-x-0 md:w-auto">
+              <div className="translate-y-[18px] shrink-0 md:translate-y-[26px]">
+                <RoleTransitionCard
+                  variant="before"
+                  role={story.before.role}
+                  logoSrc={story.before.companyLogoSrc}
+                  logoAlt={story.before.companyLogoAlt}
+                />
+              </div>
+              <TransformationArrow />
+              <div className="translate-x-[10px] -translate-y-[14px] shrink-0 md:translate-x-[15px] md:-translate-y-[20px]">
+                <RoleTransitionCard
+                  variant="after"
+                  role={story.after.role}
+                  logoSrc={story.after.companyLogoSrc}
+                  logoAlt={story.after.companyLogoAlt}
+                />
+              </div>
             </div>
-            <TransformationArrow />
-            <div className="translate-x-[10px] -translate-y-[14px] shrink-0 md:translate-x-[15px] md:-translate-y-[20px]">
-              <RoleTransitionCard
-                variant="after"
-                role={story.after.role}
-                logoSrc={story.after.companyLogoSrc}
-                logoAlt={story.after.companyLogoAlt}
-              />
+
+            <div className="min-w-0 w-full max-md:order-2 max-md:mt-auto max-md:px-4 max-md:pt-3 max-md:text-left md:order-1 md:pl-[66px]">
+              <h3 className="text-[16px] font-bold leading-normal text-[#1E293B] md:text-[20px]">
+                {story.name}
+              </h3>
+              <p className="mt-2 w-full text-[13px] font-normal leading-[150%] text-[#788593] md:mt-3 md:text-[14px]">
+                {story.quote}
+              </p>
             </div>
           </div>
         </div>

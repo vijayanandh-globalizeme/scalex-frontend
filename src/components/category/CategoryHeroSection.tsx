@@ -51,11 +51,26 @@ export interface CategoryPageContent {
   };
 }
 
-const TECHNICAL_HERO_COLLABORATION_LOGOS = [
+const DEFAULT_HERO_COLLABORATION_LOGOS: CategoryLogo[] = [
   { alt: 'Amazon', src: '/images/ama.png' },
   { alt: 'Microsoft', src: '/images/course/google.png' },
 ];
 
+
+function CollaborationLogoImage({ logo }: { logo: CategoryLogo }) {
+  if (!logo.src) return null;
+
+  return (
+    <Image
+      src={logo.src}
+      alt={logo.alt}
+      fill
+      sizes="80px"
+      className="object-contain object-left"
+      unoptimized={logo.src.startsWith('http')}
+    />
+  );
+}
 
 function HomeIcon({ className }: { className?: string }) {
   return (
@@ -279,6 +294,17 @@ export default function CategoryHeroSection({
     alt: category.name,
   };
 
+  const certifyingBodiesContent = {
+    ...defaultHeroContent.collaboration,
+    logos: collaborationLogos?.length
+      ? collaborationLogos
+      : defaultHeroContent.collaboration.logos,
+  };
+
+  const inlineCollaborationLogos = collaborationLogos?.length
+    ? collaborationLogos.slice(0, 2)
+    : DEFAULT_HERO_COLLABORATION_LOGOS;
+
   const bgClassName =
     backgroundImage?.className ??
     'absolute right-[6%] top-[10%] h-[54%] w-[46%] md:w-[33%] lg:w-[19%]';
@@ -371,16 +397,16 @@ export default function CategoryHeroSection({
               disableGsap
               className={mediaVariant === 'photo' ? 'max-md:pb-[30px]' : undefined}
             />
-            {mediaVariant === 'photo' && (
+            {mediaVariant === 'photo' && inlineCollaborationLogos.length > 0 && (
               <div className="mt-6 flex justify-center">
-                <div className="inline-flex items-center gap-4">
+                <div className="inline-flex flex-wrap items-center justify-center gap-4">
                   <p className="whitespace-nowrap text-[16px] font-medium leading-normal text-[#1E293B]">
                     In Collaboration with
                   </p>
                   <div className="flex items-center gap-6">
-                    {TECHNICAL_HERO_COLLABORATION_LOGOS.map((logo) => (
-                      <div key={logo.alt} className="relative h-7 w-20">
-                        <Image src={logo.src} alt={logo.alt} fill sizes="80px" className="object-contain object-left" />
+                    {inlineCollaborationLogos.map((logo, index) => (
+                      <div key={`${logo.alt}-${logo.src ?? index}`} className="relative h-7 w-20 shrink-0">
+                        <CollaborationLogoImage logo={logo} />
                       </div>
                     ))}
                   </div>
@@ -393,12 +419,7 @@ export default function CategoryHeroSection({
 
       <div className="absolute inset-x-0 bottom-0 z-20 translate-y-[70%]">
         <div className="site-container">
-          <CollaborationStrip
-            collaboration={{
-              ...defaultHeroContent.collaboration,
-              logos: collaborationLogos?.length ? collaborationLogos : defaultHeroContent.collaboration.logos,
-            }}
-          />
+          <CollaborationStrip collaboration={certifyingBodiesContent} />
         </div>
       </div>
     </section>

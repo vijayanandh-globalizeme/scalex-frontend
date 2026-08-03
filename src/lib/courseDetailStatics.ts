@@ -231,6 +231,7 @@ export const COURSE_FEE_STATIC = {
   emiDescription: 'Pay in easy monthly installments. Financing options for as low as 0% interest',
   emiEnrollLabel: 'Contact Us',
   fullLabel:       'Pay in Full',
+  fullPriceSuffix: '+ 18% GST',
   fullDescription: 'Secure One-Time Pay through Internet Banking, Debit/Card & Digital Wallets',
   fullEnrollLabel: 'Enroll Now',
 };

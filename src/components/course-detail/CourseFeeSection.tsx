@@ -86,6 +86,9 @@ function PartnerLogo({ partner }: { partner: CourseFeePartnerLogo }) {
   return <span className="text-[11px] font-semibold text-[#1E293B]">{partner.name}</span>;
 }
 
+const FEE_PRICING_CARD_WIDTH_CLASS = 'sm:w-[252px]';
+const FEE_PRICING_GRID_WIDTH_CLASS = 'sm:w-[520px]';
+
 function PricingCard({
   label,
   price,
@@ -117,16 +120,19 @@ function PricingCard({
 
   return (
     <div
-      className={`interactive-card relative flex w-full min-w-0 flex-col rounded-[20px] border bg-white p-5 sm:w-[232px] ${
+      className={`interactive-card relative grid h-full w-full min-w-0 grid-rows-[auto_auto_minmax(72px,1fr)_auto] rounded-[20px] border bg-white p-5 ${FEE_PRICING_CARD_WIDTH_CLASS} ${
         highlighted ? 'border-[#FD022D]' : 'border-[#EBEBEB]'
       }`}
       style={highlighted ? { background: 'linear-gradient(180deg, #FFF6F7 0%, #FFFFFF 28%)' } : undefined}
     >
-      {badge ? (
-        <span className="absolute top-4 right-4 rounded-lg bg-[#FFF6F7] px-2 py-0.5 text-[10px] font-medium leading-normal text-[#FD022D]">
-          {badge}
-        </span>
-      ) : null}
+      <span
+        className={`absolute top-4 right-4 rounded-lg px-2 py-0.5 text-[10px] font-medium leading-normal ${
+          badge ? 'bg-[#FFF6F7] text-[#FD022D]' : 'invisible'
+        }`}
+        aria-hidden={!badge}
+      >
+        {badge ?? 'Popular'}
+      </span>
       <p className="interactive-card-title pr-16 text-[14px] font-medium leading-[140%] text-[#788593]">{label}</p>
       <div className="mt-2 flex flex-wrap items-baseline gap-1">
         <span className="text-[24px] font-bold leading-[140%] text-[#1E293B]">{price}</span>
@@ -134,12 +140,12 @@ function PricingCard({
           <span className="text-[14px] font-medium leading-[140%] text-[#788593]">{priceSuffix}</span>
         ) : null}
       </div>
-      <p className="mt-3 text-[13px] font-normal leading-[150%] text-[#788593]">{description}</p>
+      <p className={`mt-3 text-[13px] font-normal leading-[150%] text-[#788593] ${isEmi ? 'pt-2' : ''}`}>{description}</p>
       {isEmi ? (
         <button
           type="button"
           onClick={onClickEnroll}
-          className="btn-brand-outline btn-brand-outline--flat mt-5 inline-flex h-[40px] w-full items-center justify-center gap-2 rounded-lg bg-white px-4 text-[12px] font-medium leading-[18px]"
+          className="btn-brand-outline btn-brand-outline--flat mt-5 inline-flex h-[40px] w-full shrink-0 items-center justify-center gap-2 rounded-lg bg-white px-4 text-[12px] font-medium leading-[18px]"
         >
           {enrollLabel}
           <PhoneIcon className="shrink-0 text-brand" />
@@ -148,7 +154,7 @@ function PricingCard({
         <button
           type="button"
           onClick={onClickEnroll}
-          className="btn-brand-outline btn-brand-outline--flat mt-5 inline-flex h-[40px] w-full items-center justify-center gap-2 rounded-lg bg-white px-4 text-[12px] font-medium leading-[18px]"
+          className="btn-brand-outline btn-brand-outline--flat mt-5 inline-flex h-[40px] w-full shrink-0 items-center justify-center gap-2 rounded-lg bg-white px-4 text-[12px] font-medium leading-[18px]"
         >
           {enrollLabel}
           <ArrowRightIcon className="btn-arrow-icon shrink-0 text-brand" />
@@ -206,21 +212,23 @@ export default function CourseFeeSection({
         </CourseBrochureCta>
       </div>
 
-      <div className="mt-10 flex flex-col gap-10 xl:flex-row xl:items-start xl:justify-between xl:gap-12">
-        <div className="min-w-0 xl:max-w-[360px]">
-          <h3 className="text-[20px] font-bold leading-[140%] text-[#1E293B]">{s.infoHeading}</h3>
-          <ul className="mt-6 space-y-5" role="list">
-            {s.features.map((feature) => (
-              <li key={feature.title} className="flex gap-3">
-                <FeeFeatureIcon />
-                <div>
-                  <p className="text-[14px] font-bold leading-[140%] text-[#1E293B]">{feature.title}</p>
-                  <p className="mt-1 text-[13px] font-normal leading-[150%] text-[#788593]">{feature.description}</p>
-                </div>
-              </li>
-            ))}
-          </ul>
-          <div className="mt-8">
+      <div className="mt-10 flex flex-col gap-10 xl:flex-row xl:items-stretch xl:justify-between xl:gap-12">
+        <div className="flex min-w-0 flex-col xl:max-w-[360px] xl:justify-between">
+          <div>
+            <h3 className="text-[20px] font-bold leading-[140%] text-[#1E293B]">{s.infoHeading}</h3>
+            <ul className="mt-6 space-y-5" role="list">
+              {s.features.map((feature) => (
+                <li key={feature.title} className="flex gap-3">
+                  <FeeFeatureIcon />
+                  <div>
+                    <p className="text-[14px] font-bold leading-[140%] text-[#1E293B]">{feature.title}</p>
+                    <p className="mt-1 text-[13px] font-normal leading-[150%] text-[#788593]">{feature.description}</p>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="mt-8 xl:mt-6">
             <p className="text-[13px] font-normal leading-[150%] text-[#788593]">{s.partnersLabel}</p>
             <div className="mt-3 flex flex-wrap items-center gap-4 gap-y-3">
               {s.partnerLogos.map((partner) => (
@@ -230,7 +238,7 @@ export default function CourseFeeSection({
           </div>
         </div>
 
-        <div className="flex min-w-0 flex-col gap-4 sm:flex-row sm:justify-end xl:shrink-0">
+        <div className={`grid min-w-0 grid-cols-1 gap-4 sm:grid-cols-2 sm:justify-self-end xl:shrink-0 ${FEE_PRICING_GRID_WIDTH_CLASS}`}>
           {emiPrice ? (
             <PricingCard
               label={s.emiLabel}
@@ -248,6 +256,7 @@ export default function CourseFeeSection({
             <PricingCard
               label={s.fullLabel}
               price={fullPrice}
+              priceSuffix={s.fullPriceSuffix}
               description={s.fullDescription}
               enrollLabel={s.fullEnrollLabel}
               onEnroll={() => onEnroll?.(batch)}

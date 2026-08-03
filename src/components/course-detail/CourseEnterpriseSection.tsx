@@ -77,6 +77,7 @@ export function CourseEnterpriseCard({
             size={logoMarqueeSize}
             largeOnMobile
             className={logoMarqueeClassName}
+            trackGapClassName="items-center gap-10 md:gap-14 lg:gap-16"
           />
         </div>
       ) : null}
@@ -89,7 +90,7 @@ export default function CourseEnterpriseSection({ compact = false }: { compact?:
   return (
     <section
       className={`full-bleed relative z-0 overflow-visible bg-[#F5F6F8] pb-0 md:pb-12 lg:pt-0 ${
-        compact ? 'pt-14' : 'pt-20'
+        compact ? 'pt-14' : 'pt-15'
       }`}
       aria-hidden
     >
