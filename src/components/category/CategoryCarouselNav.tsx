@@ -108,6 +108,7 @@ export function CategoryCarouselTrack({
   className,
   clipX = true,
   slideGap = 0,
+  pixelSlides = true,
 }: {
   page: number;
   children: ReactNode[];
@@ -115,6 +116,8 @@ export function CategoryCarouselTrack({
   clipX?: boolean;
   /** Horizontal gap between slides in px (e.g. matches grid gap when paging). */
   slideGap?: number;
+  /** Use measured pixel widths for slides (disable for mobile percentage layout). */
+  pixelSlides?: boolean;
 }) {
   const slides = Children.toArray(children);
   const slideCount = slides.length;
@@ -123,7 +126,7 @@ export function CategoryCarouselTrack({
   const viewportRef = useRef<HTMLDivElement>(null);
   const [viewportWidth, setViewportWidth] = useState(0);
 
-  const usePixelLayout = slideCount > 1;
+  const usePixelLayout = pixelSlides && slideCount > 1;
 
   useLayoutEffect(() => {
     if (!usePixelLayout) {

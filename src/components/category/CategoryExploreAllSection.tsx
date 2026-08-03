@@ -163,13 +163,17 @@ export default function CategoryExploreAllSection({ excludeId }: { excludeId?: s
         ) : (
           <div className="explore-categories-carousel mt-6 md:mt-6">
             {isMobile ? (
-              <div className="max-md:px-2 max-md:pb-4">
-                <div className="grid grid-cols-1 gap-4">
-                  {(pages[page] ?? []).map((item) => (
-                    <CategoryCard key={item.id} item={item} />
-                  ))}
-                </div>
-              </div>
+              <CategoryCarouselTrack page={page} pixelSlides={false} className="max-md:pb-4">
+                {pages.map((pageItems, pageIndex) => (
+                  <div key={pageIndex} className="box-border grid w-full min-w-0 grid-cols-1 gap-4 px-2 py-1">
+                    {pageItems.map((item) => (
+                      <div key={item.id} className="min-w-0 w-full overflow-visible py-1">
+                        <CategoryCard item={item} />
+                      </div>
+                    ))}
+                  </div>
+                ))}
+              </CategoryCarouselTrack>
             ) : (
               <CategoryCarouselTrack page={page} className="pb-4 pt-1">
                 {pages.map((pageItems, pageIndex) => (
