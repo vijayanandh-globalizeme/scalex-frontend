@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useMemo, useState, useTransition } from 'react';
 import {
   CategoryCarouselControls,
+  CategoryCarouselTrack,
   chunkPages,
 } from '@/components/category/CategoryCarouselNav';
 import type { ExploreCategoryItem } from '@/lib/categoryPageSections';
@@ -57,7 +58,7 @@ function CategoryCard({ item }: { item: ExploreCategoryItem }) {
     <Link
       href={item.href}
       prefetch
-      className={`interactive-card group flex w-full max-w-full items-center gap-4 overflow-visible rounded-xl border border-[#EBEBEB] bg-white p-5 transition-shadow duration-300 ${CATEGORY_CARD_SHADOW}`}
+      className={`interactive-card group flex w-full min-w-0 max-w-full items-center gap-4 overflow-visible rounded-xl border border-[#EBEBEB] bg-white p-5 transition-shadow duration-300 ${CATEGORY_CARD_SHADOW}`}
     >
       <CategoryIcon fill={item.iconBg} icon={item.icon} />
       <span className="min-w-0 flex-1">
@@ -170,21 +171,25 @@ export default function CategoryExploreAllSection({ excludeId }: { excludeId?: s
                 </div>
               </div>
             ) : (
-              <div className="md:overflow-visible md:px-1 md:py-1">
-                <div
-                  key={page}
-                  className="grid w-full grid-cols-2 gap-5 lg:grid-cols-4 lg:gap-6"
-                >
-                  {(pages[page] ?? []).map((item) => (
-                    <CategoryCard key={item.id} item={item} />
-                  ))}
-                  {(pages[page] ?? []).length < DESKTOP_PAGE_SIZE
-                    ? Array.from({ length: DESKTOP_PAGE_SIZE - (pages[page] ?? []).length }).map((_, i) => (
-                        <div key={`pad-${page}-${i}`} className="hidden lg:block" aria-hidden />
-                      ))
-                    : null}
-                </div>
-              </div>
+              <CategoryCarouselTrack page={page} className="pb-4 pt-1">
+                {pages.map((pageItems, pageIndex) => (
+                  <div
+                    key={pageIndex}
+                    className="box-border grid w-full min-w-0 max-w-full grid-cols-2 gap-5 px-3 py-1 lg:grid-cols-4 lg:gap-6"
+                  >
+                    {pageItems.map((item) => (
+                      <div key={item.id} className="min-w-0 overflow-visible">
+                        <CategoryCard item={item} />
+                      </div>
+                    ))}
+                    {pageItems.length < DESKTOP_PAGE_SIZE
+                      ? Array.from({ length: DESKTOP_PAGE_SIZE - pageItems.length }).map((_, i) => (
+                          <div key={`pad-${pageIndex}-${i}`} className="hidden lg:block" aria-hidden />
+                        ))
+                      : null}
+                  </div>
+                ))}
+              </CategoryCarouselTrack>
             )}
           </div>
         )}

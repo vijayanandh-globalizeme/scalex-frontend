@@ -123,10 +123,10 @@ export function CategoryCarouselTrack({
   const viewportRef = useRef<HTMLDivElement>(null);
   const [viewportWidth, setViewportWidth] = useState(0);
 
-  const useGapLayout = slideGap > 0 && slideCount > 1;
+  const usePixelLayout = slideCount > 1;
 
   useLayoutEffect(() => {
-    if (!useGapLayout) {
+    if (!usePixelLayout) {
       setViewportWidth(0);
       return undefined;
     }
@@ -134,21 +134,29 @@ export function CategoryCarouselTrack({
     const el = viewportRef.current;
     if (!el) return undefined;
 
-    const update = () => setViewportWidth(el.offsetWidth);
+    const update = () => {
+      const width = Math.round(el.clientWidth);
+      if (width > 0) {
+        setViewportWidth(width);
+      }
+    };
     update();
 
     const ro = new ResizeObserver(update);
     ro.observe(el);
-    return () => ro.disconnect();
-  }, [useGapLayout]);
+    window.addEventListener('resize', update);
+    return () => {
+      ro.disconnect();
+      window.removeEventListener('resize', update);
+    };
+  }, [usePixelLayout]);
 
-  const translateX = useGapLayout && viewportWidth > 0
-    ? safePage * (viewportWidth + slideGap)
-    : null;
+  const slideStepPx = viewportWidth > 0 ? viewportWidth + slideGap : 0;
+  const translateX = usePixelLayout && slideStepPx > 0 ? safePage * slideStepPx : null;
 
   return (
     <div
-      ref={useGapLayout ? viewportRef : undefined}
+      ref={usePixelLayout ? viewportRef : undefined}
       className={`w-full min-w-0 ${
         clipX ? 'overflow-x-hidden overflow-y-visible' : 'overflow-visible'
       } ${className ?? ''}`}
@@ -167,11 +175,14 @@ export function CategoryCarouselTrack({
         {slides.map((slide, index) => (
           <div
             key={index}
-            className="box-border shrink-0 grow-0 overflow-visible"
+            className="box-border min-w-0 shrink-0 grow-0 overflow-visible"
             style={
-              useGapLayout
+              translateX != null
                 ? {
-                    flex: `0 0 ${viewportWidth > 0 ? `${viewportWidth}px` : '100%'}`,
+                    flex: `0 0 ${viewportWidth}px`,
+                    width: viewportWidth,
+                    minWidth: viewportWidth,
+                    maxWidth: viewportWidth,
                     marginRight: index < slideCount - 1 ? slideGap : 0,
                   }
                 : { flex: `0 0 ${slideWidthPercent}%` }
