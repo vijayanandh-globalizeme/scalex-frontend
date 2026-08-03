@@ -724,7 +724,7 @@ export default function CourseSchedulesSection({
         </div>
       ) : null}
 
-      <div className={`overflow-visible max-md:mt-15 mt-8 ${COURSE_SECTION_CARD} px-5 pt-5 pb-5 md:px-6 md:pt-6 md:pb-6`}>
+      <div className={`overflow-visible max-md:mt-8 mt-8 ${COURSE_SECTION_CARD} px-5 pt-5 pb-5 md:px-6 md:pt-6 md:pb-6`}>
         {/* Header */}
         
         <div className="flex flex-wrap items-center gap-3">

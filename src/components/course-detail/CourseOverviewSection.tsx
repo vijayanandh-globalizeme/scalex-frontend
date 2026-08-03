@@ -62,7 +62,7 @@ export default function CourseOverviewSection({
   return (
     <div
       id="overview"
-      className={`scroll-mt-[116px] ${COURSE_SECTION_CARD} max-md:mb-15`}
+      className={`scroll-mt-[116px] ${COURSE_SECTION_CARD} max-md:mb-8`}
     >
       <div className="border-b border-zinc-100 px-6 py-5 md:px-8 md:py-6">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">

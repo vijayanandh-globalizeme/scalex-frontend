@@ -133,7 +133,7 @@ function FloatingBadge({
   const placement =
     badge.placement === 'top-left'
       ? isTopLeftPrimary
-        ? 'left-0 top-10 -translate-x-[20px] translate-y-[20px] xl:-left-6 xl:top-25'
+        ? 'max-md:left-[-18px] left-0 top-10 -translate-x-[20px] translate-y-[20px] xl:-left-6 xl:top-25'
         : 'left-0 top-10 xl:-left-6 xl:top-25'
       : badge.placement === 'mid-left'
         ? isMidLeftSecondary
@@ -141,7 +141,7 @@ function FloatingBadge({
           : 'left-0 top-[60%] -translate-y-1/2 xl:-left-10'
         : badge.placement === 'bottom-right'
           ? isSalary
-            ? 'bottom-[30px] max-md:right-0 max-md:z-40 right-[-52px] lg:right-2 lg:-right-10'
+            ? 'bottom-[30px] max-md:right-[-4rem] max-md:z-40 right-[-52px] lg:right-2 lg:-right-10'
             : 'bottom-6 right-2 lg:bottom-28 lg:-right-10'
           : 'bottom-10 left-[42%] -translate-x-1/2 md:-bottom-2';
 
@@ -390,9 +390,9 @@ export default function TechnicalCourseHeroSection(course: TechnicalCourseConten
     startedAt,
     brochureUrl,
   } = course;
-  const isCsmPage = slug === 'certified-scrum-master' && categorySlug === 'agile-and-scrum';
-  const isDevopsPage = slug === 'devops-certification-training' && categorySlug === 'devops';
-  const heroFigureSrc = isDevopsPage ? '/images/hero-1.png' : '/images/hero/person.png';
+  const isCsmPage = false;
+  const isDevopsPage = true;
+  const heroFigureSrc = '/images/hero-1.png';
 
   const sectionRef = useRef<HTMLElement>(null);
   const rowRefs = useRef<(HTMLDivElement | null)[]>([]);
