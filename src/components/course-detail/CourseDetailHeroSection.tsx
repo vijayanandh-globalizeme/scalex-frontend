@@ -247,10 +247,10 @@ export default function CourseDetailHeroSection({
 
             <RankedContent rankedContent={rankedContent} rankingLine={rankingLine} />
 
-            <div className="mt-8 flex flex-wrap items-center gap-x-10 gap-y-5">
+            <div className="mt-8 grid grid-cols-2 gap-x-4 gap-y-4 max-[390px]:gap-x-2 md:flex md:flex-wrap md:items-center md:gap-x-10 md:gap-y-5">
               {reviews.map((review) => (
-                <div key={review.id} className="flex min-w-0 flex-col gap-1.5">
-                  <div className="relative h-6 w-24">
+                <div key={review.id} className="flex min-w-0 flex-col gap-1.5 max-[390px]:gap-1">
+                  <div className="relative h-6 w-24 max-[390px]:h-5 max-[390px]:w-[84px]">
                     <Image
                       src={review.logoSrc}
                       alt={review.logoAlt}
@@ -259,27 +259,29 @@ export default function CourseDetailHeroSection({
                       className="object-contain object-left"
                     />
                   </div>
-                  <div className="flex flex-wrap items-center gap-1.5">
-                    <StarIcon className="shrink-0 text-[#F4AA1F]" />
-                    <span className="text-[16px] font-semibold text-heading">{review.rating}</span>
+                  <div className="flex min-w-0 flex-wrap items-center gap-1.5 max-[390px]:gap-1">
+                    <StarIcon className="h-4 w-4 shrink-0 text-[#F4AA1F] max-[390px]:h-3.5 max-[390px]:w-3.5" />
+                    <span className="text-[16px] font-semibold text-heading max-[390px]:text-[14px]">
+                      {review.rating}
+                    </span>
                     {review.url ? (
                       <a
                         href={review.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-[14px] font-normal leading-[140%] text-muted hover:underline"
+                        className="text-[14px] font-normal leading-[140%] text-muted hover:underline max-[390px]:text-[12px]"
                       >
                         {review.reviewsLabel}
                       </a>
                     ) : (
-                      <span className="text-[14px] font-normal leading-[140%] text-muted">
+                      <span className="text-[14px] font-normal leading-[140%] text-muted max-[390px]:text-[12px]">
                         {review.reviewsLabel}
                       </span>
                     )}
                   </div>
                 </div>
               ))}
-              <div className="flex min-w-0 items-center gap-2.5">
+              <div className="col-span-2 flex min-w-0 items-center gap-2.5 md:col-auto">
                 <div className="flex shrink-0 items-center">
                   {learnersStat.avatarSrcs.map((src, index) => (
                     <div
