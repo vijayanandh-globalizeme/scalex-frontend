@@ -151,7 +151,7 @@ export default function CourseCareerAssuranceSection() {
   return (
     <section
       id="career-assurance"
-      className="relative scroll-mt-[116px] pt-0 sm:pt-[22px]"
+      className="relative scroll-mt-[116px] pt-0"
       aria-labelledby="career-assurance-heading"
       style={
         {

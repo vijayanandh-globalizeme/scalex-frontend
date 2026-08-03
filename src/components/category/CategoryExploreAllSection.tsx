@@ -5,7 +5,6 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useMemo, useState, useTransition } from 'react';
 import {
   CategoryCarouselControls,
-  CategoryCarouselTrack,
   chunkPages,
 } from '@/components/category/CategoryCarouselNav';
 import type { ExploreCategoryItem } from '@/lib/categoryPageSections';
@@ -51,7 +50,7 @@ function ExploreArrowIcon({ className }: { className?: string }) {
 }
 
 const CATEGORY_CARD_SHADOW =
-  'max-md:!shadow-[0_2px_8px_0_rgba(30,41,59,0.10)] max-md:hover:!shadow-[0_2px_8px_0_rgba(30,41,59,0.10)] md:shadow-[0_4px_4px_0_rgba(30,41,59,0.08),0_4px_4px_0_rgba(30,41,59,0.03)] md:hover:shadow-[0_8px_32px_0_rgba(30,41,59,0.14)]';
+  'max-md:!shadow-[0_2px_8px_0_rgba(30,41,59,0.10)] max-md:hover:!shadow-[0_2px_8px_0_rgba(30,41,59,0.10)] md:shadow-[0_4px_4px_0_rgba(30,41,59,0.08),0_4px_4px_0_rgba(30,41,59,0.03)] md:hover:!shadow-[0_4px_4px_0_rgba(30,41,59,0.08),0_4px_4px_0_rgba(30,41,59,0.03)]';
 
 function CategoryCard({ item }: { item: ExploreCategoryItem }) {
   return (
@@ -92,28 +91,23 @@ export default function CategoryExploreAllSection({ excludeId }: { excludeId?: s
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(0);
   const [pageSize, setPageSize] = useState(MOBILE_PAGE_SIZE);
-  const [slideGap, setSlideGap] = useState(16);
   const [isMobile, setIsMobile] = useState(false);
   const [, startTransition] = useTransition();
 
   useEffect(() => {
     const mobileMq = window.matchMedia('(max-width: 767px)');
     const sm = window.matchMedia('(min-width: 640px)');
-    const lg = window.matchMedia('(min-width: 1024px)');
     const update = () => {
       setIsMobile(mobileMq.matches);
       setPageSize(sm.matches ? DESKTOP_PAGE_SIZE : MOBILE_PAGE_SIZE);
-      setSlideGap(lg.matches ? 24 : sm.matches ? 20 : 16);
       setPage(0);
     };
     update();
     mobileMq.addEventListener('change', update);
     sm.addEventListener('change', update);
-    lg.addEventListener('change', update);
     return () => {
       mobileMq.removeEventListener('change', update);
       sm.removeEventListener('change', update);
-      lg.removeEventListener('change', update);
     };
   }, []);
 
@@ -176,23 +170,21 @@ export default function CategoryExploreAllSection({ excludeId }: { excludeId?: s
                 </div>
               </div>
             ) : (
-              <CategoryCarouselTrack
-                page={page}
-                clipX={false}
-                className="overflow-visible px-2 pb-4 pt-1"
-                slideGap={slideGap}
-              >
-                {pages.map((pageItems, pageIndex) => (
-                  <div
-                    key={pageIndex}
-                    className="grid w-full grid-cols-1 gap-4 p-1 sm:grid-cols-2 sm:gap-5 lg:grid-cols-4 lg:gap-6"
-                  >
-                    {pageItems.map((item) => (
-                      <CategoryCard key={item.id} item={item} />
-                    ))}
-                  </div>
-                ))}
-              </CategoryCarouselTrack>
+              <div className="md:overflow-visible md:px-1 md:py-1">
+                <div
+                  key={page}
+                  className="grid w-full grid-cols-2 gap-5 lg:grid-cols-4 lg:gap-6"
+                >
+                  {(pages[page] ?? []).map((item) => (
+                    <CategoryCard key={item.id} item={item} />
+                  ))}
+                  {(pages[page] ?? []).length < DESKTOP_PAGE_SIZE
+                    ? Array.from({ length: DESKTOP_PAGE_SIZE - (pages[page] ?? []).length }).map((_, i) => (
+                        <div key={`pad-${page}-${i}`} className="hidden lg:block" aria-hidden />
+                      ))
+                    : null}
+                </div>
+              </div>
             )}
           </div>
         )}

@@ -360,6 +360,17 @@ body {
     }
   }
 
+  @media (min-width: 768px) {
+    /* Explore categories desktop — flat shadow, no hover lift, overrides .interactive-card */
+    .explore-categories-carousel .interactive-card {
+      box-shadow: 0 4px 4px 0 rgba(30, 41, 59, 0.08), 0 4px 4px 0 rgba(30, 41, 59, 0.03) !important;
+    }
+
+    .explore-categories-carousel .interactive-card:hover {
+      box-shadow: 0 4px 4px 0 rgba(30, 41, 59, 0.08), 0 4px 4px 0 rgba(30, 41, 59, 0.03) !important;
+    }
+  }
+
   .header-fluid-text {
     font-size: clamp(14px, calc(8px + 0.416666vw), 16px);
     line-height: 1.35;

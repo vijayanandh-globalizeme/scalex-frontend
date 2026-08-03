@@ -112,10 +112,10 @@ function WhiteBlogCard({ blog, mobile = false }: { blog: BlogItem; mobile?: bool
   const widthClass = mobile ? 'w-full' : BLOG_CARD_WIDTH;
 
   return (
-    <article className={`overflow-visible ${widthClass}`}>
+    <article className={`${mobile ? 'overflow-hidden' : 'overflow-visible'} ${widthClass}`}>
       <div
-        className={`interactive-card flex flex-col overflow-hidden rounded-2xl border border-zinc-100 bg-white pt-0 ${
-          mobile ? 'px-3 pb-4' : 'px-4 pb-6'
+        className={`interactive-card flex flex-col rounded-2xl border border-zinc-100 bg-white pt-0 ${
+          mobile ? 'overflow-hidden px-3 pb-4' : 'overflow-visible px-4 pb-6'
         }`}
       >
         <div
@@ -255,8 +255,10 @@ function SkeletonCard({ mobile = false }: { mobile?: boolean }) {
   const imageOverflow = mobile ? MOBILE_BLOG_IMAGE_OVERFLOW_PX : BLOG_IMAGE_OVERFLOW_PX;
 
   return (
-    <div className={`animate-pulse overflow-visible`}>
-      <div className={`overflow-hidden rounded-2xl bg-surface-raised pt-0 ${mobile ? 'px-3 pb-4' : 'px-4 pb-6'}`}>
+    <div className={`animate-pulse ${mobile ? 'overflow-hidden' : 'overflow-visible'}`}>
+      <div
+        className={`rounded-2xl bg-surface-raised pt-0 ${mobile ? 'overflow-hidden px-3 pb-4' : 'overflow-visible px-4 pb-6'}`}
+      >
         <div
           className={`mb-4 w-full rounded-2xl bg-muted/20 ${mobile ? 'mb-3' : ''}`}
           style={{ height: imageH, ...(mobile ? {} : { marginTop: -imageOverflow }) }}
