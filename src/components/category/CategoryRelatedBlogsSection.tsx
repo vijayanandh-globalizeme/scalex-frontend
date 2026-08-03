@@ -116,7 +116,7 @@ function WhiteBlogCard({ blog, mobile = false }: { blog: BlogItem; mobile?: bool
     <article className={`${mobile ? 'overflow-hidden' : 'overflow-visible'} ${widthClass}`}>
       <div
         className={`interactive-card flex flex-col rounded-2xl border border-zinc-100 bg-white pt-0 ${
-          mobile ? 'overflow-hidden px-3 pb-4' : 'overflow-visible px-4 pb-6'
+          mobile ? 'overflow-hidden px-3 pb-4' : 'overflow-visible px-4 pb-5'
         }`}
       >
         <div
@@ -221,11 +221,11 @@ function BlogMasonryGrid({ items }: { items: BlogItem[] }) {
   ].filter((col) => col.some(Boolean));
 
   return (
-    <div className="grid grid-cols-1 gap-4 overflow-visible md:grid-cols-2 lg:grid-cols-3 lg:items-start lg:gap-x-8 lg:gap-y-5">
+    <div className="grid grid-cols-1 gap-5 overflow-visible md:grid-cols-2 lg:grid-cols-3 lg:items-start lg:gap-x-8 lg:gap-y-5">
       {columns.map((column, colIndex) => (
         <div
           key={colIndex}
-          className={`flex flex-col gap-4 lg:gap-5 ${BLOG_CARD_WIDTH} mx-auto lg:mx-0`}
+          className={`flex flex-col gap-5 ${BLOG_CARD_WIDTH} mx-auto lg:mx-0`}
           style={colIndex === 1 ? undefined : { paddingTop: BLOG_IMAGE_OVERFLOW_PX }}
         >
           {column.map((blog, blogIndex) =>
@@ -235,10 +235,8 @@ function BlogMasonryGrid({ items }: { items: BlogItem[] }) {
                 className="overflow-visible"
                 style={
                   colIndex === 1 && blogIndex === 1 && blog.variant === 'default'
-                    ? { paddingTop: 20 }
-                    : blog.variant === 'default' && blogIndex > 0
-                      ? { marginTop: -BLOG_IMAGE_OVERFLOW_PX }
-                      : undefined
+                    ? { paddingTop: BLOG_IMAGE_OVERFLOW_PX }
+                    : undefined
                 }
               >
                 <BlogCard blog={blog} />
@@ -258,7 +256,7 @@ function SkeletonCard({ mobile = false }: { mobile?: boolean }) {
   return (
     <div className={`animate-pulse ${mobile ? 'overflow-hidden' : 'overflow-visible'}`}>
       <div
-        className={`rounded-2xl bg-surface-raised pt-0 ${mobile ? 'overflow-hidden px-3 pb-4' : 'overflow-visible px-4 pb-6'}`}
+        className={`rounded-2xl bg-surface-raised pt-0 ${mobile ? 'overflow-hidden px-3 pb-4' : 'overflow-visible px-4 pb-5'}`}
       >
         <div
           className={`mb-4 w-full rounded-2xl bg-muted/20 ${mobile ? 'mb-3' : ''}`}
