@@ -41,6 +41,8 @@ function learnerToStory(l: ApiLearner): CareerTransformationStory {
 
 const PERSON_IMAGE_WIDTH = 251;
 const PERSON_IMAGE_HEIGHT = 255;
+const HIKE_BADGE_TOP_OFFSET_PX = Math.round(PERSON_IMAGE_HEIGHT * 0.25);
+const HIKE_BADGE_LEFT_PX = 155 + Math.round(PERSON_IMAGE_WIDTH * 0.05);
 const PERSON_OUTSIDE_LEFT_PX = Math.round(PERSON_IMAGE_WIDTH * 0.1);
 const PERSON_IMAGE_LEFT_PX = 20;
 const PERSON_IMAGE_BOTTOM_PX = 0;
@@ -214,12 +216,15 @@ function HikeBadge({ hikePercent }: { hikePercent: number }) {
 function TransformationStoryCard({ story }: { story: CareerTransformationStory }) {
   return (
     <article className="relative flex h-full w-full flex-col overflow-visible pt-6 max-md:pt-0 md:pt-6">
-      {/* Hike badge — desktop only (mobile sits inside card top-left) */}
-      <div className="pointer-events-none absolute top-0 left-1/2 z-[70] hidden -translate-x-1/2 md:block md:top-3 md:left-[155px] md:translate-x-0">
+      {/* Hike badge — desktop only, behind person */}
+      <div
+        className="pointer-events-none absolute left-1/2 z-[50] hidden -translate-x-1/2 md:block md:translate-x-0"
+        style={{ top: HIKE_BADGE_TOP_OFFSET_PX, left: HIKE_BADGE_LEFT_PX }}
+      >
         <HikeBadge hikePercent={story.hikePercent} />
       </div>
 
-      {/* Person image — desktop: anchored to bottom of article */}
+      {/* Person image — desktop: anchored to bottom of article, in front of hike badge */}
       <div
         className="pointer-events-none absolute bottom-0 left-[20px] z-[60] hidden h-[255px] w-[251px] md:block"
         aria-hidden
