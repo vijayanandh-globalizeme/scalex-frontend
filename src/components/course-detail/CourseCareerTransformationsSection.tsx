@@ -251,7 +251,7 @@ function TransformationStoryCard({ story }: { story: CareerTransformationStory }
       {/* Card */}
       <div className="relative w-full">
         <div
-          className="interactive-card relative z-0 flex min-h-[180px] w-full flex-1 flex-col overflow-hidden rounded-[16px] border border-[#DCDCDC] max-md:mb-5 md:mt-0 md:min-h-[210px] md:overflow-visible md:rounded-[20px]"
+          className="relative z-0 flex min-h-[180px] w-full flex-1 flex-col overflow-hidden rounded-[16px] border border-[#DCDCDC] max-md:mb-5 md:mt-0 md:min-h-[210px] md:overflow-visible md:rounded-[20px]"
           style={{ background: 'linear-gradient(259deg, #FFF 64.75%, #FFD3D3 108.27%)' }}
         >
           {/* Mobile badge — top left inside card */}
