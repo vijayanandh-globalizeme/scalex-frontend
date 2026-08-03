@@ -196,7 +196,7 @@ export default function CourseReviewsClient({
 
 
   return (
-    <div id="reviews" className={`scroll-mt-[116px] pt-0 max-md:mb-0 max-md:pb-15 md:pt-0 md:pb-6 ${SECTION_CARD}`}>
+    <div id="reviews" className={`scroll-mt-[116px] pt-0 max-md:mb-0 max-md:pb-8 md:pt-0 md:pb-6 ${SECTION_CARD}`}>
       <h2 className="section-heading text-heading">{title}</h2>
 
       <div className="mt-7 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">

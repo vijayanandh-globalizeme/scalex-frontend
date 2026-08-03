@@ -299,7 +299,7 @@ function PlacementStageContent({ stage }: { stage: ApiRoadmap }) {
       </div>
       <div className="mt-10">
         <p className="text-[18px] font-medium leading-[140%] text-[#1E293B]" style={{ fontFamily: 'Inter' }}>{ROADMAP_HIRING_PARTNERS_TITLE}</p>
-        <div className="mt-5 flex flex-wrap items-center gap-x-12 gap-y-5 pb-[50px] max-md:justify-around">
+        <div className="mt-5 flex flex-wrap items-center gap-x-12 gap-y-5 max-md:justify-around max-md:pb-[10px] md:pb-[50px]">
           {ROADMAP_HIRING_PARTNER_LOGOS.map((logo, index) => (
             <Fragment key={logo.alt}>
               {index === 4 && <div className="w-full" />}

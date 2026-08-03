@@ -133,7 +133,7 @@ function FloatingBadge({
   const placement =
     badge.placement === 'top-left'
       ? isTopLeftPrimary
-        ? 'left-0 top-10 -translate-x-[20px] translate-y-[20px] xl:-left-6 xl:top-25'
+        ? 'max-md:left-[-18px] left-0 top-10 -translate-x-[20px] translate-y-[20px] xl:-left-6 xl:top-25'
         : 'left-0 top-10 xl:-left-6 xl:top-25'
       : badge.placement === 'mid-left'
         ? isMidLeftSecondary
@@ -141,7 +141,7 @@ function FloatingBadge({
           : 'left-0 top-[60%] -translate-y-1/2 xl:-left-10'
         : badge.placement === 'bottom-right'
           ? isSalary
-            ? 'bottom-[30px] right-[-52px] lg:right-2 lg:-right-10'
+            ? 'bottom-[30px] max-md:right-[-4rem] max-md:z-40 right-[-52px] lg:right-2 lg:-right-10'
             : 'bottom-6 right-2 lg:bottom-28 lg:-right-10'
           : 'bottom-10 left-[42%] -translate-x-1/2 md:-bottom-2';
 
@@ -160,7 +160,7 @@ function FloatingBadge({
   const alignClass = badge.variant === 'mentors' ? 'items-center' : 'items-start';
 
   return (
-    <div className={`absolute z-30 ${placement} ${mobileVisibility}`}>
+    <div className={`absolute z-30 max-md:z-40 ${placement} ${mobileVisibility}`}>
       <div
         ref={innerRef}
         className={`flex gap-2 rounded-xl border border-zinc-100 bg-white shadow-lg shadow-zinc-900/8 lg:gap-2.5 ${sizeClass} ${alignClass}`}
@@ -271,10 +271,10 @@ function HeroMediaColumn({
   return (
     <div
       ref={containerRef}
-      className={`relative mx-auto w-full min-w-0 max-w-md overflow-visible lg:mx-0 lg:max-w-none ${isLeft ? 'lg:translate-x-0' : 'lg:-translate-x-[10%]'}`}
+      className={`relative mx-auto w-full min-w-0 max-w-md overflow-visible max-md:max-w-full lg:mx-0 lg:max-w-none ${isLeft ? 'lg:translate-x-0' : 'lg:-translate-x-[10%]'}`}
     >
       <div
-        className={`relative h-[400px] w-[300px] mx-[32px] overflow-visible lg:h-[537px] lg:w-[444px] lg:left-[80px] lg:mx-0 ${isLeft ? 'lg:ml-0 lg:mr-auto' : 'lg:ml-auto lg:mr-0'}`}
+        className={`relative overflow-visible max-md:mx-auto max-md:h-[320px] max-md:w-full max-md:max-w-[260px] md:h-[400px] md:w-[300px] md:mx-[32px] lg:h-[537px] lg:w-[444px] lg:max-w-none lg:left-[80px] lg:mx-0 ${isLeft ? 'lg:ml-0 lg:mr-auto' : 'lg:ml-auto lg:mr-0'}`}
       >
         {aeroSrc ? (
           <div ref={aeroWrapRef} className="pointer-events-none absolute inset-0 z-0" aria-hidden>
@@ -317,14 +317,14 @@ function HeroMediaColumn({
           </div>
         ) : null}
         <div
-          className={`absolute bottom-0 z-[1] h-[400px] w-[min(100%,389px)] rounded-t-[400px] shadow-inner shadow-black/5 lg:h-[537px] ${isLeft ? 'left-[10px]' : 'right-5'}`}
+          className={`absolute bottom-0 z-[1] h-[400px] w-[min(100%,389px)] max-md:left-1/2 max-md:h-[320px] max-md:w-[min(100%,280px)] max-md:-translate-x-1/2 rounded-t-[400px] shadow-inner shadow-black/5 lg:h-[537px] ${isLeft ? 'md:left-[10px]' : 'md:right-5'}`}
           style={{
             background: 'linear-gradient(180deg, #BB9255 -140.92%, #FADCBA 165.92%)',
           }}
           aria-hidden
         />
         <div
-          className={`absolute bottom-0 z-[5] aspect-[350/544] w-[min(90%,350px)] ${isLeft ? 'left-[10px]' : 'right-2 lg:right-6'}`}
+          className={`absolute bottom-0 z-[5] aspect-[350/544] w-[min(90%,350px)] max-md:left-1/2 max-md:w-[min(75%,240px)] max-md:-translate-x-1/2 ${isLeft ? 'md:left-[10px]' : 'md:right-2 lg:right-6'}`}
         >
           <Image
             src={figureSrc}
@@ -390,9 +390,9 @@ export default function TechnicalCourseHeroSection(course: TechnicalCourseConten
     startedAt,
     brochureUrl,
   } = course;
-  const isCsmPage = slug === 'certified-scrum-master' && categorySlug === 'agile-and-scrum';
-  const isDevopsPage = slug === 'devops-certification-training' && categorySlug === 'devops';
-  const heroFigureSrc = isDevopsPage ? '/images/hero-1.png' : '/images/hero/person.png';
+  const isCsmPage = false;
+  const isDevopsPage = true;
+  const heroFigureSrc = '/images/hero-1.png';
 
   const sectionRef = useRef<HTMLElement>(null);
   const rowRefs = useRef<(HTMLDivElement | null)[]>([]);
@@ -420,7 +420,7 @@ export default function TechnicalCourseHeroSection(course: TechnicalCourseConten
   return (
     <section
       ref={sectionRef}
-      className="full-bleed relative overflow-x-clip overflow-y-visible bg-[#F5F6F8] max-md:pt-10 max-md:pb-15 pb-0 md:pt-10"
+      className="full-bleed relative overflow-y-visible bg-[#F5F6F8] max-md:overflow-x-visible max-md:pt-10 max-md:pb-15 pb-0 md:overflow-x-clip md:pt-10"
       aria-labelledby="technical-course-hero-heading"
     >
       <div
@@ -428,7 +428,7 @@ export default function TechnicalCourseHeroSection(course: TechnicalCourseConten
         style={{ backgroundColor: '#F5F6F8' }}
         aria-hidden
       />
-      <div className="site-container relative z-10">
+      <div className="site-container relative z-10 max-md:min-w-0 max-md:max-w-full">
         <nav aria-label="Breadcrumb" className="mb-6 flex flex-wrap items-center gap-2 text-[14px] font-medium">
           <Link href="/" className="text-muted transition hover:text-heading" aria-label="Home">
             <HomeIcon className="h-4 w-4" />
@@ -449,12 +449,12 @@ export default function TechnicalCourseHeroSection(course: TechnicalCourseConten
           ))}
         </nav>
 
-        <div className="grid min-w-0 items-start gap-10 lg:grid-cols-[minmax(0,690px)_minmax(0,1fr)] lg:gap-8 xl:gap-12">
+        <div className="grid min-w-0 items-start gap-10 max-md:gap-6 lg:grid-cols-[minmax(0,690px)_minmax(0,1fr)] lg:gap-8 xl:gap-12">
           <div
             ref={(el) => {
               rowRefs.current[0] = el;
             }}
-            className="gsap-reveal-pending w-full min-w-0 max-w-[690px]"
+            className="gsap-reveal-pending w-full min-w-0 max-w-[690px] max-md:max-w-full"
           >
             <h1 id="technical-course-hero-heading" className="text-heading">
               <span className="block text-[34px] font-extrabold leading-[1.25] text-heading sm:text-[40px] sm:leading-[60px]">
@@ -470,7 +470,7 @@ export default function TechnicalCourseHeroSection(course: TechnicalCourseConten
               />
             ) : null}
 
-            <div className="mt-[28px] flex flex-wrap items-center gap-3">
+            <div className="mt-[28px] flex min-w-0 max-w-full flex-wrap items-center gap-3">
               <div
                 className="inline-flex shadow-[0_4px_4px_0_rgba(30,41,59,0.08),0_4px_4px_0_rgba(30,41,59,0.03)]"
                 style={{ padding: 1.5, borderRadius: 10, background: 'linear-gradient(to right, #1BA83A, #FD8E0D)' }}
@@ -554,13 +554,13 @@ export default function TechnicalCourseHeroSection(course: TechnicalCourseConten
 
             <RankedContent rankedContent={rankedContent} rankingLine={rankingLine} />
 
-            <div className="mt-[40px] flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:gap-4">
+            <div className="mt-[40px] flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:gap-4 max-md:w-full max-md:min-w-0 max-md:max-w-full">
               {startedAt ? (
                 <CourseBrochureCta
                   openModal
                   type="webinar"
                   courseId={courseId}
-                  className="btn-brand h-[54px] w-full cursor-pointer gap-2 px-6 sm:w-auto md:px-7"
+                  className="btn-brand h-[54px] w-full cursor-pointer gap-2 px-6 max-md:box-border max-md:min-w-0 max-md:max-w-full max-md:px-4 sm:w-auto md:px-7"
                 >
                   Register for FREE Webinar
                   <ArrowRightIcon className="btn-arrow-icon shrink-0" />
@@ -571,7 +571,7 @@ export default function TechnicalCourseHeroSection(course: TechnicalCourseConten
                   type="contact"
                   courseId={courseId}
                   downloadUrl={brochureUrl}
-                  className="btn-brand inline-flex h-[54px] w-full items-center justify-center gap-2 px-6 sm:w-auto md:px-7"
+                  className="btn-brand inline-flex h-[54px] w-full items-center justify-center gap-2 px-6 max-md:box-border max-md:min-w-0 max-md:max-w-full max-md:px-4 sm:w-auto md:px-7"
                 >
                   Download Brochure
                   <ArrowRightIcon className="btn-arrow-icon shrink-0" />
@@ -583,7 +583,7 @@ export default function TechnicalCourseHeroSection(course: TechnicalCourseConten
                   e.preventDefault();
                   document.getElementById('schedules')?.scrollIntoView({ block: 'start' });
                 }}
-                className="btn-brand-outline inline-flex h-[54px] w-full cursor-pointer items-center justify-center gap-[18px] px-6 text-sm font-semibold sm:w-auto md:px-8 md:text-[15px]"
+                className="btn-brand-outline inline-flex h-[54px] w-full cursor-pointer items-center justify-center gap-[18px] px-6 text-sm font-semibold max-md:box-border max-md:min-w-0 max-md:max-w-full max-md:gap-2 max-md:px-4 sm:w-auto md:px-8 md:text-[15px]"
               >
                 View Schedules
                 <EyeIcon className="h-5 w-5 text-brand" />
@@ -618,7 +618,7 @@ export default function TechnicalCourseHeroSection(course: TechnicalCourseConten
             ref={(el) => {
               rowRefs.current[1] = el;
             }}
-            className="gsap-reveal-pending"
+            className="gsap-reveal-pending min-w-0 max-md:w-full max-md:max-w-full max-md:overflow-visible"
           >
             <HeroMediaColumn
               figureSrc={heroFigureSrc}
@@ -628,7 +628,11 @@ export default function TechnicalCourseHeroSection(course: TechnicalCourseConten
               figureAlign={isDevopsPage ? 'left' : 'right'}
             />
             {collaboration.length > 0 ? (
-              <div className={`mt-6 flex ${isDevopsPage ? 'justify-start lg:pl-[120px] pl-[30px]' : 'justify-center'}`}>
+              <div
+                className={`mt-6 flex max-md:justify-center max-md:pl-0 ${
+                  isDevopsPage ? 'justify-start md:pl-[30px] lg:pl-[120px]' : 'justify-center'
+                }`}
+              >
                 <div
                   className={`inline-flex flex-col ${isDevopsPage ? 'items-start' : 'items-center lg:items-start'}`}
                 >
@@ -658,9 +662,9 @@ export default function TechnicalCourseHeroSection(course: TechnicalCourseConten
           </div>
         </div>
 
-        <div className="relative z-20 mt-10 max-md:mb-0 md:mt-12 md:mb-[-42px]">
+        <div className="relative z-20 max-md:mt-15 max-md:mb-0 md:mt-12 md:mb-[-42px]">
           <div className="rounded-[20px] border border-[#EBEBEB] bg-white px-6 py-5 shadow-[0_4px_4px_0_rgba(30,41,59,0.11),0_4px_4px_0_rgba(30,41,59,0.03)] md:px-10 md:py-6">
-            <p className="mb-5 text-center text-[20px] font-semibold leading-normal">
+            <p className="max-md:mb-0 md:mb-5 text-center text-[20px] font-semibold leading-normal">
               <span className="text-[#1E293B]">Our </span>
               <span className="text-[#FD022D]">Hiring Partners</span>
             </p>

@@ -37,7 +37,7 @@ export default function CourseRelatedCoursesCarousel({
   }, [totalPages]);
 
   return (
-    <div className="mt-[60px] overflow-visible">
+    <div className="max-md:mt-8 md:mt-[60px] overflow-visible">
       <div className="flex items-center justify-between gap-4">
         {title ? <h2 className="section-heading text-heading">{title}</h2> : <span />}
         {totalPages > 1 ? (

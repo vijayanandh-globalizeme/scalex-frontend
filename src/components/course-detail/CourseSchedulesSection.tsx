@@ -654,7 +654,11 @@ export default function CourseSchedulesSection({
 
     // Only plan1 priced (plan2/plan3 absent) → skip the plan picker and go straight to checkout.
     if (activePlans.length === 1) {
-      const params = new URLSearchParams({ batchId: batch.id, planNumber: String(activePlans[0].plan.planNumber) });
+      const params = new URLSearchParams({
+        batchId: batch.id,
+        planNumber: String(activePlans[0].plan.planNumber),
+        quantity: String(quantity),
+      });
       if (courseId) params.set('courseId', courseId);
       router.push(`/checkout?${params.toString()}`);
       return;
@@ -720,7 +724,7 @@ export default function CourseSchedulesSection({
         </div>
       ) : null}
 
-      <div className={`overflow-visible max-md:mt-15 mt-8 ${COURSE_SECTION_CARD} px-5 pt-5 pb-5 md:px-6 md:pt-6 md:pb-6`}>
+      <div className={`overflow-visible max-md:mt-8 mt-8 ${COURSE_SECTION_CARD} px-5 pt-5 pb-5 md:px-6 md:pt-6 md:pb-6`}>
         {/* Header */}
         
         <div className="flex flex-wrap items-center gap-3">

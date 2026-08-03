@@ -95,7 +95,7 @@ function TrendingBlogsSection({ blogs }: { blogs: TrendingBlogCardData[] }) {
         </div>
 
         {canNavigate ? (
-          <div className="flex justify-end gap-3 md:mt-8">
+          <div className="flex justify-end gap-3 max-md:mt-4 md:mt-8">
             <button
               onClick={prev}
               disabled={index === 0}

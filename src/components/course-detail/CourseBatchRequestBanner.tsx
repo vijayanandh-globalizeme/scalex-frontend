@@ -68,17 +68,16 @@ export default function CourseBatchRequestBanner({
         <div className="flex items-center justify-between gap-3 px-4 py-4">
           <p className="min-w-0 flex-1 text-[14px] font-semibold leading-snug tracking-[-0.54px] text-[#E5E5E5]">
             {banner.headingLines.map((line) => (
-              <span key={line} className="block">{line}</span>
+              <span key={line} className="block whitespace-nowrap">{line}</span>
             ))}
           </p>
           <CourseBrochureCta
             href={banner.ctaHref}
             type="contact"
             courseId={courseId}
-            className="btn-brand inline-flex h-9 shrink-0 items-center justify-center gap-1.5 rounded-lg px-3 text-[12px] font-medium leading-[18px] whitespace-nowrap text-white"
+            className="btn-brand inline-flex h-9 w-fit shrink-0 items-center justify-center rounded-lg px-2.5 text-[12px] font-medium leading-[18px] whitespace-nowrap text-white"
           >
-            {banner.ctaLabel}
-            <ArrowRightIcon className="btn-arrow-icon shrink-0 text-white" />
+            Contact
           </CourseBrochureCta>
         </div>
       </div>

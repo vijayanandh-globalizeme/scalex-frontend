@@ -250,7 +250,7 @@ export default function AwardsSection({
   const carousel = (
     <div
       ref={viewportRef}
-      className={`relative overflow-hidden max-md:pt-10 md:pt-14 ${isEmbedded ? 'mt-6' : 'mt-10 md:mt-12'}`}
+      className={`relative overflow-x-hidden max-md:overflow-y-visible md:overflow-hidden max-md:pt-14 md:pt-14 ${isEmbedded ? 'mt-6' : 'mt-10 md:mt-12'}`}
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
     >
@@ -293,7 +293,7 @@ export default function AwardsSection({
     return (
       <section
         id={id}
-        className={`scroll-mt-[116px] rounded-[20px] bg-transparent max-md:mb-0 max-md:pb-15 md:pt-0 md:pb-6 ${className ?? ''}`}
+        className={`scroll-mt-[116px] rounded-[20px] bg-transparent max-md:mb-0 max-md:pb-8 md:pt-0 md:pb-6 ${className ?? ''}`}
         aria-labelledby={headingId}
       >
         <div className="flex items-center justify-between gap-4">

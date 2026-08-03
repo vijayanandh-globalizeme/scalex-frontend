@@ -156,7 +156,7 @@ export default async function CourseDetailBodySection({
             ) : null}
 
             {courseUri && categoryUri ? (
-              <div id="schedules" className="max-md:mb-15">
+              <div id="schedules" className="max-md:mb-8">
                 <CourseSchedulesSection
                   courseUri={courseUri}
                   categoryUri={categoryUri}

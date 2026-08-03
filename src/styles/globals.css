@@ -325,8 +325,12 @@ body {
       box-shadow: 0 2px 8px 0 rgba(30, 41, 59, 0.1) !important;
     }
 
-    /* Success stories mobile carousel — lighter shadow that fits clipped viewport */
+    /* Success stories mobile carousel — keep card shadow fully visible inside clipped viewport */
     .success-stories-mobile-carousel .success-story-review-card {
+      box-shadow: 0 2px 8px 0 rgba(30, 41, 59, 0.1) !important;
+    }
+
+    .success-stories-mobile-carousel .success-story-review-card:hover {
       box-shadow: 0 2px 8px 0 rgba(30, 41, 59, 0.1) !important;
     }
 
@@ -337,6 +341,10 @@ body {
     }
 
     /* Related blogs mobile — keep card shadow fully visible */
+    .related-blogs-mobile-grid > * {
+      overflow: visible;
+    }
+
     .related-blogs-mobile-grid .interactive-card {
       box-shadow: 0 2px 8px 0 rgba(30, 41, 59, 0.1) !important;
     }
@@ -351,6 +359,19 @@ body {
     }
 
     .trainers-carousel-track .trainer-card:hover {
+      box-shadow: 0 2px 8px 0 rgba(30, 41, 59, 0.1) !important;
+    }
+
+    /* About us — team cards: keep last card bottom shadow visible on mobile */
+    .about-us-minds-grid > * {
+      overflow: visible;
+    }
+
+    .about-us-minds-grid .interactive-card {
+      box-shadow: 0 2px 8px 0 rgba(30, 41, 59, 0.1) !important;
+    }
+
+    .about-us-minds-grid .interactive-card:hover {
       box-shadow: 0 2px 8px 0 rgba(30, 41, 59, 0.1) !important;
     }
 

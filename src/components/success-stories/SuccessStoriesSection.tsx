@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import type { Reviewer } from '@/services/peopleApi';
 import { VideoModal } from '@/components/shared';
 import { REVIEWS_TYPE } from '@/lib/courseDetailStatics';
@@ -104,7 +104,7 @@ function VideoThumbnail({
       />
       <div
         className={`interactive-card interactive-card-media relative z-10 shrink-0 overflow-hidden rounded-2xl bg-zinc-200 ${
-          responsive ? `aspect-[432/404] w-full max-w-[432px]` : ''
+          responsive ? `aspect-[3/2] w-full max-w-[432px] md:aspect-[432/404]` : ''
         }`}
         style={
           responsive
@@ -165,12 +165,12 @@ function TestimonialCardOnly({ story, mobile = false }: { story: Reviewer; mobil
     <article
       className={`flex h-full flex-col overflow-visible border border-[#EBEBEB] bg-white p-5 md:p-6 ${
         mobile
-          ? 'success-story-review-card w-full rounded-lg shadow-[0_2px_8px_0_rgba(30,41,59,0.1)]'
+          ? 'success-story-review-card mx-auto w-full min-h-[280px] h-auto rounded-lg shadow-[0_2px_8px_0_rgba(30,41,59,0.10)]'
           : 'interactive-card rounded-lg shadow-[0_4px_4px_0_rgba(30,41,59,0.11),0_4px_4px_0_rgba(30,41,59,0.03)]'
       }`}
       style={
         mobile
-          ? { height: SLIDE_H, minHeight: SLIDE_H }
+          ? undefined
           : { width: SLIDE_W, minWidth: SLIDE_W, maxWidth: SLIDE_W, height: SLIDE_H }
       }
     >
@@ -234,6 +234,7 @@ export default function SuccessStoriesSection({
   featureMedia,
 }: SuccessStoriesSectionProps) {
   const [index, setIndex] = useState(0);
+  const [mobileIndex, setMobileIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const mobileViewportRef = useRef<HTMLDivElement>(null);
   const [mobileSlideWidth, setMobileSlideWidth] = useState(0);
@@ -266,9 +267,9 @@ export default function SuccessStoriesSection({
   }, [blockWidth]);
 
   const stepPx = SLIDE_W + SLIDE_GAP;
-  const mobileStepPx = mobileSlideWidth > 0 ? mobileSlideWidth + SLIDE_GAP : 0;
+  const mobileStepPx = mobileSlideWidth > 0 ? mobileSlideWidth : 0;
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const viewport = mobileViewportRef.current;
     if (!viewport) return undefined;
 
@@ -277,6 +278,7 @@ export default function SuccessStoriesSection({
       if (width > 0) setMobileSlideWidth(width);
     };
     update();
+
     const observer = new ResizeObserver(update);
     observer.observe(viewport);
     window.addEventListener('resize', update);
@@ -288,10 +290,16 @@ export default function SuccessStoriesSection({
 
   const goPrev = () => setIndex((i) => (i - 1 + total) % total);
   const goNext = () => setIndex((i) => (i + 1) % total);
+  const goPrevMobile = () => setMobileIndex((i) => (i - 1 + total) % total);
+  const goNextMobile = () => setMobileIndex((i) => (i + 1) % total);
 
   useEffect(() => {
     if (!canNavigateDesktop) setIndex(0);
   }, [canNavigateDesktop]);
+
+  useEffect(() => {
+    if (!canNavigateMobile) setMobileIndex(0);
+  }, [canNavigateMobile]);
 
   useEffect(() => {
     if (!autoplay || isPaused) return;
@@ -305,7 +313,11 @@ export default function SuccessStoriesSection({
 
     const id = window.setInterval(() => {
       if (!canAutoplay()) return;
-      setIndex((i) => (i + 1) % total);
+      if (window.matchMedia('(min-width: 1024px)').matches) {
+        setIndex((i) => (i + 1) % total);
+      } else {
+        setMobileIndex((i) => (i + 1) % total);
+      }
     }, autoplayIntervalMs);
     return () => window.clearInterval(id);
   }, [autoplay, autoplayIntervalMs, total, isPaused, canNavigateDesktop, canNavigateMobile]);
@@ -438,7 +450,7 @@ export default function SuccessStoriesSection({
               <div className="flex w-full max-w-[432px] justify-end gap-3">
                 <button
                   type="button"
-                  onClick={goPrev}
+                  onClick={goPrevMobile}
                   aria-label="Previous story"
                   className="btn-mui-brand-tint flex h-10 w-10 items-center justify-center rounded-full border border-accent bg-white text-accent"
                 >
@@ -446,7 +458,7 @@ export default function SuccessStoriesSection({
                 </button>
                 <button
                   type="button"
-                  onClick={goNext}
+                  onClick={goNextMobile}
                   aria-label="Next story"
                   className="btn-mui-icon-filled flex h-10 w-10 items-center justify-center rounded-full"
                 >
@@ -454,31 +466,29 @@ export default function SuccessStoriesSection({
                 </button>
               </div>
             ) : null}
-            <div className="success-stories-mobile-carousel w-full max-md:overflow-visible">
+            <div className="success-stories-mobile-carousel w-full max-md:mx-auto max-md:max-w-[432px] max-md:overflow-visible">
               <div
                 ref={mobileViewportRef}
-                className="w-full max-md:overflow-x-hidden max-md:px-0.5 max-md:pb-6 max-md:pt-1"
+                className="w-full min-w-0 max-md:overflow-x-hidden max-md:overflow-y-visible max-md:pb-4 max-md:pt-1"
               >
                 <div
-                  className="flex items-stretch transition-transform duration-500 ease-out will-change-transform"
+                  className="flex items-stretch overflow-visible transition-transform duration-500 ease-in-out will-change-transform motion-reduce:transition-none"
                   style={{
                     transform:
                       mobileStepPx > 0
-                        ? `translate3d(-${index * mobileStepPx}px, 0, 0)`
+                        ? `translate3d(-${mobileIndex * mobileStepPx}px, 0, 0)`
                         : undefined,
                   }}
                 >
-                  {stories.map((story, storyIndex) => (
+                  {stories.map((story) => (
                     <div
                       key={story.id}
-                      className="box-border flex shrink-0 overflow-visible py-1"
+                      className="box-border shrink-0 overflow-visible px-2 py-1"
                       style={
                         mobileSlideWidth > 0
                           ? {
                               width: mobileSlideWidth,
                               flex: `0 0 ${mobileSlideWidth}px`,
-                              marginRight:
-                                storyIndex < stories.length - 1 ? SLIDE_GAP : 0,
                             }
                           : { flex: '0 0 100%', width: '100%' }
                       }
