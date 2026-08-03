@@ -69,12 +69,14 @@ function PlanCard({
   currencySymbol,
   batchId,
   courseId,
+  quantity,
 }: {
   planInfo: ActivePlanInfo;
   isElite: boolean;
   currencySymbol: string;
   batchId: string;
   courseId?: string | null;
+  quantity: number;
 }) {
   const { plan, retailPrice, sellingPrice } = planInfo;
   const pct = discountPercent(retailPrice, sellingPrice);
@@ -82,6 +84,7 @@ function PlanCard({
   const checkoutParams = new URLSearchParams({
     batchId,
     planNumber: String(plan.planNumber),
+    quantity: String(quantity),
   });
   if (courseId) checkoutParams.set('courseId', courseId);
   const checkoutHref = `/checkout?${checkoutParams.toString()}`;
@@ -287,6 +290,7 @@ export default function CoursePlanComparisonSection({
                     currencySymbol={batch.currencySymbol}
                     batchId={batch.id}
                     courseId={courseId}
+                    quantity={quantity}
                   />
                 </div>
               );

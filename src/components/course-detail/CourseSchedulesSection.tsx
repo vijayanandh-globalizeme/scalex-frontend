@@ -654,7 +654,11 @@ export default function CourseSchedulesSection({
 
     // Only plan1 priced (plan2/plan3 absent) → skip the plan picker and go straight to checkout.
     if (activePlans.length === 1) {
-      const params = new URLSearchParams({ batchId: batch.id, planNumber: String(activePlans[0].plan.planNumber) });
+      const params = new URLSearchParams({
+        batchId: batch.id,
+        planNumber: String(activePlans[0].plan.planNumber),
+        quantity: String(quantity),
+      });
       if (courseId) params.set('courseId', courseId);
       router.push(`/checkout?${params.toString()}`);
       return;
