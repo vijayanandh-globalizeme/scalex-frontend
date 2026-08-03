@@ -242,17 +242,23 @@ export default function CoursePlanComparisonSection({
     : `${basePlan.plan.name} Plan`;
 
   const gridCols = activePlans.length === 1
-    ? 'grid-cols-[minmax(0,1fr)_287px]'
+    ? 'grid-cols-[minmax(200px,1fr)_287px]'
     : activePlans.length === 2
-      ? 'grid-cols-[minmax(0,1fr)_260px_287px]'
-      : 'grid-cols-[minmax(0,1fr)_260px_287px_287px]';
+      ? 'grid-cols-[minmax(200px,1fr)_260px_287px]'
+      : 'grid-cols-[minmax(200px,1fr)_260px_287px_287px]';
+
+  const minTableWidth = activePlans.length === 1
+    ? 'min-w-[490px]'
+    : activePlans.length === 2
+      ? 'min-w-[750px]'
+      : 'min-w-[1040px]';
 
   const scrollFeatures = features.length > 8;
 
   return (
     <div className={`${SECTION_CARD} overflow-hidden`}>
       <div className="overflow-x-auto">
-        <div className={`min-w-[600px]`}>
+        <div className={minTableWidth}>
           {/* Header: title + plan cards + column labels — never scrolls */}
           <div className={`grid ${gridCols}`}>
             {/* Title cell */}
