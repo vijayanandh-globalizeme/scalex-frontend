@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import type { ApiCourseDetails, ApiOtherDetail } from '@/services/courseApi';
-import { COURSE_SECTION_CARD } from './courseSectionCard';
+import { COURSE_SECTION_BODY } from './courseSectionCard';
 import { SKILLS_TOOLS_SKILLS_TITLE, SKILLS_TOOLS_TOOLS_TITLE } from '@/lib/courseDetailStatics';
 import { withNewTabLinks } from '@/lib/richText';
 
@@ -63,7 +63,7 @@ export default function CourseSkillsToolsSection({
   return (
     <section
       id="skill-and-tool"
-      className={`scroll-mt-[116px] px-6 py-5 md:px-8 md:py-6 ${COURSE_SECTION_CARD}`}
+      className={`scroll-mt-[116px] ${COURSE_SECTION_BODY}`}
       aria-labelledby="skills-tools-heading"
     >
       {skillsTools ? (

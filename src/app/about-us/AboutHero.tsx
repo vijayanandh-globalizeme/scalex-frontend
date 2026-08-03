@@ -14,7 +14,7 @@ export default function AboutHero() {
   useGsapScrollReveal(heroRef, heroImagesRef, { y: 50, duration: 1.4, delay: 0.3, start: 'top 95%' });
 
   return (
-    <section ref={heroRef} className="full-bleed relative overflow-x-clip overflow-y-visible pb-0 pt-[55px] md:pb-12 md:pt-[75px]">
+    <section ref={heroRef} className="full-bleed relative overflow-x-clip overflow-y-visible max-md:pt-10 pb-15 md:pb-12 md:pt-10">
       <div className="site-container relative z-10">
         {/* Breadcrumb */}
         <nav className="mb-6 flex items-center gap-2 text-sm text-muted md:mb-10" aria-label="Breadcrumb">
@@ -98,7 +98,7 @@ export default function AboutHero() {
         {/* Image grid */}
         <div
           ref={heroImagesRef}
-          className="gsap-reveal-pending mt-6 grid grid-cols-3 gap-2 px-[10px] pb-[50px] md:mt-10 md:gap-4 md:pb-0 min-[1400px]:grid-cols-[398px_408px_398px] min-[1400px]:justify-between"
+          className="gsap-reveal-pending grid grid-cols-3 gap-2 px-[10px] pb-0 md:mt-10 md:gap-4 md:pb-0 min-[1400px]:grid-cols-[398px_408px_398px] min-[1400px]:justify-between"
         >
           <div className="flex flex-col gap-2 md:gap-4">
             <div className="relative h-[140px] overflow-hidden rounded-2xl md:h-[220px]">

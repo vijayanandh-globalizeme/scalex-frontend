@@ -151,7 +151,7 @@ export default function CourseCareerAssuranceSection() {
   return (
     <section
       id="career-assurance"
-      className="relative scroll-mt-[116px] pt-[22px]"
+      className="relative scroll-mt-[116px] pt-0"
       aria-labelledby="career-assurance-heading"
       style={
         {
@@ -171,11 +171,11 @@ export default function CourseCareerAssuranceSection() {
           <div className="absolute inset-0 bg-[linear-gradient(88deg,#0D0D0D_88.67%,#FD022D_106.46%)]" />
         </div>
 
-        {/* Person — absolute, bottom-0, extends above card by 43px */}
+        {/* Person — desktop only */}
         <div
-          className="absolute bottom-0 z-[5]"
+          className="absolute bottom-0 z-[5] hidden sm:block"
           style={{ left: 'var(--assurance-person-left)', width: '282px', height: '302px' }}
-        > 
+        >
           <ScaleXMark className="pointer-events-none absolute bottom-[28px] right-[-36px] z-[1] h-[200px] w-[200px] opacity-[0.18]" />
           <div className="relative z-10 h-full w-full">
             <Image
@@ -189,7 +189,7 @@ export default function CourseCareerAssuranceSection() {
         </div>
 
         {/* Content */}
-        <div className="relative z-10 flex flex-col justify-end px-6 pt-[210px] pb-8 sm:py-8 sm:pr-8 sm:pl-[var(--assurance-content-left)] sm:pt-8">
+        <div className="relative z-10 mt-15 flex flex-col justify-end px-6 py-6 sm:py-8 sm:pr-8 sm:pl-[var(--assurance-content-left)] sm:pt-8">
           <div className="w-full sm:w-[350px] sm:ml-[150px]">
           <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
             <h2

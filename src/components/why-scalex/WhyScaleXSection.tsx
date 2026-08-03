@@ -229,7 +229,7 @@ export default function WhyScaleXSection({
   return (
     <section
       id={id}
-      className={`full-bleed relative bg-surface pt-4 pb-8 md:pt-8 md:pb-12 lg:pt-10 lg:pb-16 ${className ?? ''}`}
+      className={`full-bleed relative bg-surface max-md:pt-15 md:pt-8 lg:pt-10 ${className ?? 'pb-15 md:pb-12 lg:pb-16'}`}
       aria-labelledby={headingId}
     >
       <div className="site-container relative z-10">

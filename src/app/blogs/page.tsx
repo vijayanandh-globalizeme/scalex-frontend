@@ -131,8 +131,6 @@ export default function BlogsPage() {
   const [loading, setLoading] = useState(true);
   const allBlogsSectionRef = useRef<HTMLElement>(null);
   const scrollAfterLoadRef = useRef(false);
-  const heroSlideRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const [mobileHeroHeight, setMobileHeroHeight] = useState<number | undefined>();
 
   const isSearchActive = submittedQuery !== '';
 
@@ -141,32 +139,6 @@ export default function BlogsPage() {
     getTrendingBlogs({ limit: 10 }).then((res) => setHeroBlogs(res.items));
     getBlogCategories().then(setCategories);
   }, []);
-
-  // On mobile, size the slider viewport to the active slide only (not the tallest slide).
-  useEffect(() => {
-    const isDesktop = () => window.matchMedia('(min-width: 768px)').matches;
-
-    const updateHeight = () => {
-      if (isDesktop()) {
-        setMobileHeroHeight(undefined);
-        return;
-      }
-      const slide = heroSlideRefs.current[heroPage];
-      if (slide) setMobileHeroHeight(slide.getBoundingClientRect().height);
-    };
-
-    updateHeight();
-
-    const slide = heroSlideRefs.current[heroPage];
-    const resizeObserver = slide ? new ResizeObserver(updateHeight) : null;
-    if (slide && resizeObserver) resizeObserver.observe(slide);
-
-    window.addEventListener('resize', updateHeight);
-    return () => {
-      resizeObserver?.disconnect();
-      window.removeEventListener('resize', updateHeight);
-    };
-  }, [heroPage, heroBlogs]);
 
   // Reload first page whenever category, search, or sort changes
   useEffect(() => {
@@ -237,7 +209,7 @@ export default function BlogsPage() {
     <>
       {/* Hero Section */}
       <section
-        className="full-bleed relative z-10 min-h-[594px] overflow-visible pt-4 pb-0 md:h-[594px] md:pt-6"
+        className="full-bleed relative z-10 min-h-[594px] overflow-visible max-md:pt-10 max-md:pb-15 md:h-[594px] md:pt-10"
       >
         <div className="blogs-hero-bg pointer-events-none absolute inset-0" aria-hidden />
         {/* Decorative ScaleX watermark */}
@@ -258,7 +230,7 @@ export default function BlogsPage() {
           </nav>
 
           {/* Heading */}
-          <div className="mb-4 pt-8 text-center md:pt-12 md:pb-6">
+          <div className="mb-4 text-center md:pb-6 md:pt-10">
             <h1 className="text-[28px] font-bold leading-[1.3] text-heading md:text-[40px] md:font-extrabold md:leading-[60px]">
               Your Gateway to{' '}
               <span className="relative inline-block whitespace-nowrap pb-[23px] align-top">
@@ -312,7 +284,7 @@ export default function BlogsPage() {
 
           {/* Featured slider — hangs ~20% below the hero into the next section */}
           {totalHero > 0 ? (
-            <div className="relative z-20 mb-0 translate-y-0 pb-4 md:mb-[-60px] md:translate-y-[10%] md:pb-6">
+            <div className="relative z-20 mb-0 translate-y-0 md:mb-[-60px] md:translate-y-[10%] md:pb-6">
               <div
                 className="pointer-events-none absolute -right-8 -top-12 z-0 h-40 w-40 md:-right-20 md:-top-20 md:h-60 md:w-60 min-[1920px]:-right-28 min-[1920px]:-top-24 min-[1920px]:h-[320px] min-[1920px]:w-[320px]"
                 aria-hidden
@@ -326,10 +298,9 @@ export default function BlogsPage() {
                 />
               </div>
               <div className="relative rounded-2xl md:border md:border-[#E2E8F0] md:bg-white md:shadow-[0_4px_24px_0_rgba(30,41,59,0.08)]" style={{ position: 'relative', zIndex: 20 }}>
-                <div className="max-md:pb-3">
+                <div className="blogs-hero-mobile-carousel max-md:overflow-visible max-md:pb-1">
                 <div
-                  className="overflow-hidden rounded-2xl transition-[height] duration-300 md:!h-auto"
-                  style={mobileHeroHeight ? { height: mobileHeroHeight } : undefined}
+                  className="max-md:overflow-x-hidden md:overflow-hidden rounded-2xl md:!h-auto"
                 >
                   <div
                     className="flex items-start transition-transform duration-500 ease-in-out"
@@ -343,10 +314,7 @@ export default function BlogsPage() {
                       return (
                       <div
                         key={b.id}
-                        ref={(el) => {
-                          heroSlideRefs.current[index] = el;
-                        }}
-                        className="box-border shrink-0 grow-0 max-md:px-0 md:w-full"
+                        className="box-border shrink-0 grow-0 max-md:px-0 max-md:py-1 md:w-full"
                         style={{ flex: `0 0 ${totalHero > 1 ? `${100 / totalHero}%` : '100%'}` }}
                       >
                         <div className="md:hidden">
@@ -417,7 +385,7 @@ export default function BlogsPage() {
       </section>
 
       {/* All Blogs Section — top space clears the hanging slider (~20%) */}
-      <section ref={allBlogsSectionRef} className="full-bleed relative z-0 bg-white pb-12 pt-12 md:pb-16 md:pt-44 scroll-mt-24">
+      <section ref={allBlogsSectionRef} className="full-bleed relative z-0 scroll-mt-24 bg-white pb-15 max-md:pt-15 md:pb-16 md:pt-44">
         <div className="site-container">
           {/* Header */}
           <div className="mb-4 text-center">

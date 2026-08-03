@@ -4,6 +4,7 @@ import { withNewTabLinks } from '@/lib/richText';
 import CourseBrochureCta from './CourseBrochureCta';
 import CourseDownloadIcon from './CourseDownloadIcon';
 import CourseCareerSection from './CourseCareerSection';
+import { COURSE_SECTION_CARD } from './courseSectionCard';
 
 function StandoutFeatureIcon({ className }: { className?: string }) {
   return (
@@ -61,7 +62,7 @@ export default function CourseOverviewSection({
   return (
     <div
       id="overview"
-      className="scroll-mt-[116px] rounded-[20px] border border-[#EBEBEB] bg-white shadow-[0_4px_4px_0_rgba(30,41,59,0.08),0_4px_4px_0_rgba(30,41,59,0.03)]"
+      className={`scroll-mt-[116px] ${COURSE_SECTION_CARD} max-md:mb-15`}
     >
       <div className="border-b border-zinc-100 px-6 py-5 md:px-8 md:py-6">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">

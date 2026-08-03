@@ -82,7 +82,7 @@ function ExpertCtaCard({ content, headingId }: { content: ExpertCtaContent; head
         aria-hidden
       />
       <div className="relative flex flex-col items-center gap-4 px-5 py-6 sm:flex-row sm:gap-8 md:px-8 md:py-7">
-        <div className="relative mx-auto h-[150px] w-[130px] shrink-0 sm:mx-0 sm:h-[170px] sm:w-[150px]">
+        <div className="relative mx-auto hidden h-[150px] w-[130px] shrink-0 sm:mx-0 sm:block sm:h-[170px] sm:w-[150px]">
           <ExpertDecorIcon className="pointer-events-none absolute bottom-0 right-0 z-0 h-auto w-[120px] sm:w-[140px]" />
           <div className="relative z-10 h-full w-full">
             <Image
@@ -126,12 +126,12 @@ function ExpertCtaFullBleed({ content, headingId }: { content: ExpertCtaContent;
 
   return (
     <section
-      className="category-expert-heading full-bleed relative z-20 overflow-visible bg-[#0D0D0D] pb-[50px] md:pb-0"
+      className="category-expert-heading full-bleed relative z-20 overflow-visible bg-[#0D0D0D] max-md:pt-15 max-md:pb-15 md:pb-0"
       aria-labelledby={headingId}
     >
       <div className="site-container relative overflow-visible">
         <div className="grid items-center gap-[35px] overflow-visible lg:grid-cols-[minmax(0,3.5fr)_minmax(0,7fr)] lg:gap-12">
-          <div className="relative mx-auto flex min-w-0 w-full items-center justify-center overflow-visible lg:mx-0 lg:justify-start">
+          <div className="relative mx-auto hidden min-w-0 w-full items-center justify-center overflow-visible lg:mx-0 lg:flex lg:justify-start">
             <ExpertDecorIcon className="pointer-events-none absolute bottom-0 right-[calc(var(--spacing)*6)] z-0 h-auto w-[200px] lg:w-[290px]" />
 
             <div className="relative z-10 overflow-visible lg:-mt-10">
@@ -148,7 +148,7 @@ function ExpertCtaFullBleed({ content, headingId }: { content: ExpertCtaContent;
             </div>
           </div>
 
-          <div className="min-w-0 max-w-full self-center pb-0 text-center lg:justify-self-end lg:text-left">
+          <div className="min-w-0 max-w-full self-center px-5 text-center lg:justify-self-end lg:px-0 lg:text-left">
             <h2
               id={headingId}
               className="max-w-full text-[28px] font-bold leading-[1.25] text-white md:text-[34px] lg:text-[36px]"

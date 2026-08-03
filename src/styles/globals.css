@@ -262,6 +262,27 @@ body {
     );
   }
 
+  /* Blog detail — readable body copy; never break words mid-letter */
+  .blog-article-content {
+    word-break: normal;
+    overflow-wrap: normal;
+    hyphens: manual;
+  }
+
+  .blog-article-content p,
+  .blog-article-content li,
+  .blog-article-content h2,
+  .blog-article-content h3 {
+    word-break: normal;
+    overflow-wrap: normal;
+    hyphens: manual;
+  }
+
+  .blog-article-content a {
+    word-break: normal;
+    overflow-wrap: normal;
+  }
+
   /* Blog detail — red accent under main section titles (h2) */
   .blog-article-content h2 {
     position: relative;
@@ -278,6 +299,76 @@ body {
     height: 3px;
     border-radius: 2px;
     background: #FD022D;
+  }
+
+  article .blog-article-content > p:first-of-type {
+    margin-top: 0 !important;
+  }
+
+  @media (max-width: 767px) {
+    .blog-detail-page h2 {
+      margin-top: 0 !important;
+    }
+
+    .blog-article-content p.ql-align-justify,
+    .blog-article-content .ql-align-justify {
+      margin-top: 0 !important;
+      margin-bottom: 0 !important;
+    }
+
+    /* Explore categories — keep card + shadow fully visible inside clipped viewport */
+    .explore-categories-carousel .interactive-card {
+      box-shadow: 0 2px 8px 0 rgba(30, 41, 59, 0.1) !important;
+    }
+
+    .explore-categories-carousel .interactive-card:hover {
+      box-shadow: 0 2px 8px 0 rgba(30, 41, 59, 0.1) !important;
+    }
+
+    /* Success stories mobile carousel — lighter shadow that fits clipped viewport */
+    .success-stories-mobile-carousel .success-story-review-card {
+      box-shadow: 0 2px 8px 0 rgba(30, 41, 59, 0.1) !important;
+    }
+
+    /* Trending blogs carousel — flat border on mobile (no outside shadow clip) */
+    .trending-blog-card--flat-mobile {
+      border: 1px solid #ebebeb;
+      box-shadow: none !important;
+    }
+
+    /* Related blogs mobile — keep card shadow fully visible */
+    .related-blogs-mobile-grid .interactive-card {
+      box-shadow: 0 2px 8px 0 rgba(30, 41, 59, 0.1) !important;
+    }
+
+    .related-blogs-mobile-grid .interactive-card:hover {
+      box-shadow: 0 2px 8px 0 rgba(30, 41, 59, 0.1) !important;
+    }
+
+    /* Trainers carousel mobile — explicit card shadow (avoids interactive-card clip) */
+    .trainers-carousel-track .trainer-card {
+      box-shadow: 0 2px 8px 0 rgba(30, 41, 59, 0.1) !important;
+    }
+
+    .trainers-carousel-track .trainer-card:hover {
+      box-shadow: 0 2px 8px 0 rgba(30, 41, 59, 0.1) !important;
+    }
+
+    .blogs-hero-mobile-carousel .interactive-card {
+      border: 1px solid #ebebeb;
+      box-shadow: none !important;
+    }
+  }
+
+  @media (min-width: 768px) {
+    /* Explore categories desktop — flat shadow, no hover lift, overrides .interactive-card */
+    .explore-categories-carousel .interactive-card {
+      box-shadow: 0 4px 4px 0 rgba(30, 41, 59, 0.08), 0 4px 4px 0 rgba(30, 41, 59, 0.03) !important;
+    }
+
+    .explore-categories-carousel .interactive-card:hover {
+      box-shadow: 0 4px 4px 0 rgba(30, 41, 59, 0.08), 0 4px 4px 0 rgba(30, 41, 59, 0.03) !important;
+    }
   }
 
   .header-fluid-text {
@@ -921,6 +1012,16 @@ body {
   visibility: visible;
   transform: none;
   will-change: auto;
+}
+
+/* Course hero stacks vertically on mobile — skip reveal offset so the lead form never overlaps content above. */
+@media (max-width: 767px) {
+  .course-detail-hero-grid .gsap-reveal-pending {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    will-change: auto;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

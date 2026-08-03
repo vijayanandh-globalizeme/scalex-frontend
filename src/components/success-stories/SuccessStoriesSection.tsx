@@ -1,9 +1,11 @@
 'use client';
 
 import Image from 'next/image';
+import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 import type { Reviewer } from '@/services/peopleApi';
 import { VideoModal } from '@/components/shared';
+import { REVIEWS_TYPE } from '@/lib/courseDetailStatics';
 
 export type { Reviewer as SuccessStory };
 
@@ -30,6 +32,10 @@ const SLIDE_GAP = 16;
 const VISIBLE_SLIDES = 2;
 const SLIDE_OVERLAP = 60;
 const SLIDE_PEEK = Math.round(SLIDE_W * 0.1);
+
+const REVIEW_TYPE_MAP = new Map(
+  REVIEWS_TYPE.filter((type) => type.id !== 'all').map((type) => [type.id, type]),
+);
 
 function PlayIcon({ className }: { className?: string }) {
   return (
@@ -136,27 +142,71 @@ function VideoThumbnail({
 
 function TestimonialCardOnly({ story, mobile = false }: { story: Reviewer; mobile?: boolean }) {
   const starFills = starsFromRating(story.rating ?? 0);
+  const typeMeta =
+    REVIEW_TYPE_MAP.get(story.type) ?? REVIEW_TYPE_MAP.get('GOOGLE_REVIEW');
+  const readOnLabel = (
+    <>
+      Read on
+      {typeMeta?.logoSrc ? (
+        <Image
+          src={typeMeta.logoSrc}
+          alt={typeMeta.logoAlt ?? typeMeta.label}
+          height={16}
+          width={80}
+          className="h-4 w-auto shrink-0 object-contain object-left"
+        />
+      ) : (
+        <span>{typeMeta?.label ?? 'Google'}</span>
+      )}
+    </>
+  );
+
   return (
     <article
-      className={`interactive-card flex flex-col overflow-visible border border-[#EBEBEB] bg-white p-5 shadow-[0_4px_4px_0_rgba(30,41,59,0.11),0_4px_4px_0_rgba(30,41,59,0.03)] md:p-6 ${
-        mobile ? 'h-auto w-full gap-4 rounded-lg' : 'h-[280px] rounded-lg'
+      className={`flex h-full flex-col overflow-visible border border-[#EBEBEB] bg-white p-5 md:p-6 ${
+        mobile
+          ? 'success-story-review-card w-full rounded-lg shadow-[0_2px_8px_0_rgba(30,41,59,0.1)]'
+          : 'interactive-card rounded-lg shadow-[0_4px_4px_0_rgba(30,41,59,0.11),0_4px_4px_0_rgba(30,41,59,0.03)]'
       }`}
-      style={mobile ? undefined : { width: SLIDE_W, minWidth: SLIDE_W, maxWidth: SLIDE_W, height: SLIDE_H }}
+      style={
+        mobile
+          ? { height: SLIDE_H, minHeight: SLIDE_H }
+          : { width: SLIDE_W, minWidth: SLIDE_W, maxWidth: SLIDE_W, height: SLIDE_H }
+      }
     >
-      <div className={`flex flex-col gap-2 ${mobile ? '' : 'min-h-0 flex-1 justify-start'}`}>
+      <div className="flex min-h-0 flex-1 flex-col">
         <p className="text-[13px] leading-[20px] text-body md:text-[14px] md:leading-[22px]">
           {story.review}
         </p>
+        {typeMeta ? (
+          <div className="mt-auto flex justify-end pt-2 pb-[10px]">
+            {story.reviewUrl ? (
+              <Link
+                href={story.reviewUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 text-[12px] font-medium text-heading transition hover:text-brand"
+              >
+                {readOnLabel}
+              </Link>
+            ) : (
+              <span className="inline-flex items-center gap-2 text-[12px] font-medium text-heading">
+                {readOnLabel}
+              </span>
+            )}
+          </div>
+        ) : null}
       </div>
-      <footer className={`flex shrink-0 items-center gap-3 border-t border-zinc-100 pt-3 ${mobile ? '' : 'mt-4'}`}>
+      <footer className="flex shrink-0 items-center gap-3 border-t border-zinc-100 pt-3">
         {story.avatarUrl ? (
           <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-full bg-zinc-100">
             <Image
               src={story.avatarUrl}
-              alt={`${story.name} avatar`}
+              alt=""
               fill
               sizes="40px"
               className="object-cover"
+              unoptimized={story.avatarUrl.startsWith('http')}
             />
           </div>
         ) : null}
@@ -262,17 +312,17 @@ export default function SuccessStoriesSection({
 
   return (
     <section
-      className={`full-bleed relative ${
+      className={`full-bleed relative overflow-visible ${
         compact
-          ? 'bg-surface pt-[30px] pb-0'
-          : 'bg-surface pt-16 pb-2 md:pt-28 md:pb-10 lg:pt-32 lg:pb-12'
+          ? 'bg-surface max-md:pt-15 max-md:pb-8 md:pt-[30px] pb-0'
+          : 'bg-surface pt-[120px] pb-15 md:pt-28 md:pb-10 lg:pt-32 lg:pb-12'
       }`}
       aria-labelledby="success-stories-heading"
     >
       <div className="site-container relative z-10">
         <header
           className={`relative mx-auto w-fit max-w-full text-center ${
-            compact ? 'pt-0' : 'pt-6 md:pt-8 lg:pt-10'
+            compact ? 'pt-0' : 'md:pt-8 lg:pt-10'
           }`}
         >
           <h2
@@ -404,34 +454,39 @@ export default function SuccessStoriesSection({
                 </button>
               </div>
             ) : null}
-            <div ref={mobileViewportRef} className="w-full overflow-x-hidden pb-6">
+            <div className="success-stories-mobile-carousel w-full max-md:overflow-visible">
               <div
-                className="flex items-stretch pb-2 transition-transform duration-500 ease-out will-change-transform"
-                style={{
-                  transform:
-                    mobileStepPx > 0
-                      ? `translate3d(-${index * mobileStepPx}px, 0, 0)`
-                      : undefined,
-                }}
+                ref={mobileViewportRef}
+                className="w-full max-md:overflow-x-hidden max-md:px-0.5 max-md:pb-6 max-md:pt-1"
               >
-                {stories.map((story, storyIndex) => (
-                  <div
-                    key={story.id}
-                    className="box-border shrink-0 overflow-visible pb-2"
-                    style={
-                      mobileSlideWidth > 0
-                        ? {
-                            width: mobileSlideWidth,
-                            flex: `0 0 ${mobileSlideWidth}px`,
-                            marginRight:
-                              storyIndex < stories.length - 1 ? SLIDE_GAP : 0,
-                          }
-                        : { flex: '0 0 100%', width: '100%' }
-                    }
-                  >
-                    <TestimonialCardOnly story={story} mobile />
-                  </div>
-                ))}
+                <div
+                  className="flex items-stretch transition-transform duration-500 ease-out will-change-transform"
+                  style={{
+                    transform:
+                      mobileStepPx > 0
+                        ? `translate3d(-${index * mobileStepPx}px, 0, 0)`
+                        : undefined,
+                  }}
+                >
+                  {stories.map((story, storyIndex) => (
+                    <div
+                      key={story.id}
+                      className="box-border flex shrink-0 overflow-visible py-1"
+                      style={
+                        mobileSlideWidth > 0
+                          ? {
+                              width: mobileSlideWidth,
+                              flex: `0 0 ${mobileSlideWidth}px`,
+                              marginRight:
+                                storyIndex < stories.length - 1 ? SLIDE_GAP : 0,
+                            }
+                          : { flex: '0 0 100%', width: '100%' }
+                      }
+                    >
+                      <TestimonialCardOnly story={story} mobile />
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           </div>

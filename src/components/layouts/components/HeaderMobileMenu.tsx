@@ -58,51 +58,58 @@ function ChevronDown({ expanded }: { expanded: boolean }) {
 /* ── Level 3: courses under a category ── */
 function CategorySection({
   category,
+  isOpen,
+  onToggle,
   onNavigate,
 }: {
   category: MegaMenuCategory;
+  isOpen: boolean;
+  onToggle: () => void;
   onNavigate: () => void;
 }) {
-  const [expanded, setExpanded] = useState(false);
   const hasCourses = category.courses.length > 0;
+  const panelId = `mobile-category-${category.slug}`;
 
   return (
     <div className="border-b border-zinc-100 last:border-b-0">
-      <div className="flex items-center">
+      <div className={`flex items-center transition-colors ${isOpen ? 'bg-accent-soft/60' : ''}`}>
         <Link
           href={category.href}
           onClick={onNavigate}
-          className="header-fluid-text flex-1 py-3 pl-4 pr-2 text-[13px] font-medium text-ink/80 hover:text-brand"
+          className="header-fluid-text flex-1 py-3.5 pl-4 pr-2 text-[13px] font-medium text-ink/80 transition-colors active:text-brand"
         >
           {category.label}
         </Link>
         {hasCourses && (
           <button
             type="button"
-            aria-expanded={expanded}
-            onClick={(e) => { e.stopPropagation(); setExpanded((prev) => !prev); }}
-            className="flex h-10 w-10 shrink-0 items-center justify-center text-ink/40 hover:text-ink"
-            aria-label={`${expanded ? 'Collapse' : 'Expand'} ${category.label} courses`}
+            aria-expanded={isOpen}
+            aria-controls={panelId}
+            onClick={(e) => { e.stopPropagation(); onToggle(); }}
+            className={`flex h-11 w-11 shrink-0 items-center justify-center transition-colors active:bg-zinc-100 ${isOpen ? 'text-brand' : 'text-ink/40'}`}
+            aria-label={`${isOpen ? 'Collapse' : 'Expand'} ${category.label} courses`}
           >
-            <ChevronDown expanded={expanded} />
+            <ChevronDown expanded={isOpen} />
           </button>
         )}
       </div>
 
-      {hasCourses && expanded && (
-        <ul className="border-t border-zinc-100 bg-zinc-50 pb-2 pt-1">
-          {category.courses.slice(0, 8).map((course) => (
-            <li key={course.label}>
-              <Link
-                href={course.href}
-                onClick={onNavigate}
-                className="btn-mui-nav-link header-fluid-text block py-2.5 pl-8 pr-4 text-[12px] font-normal text-ink/60 hover:text-brand"
-              >
-                {course.label}
-              </Link>
-            </li>
-          ))}
-        </ul>
+      {hasCourses && (
+        <div id={panelId} className={`header-mobile-nav-collapse ${isOpen ? 'is-expanded' : ''}`}>
+          <ul className="overflow-hidden bg-zinc-50">
+            {category.courses.slice(0, 8).map((course) => (
+              <li key={course.label}>
+                <Link
+                  href={course.href}
+                  onClick={onNavigate}
+                  className="btn-mui-nav-link header-fluid-text block py-3 pl-8 pr-4 text-[12px] font-normal text-ink/60 transition-colors active:bg-zinc-100 active:text-brand"
+                >
+                  {course.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
       )}
     </div>
   );
@@ -111,30 +118,44 @@ function CategorySection({
 /* ── Level 2: All Courses (categories + nested courses) ── */
 function AllCoursesSection({
   categories,
+  isOpen,
+  onToggle,
   onNavigate,
 }: {
   categories: MegaMenuCategory[];
+  isOpen: boolean;
+  onToggle: () => void;
   onNavigate: () => void;
 }) {
-  const [expanded, setExpanded] = useState(false);
+  const [openCategory, setOpenCategory] = useState<string | null>(null);
+  const panelId = 'mobile-section-all-courses';
 
   return (
     <div className="border-b border-zinc-100">
       <button
         type="button"
-        className="header-fluid-text flex w-full items-center justify-between py-4 text-left text-[15px] font-semibold text-ink"
-        aria-expanded={expanded}
-        onClick={() => setExpanded((prev) => !prev)}
+        className={`header-fluid-text flex w-full items-center justify-between rounded-lg px-1 py-4 text-left text-[15px] font-semibold transition-colors active:bg-zinc-50 ${isOpen ? 'text-brand' : 'text-ink'}`}
+        aria-expanded={isOpen}
+        aria-controls={panelId}
+        onClick={onToggle}
       >
         All Courses
-        <ChevronDown expanded={expanded} />
+        <ChevronDown expanded={isOpen} />
       </button>
 
-      <div className={`header-mobile-nav-collapse ${expanded ? 'is-expanded' : ''}`}>
-        <div className="mb-3 rounded-lg border border-zinc-100 bg-white overflow-hidden">
-          {categories.map((category) => (
-            <CategorySection key={category.slug} category={category} onNavigate={onNavigate} />
-          ))}
+      <div id={panelId} className={`header-mobile-nav-collapse ${isOpen ? 'is-expanded' : ''}`}>
+        <div className="overflow-hidden">
+          <div className="mb-3 rounded-lg border border-zinc-100 bg-white overflow-hidden">
+            {categories.map((category) => (
+              <CategorySection
+                key={category.slug}
+                category={category}
+                isOpen={openCategory === category.slug}
+                onToggle={() => setOpenCategory((prev) => (prev === category.slug ? null : category.slug))}
+                onNavigate={onNavigate}
+              />
+            ))}
+          </div>
         </div>
       </div>
     </div>
@@ -145,40 +166,47 @@ function AllCoursesSection({
 function MobileNavSection({
   label,
   items,
+  isOpen,
+  onToggle,
   onNavigate,
 }: {
   label: string;
   items: readonly NavDropdownItem[];
+  isOpen: boolean;
+  onToggle: () => void;
   onNavigate: () => void;
 }) {
-  const [expanded, setExpanded] = useState(false);
+  const panelId = `mobile-section-${label.toLowerCase().replace(/\s+/g, '-')}`;
 
   return (
     <div className="border-b border-zinc-100">
       <button
         type="button"
-        className="header-fluid-text flex w-full items-center justify-between py-4 text-left text-[15px] font-semibold text-ink"
-        aria-expanded={expanded}
-        onClick={() => setExpanded((prev) => !prev)}
+        className={`header-fluid-text flex w-full items-center justify-between rounded-lg px-1 py-4 text-left text-[15px] font-semibold transition-colors active:bg-zinc-50 ${isOpen ? 'text-brand' : 'text-ink'}`}
+        aria-expanded={isOpen}
+        aria-controls={panelId}
+        onClick={onToggle}
       >
         {label}
-        <ChevronDown expanded={expanded} />
+        <ChevronDown expanded={isOpen} />
       </button>
 
-      <div className={`header-mobile-nav-collapse ${expanded ? 'is-expanded' : ''}`}>
-        <ul className="mb-3 rounded-lg border border-zinc-100 bg-white overflow-hidden">
-          {items.map((item) => (
-            <li key={item.label} className="border-b border-zinc-100 last:border-b-0">
-              <Link
-                href={item.href}
-                onClick={onNavigate}
-                className="btn-mui-nav-link header-fluid-text block px-4 py-3 text-[13px] font-medium text-ink/80 hover:text-brand"
-              >
-                {item.label}
-              </Link>
-            </li>
-          ))}
-        </ul>
+      <div id={panelId} className={`header-mobile-nav-collapse ${isOpen ? 'is-expanded' : ''}`}>
+        <div className="overflow-hidden">
+          <ul className="mb-3 rounded-lg border border-zinc-100 bg-white overflow-hidden">
+            {items.map((item) => (
+              <li key={item.label} className="border-b border-zinc-100 last:border-b-0">
+                <Link
+                  href={item.href}
+                  onClick={onNavigate}
+                  className="btn-mui-nav-link header-fluid-text block px-4 py-3.5 text-[13px] font-medium text-ink/80 transition-colors active:bg-zinc-100 active:text-brand"
+                >
+                  {item.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
     </div>
   );
@@ -191,8 +219,10 @@ export default function HeaderMobileMenu({
   const [isOpen, setIsOpen] = useState(false);
   const [isPanelMounted, setIsPanelMounted] = useState(false);
   const [isPanelAnimated, setIsPanelAnimated] = useState(false);
+  const [openSection, setOpenSection] = useState<string | null>(null);
 
   const closeMenu = () => setIsOpen(false);
+  const toggleSection = (key: string) => setOpenSection((prev) => (prev === key ? null : key));
 
   useEffect(() => {
     if (isOpen) {
@@ -260,37 +290,63 @@ export default function HeaderMobileMenu({
           />
           <div
             id="header-mobile-menu"
-            className={`header-mobile-drawer fixed inset-x-0 top-16 bottom-0 z-50 w-full overflow-y-auto bg-white shadow-2xl ${isPanelAnimated ? 'is-open' : ''}`}
+            className={`header-mobile-drawer fixed inset-x-0 top-16 bottom-0 z-50 flex w-full flex-col bg-white shadow-2xl ${isPanelAnimated ? 'is-open' : ''}`}
           >
-            <div className="px-5 py-4 sm:px-6">
-              <HeaderSearch className="mb-4 w-full" />
+            <div className="shrink-0 border-b border-zinc-100 px-5 py-4 sm:px-6">
+              <HeaderSearch className="w-full" />
+            </div>
 
-              <nav aria-label="Mobile primary">
-                {/* Level 1 → Level 2 → Level 3 */}
-                <AllCoursesSection categories={categories} onNavigate={closeMenu} />
+            <nav className="min-h-0 flex-1 overflow-y-auto px-5 py-2 sm:px-6" aria-label="Mobile primary">
+              {/* Level 1 → Level 2 → Level 3 */}
+              <AllCoursesSection
+                categories={categories}
+                isOpen={openSection === 'all-courses'}
+                onToggle={() => toggleSection('all-courses')}
+                onNavigate={closeMenu}
+              />
 
-                {/* Level 1 → Level 2 */}
-                {otherMenus.map((menu) => (
-                  <MobileNavSection key={menu.title} label={menu.title} items={menu.items} onNavigate={closeMenu} />
-                ))}
+              {/* Level 1 → Level 2 */}
+              {otherMenus.map((menu) => (
+                <MobileNavSection
+                  key={menu.title}
+                  label={menu.title}
+                  items={menu.items}
+                  isOpen={openSection === menu.title}
+                  onToggle={() => toggleSection(menu.title)}
+                  onNavigate={closeMenu}
+                />
+              ))}
 
-                {/* Level 1 → Level 2 — static Resources (Blog, About Us), mirrors desktop */}
-                <MobileNavSection label="Resources" items={RESOURCES_ITEMS} onNavigate={closeMenu} />
+              {/* Level 1 → Level 2 — static Resources (Blog, About Us), mirrors desktop */}
+              <MobileNavSection
+                label="Resources"
+                items={RESOURCES_ITEMS}
+                isOpen={openSection === 'resources'}
+                onToggle={() => toggleSection('resources')}
+                onNavigate={closeMenu}
+              />
 
-                {/* Level 1 — direct links */}
-                <Link
-                  href="/contact-us"
-                  onClick={closeMenu}
-                  className="header-fluid-text block border-b border-zinc-100 py-4 text-[15px] font-semibold text-ink hover:text-brand"
-                >
-                  Contact Us
-                </Link>
-              </nav>
+              {/* Level 1 — direct links */}
+              <Link
+                href="/contact-us"
+                onClick={closeMenu}
+                className="header-fluid-text block rounded-lg px-1 py-4 text-[15px] font-semibold text-ink transition-colors active:bg-zinc-50 active:text-brand"
+              >
+                Contact Us
+              </Link>
+            </nav>
 
+            <div
+              className="shrink-0 border-t border-zinc-100 bg-white px-5 py-4 sm:px-6"
+              style={{
+                boxShadow: '0 -4px 12px 0 rgba(30, 41, 59, 0.06)',
+                paddingBottom: 'max(1rem, env(safe-area-inset-bottom))',
+              }}
+            >
               <Link
                 href="#"
                 onClick={closeMenu}
-                className="btn-brand-outline btn-brand-outline-hover-fill header-fluid-text mt-4 flex w-full items-center justify-center gap-2 px-4 py-3"
+                className="btn-brand-outline btn-brand-outline-hover-fill header-fluid-text flex w-full items-center justify-center gap-2 px-4 py-3.5 transition-transform duration-150 active:scale-[0.98]"
               >
                 Sign In
                 <SignInArrow className="btn-arrow-icon shrink-0 text-current" />

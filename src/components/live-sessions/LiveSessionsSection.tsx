@@ -214,7 +214,7 @@ export default function LiveSessionsSection() {
   return (
     <section
       ref={sectionRef}
-      className="full-bleed relative bg-surface pb-14 pt-7 md:pt-0 md:pb-16 lg:pb-20"
+      className="full-bleed relative bg-surface pb-15 md:pt-0 md:pb-16 lg:pb-20"
       aria-labelledby="live-sessions-heading"
     >
       <div className="site-container relative z-10">

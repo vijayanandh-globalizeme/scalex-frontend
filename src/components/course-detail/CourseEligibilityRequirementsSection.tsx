@@ -1,14 +1,12 @@
 import Image from 'next/image';
 import type { ApiCourseDetails } from '@/services/courseApi';
 import { withNewTabLinks } from '@/lib/richText';
+import { COURSE_SECTION_BODY } from './courseSectionCard';
 
 type ApiEligibility = NonNullable<ApiCourseDetails['eligibility']>;
 
 const PERSON_IMAGE_SIZE_PX = 220;
 const PERSON_HEAD_OUTSIDE_PX = Math.round(PERSON_IMAGE_SIZE_PX * 0.1);
-
-const SECTION_CARD =
-  'rounded-[20px] border border-[#EBEBEB] bg-white shadow-[0_4px_4px_0_rgba(30,41,59,0.08),0_4px_4px_0_rgba(30,41,59,0.03)]';
 
 function RequirementIcon({ icon }: { icon: string }) {
   return (
@@ -86,7 +84,7 @@ export default function CourseEligibilityRequirementsSection({
   return (
     <div
       id="eligibility"
-      className={`scroll-mt-[116px] overflow-visible px-6 py-5 md:px-8 md:py-6 ${SECTION_CARD}`}
+      className={`scroll-mt-[116px] overflow-visible ${COURSE_SECTION_BODY}`}
     >
       <h2 className="section-heading text-heading">{title}</h2>
       <p
@@ -116,10 +114,7 @@ export default function CourseEligibilityRequirementsSection({
         <CertificateGraphic certificationImage={certificationImage} />
       </div>
 
-      <div
-        className="relative mt-8 overflow-visible"
-        style={{ paddingTop: PERSON_HEAD_OUTSIDE_PX }}
-      >
+      <div className="relative max-md:mt-0 max-md:pt-[10px] mt-8 overflow-visible md:pt-[22px]">
         <div className="relative min-h-[200px] overflow-visible rounded-[20px] border border-[#DCDCDC] bg-[linear-gradient(79deg,#FFF_49.08%,#FFD3D3_108.27%)] py-6 pl-6 pr-[10px] md:py-7 md:pl-8 md:pr-[10px]">
         <div className="relative z-10 w-full max-w-full md:max-w-[calc(100%-220px)]">
           <h3 className="text-[20px] font-semibold leading-[140%] text-heading">{subTitle}</h3>

@@ -1,7 +1,8 @@
 'use client';
 
-import { forwardRef, useEffect, useState } from 'react';
+import { forwardRef, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import Image from 'next/image';
+import gsap from 'gsap';
 
 export interface HeroBadge {
   id: string;
@@ -32,12 +33,12 @@ export function getAeroSize(viewportWidth: number): {
 } {
   const MAX_W = 400;
   const MAX_H = 490;
-  const MAX_RIGHT = -150;
+  const MAX_RIGHT = -160; // -150 nudged 10px further right
   const MAX_TOP = 78;
 
   const MIN_W = 300;
   const MIN_H = 368;
-  const MIN_RIGHT = -120;
+  const MIN_RIGHT = -130; // -120 nudged 10px further right
   const MIN_TOP = 130; // further down at smaller widths
 
   if (viewportWidth >= 1500) {
@@ -57,8 +58,11 @@ export function getAeroSize(viewportWidth: number): {
   };
 }
 
+/** Fixed mobile aero position/size (sub-lg). */
+export const MOBILE_AERO_SIZE = { width: 180, height: 180, right: -60, top: 86 };
+
 export function useAeroSize() {
-  const [size, setSize] = useState({ width: 400, height: 490, right: -150, top: 78 });
+  const [size, setSize] = useState({ width: 400, height: 490, right: -160, top: 78 });
 
   useEffect(() => {
     const update = () => setSize(getAeroSize(window.innerWidth));
@@ -67,7 +71,7 @@ export function useAeroSize() {
     return () => window.removeEventListener('resize', update);
   }, []);
 
-  return size;
+  return { ...size, mobile: MOBILE_AERO_SIZE };
 }
 
 function UsersBadgeIcon({ className }: { className?: string }) {
@@ -126,8 +130,15 @@ function AwardBadgeIcon({ className }: { className?: string }) {
   );
 }
 
-function FloatingBadge({ badge, photo = false }: { badge: HeroBadge; photo?: boolean }) {
-  const mobileVisibility = badge.id === 'learners-1' ? 'hidden md:block' : '';
+function FloatingBadge({
+  badge,
+  photo = false,
+  innerRef,
+}: {
+  badge: HeroBadge;
+  photo?: boolean;
+  innerRef?: (el: HTMLDivElement | null) => void;
+}) {
   const placement = photo
     ? badge.placement === 'top-left'
       ? 'left-0 top-10 -translate-x-[40%]'
@@ -140,7 +151,7 @@ function FloatingBadge({ badge, photo = false }: { badge: HeroBadge; photo?: boo
             : 'bottom-10 left-[42%] -translate-x-1/2 md:-bottom-2'
     : badge.placement === 'top-left'
       ? badge.id === 'learners-1'
-        ? 'left-0 top-10 -translate-x-[20px] translate-y-[20px] xl:-left-6 xl:top-25'
+        ? 'left-[-24px] top-[110px] lg:left-0 lg:top-10 lg:-translate-x-[20px] lg:translate-y-[20px] xl:-left-6 xl:top-25'
         : 'left-0 top-10 xl:-left-6 xl:top-25'
       : badge.placement === 'top-right'
         ? 'right-0 top-10 xl:-right-6 xl:top-25'
@@ -149,8 +160,10 @@ function FloatingBadge({ badge, photo = false }: { badge: HeroBadge; photo?: boo
             ? '-left-10 top-[60%] -translate-x-[30px] -translate-y-1/2 xl:-left-20'
             : 'left-0 top-[60%] -translate-y-1/2 xl:-left-10'
           : badge.placement === 'bottom-right'
-            ? 'bottom-6 right-2 md:bottom-28 md:-right-10'
+            ? 'bottom-[56px] right-[-48px] lg:bottom-28 lg:-right-10'
             : 'bottom-10 left-[42%] -translate-x-1/2 md:-bottom-2';
+
+  const mobileVisibility = badge.id === 'learners-2' ? 'hidden lg:block' : '';
 
   const iconBg =
     badge.variant === 'learners'
@@ -159,30 +172,36 @@ function FloatingBadge({ badge, photo = false }: { badge: HeroBadge; photo?: boo
 
   const sizeClass =
     badge.variant === 'mentors'
-      ? 'h-[62px] w-[180px] px-3 py-2'
-      : 'max-w-[200px] px-3 py-2.5 md:px-4 md:py-3';
+      ? 'h-[48px] w-[140px] px-2.5 py-1.5 lg:h-[62px] lg:w-[180px] lg:px-3 lg:py-2'
+      : 'w-max max-w-[150px] px-2.5 py-2 lg:max-w-[200px] lg:px-3 lg:py-2.5';
 
-  const alignClass = badge.variant === 'mentors' ? 'h-full items-center' : 'items-start';
-  const zIndexClass = badge.id === 'learners-2' ? 'z-[4]' : 'z-30';
+  const alignClass = badge.variant === 'mentors' ? 'items-center' : 'items-start';
+  const zIndexClass =
+    badge.id === 'learners-2' ? 'z-[4]' : badge.id === 'learners-1' ? 'z-[2] lg:z-30' : 'z-30';
 
   return (
-    <div
-      className={`absolute ${zIndexClass} rounded-xl border border-zinc-100 bg-white shadow-lg shadow-zinc-900/8 ${sizeClass} ${placement} ${mobileVisibility}`}
-    >
-      <div className={`flex gap-2.5 ${alignClass}`}>
+    <div className={`absolute ${zIndexClass} ${placement} ${mobileVisibility}`}>
+      <div
+        ref={innerRef}
+        className={`flex gap-2 rounded-xl border border-zinc-100 bg-white shadow-lg shadow-zinc-900/8 lg:gap-2.5 ${sizeClass} ${alignClass}`}
+      >
         <div
-          className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full ${iconBg}`}
+          className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full lg:h-9 lg:w-9 ${iconBg}`}
           aria-hidden
         >
           {badge.variant === 'learners' ? (
-            <UsersBadgeIcon className="h-[18px] w-[18px]" />
+            <UsersBadgeIcon className="h-[14px] w-[14px] lg:h-[18px] lg:w-[18px]" />
           ) : (
-            <AwardBadgeIcon className="h-[18px] w-[18px]" />
+            <AwardBadgeIcon className="h-[14px] w-[14px] lg:h-[18px] lg:w-[18px]" />
           )}
         </div>
         <div className="min-w-0">
-          <p className="text-[12px] font-medium leading-[16px] text-subtle">{badge.title}</p>
-          <p className="text-[14px] font-bold leading-[20px] text-strong">{badge.subtitle}</p>
+          <p className="text-[10px] font-medium leading-[13px] text-subtle lg:text-[12px] lg:leading-[16px]">
+            {badge.title}
+          </p>
+          <p className="text-[12px] font-bold leading-[16px] text-strong lg:text-[14px] lg:leading-[20px]">
+            {badge.subtitle}
+          </p>
         </div>
       </div>
     </div>
@@ -205,12 +224,49 @@ const HeroMediaColumn = forwardRef<HTMLDivElement, HeroMediaColumnProps>(
     const gsapClass = disableGsap ? '' : 'gsap-reveal-pending';
     const aeroSize = useAeroSize();
     const isPhoto = variant === 'photo';
+    const aeroWrapRef = useRef<HTMLDivElement | null>(null);
+    const badgeRefs = useRef<(HTMLDivElement | null)[]>([]);
+
+    // On-load entrance: badge cards fly in from the right (as if emerging from the figure),
+    // the aero mark fades + slides in left-to-right in the same pattern.
+    useLayoutEffect(() => {
+      if (disableGsap || isPhoto) return;
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+      const ctx = gsap.context(() => {
+        const badgeEls = badgeRefs.current.filter(Boolean) as HTMLDivElement[];
+        if (badgeEls.length) {
+          gsap.fromTo(
+            badgeEls,
+            { autoAlpha: 0, x: 36 },
+            {
+              autoAlpha: 1,
+              x: 0,
+              duration: 0.6,
+              delay: 0.5,
+              stagger: 0.15,
+              ease: 'power2.out',
+            },
+          );
+        }
+
+        if (aeroWrapRef.current) {
+          gsap.fromTo(
+            aeroWrapRef.current,
+            { autoAlpha: 0, x: -48 },
+            { autoAlpha: 1, x: 0, duration: 0.7, delay: 0.2, ease: 'power2.out' },
+          );
+        }
+      });
+
+      return () => ctx.revert();
+    }, [disableGsap, isPhoto, badges.length, aeroSrc]);
 
     return (
       <div
         ref={ref}
         className={`${gsapClass} relative mx-auto w-full min-w-0 overflow-visible ${
-          isPhoto ? 'max-w-[685px] lg:mx-0 lg:ml-auto' : 'max-w-md lg:mx-0 lg:max-w-none'
+          isPhoto ? 'max-w-[685px] lg:mx-0 lg:ml-auto' : 'max-w-md lg:mx-0 lg:max-w-none mt-8 sm:mt-0'
         } ${className}`.trim()}
       >
         {isPhoto ? (
@@ -232,17 +288,22 @@ const HeroMediaColumn = forwardRef<HTMLDivElement, HeroMediaColumnProps>(
         ) : (
           <div className="relative mx-auto h-[420px] w-full max-w-[320px] sm:h-[480px] sm:max-w-[400px] md:h-[520px] md:max-w-[440px] lg:ml-auto lg:mr-0 lg:h-[560px] lg:max-w-[480px] xl:max-w-[520px] xl:h-[580px]">
             {aeroSrc ? (
-              <div className="pointer-events-none absolute inset-0 z-0" aria-hidden>
+              <div ref={aeroWrapRef} className="pointer-events-none absolute inset-0 z-0" aria-hidden>
                 <div
                   className="absolute lg:hidden"
-                  style={{ top: 66, right: -150, width: 260, height: 320 }}
+                  style={{
+                    top: aeroSize.mobile.top,
+                    right: aeroSize.mobile.right,
+                    width: aeroSize.mobile.width,
+                    height: aeroSize.mobile.height,
+                  }}
                 >
                   <Image
                     src={aeroSrc}
                     alt=""
-                    width={260}
-                    height={320}
-                    sizes="260px"
+                    width={aeroSize.mobile.width}
+                    height={aeroSize.mobile.height}
+                    sizes={`${aeroSize.mobile.width}px`}
                     className="h-full w-full object-contain object-center"
                   />
                 </div>
@@ -284,8 +345,14 @@ const HeroMediaColumn = forwardRef<HTMLDivElement, HeroMediaColumnProps>(
               />
             </div>
 
-            {badges.map((b) => (
-              <FloatingBadge key={b.id} badge={b} />
+            {badges.map((b, index) => (
+              <FloatingBadge
+                key={b.id}
+                badge={b}
+                innerRef={(el) => {
+                  badgeRefs.current[index] = el;
+                }}
+              />
             ))}
           </div>
         )}

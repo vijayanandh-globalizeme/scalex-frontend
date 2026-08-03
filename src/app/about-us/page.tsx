@@ -20,7 +20,7 @@ export default async function AboutPage() {
       <AboutHero />
 
       {/* Our Journey of Growth and Impact */}
-      <section className="full-bleed relative mt-0 overflow-hidden py-10" style={{ background: '#141414' }}>
+      <section className="full-bleed relative mt-0 overflow-hidden max-md:pt-15 pb-15 md:py-10" style={{ background: '#141414' }}>
         {/* Cross icon bottom right */}
         <div className="pointer-events-none absolute right-0 bottom-0" aria-hidden>
           <Image src="/images/cros.png" alt="" width={220} height={220} className="object-contain" />
@@ -70,7 +70,7 @@ export default async function AboutPage() {
       </section>
 
       {/* Who We Are */}
-      <section className="full-bleed bg-white pt-16 pb-3 md:pt-20 md:pb-10">
+      <section className="full-bleed bg-white max-md:pt-15 pb-0 md:pb-10 md:pt-20">
         <div className="site-container">
           <div className="mb-12 text-center">
             <h2
@@ -103,7 +103,7 @@ export default async function AboutPage() {
             </p>
           </div>
           <div className="grid items-start gap-4 lg:gap-12 lg:grid-cols-2">
-            <div className="relative overflow-hidden rounded-2xl" style={{ height: '380px' }}>
+            <div className="relative h-[260px] overflow-hidden rounded-2xl md:h-[320px]">
               <Image src="/images/who-we.png" alt="Who We Are — Scale X Learning team" fill className="object-cover" />
             </div>
             <div>
@@ -129,9 +129,9 @@ export default async function AboutPage() {
       </section>
 
       {/* What We Do */}
-      <section className="full-bleed bg-white pt-10 pb-10 md:pt-10 md:pb-10">
+      <section className="full-bleed bg-white pb-15 pt-0 md:py-10">
         <div className="site-container">
-          <div className="mb-12 text-center">
+          <div className="mb-12 mt-12 text-center">
             <h2
               style={{
                 color: '#1E293B',
@@ -183,7 +183,7 @@ export default async function AboutPage() {
                 </div>
               ))}
             </div>
-            <div className="relative overflow-hidden rounded-2xl" style={{ height: '480px' }}>
+            <div className="relative h-[260px] overflow-hidden rounded-2xl md:h-[400px]">
               <Image src="/images/what-do.png" alt="What We Do — Scale X Learning" fill className="object-cover" />
             </div>
           </div>
@@ -191,7 +191,7 @@ export default async function AboutPage() {
       </section>
 
       {/* What Drives Us Every Day */}
-      <section className="full-bleed bg-surface pt-10 pb-16 md:py-20  md:pb-10">
+      <section className="full-bleed bg-surface max-md:pt-15 max-md:pb-15 md:py-20 md:pb-10">
         <div className="site-container">
           <h2
             className="mb-10 text-center"
@@ -250,7 +250,7 @@ export default async function AboutPage() {
       </section>
 
       {/* The Minds Behind Scale X Learning */}
-      <section className="full-bleed bg-surface pt-6 pb-16 md:py-20 md:pt-10 md:pb-10">
+      <section className="full-bleed bg-surface max-md:pb-[30px] pt-0 md:py-20 md:pt-10 md:pb-10">
         <div className="site-container">
           <div className="mb-10 text-center">
             <h2 style={{ color: '#1E293B', fontFamily: 'Inter', fontSize: '36px', fontWeight: 700 }}>The Minds Behind Scale X Learning</h2>
@@ -295,18 +295,18 @@ export default async function AboutPage() {
 
       <SuccessStoriesSectionServer compact settings={settings ?? undefined} />
 
-      <div className="full-bleed bg-surface pt-0 pb-6">
-        <div className="site-container">
-          <div className="rounded-2xl border border-zinc-100 bg-white px-0 py-6 shadow-sm md:px-10">
+      <div className="full-bleed bg-surface pt-0 max-md:overflow-visible md:pb-0">
+        <div className="site-container max-md:overflow-visible">
+          <div className="overflow-visible rounded-2xl border border-zinc-100 bg-white px-4 py-6 max-md:pb-8 max-md:shadow-[0_2px_8px_0_rgba(30,41,59,0.1)] md:px-10 md:shadow-sm">
             <ReviewPlatformRowServer />
           </div>
         </div>
       </div>
 
       {/* Scale X Learning in the News */}
-      <section className="full-bleed bg-surface pt-6 pb-16 md:pt-10 md:pb-20">
+      <section className="full-bleed bg-surface pb-15 max-md:pt-15 md:pb-20 md:pt-20">
         <div className="site-container">
-          <h2 className="mb-10 text-center" style={{ color: '#1E293B', fontFamily: 'Inter', fontSize: '36px', fontWeight: 700 }}>
+          <h2 className="mb-5 text-center" style={{ color: '#1E293B', fontFamily: 'Inter', fontSize: '36px', fontWeight: 700 }}>
             Scale X Learning in the News
           </h2>
           <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
@@ -337,7 +337,7 @@ export default async function AboutPage() {
         </div>
       </section>
 
-      <AwardsSection {...defaultAwardsContent} className="pb-12 md:pb-16" />
+      <AwardsSection {...defaultAwardsContent} className="pb-15 md:pb-16" />
 
       <GuidanceSection {...defaultGuidanceContent} />
     </>

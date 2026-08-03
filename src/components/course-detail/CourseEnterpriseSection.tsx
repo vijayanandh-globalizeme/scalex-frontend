@@ -5,7 +5,7 @@ import {
   HOME_LOGO_MARQUEE_WRAPPER_CLASS,
 } from '@/components/shared/homeLogoMarquee';
 import type { CoursePartnerLogo } from '@/lib/courses';
-import { COURSE_SECTION_CARD } from './courseSectionCard';
+import { COURSE_ENTERPRISE_CARD } from './courseSectionCard';
 import CourseBrochureCta from './CourseBrochureCta';
 
 export interface CourseEnterpriseCardProps {
@@ -47,7 +47,7 @@ export function CourseEnterpriseCard({
 }: CourseEnterpriseCardProps) {
   return (
     <div
-      className={`relative z-10 flex w-full min-w-0 flex-col overflow-visible ${COURSE_SECTION_CARD} gap-4 px-5 py-6 md:px-[68px] md:py-8`}
+      className={`relative z-10 flex w-full min-w-0 flex-col gap-4 px-5 py-6 md:px-[68px] md:py-8 ${COURSE_ENTERPRISE_CARD}`}
       aria-labelledby="course-enterprise-heading"
     >
       <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between md:gap-6">
@@ -77,6 +77,7 @@ export function CourseEnterpriseCard({
             size={logoMarqueeSize}
             largeOnMobile
             className={logoMarqueeClassName}
+            trackGapClassName="items-center gap-10 md:gap-14 lg:gap-16"
           />
         </div>
       ) : null}
@@ -84,14 +85,16 @@ export function CourseEnterpriseCard({
   );
 }
 
-/** Spacer below hero — matches category courses section top padding for overlapping card. */
+/** Spacer below hero — reserves room for the overlapping enterprise card (desktop). */
 export default function CourseEnterpriseSection({ compact = false }: { compact?: boolean }) {
   return (
     <section
-      className={`full-bleed relative z-0 overflow-visible bg-[#F5F6F8] pb-10 md:pb-12 ${
-        compact ? 'pt-12 md:pt-14' : 'pt-10 md:pt-20'
+      className={`full-bleed relative z-0 overflow-visible bg-[#F5F6F8] pb-0 md:pb-12 lg:pt-0 ${
+        compact ? 'pt-14' : 'pt-15'
       }`}
       aria-hidden
-    />
+    >
+      <div className="site-container hidden lg:block lg:pt-20" aria-hidden />
+    </section>
   );
 }

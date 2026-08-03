@@ -2,7 +2,9 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRef } from 'react';
+import { useLayoutEffect, useRef } from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import CategoryTitleUnderline from '@/components/category/CategoryTitleUnderline';
 import { LogoMarquee, useAeroSize } from '@/components/shared';
 import {
@@ -16,6 +18,9 @@ import type { TechnicalCourseContent } from '@/lib/technicalCourses';
 import { withNewTabLinks } from '@/lib/richText';
 import CourseBrochureCta from './CourseBrochureCta';
 import TechnicalCourseWebinarCountdown from './TechnicalCourseWebinarCountdown';
+
+/** Fixed mobile aero position/size (sub-lg) — matches homepage hero. */
+const MOBILE_AERO_SIZE = { width: 180, height: 180, right: -85, top: 27 };
 
 function HomeIcon({ className }: { className?: string }) {
   return (
@@ -113,7 +118,13 @@ function AwardBadgeIcon({ className }: { className?: string }) {
   );
 }
 
-function FloatingBadge({ badge }: { badge: HeroBadge }) {
+function FloatingBadge({
+  badge,
+  innerRef,
+}: {
+  badge: HeroBadge;
+  innerRef?: (el: HTMLDivElement | null) => void;
+}) {
   const isTopLeftPrimary = badge.id === 'learners-1' || badge.id === 'package';
   const isMidLeftSecondary = badge.id === 'learners-2' || badge.id === 'partners';
 
@@ -128,45 +139,47 @@ function FloatingBadge({ badge }: { badge: HeroBadge }) {
         ? isMidLeftSecondary
           ? '-left-10 top-[60%] -translate-x-[30px] -translate-y-1/2 xl:-left-20'
           : 'left-0 top-[60%] -translate-y-1/2 xl:-left-10'
-      : badge.placement === 'bottom-right'
-        ? isSalary
-          ? 'bottom-[30px] right-2 md:-right-10'
-          : 'bottom-6 right-2 md:bottom-28 md:-right-10'
-        : 'bottom-10 left-[42%] -translate-x-1/2 md:-bottom-2';
+        : badge.placement === 'bottom-right'
+          ? isSalary
+            ? 'bottom-[30px] right-[-52px] lg:right-2 lg:-right-10'
+            : 'bottom-6 right-2 lg:bottom-28 lg:-right-10'
+          : 'bottom-10 left-[42%] -translate-x-1/2 md:-bottom-2';
+
+  const mobileVisibility = isMidLeftSecondary ? 'hidden lg:block' : '';
 
   const iconBg =
     badge.variant === 'learners'
       ? 'bg-[#CEFAFE] text-[#0092B8]'
       : 'bg-[#DBEAFE] text-[#155DFC]';
 
-  const sizeClass = isSalary
-    ? 'h-[70px] w-[200px] px-3.5 py-2.5'
-    : badge.variant === 'mentors'
-      ? 'h-[62px] w-[180px] px-3 py-2'
-      : 'max-w-[200px] px-3 py-2.5 md:px-4 md:py-3';
+  const sizeClass =
+    badge.variant === 'mentors'
+      ? 'h-[48px] w-[140px] px-2.5 py-1.5 lg:h-[62px] lg:w-[180px] lg:px-3 lg:py-2'
+      : 'w-max max-w-[150px] px-2.5 py-2 lg:max-w-[200px] lg:px-3 lg:py-2.5';
 
-  const alignClass = badge.variant === 'mentors' ? 'h-full items-center' : 'items-start';
+  const alignClass = badge.variant === 'mentors' ? 'items-center' : 'items-start';
 
   return (
-    <div
-      className={`absolute z-30 rounded-xl border border-zinc-100 bg-white shadow-lg shadow-zinc-900/8 ${sizeClass} ${placement}`}
-    >
-      <div className={`flex gap-2.5 ${alignClass}`}>
+    <div className={`absolute z-30 ${placement} ${mobileVisibility}`}>
+      <div
+        ref={innerRef}
+        className={`flex gap-2 rounded-xl border border-zinc-100 bg-white shadow-lg shadow-zinc-900/8 lg:gap-2.5 ${sizeClass} ${alignClass}`}
+      >
         <div
-          className={`flex shrink-0 items-center justify-center rounded-full ${iconBg} ${isSalary ? 'h-10 w-10' : 'h-9 w-9'}`}
+          className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full lg:h-9 lg:w-9 ${iconBg}`}
           aria-hidden
         >
           {badge.variant === 'learners' ? (
-            <UsersBadgeIcon className="h-[18px] w-[18px]" />
+            <UsersBadgeIcon className="h-[14px] w-[14px] lg:h-[18px] lg:w-[18px]" />
           ) : (
-            <AwardBadgeIcon className={`${isSalary ? 'h-5 w-5' : 'h-[18px] w-[18px]'}`} />
+            <AwardBadgeIcon className="h-[14px] w-[14px] lg:h-[18px] lg:w-[18px]" />
           )}
         </div>
         <div className="min-w-0">
-          <p className={`font-medium text-subtle ${isSalary ? 'text-[13px] leading-[18px]' : 'text-[12px] leading-[16px]'}`}>
+          <p className="text-[10px] font-medium leading-[13px] text-subtle lg:text-[12px] lg:leading-[16px]">
             {badge.title}
           </p>
-          <p className={`font-bold text-strong ${isSalary ? 'text-[15px] leading-[22px]' : 'text-[14px] leading-[20px]'}`}>
+          <p className="text-[12px] font-bold leading-[16px] text-strong lg:text-[14px] lg:leading-[20px]">
             {badge.subtitle}
           </p>
         </div>
@@ -195,26 +208,91 @@ function HeroMediaColumn({
   const isLeft = figureAlign === 'left';
   const aeroSize = useAeroSize();
   const aeroRight = aeroShiftRight ? aeroSize.right - 40 : aeroSize.right;
+  const mobileAeroRight = aeroShiftRight ? MOBILE_AERO_SIZE.right - 40 : MOBILE_AERO_SIZE.right;
+  const aeroWrapRef = useRef<HTMLDivElement | null>(null);
+  const badgeRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const containerRef = useRef<HTMLDivElement | null>(null);
+
+  // Desktop: entrance plays immediately on load. Mobile: same entrance, but deferred until
+  // the media column scrolls into view instead of firing while it's still off-screen.
+  useLayoutEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    const isDesktop = window.matchMedia('(min-width: 1024px)').matches;
+    if (!isDesktop) gsap.registerPlugin(ScrollTrigger);
+
+    const ctx = gsap.context(() => {
+      const badgeEls = badgeRefs.current.filter(Boolean) as HTMLDivElement[];
+      const scrollTrigger =
+        !isDesktop && containerRef.current
+          ? { trigger: containerRef.current, start: 'top 85%', once: true }
+          : undefined;
+
+      // Desktop delays land inside the tail of this column's own
+      // useGsapScrollRevealStagger fade (delay 0.55 + duration 1.6, ~0.55s to become
+      // visibly noticeable) so the slide is still seen, without waiting for it to fully finish.
+      if (badgeEls.length) {
+        gsap.fromTo(
+          badgeEls,
+          { autoAlpha: 0, x: 36 },
+          {
+            autoAlpha: 1,
+            x: 0,
+            duration: 0.6,
+            delay: isDesktop ? 1.3 : 0,
+            stagger: 0.15,
+            ease: 'power2.out',
+            scrollTrigger,
+          },
+        );
+      }
+
+      if (aeroWrapRef.current) {
+        gsap.fromTo(
+          aeroWrapRef.current,
+          { autoAlpha: 0, x: -48 },
+          {
+            autoAlpha: 1,
+            x: 0,
+            duration: 0.7,
+            delay: isDesktop ? 1.0 : 0,
+            ease: 'power2.out',
+            scrollTrigger,
+          },
+        );
+      }
+
+      if (!isDesktop) requestAnimationFrame(() => ScrollTrigger.refresh());
+    });
+
+    return () => ctx.revert();
+  }, [badges.length, aeroSrc]);
 
   return (
     <div
+      ref={containerRef}
       className={`relative mx-auto w-full min-w-0 max-w-md overflow-visible lg:mx-0 lg:max-w-none ${isLeft ? 'lg:translate-x-0' : 'lg:-translate-x-[10%]'}`}
     >
       <div
-        className={`relative h-[537px] w-full max-w-[420px] overflow-visible lg:max-w-[480px] ${isLeft ? 'ml-0 mr-auto' : 'ml-auto mr-0'}`}
+        className={`relative h-[400px] w-[300px] mx-[32px] overflow-visible lg:h-[537px] lg:w-[444px] lg:left-[80px] lg:mx-0 ${isLeft ? 'lg:ml-0 lg:mr-auto' : 'lg:ml-auto lg:mr-0'}`}
       >
         {aeroSrc ? (
-          <div className="pointer-events-none absolute inset-0 z-0" aria-hidden>
+          <div ref={aeroWrapRef} className="pointer-events-none absolute inset-0 z-0" aria-hidden>
             <div
               className="absolute lg:hidden"
-              style={{ top: 66, right: aeroShiftRight ? -190 : -150, width: 260, height: 320 }}
+              style={{
+                top: MOBILE_AERO_SIZE.top,
+                right: mobileAeroRight,
+                width: MOBILE_AERO_SIZE.width,
+                height: MOBILE_AERO_SIZE.height,
+              }}
             >
               <Image
                 src={aeroSrc}
                 alt=""
-                width={260}
-                height={320}
-                sizes="260px"
+                width={MOBILE_AERO_SIZE.width}
+                height={MOBILE_AERO_SIZE.height}
+                sizes={`${MOBILE_AERO_SIZE.width}px`}
                 className="h-full w-full object-contain object-center"
               />
             </div>
@@ -239,7 +317,7 @@ function HeroMediaColumn({
           </div>
         ) : null}
         <div
-          className={`absolute bottom-0 z-[1] h-[537px] w-[min(100%,389px)] rounded-t-[400px] shadow-inner shadow-black/5 ${isLeft ? 'left-[10px]' : 'right-5'}`}
+          className={`absolute bottom-0 z-[1] h-[400px] w-[min(100%,389px)] rounded-t-[400px] shadow-inner shadow-black/5 lg:h-[537px] ${isLeft ? 'left-[10px]' : 'right-5'}`}
           style={{
             background: 'linear-gradient(180deg, #BB9255 -140.92%, #FADCBA 165.92%)',
           }}
@@ -257,8 +335,14 @@ function HeroMediaColumn({
             className="object-contain object-bottom drop-shadow-xl"
           />
         </div>
-        {badges.map((badge) => (
-          <FloatingBadge key={badge.id} badge={badge} />
+        {badges.map((badge, index) => (
+          <FloatingBadge
+            key={badge.id}
+            badge={badge}
+            innerRef={(el) => {
+              badgeRefs.current[index] = el;
+            }}
+          />
         ))}
       </div>
     </div>
@@ -336,7 +420,7 @@ export default function TechnicalCourseHeroSection(course: TechnicalCourseConten
   return (
     <section
       ref={sectionRef}
-      className="full-bleed relative overflow-x-clip overflow-y-visible bg-[#F5F6F8] pb-0 pt-8 md:pt-10"
+      className="full-bleed relative overflow-x-clip overflow-y-visible bg-[#F5F6F8] max-md:pt-10 max-md:pb-15 pb-0 md:pt-10"
       aria-labelledby="technical-course-hero-heading"
     >
       <div
@@ -510,7 +594,7 @@ export default function TechnicalCourseHeroSection(course: TechnicalCourseConten
               <p className="text-[16px] font-medium leading-normal text-[#1E293B]">Next Webinar Starts in</p>
               <div className="mt-[14px] flex flex-wrap items-center gap-4">
                 <TechnicalCourseWebinarCountdown targetDate={startedAt} />
-                <div className="flex min-w-0 items-center gap-2.5">
+                <div className="mt-3 flex min-w-0 items-center gap-2.5 lg:mt-0">
                   <div className="flex shrink-0 items-center">
                     {learnersStat.avatarSrcs.map((src, index) => (
                       <div
@@ -544,10 +628,18 @@ export default function TechnicalCourseHeroSection(course: TechnicalCourseConten
               figureAlign={isDevopsPage ? 'left' : 'right'}
             />
             {collaboration.length > 0 ? (
-              <div className={`mt-6 flex ${isDevopsPage ? 'justify-start pl-[30px]' : 'justify-center'}`}>
-                <div className="inline-flex flex-col items-start">
-                  <p className="text-[18px] font-medium leading-normal text-[#1E293B]">In Collaboration with</p>
-                  <div className="mt-3 flex items-center gap-8">
+              <div className={`mt-6 flex ${isDevopsPage ? 'justify-start lg:pl-[120px] pl-[30px]' : 'justify-center'}`}>
+                <div
+                  className={`inline-flex flex-col ${isDevopsPage ? 'items-start' : 'items-center lg:items-start'}`}
+                >
+                  <p
+                    className={`text-[18px] font-medium leading-normal text-[#1E293B] ${isDevopsPage ? '' : 'text-center lg:text-left'}`}
+                  >
+                    In Collaboration with
+                  </p>
+                  <div
+                    className={`mt-3 flex items-center gap-8 ${isDevopsPage ? '' : 'flex-wrap justify-center lg:flex-nowrap lg:justify-start'}`}
+                  >
                     {collaboration.map((logo) => (
                       <div key={logo.src} className="relative h-8 w-24">
                         <Image
@@ -566,7 +658,7 @@ export default function TechnicalCourseHeroSection(course: TechnicalCourseConten
           </div>
         </div>
 
-        <div className="relative z-20 mt-10 mb-[-42px] md:mt-12">
+        <div className="relative z-20 mt-10 max-md:mb-0 md:mt-12 md:mb-[-42px]">
           <div className="rounded-[20px] border border-[#EBEBEB] bg-white px-6 py-5 shadow-[0_4px_4px_0_rgba(30,41,59,0.11),0_4px_4px_0_rgba(30,41,59,0.03)] md:px-10 md:py-6">
             <p className="mb-5 text-center text-[20px] font-semibold leading-normal">
               <span className="text-[#1E293B]">Our </span>

@@ -40,14 +40,16 @@ const navLinkClass =
 const Header = ({
   megaMenuCategories,
   otherMenus,
+  phone,
 }: {
   megaMenuCategories: MegaMenuCategory[];
   otherMenus: OtherMenu[];
+  phone?: string;
 }) => {
   return (
     <header className="sticky top-0 z-50 border-b border-zinc-100 bg-white">
       <div className="site-container">
-        {/* Mobile: logo + hamburger (below 1200px) */}
+        {/* Mobile: logo + talk-to-adviser + hamburger (below 1200px) */}
         <div className="flex h-16 w-full min-w-0 items-center justify-between min-[1200px]:hidden">
           <Link href="/" className="flex shrink-0 items-center" aria-label=" EdgeX Learning home">
             <Image
@@ -60,7 +62,17 @@ const Header = ({
               priority
             />
           </Link>
-          <HeaderMobileMenu categories={megaMenuCategories} otherMenus={otherMenus} />
+          <div className="flex shrink-0 items-center gap-2">
+            {phone && (
+              <a
+                href={`tel:${phone.replace(/\s/g, '')}`}
+                className="flex h-9 shrink-0 items-center rounded-full bg-brand px-3 text-[12px] font-semibold text-white transition active:scale-95"
+              >
+                Talk to Adviser
+              </a>
+            )}
+            <HeaderMobileMenu categories={megaMenuCategories} otherMenus={otherMenus} />
+          </div>
         </div>
 
         {/* Desktop: single row (1200px+) — gaps shrink between 1200–1399px */}
