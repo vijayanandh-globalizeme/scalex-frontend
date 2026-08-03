@@ -189,7 +189,7 @@ export default function CourseFeeSection({
   return (
     <section
       id="course-fee"
-      className={`scroll-mt-[116px] px-6 pt-15 pb-15 md:px-8 ${COURSE_SECTION_CARD}`}
+      className={`scroll-mt-[116px] px-6 pt-15 pb-15 md:px-8 md:pt-[29px] md:pb-[29px] ${COURSE_SECTION_CARD}`}
       aria-labelledby="course-fee-heading"
     >
       <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
