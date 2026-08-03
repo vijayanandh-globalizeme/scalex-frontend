@@ -53,7 +53,7 @@ export interface CategoryPageContent {
 
 const DEFAULT_HERO_COLLABORATION_LOGOS: CategoryLogo[] = [
   { alt: 'Amazon', src: '/images/ama.png' },
-  { alt: 'Microsoft', src: '/images/course/google.png' },
+  { alt: 'Google', src: '/images/course/google.png' },
 ];
 
 
@@ -301,9 +301,7 @@ export default function CategoryHeroSection({
       : defaultHeroContent.collaboration.logos,
   };
 
-  const inlineCollaborationLogos = collaborationLogos?.length
-    ? collaborationLogos.slice(0, 2)
-    : DEFAULT_HERO_COLLABORATION_LOGOS;
+  const inlineCollaborationLogos = DEFAULT_HERO_COLLABORATION_LOGOS;
 
   const bgClassName =
     backgroundImage?.className ??
@@ -401,8 +399,8 @@ export default function CategoryHeroSection({
               className={mediaVariant === 'photo' ? 'max-md:pb-[30px]' : undefined}
             />
             {mediaVariant === 'photo' && inlineCollaborationLogos.length > 0 && (
-              <div className="mt-6 flex justify-center">
-                <div className="inline-flex flex-wrap items-center justify-center gap-4">
+              <div className="mt-6 flex justify-center max-md:relative max-md:z-10">
+                <div className="inline-flex flex-wrap items-center justify-center gap-4 max-md:flex-col max-md:gap-3">
                   <p className="whitespace-nowrap text-[16px] font-medium leading-normal text-[#1E293B]">
                     In Collaboration with
                   </p>
@@ -420,7 +418,7 @@ export default function CategoryHeroSection({
         </div>
       </div>
 
-      <div className="absolute inset-x-0 bottom-0 z-20 translate-y-[70%]">
+      <div className="relative z-20 max-md:mt-6 md:absolute md:inset-x-0 md:bottom-0 md:translate-y-[70%]">
         <div className="site-container">
           <CollaborationStrip collaboration={certifyingBodiesContent} />
         </div>
