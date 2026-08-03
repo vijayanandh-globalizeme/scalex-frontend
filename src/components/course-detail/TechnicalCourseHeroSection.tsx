@@ -228,9 +228,9 @@ function HeroMediaColumn({
           ? { trigger: containerRef.current, start: 'top 85%', once: true }
           : undefined;
 
-      // Desktop delays are pushed past ~2.15s — this column sits inside its own
-      // useGsapScrollRevealStagger fade (delay 0.55 + duration 1.6), which stays
-      // opacity:0 until then, so a shorter delay would finish invisibly underneath it.
+      // Desktop delays land inside the tail of this column's own
+      // useGsapScrollRevealStagger fade (delay 0.55 + duration 1.6, ~0.55s to become
+      // visibly noticeable) so the slide is still seen, without waiting for it to fully finish.
       if (badgeEls.length) {
         gsap.fromTo(
           badgeEls,
@@ -239,7 +239,7 @@ function HeroMediaColumn({
             autoAlpha: 1,
             x: 0,
             duration: 0.6,
-            delay: isDesktop ? 2.5 : 0,
+            delay: isDesktop ? 1.3 : 0,
             stagger: 0.15,
             ease: 'power2.out',
             scrollTrigger,
@@ -255,7 +255,7 @@ function HeroMediaColumn({
             autoAlpha: 1,
             x: 0,
             duration: 0.7,
-            delay: isDesktop ? 2.2 : 0,
+            delay: isDesktop ? 1.0 : 0,
             ease: 'power2.out',
             scrollTrigger,
           },
