@@ -63,9 +63,9 @@ export default function ContactPageClient({
         {/* Decorative background — pink gradient (mobile + desktop) */}
         <div className="category-hero-bg pointer-events-none absolute inset-0" aria-hidden />
 
-        <div className="site-container relative z-10">
+        <div className="site-container relative z-10 max-md:min-w-0 max-md:max-w-full">
           {/* Breadcrumb */}
-          <nav className="mb-8 flex items-center gap-2 text-sm text-muted" aria-label="Breadcrumb">
+          <nav className="mb-0 flex items-center gap-2 text-sm text-muted md:mb-8" aria-label="Breadcrumb">
             <Link href="/" className="flex items-center gap-1 hover:text-brand transition-colors">
               <svg width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden>
                 <path d="M2.5 7.5L10 1.667L17.5 7.5V17.5H13.333V12.5H6.667V17.5H2.5V7.5Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
@@ -75,10 +75,10 @@ export default function ContactPageClient({
             <span className="text-brand font-medium">Contact Us</span>
           </nav>
 
-          <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-12">
+          <div className="grid items-center gap-10 max-md:min-w-0 max-md:w-full max-md:max-w-full max-md:gap-6 lg:grid-cols-2 lg:gap-12">
             {/* Left: Contact Info */}
-            <div ref={heroLeftRef} className="gsap-reveal-pending max-w-xl">
-              <h1 style={{ color: '#1E293B', fontFamily: 'Inter', fontSize: '40px', fontWeight: 800, lineHeight: '60px' }}>
+            <div ref={heroLeftRef} className="gsap-reveal-pending max-w-xl max-md:w-full max-md:min-w-0">
+              <h1 className="max-md:text-[32px] max-md:leading-[44px] md:text-[40px] md:leading-[60px]" style={{ color: '#1E293B', fontFamily: 'Inter', fontWeight: 800 }}>
                 Get In Touch With
                 <br />
                 Our Team
@@ -100,7 +100,7 @@ export default function ContactPageClient({
                 </span>
               </span>
 
-              <p style={{ color: '#788593', fontFamily: 'Inter', fontSize: '17px', fontWeight: 500, lineHeight: '26px', width: '377px', maxWidth: '100%' }} className="mt-6">
+              <p className="mt-6 max-w-full md:max-w-[377px]" style={{ color: '#788593', fontFamily: 'Inter', fontSize: '17px', fontWeight: 500, lineHeight: '26px' }}>
                 We&apos;d love to hear from you! Whether you&apos;re looking to upskill, transition careers, or build your enterprise learning roadmap — we&apos;re here for every step.
               </p>
 
@@ -158,12 +158,12 @@ export default function ContactPageClient({
               </div>
 
               {/* CTA Buttons */}
-              <div className="mt-10 flex flex-wrap gap-4">
+              <div className="mt-10 flex flex-wrap gap-4 max-md:w-full max-md:min-w-0 max-md:max-w-full max-md:flex-col max-md:gap-3">
                 <CourseBrochureCta
                   openModal
                   type="contact"
                   courseId={null}
-                  className="btn-brand h-[54px] gap-2 px-6 md:px-7 inline-flex items-center"
+                  className="btn-brand inline-flex h-[54px] items-center gap-2 px-6 md:px-7 max-md:box-border max-md:w-full max-md:min-w-0 max-md:max-w-full max-md:px-4"
                   style={{ fontSize: '16px', fontWeight: 600, fontFamily: 'Inter', color: '#FFF' }}
                 >
                   Send a Message
@@ -173,7 +173,7 @@ export default function ContactPageClient({
                 </CourseBrochureCta>
                 <a
                   href={`tel:${phone.replace(/\s/g, '')}`}
-                  className="btn-brand-outline inline-flex h-[54px] w-[192px] min-w-0 cursor-pointer items-center justify-center gap-[18px] px-6 text-sm font-semibold md:text-[15px]"
+                  className="btn-brand-outline inline-flex h-[54px] w-[192px] min-w-0 cursor-pointer items-center justify-center gap-[18px] px-6 text-sm font-semibold md:text-[15px] max-md:box-border max-md:w-full max-md:max-w-full max-md:gap-2 max-md:px-4"
                 >
                   Call Us Now
                   <PhoneIcon className="h-5 w-5 shrink-0" />
@@ -182,9 +182,9 @@ export default function ContactPageClient({
             </div>
 
             {/* Right: India Map */}
-            <div ref={heroRightRef} className="gsap-reveal-pending relative flex items-center justify-center">
-              <div className="relative w-full max-w-[700px] overflow-hidden rounded-2xl border border-zinc-100 bg-white p-6 shadow-[0_4px_24px_0_rgba(30,41,59,0.08)] min-h-[520px] md:h-[652px]">
-                <div className="relative mx-auto aspect-[547/700] w-full max-w-[547px] -translate-y-3 md:mt-0 md:-translate-y-6 md:px-5">
+            <div ref={heroRightRef} className="gsap-reveal-pending relative flex items-center justify-center max-md:w-full max-md:min-w-0 max-md:max-w-full">
+              <div className="relative w-full max-w-[700px] overflow-hidden rounded-2xl border border-zinc-100 bg-white p-6 shadow-[0_4px_24px_0_rgba(30,41,59,0.08)] max-md:box-border max-md:max-w-full max-md:min-h-[380px] max-md:p-4 md:h-[652px]">
+                <div className="relative mx-auto aspect-[547/700] w-full max-w-[547px] -translate-y-3 md:mt-0 md:-translate-y-6 md:px-5 max-md:max-w-full">
                   <Image
                     src="/images/map.png"
                     alt="India map showing EdgeX Learning presence"
@@ -194,8 +194,8 @@ export default function ContactPageClient({
                   />
 
                   {/* Bengaluru marker */}
-                  <div className="absolute" style={{ left: '36%', top: '72%', transform: 'translate(-50%, -50%)' }}>
-                    <div className="absolute w-[200px] rounded-lg bg-zinc-900 px-3 py-2.5 text-white shadow-xl" style={{ bottom: 'calc(100% + 12px)', left: '50%', transform: 'translateX(-50%)' }}>
+                  <div className="absolute left-1/2 top-[72%] -translate-x-1/2 -translate-y-1/2 md:left-[36%]">
+                    <div className="absolute bottom-[calc(100%+12px)] left-1/2 w-[min(200px,calc(100vw-5rem))] max-w-[200px] -translate-x-1/2 rounded-lg bg-zinc-900 px-3 py-2.5 text-white shadow-xl md:w-[200px]">
                       <p className="text-[13px] font-bold leading-snug">Bengaluru, Karnataka</p>
                       <p className="text-[11px] text-zinc-300 mt-0.5 font-medium">Scale X Learning HQ</p>
                       <p className="text-[11px] text-zinc-400">{addressFull || 'Koramangala, Bengaluru 560034'}</p>
