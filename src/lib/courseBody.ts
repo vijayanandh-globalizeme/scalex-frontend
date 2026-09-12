@@ -519,7 +519,7 @@ const CSM_BODY: CourseBodyContent = {
     title: 'CSM Course Overview',
     downloadGuideLabel: 'Download Free Guide',
     description:
-      'Accelerate your career with ScaleX’s expert-led Certified Scrum Master (CSM) program. Delivered by globally renowned CSTs, this immersive training equips you with real-world Scrum mechanics to build high-performing teams, resolve engineering bottlenecks, and unlock high-growth international leadership opportunities.',
+      'Accelerate your career with EdgeX’s expert-led Certified Scrum Master (CSM) program. Delivered by globally renowned CSTs, this immersive training equips you with real-world Scrum mechanics to build high-performing teams, resolve engineering bottlenecks, and unlock high-growth international leadership opportunities.',
     standoutTitle: 'Most Standout Features',
     features: [
       {

@@ -43,11 +43,11 @@ function toFeaturedBlog(item: ApiBlogListItem): FeaturedBlog {
     imageSrc: item.featureImage?.url ?? DEFAULT_BLOG_IMAGE,
     imageAlt: item.title,
     author: {
-      name: item.trainerName ?? 'ScaleX Team',
+      name: item.trainerName ?? 'EdgeX Team',
       avatarSrc: item.trainerAvatar?.url ?? DEFAULT_AUTHOR_AVATAR,
     },
     date: formatDate(item.createdAt),
-    publication: 'ScaleX Insights',
+    publication: 'EdgeX Insights',
     href: `/blogs/${item.uri}`,
   };
 }
@@ -212,7 +212,7 @@ export default function BlogsPage() {
         className="full-bleed relative z-10 min-h-[594px] overflow-visible max-md:pt-10 max-md:pb-15 md:h-[594px] md:pt-10"
       >
         <div className="blogs-hero-bg pointer-events-none absolute inset-0" aria-hidden />
-        {/* Decorative ScaleX watermark */}
+        {/* Decorative EdgeX watermark */}
         <div className="pointer-events-none absolute right-0 top-1/4 z-0 hidden h-[340px] w-[300px] opacity-[0.07] md:block" aria-hidden>
           <Image src="/images/scalex-mark.png" alt="" fill className="object-contain object-right" />
         </div>
@@ -496,7 +496,7 @@ export default function BlogsPage() {
                         <Image src={b.trainerAvatar?.url ?? DEFAULT_AUTHOR_AVATAR} alt={b.trainerName ?? ''} fill className="object-cover" sizes="32px" />
                       </div>
                       <div>
-                        <p className="text-[12px] font-semibold text-heading">{b.trainerName ?? 'ScaleX Team'}</p>
+                        <p className="text-[12px] font-semibold text-heading">{b.trainerName ?? 'EdgeX Team'}</p>
                         <p className="text-[11px] text-muted">{formatDate(b.createdAt)}</p>
                       </div>
                     </div>

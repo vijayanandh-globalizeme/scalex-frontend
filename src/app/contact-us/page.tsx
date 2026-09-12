@@ -8,7 +8,7 @@ export default async function ContactPage() {
     <ContactPageClient
       phone={s.CONTACT_PHONE_NO ?? '+91 98480 32919'}
       whatsapp={s.CONTACT_WHATSAPP_NO ?? '+91 98480 32919'}
-      email={s.CONTACT_EMAIL ?? 'support@scalexlearning.com'}
+      email={s.CONTACT_EMAIL ?? 'support@edgexlearning.com'}
       address={s.CONTACT_ADDRESS ?? 'Koramangala, Bengaluru 560034'}
       addressState={s.CONTACT_ADDRESS_STATE ?? 'Karnataka'}
       addressCountry={s.CONTACT_ADDRESS_COUNTRY ?? 'India'}
