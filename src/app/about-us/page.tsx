@@ -258,35 +258,37 @@ export default async function AboutPage() {
               Visionary leaders with decades of combined experience in ed-tech, corporate training, and professional development.
             </p>
           </div>
-          <div className="about-us-minds-grid grid grid-cols-1 gap-5 sm:grid-cols-3 lg:grid-cols-5 max-md:overflow-visible">
+          <div className="about-us-minds-grid mx-auto grid max-w-5xl grid-cols-1 gap-6 sm:grid-cols-3 md:gap-8 max-md:overflow-visible">
             {[
-              { img: '/images/pranee.png', name: 'Praneeth Kuridi', role: 'Founder & CEO', bio: '12+ years in tech education and enterprise training leadership across India.' },
-              { img: '/images/naray.png', name: 'Narayana Ajay', role: 'Co-Founder & CTO', bio: 'Technology architect driving EdgeX platform innovation and AI-powered learning.' },
-              { img: '/images/narasim.png', name: 'Narasimha', role: 'Head of Learning Design', bio: 'Ex-L&D Director at top MNCs. Curriculum architect for 130+ programs.' },
-              { img: '/images/ram.png', name: 'Ram Charan', role: 'VP — Enterprise Sales', bio: 'Grew EdgeX enterprise client portfolio to 100+ organisations across India.' },
-              { img: '/images/aninth.png', name: 'Anitha Reddy', role: 'Head — Career Success', bio: 'Mentored 5,000+ professionals through career transitions and salary negotiations.' },
+              { img: '/images/naray.png', name: 'Narayana Ajay', role: 'Co-Founder', bio: 'Product Manager passionate about building products from scratch, with 15 years of experience in brand building and business growth in EdTech.', linkedInLink: "https://www.linkedin.com/in/kvl-narayana-5a324a7b/" },
+              { img: '/images/narasim.png', name: 'Naveen Kankipati', role: 'Co-Founder', bio: 'A decade and a half of experience building high-performing sales teams and driving tech-enabled transformation in EdTech.', linkedInLink: "https://www.linkedin.com/in/naveen-kankipati-18b207a2/" },
+              { img: '/images/pranee.png', name: 'Praneeth Kuridi', role: 'Co-Founder', bio: 'Edtech leader. Strategy operator. Entrepreneur at heart. 13+ years turning ideas into scale. Always building something new.', linkedInLink: "https://www.linkedin.com/in/praneeth4959/" },
             ].map((person) => (
-              <div key={person.name} className="interactive-card flex flex-col overflow-visible rounded-2xl border border-zinc-100 bg-white p-5 max-md:relative max-md:z-[1]">
+              <div key={person.name} className="interactive-card flex flex-col overflow-visible rounded-2xl border border-zinc-100 bg-white p-6 max-md:relative max-md:z-[1] md:p-8">
                 <div className="flex flex-col items-center text-center">
-                  <div className="interactive-card-media relative h-28 w-28 overflow-hidden rounded-full mb-3">
+                  <div className="interactive-card-media relative h-32 w-32 overflow-hidden rounded-full mb-4 md:h-36 md:w-36">
                     <Image src={person.img} alt={person.name} fill className="object-cover" />
                   </div>
-                  <p className="interactive-card-title" style={{ color: '#1E293B', fontFamily: 'Inter', fontSize: '14px', fontWeight: 700 }}>{person.name}</p>
-                  <p className="mt-0.5" style={{ color: '#788593', fontFamily: 'Inter', fontSize: '12px', fontWeight: 400 }}>{person.role}</p>
+                  <p className="interactive-card-title" style={{ color: '#1E293B', fontFamily: 'Inter', fontSize: '17px', fontWeight: 700 }}>{person.name}</p>
+                  <p className="mt-1" style={{ color: '#788593', fontFamily: 'Inter', fontSize: '13px', fontWeight: 400 }}>{person.role}</p>
                 </div>
-                <div className="mt-4 mb-2 h-px w-full bg-zinc-100" />
-                <p className="text-center" style={{ color: '#788593', fontFamily: 'Inter', fontSize: '13px', fontWeight: 400, lineHeight: '20px' }}>{person.bio}</p>
-                <div className="mt-4 flex items-center justify-center gap-1.5">
+                <div className="mt-5 mb-3 h-px w-full bg-zinc-100" />
+                <p className="text-center" style={{ color: '#788593', fontFamily: 'Inter', fontSize: '14px', fontWeight: 400, lineHeight: '22px' }}>{person.bio}</p>
+                <Link
+                  href={person.linkedInLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-5 flex items-center justify-center gap-1.5"
+                >
                   <span style={{ color: '#E0001B', fontFamily: 'Inter', fontSize: '13px', fontWeight: 600 }}>View Profile on</span>
                   <Image
                     src="/images/image 20233.png"
-                    alt=""
+                    alt="LinkedIn"
                     width={22}
                     height={22}
                     className="h-[22px] w-[22px] rounded-full object-contain"
-                    aria-hidden
                   />
-                </div>
+                </Link>
               </div>
             ))}
           </div>
