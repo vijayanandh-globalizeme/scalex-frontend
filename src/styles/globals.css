@@ -108,31 +108,166 @@ body {
     @apply text-[28px] font-bold leading-[140%] md:text-[34px];
   }
 
-  /* Course Content + FAQ accordion answer HTML (overrides CMS inline muted color) */
+  /*
+   * Rendered Quill WYSIWYG HTML (course content / FAQ / about-certification
+   * accordions). Quill's own toolbar config allows: headers h2-h4, bold,
+   * italic, underline, strike, ordered/bullet lists, indent, link, image,
+   * align, blockquote, code-block — this class gives every one of those
+   * tags/classes a matching look instead of falling back to unstyled text.
+   */
   .course-accordion-answer {
     color: #4a5867;
     font-family: Inter, sans-serif;
     font-size: 14px;
     font-style: normal;
     font-weight: 400;
-    line-height: normal;
+    line-height: 1.6;
   }
 
-  .course-accordion-answer :where(p, li, span, div, td, blockquote, em, strong, ul, ol) {
+  .course-accordion-answer :where(p, li, span, div, td, blockquote, em, ul, ol) {
     color: #4a5867 !important;
     font-family: Inter, sans-serif;
     font-size: 14px;
-    font-weight: 400;
-    line-height: normal;
+    line-height: 1.6;
   }
 
   .course-accordion-answer :where(h1, h2, h3, h4, h5, h6) {
     color: var(--color-heading) !important;
+    font-weight: 700;
+    line-height: 1.4;
+    margin: 16px 0 8px;
+  }
+
+  .course-accordion-answer :where(h1, h2, h3, h4, h5, h6):first-child {
+    margin-top: 0;
+  }
+
+  .course-accordion-answer h1 { font-size: 22px; }
+  .course-accordion-answer h2 { font-size: 20px; }
+  .course-accordion-answer h3 { font-size: 17px; }
+  .course-accordion-answer h4 { font-size: 15px; }
+  .course-accordion-answer h5,
+  .course-accordion-answer h6 { font-size: 14px; }
+
+  .course-accordion-answer p {
+    margin: 0 0 12px;
+  }
+
+  .course-accordion-answer p:last-child {
+    margin-bottom: 0;
+  }
+
+  .course-accordion-answer strong,
+  .course-accordion-answer b {
+    font-weight: 700 !important;
+  }
+
+  .course-accordion-answer em,
+  .course-accordion-answer i {
+    font-style: italic;
+  }
+
+  .course-accordion-answer u {
+    text-decoration: underline;
+  }
+
+  .course-accordion-answer s,
+  .course-accordion-answer strike,
+  .course-accordion-answer del {
+    text-decoration: line-through;
+  }
+
+  .course-accordion-answer ul,
+  .course-accordion-answer ol {
+    margin: 0 0 12px;
+    padding-left: 1.4em;
+  }
+
+  .course-accordion-answer ul { list-style: disc outside; }
+  .course-accordion-answer ol { list-style: decimal outside; }
+
+  .course-accordion-answer ul ul,
+  .course-accordion-answer ol ol,
+  .course-accordion-answer ul ol,
+  .course-accordion-answer ol ul {
+    margin: 4px 0;
+  }
+
+  .course-accordion-answer li {
+    margin-bottom: 6px;
+  }
+
+  .course-accordion-answer li:last-child {
+    margin-bottom: 0;
+  }
+
+  .course-accordion-answer li::marker {
+    color: #4a5867;
+  }
+
+  .course-accordion-answer blockquote {
+    margin: 12px 0;
+    padding: 8px 16px;
+    border-left: 3px solid var(--color-brand);
+    font-style: italic;
+  }
+
+  .course-accordion-answer pre {
+    margin: 12px 0;
+    padding: 12px 16px;
+    border-radius: 8px;
+    background: #ffffff;
+    border: 1px solid #ebebeb;
+    color: #1e293b !important;
+    font-family: 'SFMono-Regular', Menlo, Consolas, monospace;
+    font-size: 13px;
+    line-height: 1.6;
+    overflow-x: auto;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+
+  .course-accordion-answer code {
+    font-family: 'SFMono-Regular', Menlo, Consolas, monospace;
+    font-size: 0.9em;
+    background: #ffffff;
+    border: 1px solid #ebebeb;
+    padding: 2px 6px;
+    border-radius: 4px;
+  }
+
+  .course-accordion-answer pre code {
+    background: transparent;
+    border: none;
+    padding: 0;
+    color: inherit;
+  }
+
+  .course-accordion-answer img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin: 12px 0;
   }
 
   .course-accordion-answer a {
     color: var(--color-brand) !important;
+    text-decoration: underline;
+    text-underline-offset: 2px;
   }
+
+  .course-accordion-answer .ql-align-center  { text-align: center; }
+  .course-accordion-answer .ql-align-right   { text-align: right; }
+  .course-accordion-answer .ql-align-justify { text-align: justify; }
+
+  .course-accordion-answer [class~='ql-indent-1'] { margin-left: 1.5em; }
+  .course-accordion-answer [class~='ql-indent-2'] { margin-left: 3em; }
+  .course-accordion-answer [class~='ql-indent-3'] { margin-left: 4.5em; }
+  .course-accordion-answer [class~='ql-indent-4'] { margin-left: 6em; }
+  .course-accordion-answer [class~='ql-indent-5'] { margin-left: 7.5em; }
+  .course-accordion-answer [class~='ql-indent-6'] { margin-left: 9em; }
+  .course-accordion-answer [class~='ql-indent-7'] { margin-left: 10.5em; }
+  .course-accordion-answer [class~='ql-indent-8'] { margin-left: 12em; }
 
   /* Shared card hover — shadow lift, image zoom, title brand color */
   .interactive-card {
