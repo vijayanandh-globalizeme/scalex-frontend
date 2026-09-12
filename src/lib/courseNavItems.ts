@@ -21,7 +21,7 @@ export const COURSE_NAV_ITEMS = [
   { id: "eligibility", label: "Eligibility", href: "#eligibility" },
   { id: "reviews", label: "Reviews", href: "#reviews" },
   { id: "faqs", label: "FAQs", href: "#faqs" },
-  { id: "why-scalex", label: "Why ScaleX", href: "#why-scalex" },
+  { id: "why-EdgeX", label: "Why EdgeX", href: "#why-EdgeX" },
 ] as const;
 
 export type CourseNavItem = { id: string; label: string; href: string };

@@ -31,7 +31,7 @@ export function toTrendingBlogCard(item: ApiBlogListItem): TrendingBlogCardData 
     excerpt: item.shortDescription,
     imageSrc: item.featureImage?.url ?? DEFAULT_BLOG_IMAGE,
     author: {
-      name: item.trainerName ?? 'ScaleX Team',
+      name: item.trainerName ?? 'EdgeX Team',
       avatarSrc: item.trainerAvatar?.url ?? DEFAULT_AUTHOR_AVATAR,
       date: formatDate(item.createdAt),
     },

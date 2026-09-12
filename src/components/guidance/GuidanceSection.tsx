@@ -231,7 +231,7 @@ function GuidanceForm({
           <CheckCircle checked={agreed} />
         </button>
         <span>
-          I agree to ScaleX&apos;s{' '}
+          I agree to EdgeX&apos;s{' '}
           <Link href={termsHref} target="_blank" rel="noopener noreferrer" className="text-link hover:underline active:underline">
             Terms &amp; Conditions
           </Link>{' '}

@@ -134,13 +134,16 @@ function StageSidebar({ stage, stageNumber }: { stage: ApiRoadmap; stageNumber: 
 
   return (
     <div className="relative w-full shrink-0 md:w-[250px]">
-      <div className="flex items-start gap-4 md:gap-5">
-        <div className="flex shrink-0 flex-col items-center gap-4">
-          {numberEl}
+      <div className="flex flex-col items-start gap-4 md:gap-5">
+        <div className="flex shrink-0 flex-col items-center md:pt-10">
           <StageSidebarIcon icon={stage.icon} theme={theme} />
+          <div className="mt-4 flex flex-col items-center gap-1 md:mt-5">
+            <span className="text-[13px] font-semibold uppercase tracking-[0.1em] text-[#788593]">Stage</span>
+            {numberEl}
+          </div>
         </div>
         <div className="min-w-0 flex-1 pt-1 md:pt-2">
-          <p className="text-[22px] font-bold leading-[130%] text-[#1E293B] md:text-[34px] md:leading-[140%]" style={{ fontFamily: 'Inter' }}>
+          <p className="max-w-[200px] text-[22px] font-bold leading-[130%] text-[#1E293B] md:text-[34px] md:leading-[140%]" style={{ fontFamily: 'Inter' }}>
             {stage.sideTitle}
           </p>
           <p

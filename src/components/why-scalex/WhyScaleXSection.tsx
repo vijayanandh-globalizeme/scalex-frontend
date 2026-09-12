@@ -186,7 +186,7 @@ export default function WhyScaleXSection({
                   className="h-[40px] w-auto max-w-[130px] object-contain"
                 />
               ) : (
-                <h3 className="text-[18px] font-semibold text-[#1E293B] md:text-[20px]">ScaleX</h3>
+                <h3 className="text-[18px] font-semibold text-[#1E293B] md:text-[20px]">EdgeX</h3>
               )}
             </div>
             <ul className="flex flex-1 flex-col">

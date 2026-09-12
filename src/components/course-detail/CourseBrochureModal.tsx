@@ -132,7 +132,7 @@ export default function CourseBrochureModal({
           <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[300px]">
             <Image
               src="/images/person-3.png"
-              alt="ScaleX course advisor"
+              alt="EdgeX course advisor"
               fill
               className="object-contain object-bottom"
               sizes="320px"
