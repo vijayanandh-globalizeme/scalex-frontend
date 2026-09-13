@@ -39,11 +39,11 @@ export default function AboutHero() {
               fontWeight: 800,
             }}
           >
-            Empowering Professionals to
+            Empowering Learners to Build 
             <br className="hidden md:block" />
-            Build{' '}
+            Their{' '}
             <span className="relative inline-block whitespace-nowrap pb-[23px] align-top">
-              <span>Future-Ready Careers</span>
+              <span>Career Edge</span>
               <span className="absolute bottom-0 left-0 block h-[19px] w-full overflow-hidden" aria-hidden>
                 <span className="block h-[19px] w-full origin-left animate-category-title-underline">
                   <svg xmlns="http://www.w3.org/2000/svg" width="500" height="19" viewBox="0 0 500 19" fill="none" className="block h-[19px] w-full">
@@ -59,7 +59,6 @@ export default function AboutHero() {
                 </span>
               </span>
             </span>
-            {'. AI Powered Now'}
           </h1>
 
           <p
@@ -74,9 +73,9 @@ export default function AboutHero() {
               lineHeight: '24px',
             }}
           >
-            Helping learners and professionals gain industry-relevant skills, certifications, and practical expertise to
+            We make career-focused learning practical and accessible with expert-led training, hands-on projects, 
             <br />
-            accelerate career growth and long-term success.
+            interview preparation and career support.
           </p>
 
           <div className="mt-6 mb-6 flex justify-center md:mt-8 md:mb-8">
@@ -87,7 +86,7 @@ export default function AboutHero() {
               className="btn-brand inline-flex h-[54px] items-center gap-3 px-8"
               style={{ fontSize: '16px', fontWeight: 600, fontFamily: 'Inter' }}
             >
-              Partner With Us
+              Partner with us
               <svg width="18" height="15" viewBox="0 0 18 15" fill="none" aria-hidden className="btn-arrow-icon shrink-0">
                 <path d="M10.6333 15C10.8659 15 11.0694 14.9109 11.2633 14.7229L17.7092 8.16292C17.903 7.97492 18 7.74735 18 7.49999C18 7.25263 17.903 7.02506 17.7092 6.83707L11.2827 0.296834C11.0694 0.0791556 10.8659 0 10.6333 0C10.1583 0 9.78996 0.3562 9.78996 0.850923C9.78996 1.08839 9.86751 1.31596 10.0226 1.47428L12.1939 3.73021L16.2358 7.49999L12.1939 11.2697L10.0226 13.5257C9.86751 13.6741 9.78996 13.9116 9.78996 14.149C9.78996 14.6438 10.1583 15 10.6333 15ZM0.852987 8.3806H13.1147L16.2358 8.18271C16.6332 8.15303 16.9046 7.90566 16.9046 7.49999C16.9046 7.09432 16.6332 6.84696 16.2358 6.81728L13.1147 6.61938H0.852987C0.348949 6.61938 0 6.98548 0 7.49999C0 8.01451 0.348949 8.3806 0.852987 8.3806Z" fill="white" />
               </svg>
