@@ -1,13 +1,14 @@
 import type { GuidanceSectionProps } from './GuidanceSection';
 
 export const defaultGuidanceContent: GuidanceSectionProps = {
-  heading: 'Empowering Professionals,\nScaling Careers Globally',
+  heading: 'Build Skills Today to Unlock \nYour Career Edge',
+  description: 'Practical, career-focused learning designed to help you build the right skills and move your career forward.',
   stats: [
-    { id: 'leaders', value: '30000+', label: 'Future-Ready Leaders Certified' },
-    { id: 'goal', value: '100%', label: 'Professional Goal Achievement Rate' },
-    { id: 'countries', value: '100+', label: 'Countries Transforming with EdgeX' },
+    { id: 'leaders', value: '10,000+', label: 'Total Learners Enrolled' },
+    { id: 'goal', value: '400+', label: 'Hiring Partners' },
+    { id: 'countries', value: '5000+', label: 'Careers Transformed' },
   ],
-  formTitle: "We're Here to Guide Your Success",
+  formTitle: "Let’s Find the Right Course for You",
   courses: [
     { id: 'product-management', label: 'Product Management' },
     { id: 'agile-scrum', label: 'Agile & Scrum' },

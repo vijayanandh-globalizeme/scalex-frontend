@@ -1,13 +1,13 @@
 import type { MentorsSectionProps } from './MentorsSection';
 
 export const defaultMentorsContent: Omit<MentorsSectionProps, 'mentors'> = {
-  heading: 'Learn from the Architects of Modern Industry',
+  heading: 'Learn from Experienced Industry Experts',
   subheading:
-    'Get mentored by global leaders who have built and scaled world-class products.\nOur experts bring decades of real-world experience from top Fortune 500 companies directly to your screen',
+    'Bring real-world industry expertise into your workforce through trainers and consultants with hands-on experience across leading organizations and technologies.',
   stats: [
-    { id: 'experts', label: 'Industry Experts', value: '1250+' },
-    { id: 'courses', label: 'Comprehensive Courses', value: '400+' },
-    { id: 'agile', label: 'Agile Transformations', value: '1550+' },
-    { id: 'countries', label: 'Countries & Counting', value: '100+' },
+    { id: 'experts', label: 'Industry Experts', value: '200+' },
+    { id: 'courses', label: 'Technology & Business Skills', value: '50+' },
+    { id: 'agile', label: 'Enterprise Engagements', value: '500+' },
+    { id: 'countries', label: 'Industry Domains', value: '20+' },
   ],
 };

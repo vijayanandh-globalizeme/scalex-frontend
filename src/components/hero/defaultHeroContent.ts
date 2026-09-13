@@ -26,9 +26,9 @@ export const defaultHeroBadges: HeroBadge[] = [
 ];
 
 export const defaultHeroContent: HeroSectionProps = {
-  headingIntro: 'The Ultimate Launchpad for',
+  headingIntro: 'Build Skills Today and Unlock',
   headingYour: 'Your',
-  headingAccent: 'Career Growth',
+  headingAccent: 'Career Edge',
   subheading: 'Expert-led courses designed to help you thrive in the digital age',
   primaryCta: { href: '#courses-heading', label: 'Scale Your Expertise' },
   secondaryCta: { href: '/contact', label: 'Get An Expert Callback' },
@@ -43,9 +43,9 @@ export const defaultHeroContent: HeroSectionProps = {
     ],
   },
   collaboration: {
-    lineBefore: 'In Collaboration with ',
-    lineHighlight: 'World-Class',
-    lineAfter: ' Certifying Bodies',
+    lineBefore: 'Our Network of ',
+    lineHighlight: '400+',
+    lineAfter: ' Hiring Partners',
     logos: [
       { alt: 'Google', src: '/images/goo.png' },
       { alt: 'IBM', src: '/images/hero/ibm.png' },

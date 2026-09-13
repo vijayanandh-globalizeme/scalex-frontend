@@ -101,7 +101,7 @@ export default function ContactPageClient({
               </span>
 
               <p className="mt-6 max-w-full md:max-w-[377px]" style={{ color: '#788593', fontFamily: 'Inter', fontSize: '17px', fontWeight: 500, lineHeight: '26px' }}>
-                We&apos;d love to hear from you! Whether you&apos;re looking to upskill, transition careers, or build your enterprise learning roadmap — we&apos;re here for every step.
+                Have questions about our courses, career support or enterprise training? Our team is here to help you find the right solution.
               </p>
 
               {/* Contact Details */}
@@ -114,7 +114,7 @@ export default function ContactPageClient({
                   <div>
                     <p style={{ color: '#788593', fontFamily: 'Inter', fontSize: '12px', fontWeight: 600 }}>Call us</p>
                     <p style={{ color: '#1E293B', fontFamily: 'Inter', fontSize: '15px', fontWeight: 700 }}>{phone}</p>
-                    <p style={{ color: '#788593', fontFamily: 'Inter', fontSize: '13px', fontWeight: 400 }}>Mon–Sat, 9AM – 7PM IST</p>
+                    <p style={{ color: '#788593', fontFamily: 'Inter', fontSize: '13px', fontWeight: 400 }}>Available 24/7</p>
                   </div>
                 </div>
 
@@ -126,7 +126,7 @@ export default function ContactPageClient({
                     </svg>
                   </div>
                   <div>
-                    <p style={{ color: '#788593', fontFamily: 'Inter', fontSize: '12px', fontWeight: 600 }}>WhatsApp</p>
+                    <p style={{ color: '#788593', fontFamily: 'Inter', fontSize: '12px', fontWeight: 600 }}>WhatsApp Us</p>
                     <a href={whatsappHref} target="_blank" rel="noopener noreferrer" style={{ color: '#1E293B', fontFamily: 'Inter', fontSize: '15px', fontWeight: 700 }}>{whatsapp}</a>
                     <p style={{ color: '#788593', fontFamily: 'Inter', fontSize: '13px', fontWeight: 400 }}>Chat with us anytime</p>
                   </div>
@@ -140,7 +140,7 @@ export default function ContactPageClient({
                   <div>
                     <p style={{ color: '#788593', fontFamily: 'Inter', fontSize: '12px', fontWeight: 600 }}>Email us</p>
                     <p style={{ color: '#1E293B', fontFamily: 'Inter', fontSize: '15px', fontWeight: 700 }}>{email}</p>
-                    <p style={{ color: '#788593', fontFamily: 'Inter', fontSize: '13px', fontWeight: 400 }}>Reply within 4 hours</p>
+                    <p style={{ color: '#788593', fontFamily: 'Inter', fontSize: '13px', fontWeight: 400 }}>We’ll get back to you as soon as possible</p>
                   </div>
                 </div>
 
@@ -151,8 +151,8 @@ export default function ContactPageClient({
                   </div>
                   <div>
                     <p style={{ color: '#788593', fontFamily: 'Inter', fontSize: '12px', fontWeight: 600 }}>Visit us</p>
-                    <p style={{ color: '#1E293B', fontFamily: 'Inter', fontSize: '15px', fontWeight: 700 }}>{addressLine1}</p>
-                    <p style={{ color: '#788593', fontFamily: 'Inter', fontSize: '13px', fontWeight: 400 }}>{addressLine2}</p>
+                    <p style={{ color: '#1E293B', fontFamily: 'Inter', fontSize: '15px', fontWeight: 700 }}>EdgeX Learning Pvt. Ltd.</p>
+                    <p style={{ color: '#788593', fontFamily: 'Inter', fontSize: '13px', fontWeight: 400 }}>Bengaluru, Karnataka, India</p>
                   </div>
                 </div>
               </div>
@@ -197,7 +197,7 @@ export default function ContactPageClient({
                   <div className="absolute left-1/2 top-[72%] -translate-x-1/2 -translate-y-1/2 md:left-[36%]">
                     <div className="absolute bottom-[calc(100%+12px)] left-1/2 w-[min(200px,calc(100vw-5rem))] max-w-[200px] -translate-x-1/2 rounded-lg bg-zinc-900 px-3 py-2.5 text-white shadow-xl md:w-[200px]">
                       <p className="text-[13px] font-bold leading-snug">Bengaluru, Karnataka</p>
-                      <p className="text-[11px] text-zinc-300 mt-0.5 font-medium">Scale X Learning HQ</p>
+                      <p className="text-[11px] text-zinc-300 mt-0.5 font-medium">Edgex Learning</p>
                       <p className="text-[11px] text-zinc-400">{addressFull || 'Koramangala, Bengaluru 560034'}</p>
                       <div className="absolute left-1/2 -bottom-1.5 -translate-x-1/2 h-3 w-3 rotate-45 bg-zinc-900" />
                     </div>
@@ -229,10 +229,10 @@ export default function ContactPageClient({
         <div className="site-container">
           <div className="mb-10 text-center">
             <h2 style={{ color: '#1E293B', fontFamily: 'Inter', fontSize: '32px', fontWeight: 700, lineHeight: '1.2' }}>
-              Enquiry
+              How Can We Help You?
             </h2>
             <p className="mt-2 text-[15px]" style={{ color: '#788593', fontFamily: 'Inter', fontWeight: 400 }}>
-              We&apos;re here to help
+              Choose the right option and connect with our team.
             </p>
           </div>
 
@@ -241,46 +241,46 @@ export default function ContactPageClient({
               {
                 icon: 'fa-comment-dots',
                 title: 'Chat with us',
-                desc: 'For a Quick Answers to your queries, chat with us',
-                cta: 'Initiate Chat',
+                desc: 'Have a quick question? Chat with our team for immediate assistance.',
+                cta: 'Start Chat',
                 href: whatsappHref,
                 external: true,
               },
               {
                 icon: 'fa-book-open',
                 title: 'For Individual Learners',
-                desc: 'Feel free to mail us for all your queries',
-                cta: 'Mail Us',
+                desc: 'Get help with courses, fees, schedules, career support and enrolment.',
+                cta: 'Contact Us',
                 href: `mailto:${email}`,
               },
               {
                 icon: 'fa-building',
                 title: 'For Enterprise Learners',
-                desc: 'Mail us for all your queries',
-                cta: 'Mail Us',
+                desc: 'Looking to upskill your workforce? Connect with our enterprise training team',
+                cta: 'Talk to Us',
                 href: `mailto:${email}`,
               },
               {
                 id: 'become-instructor',
                 icon: 'fa-chalkboard-user',
                 title: 'Become an Instructor',
-                desc: 'Drop us a line, and we will be happy to assist',
-                cta: 'Mail Us',
+                desc: 'Interested in teaching with EdgeX? Join our network of industry experts and trainers.',
+                cta: 'Apply Now',
                 href: `mailto:${email}`,
               },
               {
                 id: 'become-trainer',
                 icon: 'fa-handshake',
-                title: 'Training Partners',
-                desc: 'Feel free to ping us with your inquiries',
-                cta: 'Mail Us',
+                title: 'Partner With EdgeX',
+                desc: 'Explore training, academic, hiring and business partnership opportunities with us.',
+                cta: 'Partner With Us',
                 href: `mailto:${email}`,
               },
               {
                 icon: 'fa-file-invoice-dollar',
-                title: 'Billing Related',
-                desc: 'Feel free to ping for all your queries',
-                cta: 'Mail Us',
+                title: 'Billing & Payments',
+                desc: 'Need help with payments, invoices, EMI or other billing-related queries?',
+                cta: 'Get Support ',
                 href: `mailto:${email}`,
               },
             ].map((card) => (

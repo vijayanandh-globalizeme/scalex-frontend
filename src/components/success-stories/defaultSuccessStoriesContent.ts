@@ -1,9 +1,9 @@
 import type { SuccessStoriesSectionProps } from './SuccessStoriesSection';
 
 export const defaultSuccessStoriesContent: Omit<SuccessStoriesSectionProps, 'stories'> = {
-  heading: 'Success Stories from Our Global Community',
+  heading: 'Hear From Our Learners',
   subheading:
-    'See how 100,000+ learners transformed their careers and scaled their expertise with EdgeX Learning',
+    'Discover how EdgeX learners are building new skills, gaining confidence and moving closer to their career goals',
   autoplay: true,
   autoplayIntervalMs: 6000,
   featureMedia: {
