@@ -26,6 +26,7 @@ export interface GuidancePurposeOption {
 
 export interface GuidanceSectionProps {
   heading: string;
+  description: string;
   stats: GuidanceStat[];
   formTitle: string;
   courses: GuidanceCourseOption[];
@@ -270,6 +271,7 @@ function GuidanceForm({
 
 export default function GuidanceSection({
   heading,
+  description,
   stats,
   formTitle,
   purposes,
@@ -301,9 +303,10 @@ export default function GuidanceSection({
             >
               {heading}
             </h2>
+            <p>{description}</p>
 
             <ul
-              className={`flex flex-col ${isEmbedded ? 'mt-6 gap-8' : 'mt-10 gap-14'}`}
+              className={`flex flex-col ${isEmbedded ? 'mt-6 gap-8' : 'mt-10 gap-10'}`}
             >
               {stats.map((s) => (
                 <li key={s.id}>

@@ -269,6 +269,166 @@ body {
   .course-accordion-answer [class~='ql-indent-7'] { margin-left: 10.5em; }
   .course-accordion-answer [class~='ql-indent-8'] { margin-left: 12em; }
 
+  /*
+   * Rendered Quill WYSIWYG HTML for legal pages (Privacy Policy / Terms of
+   * Use / Refund Policy). Same format coverage as .course-accordion-answer
+   * above, sized for a full-length article read instead of an accordion.
+   */
+  .legal-content {
+    color: var(--color-heading);
+    font-family: Inter, sans-serif;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 1.75;
+  }
+
+  .legal-content :where(p, li, span, div, td, blockquote, ul, ol) {
+    color: var(--color-heading);
+    font-family: Inter, sans-serif;
+    font-size: 15px;
+    line-height: 1.75;
+  }
+
+  .legal-content :where(h1, h2, h3, h4, h5, h6) {
+    color: var(--color-heading);
+    font-weight: 700;
+    line-height: 1.35;
+    margin: 28px 0 12px;
+  }
+
+  .legal-content :where(h1, h2, h3, h4, h5, h6):first-child {
+    margin-top: 0;
+  }
+
+  .legal-content h1 { font-size: 26px; }
+  .legal-content h2 { font-size: 22px; }
+  .legal-content h3 { font-size: 19px; }
+  .legal-content h4 { font-size: 17px; }
+  .legal-content h5,
+  .legal-content h6 { font-size: 15px; }
+
+  .legal-content p {
+    margin: 0 0 14px;
+  }
+
+  .legal-content p:last-child {
+    margin-bottom: 0;
+  }
+
+  .legal-content strong,
+  .legal-content b {
+    font-weight: 700 !important;
+  }
+
+  .legal-content em,
+  .legal-content i {
+    font-style: italic;
+  }
+
+  .legal-content u {
+    text-decoration: underline;
+  }
+
+  .legal-content s,
+  .legal-content strike,
+  .legal-content del {
+    text-decoration: line-through;
+  }
+
+  .legal-content ul,
+  .legal-content ol {
+    margin: 0 0 14px;
+    padding-left: 1.5em;
+  }
+
+  .legal-content ul { list-style: disc outside; }
+  .legal-content ol { list-style: decimal outside; }
+
+  .legal-content ul ul,
+  .legal-content ol ol,
+  .legal-content ul ol,
+  .legal-content ol ul {
+    margin: 6px 0;
+  }
+
+  .legal-content li {
+    margin-bottom: 8px;
+  }
+
+  .legal-content li:last-child {
+    margin-bottom: 0;
+  }
+
+  .legal-content li::marker {
+    color: var(--color-heading);
+  }
+
+  .legal-content blockquote {
+    margin: 16px 0;
+    padding: 10px 18px;
+    border-left: 3px solid var(--color-brand);
+    font-style: italic;
+    color: var(--color-muted);
+  }
+
+  .legal-content pre {
+    margin: 16px 0;
+    padding: 14px 18px;
+    border-radius: 8px;
+    background: #f5f6f8;
+    border: 1px solid #ebebeb;
+    color: var(--color-heading);
+    font-family: 'SFMono-Regular', Menlo, Consolas, monospace;
+    font-size: 13.5px;
+    line-height: 1.6;
+    overflow-x: auto;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+
+  .legal-content code {
+    font-family: 'SFMono-Regular', Menlo, Consolas, monospace;
+    font-size: 0.9em;
+    background: #f5f6f8;
+    border: 1px solid #ebebeb;
+    padding: 2px 6px;
+    border-radius: 4px;
+  }
+
+  .legal-content pre code {
+    background: transparent;
+    border: none;
+    padding: 0;
+    color: inherit;
+  }
+
+  .legal-content img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin: 16px 0;
+  }
+
+  .legal-content a {
+    color: var(--color-brand);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .legal-content .ql-align-center  { text-align: center; }
+  .legal-content .ql-align-right   { text-align: right; }
+  .legal-content .ql-align-justify { text-align: justify; }
+
+  .legal-content [class~='ql-indent-1'] { margin-left: 1.5em; }
+  .legal-content [class~='ql-indent-2'] { margin-left: 3em; }
+  .legal-content [class~='ql-indent-3'] { margin-left: 4.5em; }
+  .legal-content [class~='ql-indent-4'] { margin-left: 6em; }
+  .legal-content [class~='ql-indent-5'] { margin-left: 7.5em; }
+  .legal-content [class~='ql-indent-6'] { margin-left: 9em; }
+  .legal-content [class~='ql-indent-7'] { margin-left: 10.5em; }
+  .legal-content [class~='ql-indent-8'] { margin-left: 12em; }
+
   /* Shared card hover — shadow lift, image zoom, title brand color */
   .interactive-card {
     @apply cursor-pointer transition-shadow duration-300;

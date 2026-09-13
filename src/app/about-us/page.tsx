@@ -104,7 +104,7 @@ export default async function AboutPage() {
           </div>
           <div className="grid items-start gap-4 lg:gap-12 lg:grid-cols-2">
             <div className="relative h-[260px] overflow-hidden rounded-2xl md:h-[320px]">
-              <Image src="/images/who-we.png" alt="Who We Are — Scale X Learning team" fill className="object-cover" />
+              <Image src="/images/who-we.png" alt="Who We Are — EdgeX Learning team" fill className="object-cover" />
             </div>
             <div>
               <p
@@ -118,7 +118,7 @@ export default async function AboutPage() {
                   lineHeight: '24px',
                 }}
               >
-                Founded in 2016, Scale X Learning has grown into India&apos;s most trusted professional upskilling platform — helping working professionals, corporate teams, and fresh graduates build skills that actually matter in today&apos;s fast-moving industry.
+                Founded in 2016, EdgeX Learning has grown into India&apos;s most trusted professional upskilling platform — helping working professionals, corporate teams, and fresh graduates build skills that actually matter in today&apos;s fast-moving industry.
               </p>
               <p className="mt-4" style={{ color: '#4A5867', fontFamily: 'Inter', fontSize: '15px', fontStyle: 'normal', fontWeight: 400, lineHeight: '24px' }}>
                 From Agile and Scrum certifications to DevOps, Cloud, and project management — we deliver programs built around real-world outcomes, not just classroom hours.
@@ -184,7 +184,7 @@ export default async function AboutPage() {
               ))}
             </div>
             <div className="relative h-[260px] overflow-hidden rounded-2xl md:h-[400px]">
-              <Image src="/images/what-do.png" alt="What We Do — Scale X Learning" fill className="object-cover" />
+              <Image src="/images/what-do.png" alt="What We Do — EdgeX Learning" fill className="object-cover" />
             </div>
           </div>
         </div>
@@ -253,7 +253,7 @@ export default async function AboutPage() {
       <section className="full-bleed bg-surface pt-0 max-md:relative max-md:z-[1] max-md:overflow-visible md:py-20 md:pt-10 md:pb-10">
         <div className="site-container max-md:overflow-visible">
           <div className="mb-10 text-center">
-            <h2 style={{ color: '#1E293B', fontFamily: 'Inter', fontSize: '36px', fontWeight: 700 }}>The Minds Behind Scale X Learning</h2>
+            <h2 style={{ color: '#1E293B', fontFamily: 'Inter', fontSize: '36px', fontWeight: 700 }}>The Minds Behind EdgeX Learning</h2>
             <p className="mt-3" style={{ color: '#788593', textAlign: 'center', fontFamily: 'Inter', fontSize: '18px', fontStyle: 'normal', fontWeight: 500, lineHeight: '26px' }}>
               Visionary leaders with decades of combined experience in ed-tech, corporate training, and professional development.
             </p>
@@ -309,7 +309,7 @@ export default async function AboutPage() {
       <section className="full-bleed bg-surface pb-15 max-md:pt-15 md:pb-20 md:pt-20">
         <div className="site-container">
           <h2 className="mb-5 text-center" style={{ color: '#1E293B', fontFamily: 'Inter', fontSize: '36px', fontWeight: 700 }}>
-            Scale X Learning in the News
+            EdgeX Learning in the News
           </h2>
           <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {[
