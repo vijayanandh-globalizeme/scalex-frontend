@@ -68,7 +68,7 @@ export default async function CheckoutStatusPage({ searchParams }: Props) {
     <div className="site-container flex flex-col items-center py-24 text-center">
       <h1 className="text-[24px] font-extrabold text-heading">Payment failed</h1>
       <p className="mt-3 max-w-[420px] text-[14px] leading-relaxed text-muted">
-        Your payment for {order.batch.course.name} couldn&apos;t be completed. No amount has been charged. Please try
+        Your payment for {order.batch.course.name}&nbsp; couldn&apos;t be completed. No amount has been charged. Please try
         again.
       </p>
       <Link
