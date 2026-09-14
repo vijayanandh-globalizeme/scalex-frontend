@@ -268,7 +268,7 @@ export default async function AboutPage() {
               { img: '/images/naveen.jpeg', name: 'Naveen Kankipati', role: 'Co-Founder', bio: 'A decade and a half of experience building high-performing sales teams and driving tech-enabled transformation in EdTech.', linkedInLink: "https://www.linkedin.com/in/naveen-kankipati-18b207a2/" },
               { img: '/images/praneeth.jpeg', name: 'Praneeth Kuridi', role: 'Co-Founder', bio: 'Edtech leader. Strategy operator. Entrepreneur at heart. 13+ years turning ideas into scale. Always building something new.', linkedInLink: "https://www.linkedin.com/in/praneeth4959/" },
             ].map((person) => (
-              <div key={person.name} className="interactive-card flex flex-col overflow-visible rounded-2xl border border-zinc-100 bg-white p-6 max-md:relative max-md:z-[1] md:p-8">
+              <div key={person.name} className="interactive-card flex flex-col overflow-visible rounded-2xl border border-zinc-100 bg-white p-6 max-md:relative max-md:z-[1] md:p-7">
                 <div className="flex flex-col items-center text-center">
                   <div className="interactive-card-media relative h-60 w-60 overflow-hidden rounded-full mb-4 md:h-60 md:w-60">
                     <div className="absolute inset-1 overflow-hidden rounded-full">
