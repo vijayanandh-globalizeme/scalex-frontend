@@ -22,7 +22,7 @@ export const defaultTestimonialsContent: Omit<TestimonialsSectionProps, 'testimo
     {
       id: 'salary',
       label: 'Highest Salary',
-      value: '110LPA',
+      value: '86 LPA',
       icon: createElement(RupeeIcon, { className: 'h-[18px] w-[18px]' }),
     },
     {
@@ -34,7 +34,7 @@ export const defaultTestimonialsContent: Omit<TestimonialsSectionProps, 'testimo
     {
       id: 'partners',
       label: 'Hiring Partners',
-      value: '5000+',
+      value: '400+',
       icon: createElement(PartnersIcon, { className: 'h-[18px] w-[18px]' }),
     },
   ],

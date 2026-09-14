@@ -121,7 +121,7 @@ export const TECHNICAL_COURSE_DEFINITIONS: TechnicalCourseDefinition[] = [
 ];
 
 const DEFAULT_FORM = {
-  title: "We're Here to Guide Your Success",
+  title: "Let’s Find the Right Course for You",
   purposes: [
     { id: 'career-growth', label: 'Career Growth' },
     { id: 'placement', label: 'Get Placed' },

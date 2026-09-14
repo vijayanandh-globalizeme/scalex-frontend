@@ -1,9 +1,8 @@
 'use client';
 
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { useEffect, useState, type FormEvent } from 'react';
-import { getAvailableCoupons, applyCoupon, submitCheckoutForm } from '@/app/actions/checkoutActions';
+import { useEffect, useRef, useState, type FormEvent } from 'react';
+import { getAvailableCoupons, applyCoupon, initiatePaymentAction } from '@/app/actions/checkoutActions';
 import { useContactFieldErrors, fieldErrorClass } from '@/components/feedback/useContactFieldErrors';
 import type { ApiCheckoutBatch, ApiAvailableCoupon } from '@/services/checkoutApi';
 
@@ -115,8 +114,6 @@ export default function CheckoutView({
   planNumber: number;
   initialQuantity: number;
 }) {
-  const router = useRouter();
-
   const [quantity, setQuantity] = useState(initialQuantity);
 
   const [firstName, setFirstName] = useState('');
@@ -136,8 +133,21 @@ export default function CheckoutView({
 
   const [status, setStatus] = useState<'idle' | 'submitting' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState('');
-  const [successOpen, setSuccessOpen] = useState(false);
   const { fieldErrors, setFieldErrors, clearFieldError } = useContactFieldErrors();
+
+  const [paytmRedirect, setPaytmRedirect] = useState<{
+    actionUrl: string;
+    mid: string;
+    orderId: string;
+    txnToken: string;
+  } | null>(null);
+  const paytmFormRef = useRef<HTMLFormElement>(null);
+
+  // Once Paytm's redirect fields are in the DOM, auto-submit straight to
+  // their hosted checkout page — this is a real page navigation, not fetch.
+  useEffect(() => {
+    if (paytmRedirect) paytmFormRef.current?.submit();
+  }, [paytmRedirect]);
 
   useEffect(() => {
     getAvailableCoupons(batch.id, planNumber).then(setAvailableCoupons).catch(() => {});
@@ -189,7 +199,7 @@ export default function CheckoutView({
     setFieldErrors({});
     setErrorMessage('');
 
-    const result = await submitCheckoutForm({
+    const result = await initiatePaymentAction({
       batchId: batch.id,
       planNumber,
       quantity,
@@ -203,8 +213,13 @@ export default function CheckoutView({
     });
 
     if (result.success) {
-      setStatus('idle');
-      setSuccessOpen(true);
+      // Leaves status 'submitting' — the page is about to navigate away to Paytm.
+      setPaytmRedirect({
+        actionUrl: result.actionUrl,
+        mid: result.mid,
+        orderId: result.orderId,
+        txnToken: result.txnToken,
+      });
     } else {
       setStatus('error');
       setErrorMessage(result.message);
@@ -227,8 +242,6 @@ export default function CheckoutView({
   const startLabel = formatDate(batch.startDate);
   const endLabel = formatDate(batch.endDate);
   const dateRange = startLabel === endLabel ? startLabel : `${startLabel} - ${endLabel}`;
-
-  const courseDetailsHref = `/${batch.course.category.uri}/${batch.course.uri}`;
 
   return (
     <section className="full-bleed relative overflow-x-clip bg-[#F5F6F8]">
@@ -503,28 +516,22 @@ export default function CheckoutView({
         </div>
       </div>
 
-      {/* ── Success modal ─────────────────────────────────────────── */}
-      {successOpen ? (
+      {/* ── Paytm redirect form ───────────────────────────────────────
+          Hidden, auto-submitting POST to Paytm's hosted checkout page.
+          A real form navigation is required here (not fetch) since Paytm
+          needs the browser itself to land on their payment page. */}
+      {paytmRedirect ? (
+        <form ref={paytmFormRef} method="post" action={paytmRedirect.actionUrl} className="hidden">
+          <input type="hidden" name="mid" value={paytmRedirect.mid} />
+          <input type="hidden" name="orderId" value={paytmRedirect.orderId} />
+          <input type="hidden" name="txnToken" value={paytmRedirect.txnToken} />
+        </form>
+      ) : null}
+
+      {status === 'submitting' ? (
         <div className="fixed inset-0 z-[200] flex items-center justify-center bg-black/50 p-4">
           <div className="relative w-full max-w-[380px] overflow-hidden rounded-2xl bg-white p-8 text-center shadow-[0_24px_60px_rgba(0,0,0,0.25)]">
-            <div className="mx-auto flex h-[72px] w-[72px] items-center justify-center rounded-full bg-[#E7F8EF]">
-              <div className="flex h-14 w-14 items-center justify-center rounded-full bg-success">
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" aria-hidden>
-                  <path d="M20 6L9 17l-5-5" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-              </div>
-            </div>
-            <h2 className="mt-5 text-[20px] font-extrabold text-heading">Payment Successful!</h2>
-            <p className="mt-2 text-[14px] leading-relaxed text-muted">
-              Thanks for enrolling in {batch.course.name}. Our team will reach out with the next steps shortly.
-            </p>
-            <button
-              type="button"
-              onClick={() => router.push(courseDetailsHref)}
-              className="btn-brand mt-6 inline-flex h-11 w-full items-center justify-center rounded-lg text-[14px] font-semibold"
-            >
-              OK
-            </button>
+            <p className="text-[15px] font-medium text-heading">Redirecting you to Paytm to complete payment…</p>
           </div>
         </div>
       ) : null}

@@ -140,7 +140,7 @@ const COURSES: Record<string, CourseDetailContent> = {
       partners: ENTERPRISE_PARTNERS,
     },
     form: {
-      title: "We're Here to Guide Your Success",
+      title: "Let’s Find the Right Course for You",
       purposes: [
         { id: 'career-growth', label: 'Career Growth' },
         { id: 'certification', label: 'Get Certified' },

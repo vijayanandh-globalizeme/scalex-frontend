@@ -327,7 +327,9 @@ export default function AwardsSection({
       className={`full-bleed relative bg-surface pt-0 ${className ?? ''}`}
       aria-labelledby={headingId}
     >
-      <div className="site-container relative z-10">
+      <div
+        className={`site-container relative z-10 ${canNavigateMobile ? '' : 'max-md:pb-16'} ${canNavigateDesktop ? '' : 'md:pb-20'}`}
+      >
         <header className="mx-auto text-center">
           <h2
             id={headingId}

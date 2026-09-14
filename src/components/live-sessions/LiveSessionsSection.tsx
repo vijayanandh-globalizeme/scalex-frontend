@@ -7,8 +7,8 @@ import { useGridColumns } from '@/hooks/useGridColumns';
 import { getWebinars, type Webinar } from '@/app/actions/webinarActions';
 import { useCourseBrochureModal } from '@/components/course-detail';
 
-const HEADING = 'Upcoming Live Sessions';
-const SUBHEADING = 'Join our expert-led live webinars and accelerate your career growth.';
+const HEADING = 'Live Webinars with Industry Experts';
+const SUBHEADING = 'Join expert-led sessions to explore industry trends, learn practical skills and gain insights to move your career forward.';
 
 const INITIAL_COUNT = 3;
 const LOAD_MORE_COUNT = 6;

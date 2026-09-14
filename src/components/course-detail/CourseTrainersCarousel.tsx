@@ -141,7 +141,7 @@ export default function CourseTrainersCarousel({
           ) : null}
         </div>
 
-        <div className="min-w-0 max-md:overflow-x-clip">
+        <div className="min-w-0 overflow-x-clip">
           <CategoryCarouselTrack
             page={page}
             clipX={false}

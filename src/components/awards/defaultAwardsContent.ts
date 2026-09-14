@@ -1,52 +1,36 @@
 import type { AwardsSectionProps } from './AwardsSection';
 
 export const defaultAwardsContent: AwardsSectionProps = {
-  heading: 'Excellence Recognized by Global Industry Leaders',
+  heading: 'Awards & Recognition',
   subheading:
-    'Celebrating our journey of innovation and impact through prestigious awards that define our commitment to world-class learning',
+    'Celebrating the milestones that reflect our commitment to quality learning and student success.',
   visibleCount: 3,
   autoplay: true,
   autoplayIntervalMs: 6000,
   cards: [
     {
       id: 'gold-2025',
-      title: '2025 Gold Winner',
-      subtitle: 'Top 10 Ed Tech Platform',
+      title: 'EdTech Excellence Award 2026',
+      subtitle: 'Outstanding Contribution to Skill-Based Learning',
       variant: 'gold',
       medalSrc: '/images/top10.png',
-      medalAlt: 'Top 10 Ed Tech Platform award',
+      medalAlt: 'Recognized for our learner-first approach and industry-aligned programs.',
     },
     {
       id: 'orange-2025',
-      title: '2025 Gold Winner',
-      subtitle: 'Top 10 Ed Tech Platform',
+      title: 'Innovation in Learning Award 2026',
+      subtitle: 'Innovation in Technology-Enabled Education',
       variant: 'orange',
       medalSrc: '/images/top10.png',
-      medalAlt: 'Top 10 Ed Tech Platform award',
+      medalAlt: 'Recognized for creating practical and engaging learning experiences using modern technology.',
     },
     {
       id: 'red-2025',
-      title: '2025 Gold Winner',
-      subtitle: 'Top 10 Ed Tech Platform',
+      title: 'Learner Success Award 2026',
+      subtitle: 'Excellence in Career-Focused Learning',
       variant: 'red',
       medalSrc: '/images/top10.png',
-      medalAlt: 'Top 10 Ed Tech Platform award',
-    },
-    {
-      id: 'gold-2024',
-      title: '2024 Excellence Award',
-      subtitle: 'Best Online Learning Experience',
-      variant: 'gold',
-      medalSrc: '/images/top10.png',
-      medalAlt: 'Best Online Learning Experience award',
-    },
-    {
-      id: 'orange-2024',
-      title: '2024 Innovation Award',
-      subtitle: 'Tech Education Pioneer',
-      variant: 'orange',
-      medalSrc: '/images/top10.png',
-      medalAlt: 'Tech Education Pioneer award',
-    },
+      medalAlt: 'Recognized for empowering learners with skills and career support to move forward with confidence.',
+    }
   ],
 };

@@ -1,25 +1,25 @@
 import type { WorkforceSectionProps } from './WorkforceSection';
 
 export const defaultWorkforceContent: WorkforceSectionProps = {
-  headingBefore: 'Future-Proof Your Workforce with',
+  headingBefore: 'Build a Future-Ready Workforce with ',
   brandLogo: { alt: 'Edge X' },
-  headingAfter: 'Hiring Partners',
+  headingAfter: '',
   subheading:
-    'Empower your team with industry-leading skills and custom learning pathways designed to drive innovation and measurable growth.',
+    'Upskill your teams with industry-focused training designed around your business, technology and workforce needs.',
   features: [
-    { id: 'immersive', label: 'Immersive Learning' },
-    { id: 'driven', label: 'Result-Driven Journeys' },
-    { id: 'tailored', label: 'Tailored Pathways' },
-    { id: 'future', label: 'Future-Ready Workforce' },
+    { id: 'immersive', label: 'Customized Training' },
+    { id: 'driven', label: 'Expert-Led Learning' },
+    { id: 'tailored', label: 'Hands-On Learning' },
+    { id: 'future', label: 'Flexible Delivery' },
   ],
   cta: { label: 'Request A Demo', href: '/request-demo' },
   stats: [
-    { id: 'avg-salary', label: 'Average Salary', value: '60 LPA' },
-    { id: 'highest-salary', label: 'Highest Salary', value: '110LPA' },
-    { id: 'offers', label: 'Highest no.of Offers', value: '18' },
-    { id: 'engineers', label: 'Enrolled Engineers', value: '20000+' },
-    { id: 'years', label: 'Years in Ed Tech Industry', value: '8+' },
-    { id: 'roi', label: 'Average ROI on Course Price', value: '10000+' },
+    { id: 'avg-salary', label: 'Enterprise Clients', value: '250+' },
+    { id: 'highest-salary', label: 'Professionals Upskilled', value: '25K+' },
+    { id: 'offers', label: 'Consulting Engagements', value: '500+' },
+    { id: 'engineers', label: 'Training Hours Delivered', value: '100K+' },
+    { id: 'years', label: 'Industry Experts', value: '200+' },
+    { id: 'roi', label: 'Industry Experience', value: '10+ Years' },
   ],
   partners: [
     { id: 'google', name: 'Google', logoSrc: '/images/hero/google.png', logoAlt: 'Google' },
