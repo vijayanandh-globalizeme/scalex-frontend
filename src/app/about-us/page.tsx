@@ -264,14 +264,16 @@ export default async function AboutPage() {
           </div>
           <div className="about-us-minds-grid mx-auto grid max-w-5xl grid-cols-1 gap-6 sm:grid-cols-3 md:gap-8 max-md:overflow-visible">
             {[
-              { img: '/images/naray.png', name: 'Narayana Ajay', role: 'Co-Founder', bio: 'Product Manager passionate about building products from scratch, with 15 years of experience in brand building and business growth in EdTech.', linkedInLink: "https://www.linkedin.com/in/kvl-narayana-5a324a7b/" },
-              { img: '/images/narasim.png', name: 'Naveen Kankipati', role: 'Co-Founder', bio: 'A decade and a half of experience building high-performing sales teams and driving tech-enabled transformation in EdTech.', linkedInLink: "https://www.linkedin.com/in/naveen-kankipati-18b207a2/" },
-              { img: '/images/pranee.png', name: 'Praneeth Kuridi', role: 'Co-Founder', bio: 'Edtech leader. Strategy operator. Entrepreneur at heart. 13+ years turning ideas into scale. Always building something new.', linkedInLink: "https://www.linkedin.com/in/praneeth4959/" },
+              { img: '/images/narayana.jpeg', name: 'Narayana Ajay', role: 'Co-Founder', bio: 'Product Manager passionate about building products from scratch, with 15 years of experience in brand building and business growth in EdTech.', linkedInLink: "https://www.linkedin.com/in/kvl-narayana-5a324a7b/" },
+              { img: '/images/naveen.jpeg', name: 'Naveen Kankipati', role: 'Co-Founder', bio: 'A decade and a half of experience building high-performing sales teams and driving tech-enabled transformation in EdTech.', linkedInLink: "https://www.linkedin.com/in/naveen-kankipati-18b207a2/" },
+              { img: '/images/praneeth.jpeg', name: 'Praneeth Kuridi', role: 'Co-Founder', bio: 'Edtech leader. Strategy operator. Entrepreneur at heart. 13+ years turning ideas into scale. Always building something new.', linkedInLink: "https://www.linkedin.com/in/praneeth4959/" },
             ].map((person) => (
               <div key={person.name} className="interactive-card flex flex-col overflow-visible rounded-2xl border border-zinc-100 bg-white p-6 max-md:relative max-md:z-[1] md:p-8">
                 <div className="flex flex-col items-center text-center">
-                  <div className="interactive-card-media relative h-32 w-32 overflow-hidden rounded-full mb-4 md:h-36 md:w-36">
-                    <Image src={person.img} alt={person.name} fill className="object-cover" />
+                  <div className="interactive-card-media relative h-60 w-60 overflow-hidden rounded-full mb-4 md:h-60 md:w-60">
+                    <div className="absolute inset-1 overflow-hidden rounded-full">
+                      <Image src={person.img} alt={person.name} fill className="object-cover object-top" />
+                    </div>
                   </div>
                   <p className="interactive-card-title" style={{ color: '#1E293B', fontFamily: 'Inter', fontSize: '17px', fontWeight: 700 }}>{person.name}</p>
                   <p className="mt-1" style={{ color: '#788593', fontFamily: 'Inter', fontSize: '13px', fontWeight: 400 }}>{person.role}</p>
