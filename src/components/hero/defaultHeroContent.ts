@@ -43,9 +43,9 @@ export const defaultHeroContent: HeroSectionProps = {
     ],
   },
   collaboration: {
-    lineBefore: 'Our Network of ',
+    lineBefore: 'Trusted by Recruiters at ',
     lineHighlight: '400+',
-    lineAfter: ' Hiring Partners',
+    lineAfter: ' Companies',
     logos: [
       { alt: 'Google', src: '/images/goo.png' },
       { alt: 'IBM', src: '/images/hero/ibm.png' },
