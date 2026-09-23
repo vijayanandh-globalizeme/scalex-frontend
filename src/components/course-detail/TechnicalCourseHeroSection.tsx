@@ -665,8 +665,8 @@ export default function TechnicalCourseHeroSection(course: TechnicalCourseConten
         <div className="relative z-20 max-md:mt-15 max-md:mb-0 md:mt-12 md:mb-[-42px]">
           <div className="rounded-[20px] border border-[#EBEBEB] bg-white px-6 py-5 shadow-[0_4px_4px_0_rgba(30,41,59,0.11),0_4px_4px_0_rgba(30,41,59,0.03)] md:px-10 md:py-6">
             <p className="max-md:mb-0 md:mb-5 text-center text-[20px] font-semibold leading-normal">
-              <span className="text-[#1E293B]">Our </span>
-              <span className="text-[#FD022D]">Hiring Partners</span>
+              <span className="text-[#1E293B]">Companies Hiring </span>
+              <span className="text-[#FD022D]">Our Learners</span>
             </p>
             <div className={HOME_LOGO_MARQUEE_WRAPPER_CLASS}>
               <LogoMarquee
