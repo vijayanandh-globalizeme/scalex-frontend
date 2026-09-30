@@ -119,16 +119,18 @@ export const BOOTCAMP_COURSE_DEFINITIONS: BootcampCourseDefinition[] = [
 ];
 
 const DEFAULT_FORM = {
-  title: "Let’s Find the Right Course for You",
+  title: "Share Your Details",
   purposes: [
-    { id: 'career-growth', label: 'Career Growth' },
-    { id: 'placement', label: 'Get Placed' },
-    { id: 'upskill-team', label: 'Upskill My Team' },
-    { id: 'other', label: 'Other' },
+    { id: 'training', label: 'Training' },
+    { id: 'certification', label: 'Certification' },
+    { id: 'job-preparation', label: 'Job Preparation' },
+    { id: 'upskilling', label: 'Upskilling' },
+    { id: 'exploring', label: 'Exploring' },
+    { id: 'others', label: 'Others' },
   ],
   termsHref: '/terms-of-use',
   privacyHref: '/privacy-policy',
-  ctaLabel: 'Scale Your Career',
+  ctaLabel: 'Submit',
 };
 
 function buildTechnicalCourse(def: BootcampCourseDefinition): BootcampCourseContent {

@@ -13,24 +13,27 @@ export const defaultAwardsContent: AwardsSectionProps = {
       title: 'EdTech Excellence Award 2026',
       subtitle: 'Outstanding Contribution to Skill-Based Learning',
       variant: 'gold',
-      medalSrc: '/images/top10.png',
-      medalAlt: 'Recognized for our learner-first approach and industry-aligned programs.',
+      imageSrc: '/images/awards/edtech-excellence-award-2026.jpg',
+      imageAlt:
+        'EdgeX Learning EdTech Excellence Award 2026 trophy presented by Times Education Awards',
     },
     {
       id: 'orange-2025',
       title: 'Innovation in Learning Award 2026',
       subtitle: 'Innovation in Technology-Enabled Education',
       variant: 'orange',
-      medalSrc: '/images/top10.png',
-      medalAlt: 'Recognized for creating practical and engaging learning experiences using modern technology.',
+      imageSrc: '/images/awards/innovation-in-learning-award-2026.jpg',
+      imageAlt:
+        'EdgeX Learning Innovation in Learning Award 2026 trophy presented by BW Education Worldwide',
     },
     {
       id: 'red-2025',
       title: 'Learner Success Award 2026',
       subtitle: 'Excellence in Career-Focused Learning',
       variant: 'red',
-      medalSrc: '/images/top10.png',
-      medalAlt: 'Recognized for empowering learners with skills and career support to move forward with confidence.',
+      imageSrc: '/images/awards/learner-success-award-2026.jpg',
+      imageAlt:
+        'EdgeX Learning Learner Success Award 2026 trophy presented by Elets Digital Learning Summit & Awards',
     }
   ],
 };

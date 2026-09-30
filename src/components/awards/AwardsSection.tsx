@@ -18,6 +18,9 @@ export interface AwardCard {
   /** Optional medal badge image (defaults to a built-in pseudo-medal). */
   medalSrc?: string;
   medalAlt?: string;
+  /** Optional award photo (trophy). When set, the card renders the photo layout instead of the medal. */
+  imageSrc?: string;
+  imageAlt?: string;
 }
 
 export interface AwardsSectionProps {
@@ -80,7 +83,47 @@ function MedalBadge({ src, alt, embedded = false }: { src?: string; alt?: string
   );
 }
 
+function AwardPhotoCard({ card }: { card: AwardCard }) {
+  const styles = VARIANT_STYLES[card.variant];
+  return (
+    <article
+      className={`interactive-card relative flex h-full w-full flex-col overflow-hidden rounded-[16px] ${card.backgroundColor ? '' : styles.bg} text-white`}
+      style={card.backgroundColor ? { backgroundColor: card.backgroundColor } : undefined}
+    >
+      <div className="interactive-card-media relative aspect-[3/4] w-full bg-[#1E293B]">
+        <Image
+          src={card.imageSrc!}
+          alt={card.imageAlt ?? card.title}
+          fill
+          sizes="(max-width: 767px) 100vw, 33vw"
+          className="object-cover object-center"
+        />
+      </div>
+      <div className="relative flex flex-1 flex-col justify-center overflow-hidden px-5 py-5">
+        <span className="pointer-events-none absolute inset-y-0 right-0 w-1/2" aria-hidden>
+          <Image
+            src="/images/xaero.png"
+            alt=""
+            fill
+            sizes="33vw"
+            className="object-contain object-right"
+          />
+        </span>
+        <div className="relative z-10">
+          <h3 className="keep-title-color text-[20px] font-semibold leading-[140%] text-white">
+            {card.title}
+          </h3>
+          <p className="mt-1 text-[14px] font-medium leading-[140%] text-white">{card.subtitle}</p>
+        </div>
+      </div>
+    </article>
+  );
+}
+
 function AwardCardItem({ card, embedded = false }: { card: AwardCard; embedded?: boolean }) {
+  if (card.imageSrc && !embedded) {
+    return <AwardPhotoCard card={card} />;
+  }
   const styles = VARIANT_STYLES[card.variant];
   return (
     <article
@@ -193,6 +236,8 @@ export default function AwardsSection({
   const [slideMetrics, setSlideMetrics] = useState({ cardWidth: 0, step: 0 });
   const total = cards.length;
   const isEmbedded = variant === 'embedded';
+  // Photo cards have no overhanging medal, so they don't need the top headroom.
+  const usesPhotoCards = !isEmbedded && cards.every((card) => card.imageSrc);
 
   // Show 1 card per slide on mobile, the configured count on md+
   const [perView, setPerView] = useState(visibleCount);
@@ -250,7 +295,7 @@ export default function AwardsSection({
   const carousel = (
     <div
       ref={viewportRef}
-      className={`relative overflow-x-hidden max-md:overflow-y-visible md:overflow-hidden max-md:pt-14 md:pt-14 ${isEmbedded ? 'mt-6' : 'mt-10 md:mt-12'}`}
+      className={`relative overflow-x-hidden max-md:overflow-y-visible md:overflow-hidden ${usesPhotoCards ? 'pt-2' : 'max-md:pt-14 md:pt-14'} ${isEmbedded ? 'mt-6' : 'mt-10 md:mt-12'}`}
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
     >
