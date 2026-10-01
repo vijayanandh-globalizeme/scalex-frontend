@@ -85,7 +85,7 @@ function GuidanceForm({
   decorativeArrow?: { src: string; alt?: string };
   embedded: boolean;
 }) {
-  const [agreed, setAgreed] = useState(false);
+  const [agreed, setAgreed] = useState(true);
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');

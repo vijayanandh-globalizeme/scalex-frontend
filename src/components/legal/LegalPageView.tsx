@@ -45,7 +45,7 @@ function ArrowRightIcon({ className }: { className?: string }) {
 }
 
 function LegalSidebar() {
-  const [agreed, setAgreed] = useState(false);
+  const [agreed, setAgreed] = useState(true);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
