@@ -121,12 +121,12 @@ export default function CourseBrochureModal({
         >
           <div className="relative z-10 p-7">
             <p className="text-[24px] font-extrabold leading-tight text-white">
-              Let&apos;s scale
+              Let&apos;s get
               <br />
-              your career
+              Started
             </p>
             <p className="mt-3 text-[13px] leading-relaxed text-white/70">
-              Talk to our experts for a personalised roadmap, syllabus and pricing.
+              Everything you need to make the right learning decision.
             </p>
           </div>
           <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[300px]">

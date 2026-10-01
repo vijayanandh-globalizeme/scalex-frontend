@@ -74,7 +74,7 @@ export default function CourseLeadForm({
   bare = false,
   emphasizedFields = false,
 }: CourseLeadFormProps) {
-  const [agreed, setAgreed] = useState(false);
+  const [agreed, setAgreed] = useState(true);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');

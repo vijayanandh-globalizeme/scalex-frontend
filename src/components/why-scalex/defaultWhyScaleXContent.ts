@@ -9,64 +9,66 @@ export const defaultWhyScaleXContent: WhyScaleXSectionProps = {
   scalexBrandLogo: { src: '/images/logo.png', alt: 'EdgeX' },
   rows: [
     {
-      id: 'learning-mode',
-      label: 'Learning Mode',
+      id: 'learning-experience',
+      label: 'Learning Experience',
       others: {
-        title: 'Theory-Heavy',
-        description: 'Traditional classroom approach with limited practical exposure.',
+        title: 'Recorded / Standard Learning',
+        description: 'Limited interaction and hands-on exposure.',
       },
       scalex: {
-        title: 'Project-Led & Immersive',
+        title: 'Live & Hands-On Learning',
+        description: 'Instructor-led sessions with practical, real-world learning.',
+      },
+    },
+    {
+      id: 'language',
+      label: 'Language',
+      others: {
+        title: 'English-First Learning',
+        description: 'Learning can be challenging when English is not your preferred language.',
+      },
+      scalex: {
+        title: 'Learn in Your Preferred Language',
+        description: 'Learn concepts clearly in the language you understand best.',
+      },
+    },
+    {
+      id: 'interview-preparation',
+      label: 'Interview Preparation',
+      others: {
+        title: 'Basic Interview Guidance',
+        description: 'Limited interview preparation and practice.',
+      },
+      scalex: {
+        title: '30-Day Dedicated Interview Prep',
         description:
-          'Real-world simulations and hands-on projects that prepare you for day-one productivity.',
+          'Focused interview preparation with questions, scenarios, practice and mock interviews.',
       },
     },
     {
       id: 'mentorship',
       label: 'Mentorship',
       others: {
-        title: 'Generic Trainers',
-        description: 'Academics or trainers with limited current industry experience.',
+        title: 'Limited Mentorship',
+        description: 'Support may be available only during scheduled sessions.',
       },
       scalex: {
-        title: 'Global Industry Architects',
-        description: 'Direct 1-on-1 mentorship from Fortune 500 experts.',
-      },
-    },
-    {
-      id: 'certifications',
-      label: 'Certifications',
-      others: {
-        title: 'Local Certifications',
-        description: 'Certificates with limited global or industry recognition.',
-      },
-      scalex: {
-        title: 'Globally Accredited',
-        description: "Credentials recognized by the world's leading governing bodies.",
+        title: 'Daily Mentorship',
+        description:
+          'Get continuous guidance, doubt resolution and career support throughout your journey.',
       },
     },
     {
       id: 'career-support',
       label: 'Career Support',
       others: {
-        title: 'Basic Support',
-        description: 'Limited job assistance with no long-term career tracking.',
+        title: 'Limited Career Guidance',
+        description: 'Support may end after course completion.',
       },
       scalex: {
-        title: 'Scalable Career Growth',
-        description: 'Lifelong access to our elite professional network and 100% placement aid.',
-      },
-    },
-    {
-      id: 'real-time-impact',
-      label: 'Real-Time Impact',
-      others: {
-        title: 'Simulated Projects',
-        description: "Basic, outdated capstones that don't reflect industry reality.",
-      },
-      scalex: {
-        title: 'Live Enterprise Projects',
-        description: 'Work on actual projects for global brands and startups.',
+        title: 'Complete Job Assistance',
+        description:
+          'Resume building, LinkedIn guidance, interview preparation and job-search support.',
       },
     },
   ],

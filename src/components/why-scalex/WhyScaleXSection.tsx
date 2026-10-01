@@ -130,7 +130,7 @@ export default function WhyScaleXSection({
           {rows.map((row) => (
             <div
               key={`label-${row.id}`}
-              className={`flex ${ROW_MIN_HEIGHT} flex-1 items-center justify-end pr-4 text-right ${rowLabelClassName}`}
+              className={`flex ${ROW_MIN_HEIGHT} flex-1 items-start justify-end pr-4 text-right ${rowLabelClassName}`}
             >
               {row.label}
             </div>
