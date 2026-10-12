@@ -3,9 +3,9 @@ import { defaultWhyScaleXContent, type WhyScaleXSectionProps } from '@/component
 export const courseWhyScaleXContent: WhyScaleXSectionProps = {
   headingBefore: 'Why Choose',
   headingAfter: '',
-  brandLogo: { src: '/images/logo.png', alt: 'EdgeX' },
+  brandLogo: { src: '/images/logo.png', alt: 'EdgeX Learning' },
   subheading: 'World Class Training . Real World Impact . Your Success Guaranteed',
-  scalexBrandLogo: { src: '/images/footer-logo.png', alt: 'Edgex Learning' },
+  scalexBrandLogo: { src: '/images/logo.png', alt: 'Edgex Learning' },
   // Same comparison rows as the homepage section.
   rows: defaultWhyScaleXContent.rows,
 };
