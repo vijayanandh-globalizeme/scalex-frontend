@@ -175,7 +175,7 @@ function TestimonialCardOnly({ story, mobile = false }: { story: Reviewer; mobil
       }
     >
       <div className="flex min-h-0 flex-1 flex-col">
-        <p className="text-[13px] leading-[20px] text-body md:text-[14px] md:leading-[22px]">
+        <p className="line-clamp-6 text-[13px] leading-[20px] text-body md:text-[14px] md:leading-[22px]">
           {story.review}
         </p>
         {typeMeta ? (
