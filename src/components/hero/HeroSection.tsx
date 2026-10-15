@@ -185,11 +185,12 @@ export default function HeroSection(props: HeroSectionProps) {
             imageAlt={figure.alt}
             aeroSrc={aeroSrc}
             badges={badges}
+            className="max-md:hidden"
           />
         </div>
 
-        {/* Collaboration strip */}
-        <div className="relative -mt-10 md:-mt-12">
+        {/* Collaboration strip — no media column above it on mobile, so no overlap there */}
+        <div className="relative mt-10 md:-mt-12">
           <CollaborationStrip collaboration={collaboration} />
         </div>
       </div>

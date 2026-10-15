@@ -620,13 +620,15 @@ export default function TechnicalCourseHeroSection(course: TechnicalCourseConten
             }}
             className="gsap-reveal-pending min-w-0 max-md:w-full max-md:max-w-full max-md:overflow-visible"
           >
-            <HeroMediaColumn
-              figureSrc={heroFigureSrc}
-              figureAlt="Technical course learner"
-              badges={heroBadges}
-              aeroShiftRight={isCsmPage}
-              figureAlign={isDevopsPage ? 'left' : 'right'}
-            />
+            <div className="max-md:hidden">
+              <HeroMediaColumn
+                figureSrc={heroFigureSrc}
+                figureAlt="Technical course learner"
+                badges={heroBadges}
+                aeroShiftRight={isCsmPage}
+                figureAlign={isDevopsPage ? 'left' : 'right'}
+              />
+            </div>
             {collaboration.length > 0 ? (
               <div
                 className={`mt-6 flex max-md:justify-center max-md:pl-0 ${

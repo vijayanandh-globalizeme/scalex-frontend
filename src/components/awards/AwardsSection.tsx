@@ -44,6 +44,8 @@ const VARIANT_STYLES: Record<AwardCard['variant'], { bg: string }> = {
 };
 
 const GAP_PX = 24;
+// Tighter spacing between cards on desktop when embedded in course pages.
+const EMBEDDED_DESKTOP_GAP_PX = 16;
 
 function ArrowRightIcon({ className }: { className?: string }) {
   return (
@@ -90,30 +92,37 @@ function AwardPhotoCard({ card }: { card: AwardCard }) {
       className={`interactive-card relative flex h-full w-full flex-col overflow-hidden rounded-[16px] ${card.backgroundColor ? '' : styles.bg} text-white`}
       style={card.backgroundColor ? { backgroundColor: card.backgroundColor } : undefined}
     >
-      <div className="interactive-card-media relative aspect-[3/4] w-full bg-[#1E293B]">
-        <Image
-          src={card.imageSrc!}
-          alt={card.imageAlt ?? card.title}
-          fill
-          sizes="(max-width: 767px) 100vw, 33vw"
-          className="object-cover object-center"
-        />
+      <div className="interactive-card-media relative aspect-[6/5] w-full bg-[#1E293B]">
+        {/* Blurred copy fills the frame so the full trophy can sit uncropped on top. */}
+        <span className="absolute inset-0 scale-110 blur-xl" aria-hidden>
+          <Image src={card.imageSrc!} alt="" fill sizes="64px" className="object-cover object-center" />
+        </span>
+        <div className="absolute inset-0 flex justify-center">
+          <Image
+            src={card.imageSrc!}
+            alt={card.imageAlt ?? card.title}
+            width={0}
+            height={0}
+            sizes="(max-width: 767px) 100vw, 33vw"
+            className="h-full w-auto [mask-image:linear-gradient(to_right,transparent,black_14%,black_86%,transparent)]"
+          />
+        </div>
       </div>
-      <div className="relative flex flex-1 flex-col justify-center overflow-hidden px-5 py-5">
+      <div className="relative flex flex-1 flex-col justify-center overflow-hidden px-4 py-4">
         <span className="pointer-events-none absolute inset-y-0 right-0 w-1/2" aria-hidden>
           <Image
             src="/images/xaero.png"
             alt=""
             fill
-            sizes="33vw"
+            sizes="160px"
             className="object-contain object-right"
           />
         </span>
         <div className="relative z-10">
-          <h3 className="keep-title-color text-[20px] font-semibold leading-[140%] text-white">
+          <h3 className="keep-title-color text-[17px] font-semibold leading-[140%] text-white">
             {card.title}
           </h3>
-          <p className="mt-1 text-[14px] font-medium leading-[140%] text-white">{card.subtitle}</p>
+          <p className="mt-1 text-[13px] font-medium leading-[140%] text-white">{card.subtitle}</p>
         </div>
       </div>
     </article>
@@ -121,7 +130,7 @@ function AwardPhotoCard({ card }: { card: AwardCard }) {
 }
 
 function AwardCardItem({ card, embedded = false }: { card: AwardCard; embedded?: boolean }) {
-  if (card.imageSrc && !embedded) {
+  if (card.imageSrc) {
     return <AwardPhotoCard card={card} />;
   }
   const styles = VARIANT_STYLES[card.variant];
@@ -237,7 +246,8 @@ export default function AwardsSection({
   const total = cards.length;
   const isEmbedded = variant === 'embedded';
   // Photo cards have no overhanging medal, so they don't need the top headroom.
-  const usesPhotoCards = !isEmbedded && cards.every((card) => card.imageSrc);
+  const usesPhotoCards = cards.every((card) => card.imageSrc);
+  const desktopGap = isEmbedded ? EMBEDDED_DESKTOP_GAP_PX : GAP_PX;
 
   // Show 1 card per slide on mobile, the configured count on md+
   const [perView, setPerView] = useState(visibleCount);
@@ -259,8 +269,8 @@ export default function AwardsSection({
         setSlideMetrics({ cardWidth: width, step: width + GAP_PX });
         return;
       }
-      const cardWidth = (width - GAP_PX * Math.max(0, perView - 1)) / perView;
-      setSlideMetrics({ cardWidth, step: cardWidth + GAP_PX });
+      const cardWidth = (width - desktopGap * Math.max(0, perView - 1)) / perView;
+      setSlideMetrics({ cardWidth, step: cardWidth + desktopGap });
     };
 
     update();
@@ -271,7 +281,7 @@ export default function AwardsSection({
       observer.disconnect();
       window.removeEventListener('resize', update);
     };
-  }, [perView]);
+  }, [perView, desktopGap]);
 
   const maxIndex = Math.max(0, total - perView);
   const canNavigateDesktop = total > visibleCount;
@@ -295,14 +305,14 @@ export default function AwardsSection({
   const carousel = (
     <div
       ref={viewportRef}
-      className={`relative overflow-x-hidden max-md:overflow-y-visible md:overflow-hidden ${usesPhotoCards ? 'pt-2' : 'max-md:pt-14 md:pt-14'} ${isEmbedded ? 'mt-6' : 'mt-10 md:mt-12'}`}
+      className={`relative overflow-x-hidden max-md:overflow-y-visible md:overflow-hidden ${usesPhotoCards ? 'mx-auto pt-2 md:max-w-[1120px]' : 'max-md:pt-14 md:pt-14'} ${isEmbedded ? 'mt-6' : 'mt-10 md:mt-12'}`}
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
     >
       <div
         className="flex transition-transform duration-500 ease-out will-change-transform"
         style={{
-          gap: perView === 1 ? 0 : GAP_PX,
+          gap: perView === 1 ? 0 : desktopGap,
           transform:
             slideMetrics.step > 0
               ? `translate3d(-${index * slideMetrics.step}px, 0, 0)`
@@ -323,7 +333,7 @@ export default function AwardsSection({
                       : {}),
                   }
                 : {
-                    flex: `0 0 calc((100% - ${(perView - 1) * GAP_PX}px) / ${perView})`,
+                    flex: `0 0 calc((100% - ${(perView - 1) * desktopGap}px) / ${perView})`,
                   }
             }
           >
@@ -338,7 +348,7 @@ export default function AwardsSection({
     return (
       <section
         id={id}
-        className={`scroll-mt-[116px] rounded-[20px] bg-transparent max-md:mb-0 max-md:pb-8 md:pt-0 md:pb-6 ${className ?? ''}`}
+        className={`scroll-mt-[116px] rounded-[20px] bg-transparent max-md:mb-0 max-md:pb-8 md:pt-0 md:pb-0 ${className ?? ''}`}
         aria-labelledby={headingId}
       >
         <div className="flex items-center justify-between gap-4">
