@@ -1367,3 +1367,17 @@ body {
     color: #fff !important;
   }
 }
+
+/*
+ * Tawk.to on mobile (< sm, where MobileBottomBar's "Chat with us" opens it):
+ * hide the bubble, greeting badge and message preview so they never flash
+ * while Tawk loads — only the chat panel (#max-widget) is shown.
+ * Wrapper divs carry no inline styles, so plain CSS wins here.
+ */
+@media (max-width: 639px) {
+  body > div > #min-widget,
+  body > div > #chat-bubble,
+  body > div > #message-preview {
+    display: none !important;
+  }
+}

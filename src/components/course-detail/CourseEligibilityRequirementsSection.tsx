@@ -44,7 +44,8 @@ function CertificateDecorArrow({ className }: { className?: string }) {
 }
 
 function CertificateGraphic({ certificationImage }: { certificationImage: ApiEligibility['certificationImage'] }) {
-  if (!certificationImage) return null;
+  // No image → skip both the certificate and its decorative arrow SVG.
+  if (!certificationImage?.url) return null;
   return (
     <div className="relative mx-auto h-[260px] w-full max-w-[320px] shrink-0 overflow-visible lg:mx-0 lg:max-w-none lg:flex-1">
       <div className="absolute left-0 top-1/2 z-10 w-[253px] -translate-y-1/2">
