@@ -48,7 +48,7 @@ function ChevronDown({ expanded }: { expanded: boolean }) {
       viewBox="0 0 24 24"
       fill="none"
       aria-hidden
-      className={`shrink-0 transition-transform duration-300 ease-out ${expanded ? 'rotate-180' : ''}`}
+      className={`shrink-0 transition-transform duration-300 ease-out ${expanded ? 'rotate-0' : '-rotate-90'}`}
     >
       <path d="M6 9L12 15L18 9" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
