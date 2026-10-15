@@ -44,6 +44,8 @@ const VARIANT_STYLES: Record<AwardCard['variant'], { bg: string }> = {
 };
 
 const GAP_PX = 24;
+// Tighter spacing between cards on desktop when embedded in course pages.
+const EMBEDDED_DESKTOP_GAP_PX = 16;
 
 function ArrowRightIcon({ className }: { className?: string }) {
   return (
@@ -128,7 +130,7 @@ function AwardPhotoCard({ card }: { card: AwardCard }) {
 }
 
 function AwardCardItem({ card, embedded = false }: { card: AwardCard; embedded?: boolean }) {
-  if (card.imageSrc && !embedded) {
+  if (card.imageSrc) {
     return <AwardPhotoCard card={card} />;
   }
   const styles = VARIANT_STYLES[card.variant];
@@ -244,7 +246,8 @@ export default function AwardsSection({
   const total = cards.length;
   const isEmbedded = variant === 'embedded';
   // Photo cards have no overhanging medal, so they don't need the top headroom.
-  const usesPhotoCards = !isEmbedded && cards.every((card) => card.imageSrc);
+  const usesPhotoCards = cards.every((card) => card.imageSrc);
+  const desktopGap = isEmbedded ? EMBEDDED_DESKTOP_GAP_PX : GAP_PX;
 
   // Show 1 card per slide on mobile, the configured count on md+
   const [perView, setPerView] = useState(visibleCount);
@@ -266,8 +269,8 @@ export default function AwardsSection({
         setSlideMetrics({ cardWidth: width, step: width + GAP_PX });
         return;
       }
-      const cardWidth = (width - GAP_PX * Math.max(0, perView - 1)) / perView;
-      setSlideMetrics({ cardWidth, step: cardWidth + GAP_PX });
+      const cardWidth = (width - desktopGap * Math.max(0, perView - 1)) / perView;
+      setSlideMetrics({ cardWidth, step: cardWidth + desktopGap });
     };
 
     update();
@@ -278,7 +281,7 @@ export default function AwardsSection({
       observer.disconnect();
       window.removeEventListener('resize', update);
     };
-  }, [perView]);
+  }, [perView, desktopGap]);
 
   const maxIndex = Math.max(0, total - perView);
   const canNavigateDesktop = total > visibleCount;
@@ -309,7 +312,7 @@ export default function AwardsSection({
       <div
         className="flex transition-transform duration-500 ease-out will-change-transform"
         style={{
-          gap: perView === 1 ? 0 : GAP_PX,
+          gap: perView === 1 ? 0 : desktopGap,
           transform:
             slideMetrics.step > 0
               ? `translate3d(-${index * slideMetrics.step}px, 0, 0)`
@@ -330,7 +333,7 @@ export default function AwardsSection({
                       : {}),
                   }
                 : {
-                    flex: `0 0 calc((100% - ${(perView - 1) * GAP_PX}px) / ${perView})`,
+                    flex: `0 0 calc((100% - ${(perView - 1) * desktopGap}px) / ${perView})`,
                   }
             }
           >
@@ -345,7 +348,7 @@ export default function AwardsSection({
     return (
       <section
         id={id}
-        className={`scroll-mt-[116px] rounded-[20px] bg-transparent max-md:mb-0 max-md:pb-8 md:pt-0 md:pb-6 ${className ?? ''}`}
+        className={`scroll-mt-[116px] rounded-[20px] bg-transparent max-md:mb-0 max-md:pb-8 md:pt-0 md:pb-0 ${className ?? ''}`}
         aria-labelledby={headingId}
       >
         <div className="flex items-center justify-between gap-4">
