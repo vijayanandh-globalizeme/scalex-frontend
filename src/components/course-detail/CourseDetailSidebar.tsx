@@ -129,7 +129,7 @@ export default function CourseDetailSidebar({
         />
 
         <div className={`scroll-mt-[116px] mt-5 shrink-0 ${COURSE_SECTION_CARD} p-5`}>
-          <p className="text-center text-[16px] font-medium leading-normal text-heading">
+          <p className="text-center text-[14px] font-medium leading-normal text-heading">
             {sidebar.brochureText}
           </p>
           <CourseBrochureCta
