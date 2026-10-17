@@ -469,7 +469,7 @@ function ScheduleCard({ batch, quantity, onQuantityChange, onEnroll }: {
                 <span className="truncate">{timeLabel}</span>
               </p>
             </div>
-            <div className="shrink-0 xl:absolute xl:left-1/2 xl:top-1/2 xl:-translate-x-1/2 xl:-translate-y-1/2">
+            <div className="shrink-0 xl:absolute xl:left-[64%] xl:top-1/2 xl:-translate-x-1/2 xl:-translate-y-1/2">
               <QuantityStepper value={quantity} onChange={onQuantityChange} />
             </div>
           </div>
