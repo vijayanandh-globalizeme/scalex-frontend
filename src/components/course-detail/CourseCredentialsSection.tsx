@@ -5,6 +5,8 @@ import { useState } from 'react';
 import type { ApiCourseDetails, ApiOtherDetail } from '@/services/courseApi';
 import { CREDENTIALS_FEATURES } from '@/lib/courseDetailStatics';
 import { withNewTabLinks } from '@/lib/richText';
+import TabStripArrow from '@/components/shared/TabStripArrow';
+import { useTabStripArrow } from '@/hooks/useTabStripArrow';
 import { COURSE_SECTION_BODY } from './courseSectionCard';
 
 const TAB_BAR_SCROLL =
@@ -102,11 +104,20 @@ export default function CourseCredentialsSection({
 }) {
   const defaultTab = careerTabs[0];
   const [activeTabId, setActiveTabId] = useState(defaultTab?.id ?? '');
+  const { stripRef, overflowing, atEnd, scrollTabIntoView } = useTabStripArrow();
 
   if (!credentials) return null;
 
   const isMultiTab = careerTabs.length > 1;
   const activeTab  = careerTabs.find((t) => t.id === activeTabId) ?? defaultTab;
+  const activeIndex = activeTab ? careerTabs.indexOf(activeTab) : 0;
+
+  function showNextTab() {
+    const next = activeIndex + 1;
+    if (next >= careerTabs.length) return;
+    setActiveTabId(careerTabs[next].id);
+    scrollTabIntoView(next);
+  }
 
   const imageSrc = activeTab?.file?.url ?? CREDENTIALS_FEATURES.certificateImageSrc;
   const imageAlt = activeTab?.title  ?? CREDENTIALS_FEATURES.certificateImageAlt;
@@ -120,8 +131,8 @@ export default function CourseCredentialsSection({
       />
 
       {isMultiTab ? (
-        <div className="mt-5" role="tablist" aria-label={credentials.title}>
-          <div className={TAB_BAR_SCROLL}>
+        <div className="relative mt-5" role="tablist" aria-label={credentials.title}>
+          <div ref={stripRef} className={`${TAB_BAR_SCROLL}${overflowing ? ' max-md:pr-16' : ''}`}>
             {careerTabs.map((tab) => {
               const isActive = tab.id === activeTabId;
               return (
@@ -142,6 +153,13 @@ export default function CourseCredentialsSection({
               );
             })}
           </div>
+          {overflowing ? (
+            <TabStripArrow
+              className="top-0 h-[48px]"
+              onClick={showNextTab}
+              disabled={activeIndex >= careerTabs.length - 1 || atEnd}
+            />
+          ) : null}
         </div>
       ) : null}
 
