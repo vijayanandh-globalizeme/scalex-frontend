@@ -7,6 +7,8 @@ import { CarouselNavIcon } from '@/components/category/CategoryCarouselNav';
 import CategoryCoursesSection from '@/components/category/CategoryCoursesSection';
 import { GuidanceSection, defaultGuidanceContent } from '@/components/guidance';
 import TrendingBlogCard, { toTrendingBlogCard } from '@/components/blogs/TrendingBlogCard';
+import TabStripArrow from '@/components/shared/TabStripArrow';
+import { useTabStripArrow } from '@/hooks/useTabStripArrow';
 import { getBlogs, getTrendingBlogs, getBlogCategories, type ApiBlogListItem, type ApiBlogCategory } from '@/app/actions/blogActions';
 
 const PAGE_SIZE = 9;
@@ -116,6 +118,7 @@ export default function BlogsPage() {
   // Categories
   const [categories, setCategories] = useState<ApiBlogCategory[]>([]);
   const [activeCategoryUri, setActiveCategoryUri] = useState<string | null>(null); // null = "All Blogs"
+  const { stripRef, overflowing, atEnd, scrollTabIntoView } = useTabStripArrow();
 
   // Search
   const [query, setQuery] = useState('');
@@ -200,6 +203,16 @@ export default function BlogsPage() {
     allBlogsSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
+  // Tab 0 is "All Blogs"; categories follow in order.
+  const activeTabIndex = activeCategoryUri === null ? 0 : categories.findIndex((cat) => cat.uri === activeCategoryUri) + 1;
+
+  function showNextCategory() {
+    const next = activeTabIndex + 1;
+    if (next > categories.length) return;
+    setActiveCategoryUri(categories[next - 1].uri);
+    scrollTabIntoView(next);
+  }
+
   const totalHero = heroBlogs.length;
   const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
   const rangeStart = total === 0 ? 0 : (currentPage - 1) * PAGE_SIZE + 1;
@@ -234,7 +247,7 @@ export default function BlogsPage() {
             <h1 className="text-[28px] font-bold leading-[1.3] text-heading md:text-[40px] md:font-extrabold md:leading-[60px]">
               Your Gateway to{' '}
               <span className="relative inline-block whitespace-nowrap pb-[23px] align-top">
-                <span>Career Knowledge</span>
+                <span>Continuous Learning</span>
                 <span className="absolute bottom-0 left-0 block h-[19px] w-full overflow-hidden" aria-hidden>
                   <span className="block h-[19px] w-full origin-left animate-category-title-underline">
                     <svg xmlns="http://www.w3.org/2000/svg" width="358" height="19" viewBox="0 0 358 19" fill="none" className="block h-[19px] w-full">
@@ -252,7 +265,7 @@ export default function BlogsPage() {
               </span>
             </h1>
             <p className="mx-auto mt-2 max-w-6xl text-[15px] font-medium leading-[26px] text-muted md:text-[16px]">
-              Expert articles on Agile, Scrum, DevOps, Cloud, and career growth. Unlock insights to accelerate your professional journey.
+              Explore expert insights on DevOps, Cloud, Agile, AI Engineering, Automation testing, Cyber security, System Design and Data Science and career skills to keep learning, growing, and staying ahead in your professional journey.
             </p>
           </div>
 
@@ -309,7 +322,7 @@ export default function BlogsPage() {
                       transform: totalHero > 1 ? `translateX(-${(heroPage * 100) / totalHero}%)` : undefined,
                     }}
                   >
-                    {heroBlogs.map((b, index) => {
+                    {heroBlogs.map((b) => {
                       const featured = toFeaturedBlog(b);
                       return (
                       <div
@@ -391,38 +404,48 @@ export default function BlogsPage() {
           <div className="mb-4 text-center">
             <h2 className="text-center text-[34px] font-bold leading-[140%] text-[#1E293B]">All Blogs</h2>
             <p className="mx-auto mt-2 text-center text-[18px] font-medium leading-[140%] text-[#788593]">
-              The most effective project-based immersive learning experience to educate that combines hands-on projects with deep, engaging learning.
+              Discover insightful articles, practical concepts, and expert perspectives to expand your knowledge and keep learning.
             </p>
           </div>
 
           {/* Category tabs — hidden while a search is active */}
           {!isSearchActive && (
-            <div
-              role="tablist"
-              aria-label="Blog categories"
-              className="mt-5 mb-6 flex items-center gap-2 overflow-x-auto rounded-lg bg-surface-raised p-2 shadow-[0_4px_4px_0_rgba(30,41,59,0.08),4px_-4px_4px_0_rgba(30,41,59,0.03)] [-ms-overflow-style:none] [scrollbar-width:none] md:mt-6 md:flex-wrap md:justify-center lg:justify-between"
-            >
-              <button
-                type="button"
-                role="tab"
-                aria-selected={activeCategoryUri === null}
-                onClick={() => setActiveCategoryUri(null)}
-                className={`cursor-pointer whitespace-nowrap rounded-lg px-3 py-2 text-center text-[13px] font-normal leading-[140%] md:px-4 md:py-2.5 md:text-[16px] ${activeCategoryUri === null ? 'courses-tab-active' : 'btn-mui-brand-tint text-heading'}`}
+            <div className="relative mt-5 mb-6 md:mt-6">
+              <div
+                ref={stripRef}
+                role="tablist"
+                aria-label="Blog categories"
+                className={`flex items-center gap-2 overflow-x-auto rounded-lg bg-surface-raised p-2 shadow-[0_4px_4px_0_rgba(30,41,59,0.08),4px_-4px_4px_0_rgba(30,41,59,0.03)] [-ms-overflow-style:none] [scrollbar-width:none] md:flex-wrap md:justify-center lg:justify-between${overflowing ? ' max-md:pr-16' : ''}`}
               >
-                All Blogs
-              </button>
-              {categories.map((cat) => (
                 <button
-                  key={cat.id}
                   type="button"
                   role="tab"
-                  aria-selected={cat.uri === activeCategoryUri}
-                  onClick={() => setActiveCategoryUri(cat.uri)}
-                  className={`cursor-pointer whitespace-nowrap rounded-lg px-3 py-2 text-center text-[13px] font-normal leading-[140%] md:px-4 md:py-2.5 md:text-[16px] ${cat.uri === activeCategoryUri ? 'courses-tab-active' : 'btn-mui-brand-tint text-heading'}`}
+                  aria-selected={activeCategoryUri === null}
+                  onClick={() => setActiveCategoryUri(null)}
+                  className={`cursor-pointer whitespace-nowrap rounded-lg px-3 py-2 text-center text-[13px] font-normal leading-[140%] md:px-4 md:py-2.5 md:text-[16px] ${activeCategoryUri === null ? 'courses-tab-active' : 'btn-mui-brand-tint text-heading'}`}
                 >
-                  {cat.name}
+                  All Blogs
                 </button>
-              ))}
+                {categories.map((cat) => (
+                  <button
+                    key={cat.id}
+                    type="button"
+                    role="tab"
+                    aria-selected={cat.uri === activeCategoryUri}
+                    onClick={() => setActiveCategoryUri(cat.uri)}
+                    className={`cursor-pointer whitespace-nowrap rounded-lg px-3 py-2 text-center text-[13px] font-normal leading-[140%] md:px-4 md:py-2.5 md:text-[16px] ${cat.uri === activeCategoryUri ? 'courses-tab-active' : 'btn-mui-brand-tint text-heading'}`}
+                  >
+                    {cat.name}
+                  </button>
+                ))}
+              </div>
+              {overflowing ? (
+                <TabStripArrow
+                  className="inset-y-0"
+                  onClick={showNextCategory}
+                  disabled={activeTabIndex >= categories.length || atEnd}
+                />
+              ) : null}
             </div>
           )}
 
@@ -566,7 +589,7 @@ export default function BlogsPage() {
       </section>
 
       <CategoryCoursesSection
-        heading="Master the Skills that Scale Your Career"
+        heading="Master the Skills That Give You an Edge"
         maxCourses={12}
         initialVisibleCount={3}
         loadMoreStep={3}

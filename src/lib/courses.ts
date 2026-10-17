@@ -140,7 +140,7 @@ const COURSES: Record<string, CourseDetailContent> = {
       partners: ENTERPRISE_PARTNERS,
     },
     form: {
-      title: "Share Your Details",
+      title: "Share your details and get personalized guidance",
       purposes: [
         { id: 'training', label: 'Training' },
         { id: 'certification', label: 'Certification' },
@@ -151,23 +151,10 @@ const COURSES: Record<string, CourseDetailContent> = {
       ],
       termsHref: '/terms-of-use',
       privacyHref: '/privacy-policy',
-      ctaLabel: 'Submit',
+      ctaLabel: 'Talk to Our Expert',
     },
   },
 };
-
-export function courseLabelToSlug(label: string): string {
-  return label
-    .toLowerCase()
-    .replace(/\([^)]*\)/g, '')
-    .trim()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-|-$/g, '');
-}
-
-export function hasCourseDetail(slug: string): boolean {
-  return slug in COURSES;
-}
 
 export function getCourseBySlug(slug: string): CourseDetailContent | undefined {
   return COURSES[slug];
@@ -175,12 +162,4 @@ export function getCourseBySlug(slug: string): CourseDetailContent | undefined {
 
 export function getAllCourseSlugs(): string[] {
   return Object.keys(COURSES);
-}
-
-export function getCourseHref(categorySlug: string, courseLabel: string): string {
-  const courseSlug = courseLabelToSlug(courseLabel);
-  if (hasCourseDetail(courseSlug)) {
-    return `/courses/${courseSlug}`;
-  }
-  return `/categories/${categorySlug}#courses`;
 }

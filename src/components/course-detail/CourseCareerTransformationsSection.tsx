@@ -44,8 +44,6 @@ const PERSON_IMAGE_HEIGHT = 255;
 const HIKE_BADGE_TOP_OFFSET_PX = Math.round(PERSON_IMAGE_HEIGHT * 0.25);
 const HIKE_BADGE_LEFT_PX = 155 + Math.round(PERSON_IMAGE_WIDTH * 0.05);
 const PERSON_OUTSIDE_LEFT_PX = Math.round(PERSON_IMAGE_WIDTH * 0.1);
-const PERSON_IMAGE_LEFT_PX = 20;
-const PERSON_IMAGE_BOTTOM_PX = 0;
 const PERSON_LEFT_GUTTER_PX = PERSON_OUTSIDE_LEFT_PX + 8;
 
 const SLIDE_TRANSITION =
@@ -167,35 +165,6 @@ function RoleTransitionCard({
       <div className="relative mt-auto h-6 w-full pt-1 md:h-8 md:pt-2">
         <Image src={logoSrc} alt={logoAlt} fill className="object-contain" sizes="80px" />
       </div>
-    </div>
-  );
-}
-
-const PERSON_IMAGE_OFFSET_Y_PX = 8;
-
-const PERSON_IMAGE_SLIDE2_LEFT_OFFSET_PX = -30;
-
-function getPersonImageLeftPx(storyId: string) {
-  return PERSON_IMAGE_LEFT_PX + (storyId === 'priya-sharma' ? PERSON_IMAGE_SLIDE2_LEFT_OFFSET_PX : 0);
-}
-
-function StoryPersonImage({ story }: { story: CareerTransformationStory }) {
-  return (
-    <div
-      className="pointer-events-none absolute z-[60] h-[255px] w-[251px]"
-      style={{
-        left: `${getPersonImageLeftPx(story.id)}px`,
-        bottom: PERSON_IMAGE_BOTTOM_PX,
-      }}
-    >
-      <Image
-        src={story.imageSrc}
-        alt={story.imageAlt}
-        width={PERSON_IMAGE_WIDTH}
-        height={PERSON_IMAGE_HEIGHT}
-        className="relative z-[60] h-[255px] w-[251px] object-contain object-bottom"
-        sizes="251px"
-      />
     </div>
   );
 }
@@ -342,7 +311,6 @@ export default function CourseCareerTransformationsSection({
 
   if (totalPages === 0) return null;
 
-  const activeStory = stories[page];
   const offsetPx = page * slideWidth;
   const trackStyle = {
     transform: slideWidth > 0 ? `translate3d(-${offsetPx}px, 0, 0)` : undefined,

@@ -21,7 +21,7 @@ function formatTime(time: string) {
   return m === 0 ? `${h12}:00 ${period}` : `${h12}:${String(m).padStart(2, '0')} ${period}`;
 }
 
-function batchLabel(dayType: string, startTime: string) {
+function batchLabel(startTime: string) {
   const h = parseInt(startTime.split(':')[0], 10);
   const timeOfDay = h < 12 ? 'Morning' : h < 18 ? 'Evening' : 'Night';
   return `${timeOfDay} Batch`;
@@ -394,7 +394,7 @@ export default function CheckoutView({
                   {planNameFor(batch, planNumber)}
                 </span>
                 <span className="inline-flex items-center rounded-lg bg-[#FFF6E9] px-2.5 py-1 text-[11px] font-medium text-[#B7791F]">
-                  {batchLabel(batch.dayType, batch.startTime)}
+                  {batchLabel(batch.startTime)}
                 </span>
               </div>
               <QuantityStepper value={quantity} onChange={handleQuantityChange} />

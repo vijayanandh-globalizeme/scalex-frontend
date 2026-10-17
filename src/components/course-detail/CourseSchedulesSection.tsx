@@ -1,14 +1,12 @@
 'use client';
 
-import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useState, useRef, useEffect, useMemo, type ReactNode } from 'react';
-import { getCourseBatches, getCoursePlans, getCourseTrainers } from '@/app/actions/courseActions';
+import { getCourseBatches, getCoursePlans } from '@/app/actions/courseActions';
 import CourseFeeSection from './CourseFeeSection';
 import CourseCareerAssuranceSection from './CourseCareerAssuranceSection';
 import CoursePlanComparisonSection, { buildActivePlans } from './CoursePlanComparisonSection';
 import CourseBatchRequestBanner from './CourseBatchRequestBanner';
-import CourseBrochureCta from './CourseBrochureCta';
 import { CUSTOMIZE_BATCH_BANNER } from '@/lib/courseDetailStatics';
 import { resolvePlansDataForCourse } from '@/lib/planComparisonFallback';
 import type { ApiCoursePlansData } from '@/services/courseApi';
@@ -471,7 +469,7 @@ function ScheduleCard({ batch, quantity, onQuantityChange, onEnroll }: {
                 <span className="truncate">{timeLabel}</span>
               </p>
             </div>
-            <div className="shrink-0 xl:absolute xl:left-1/2 xl:top-1/2 xl:-translate-x-1/2 xl:-translate-y-1/2">
+            <div className="shrink-0 xl:absolute xl:left-[64%] xl:top-1/2 xl:-translate-x-1/2 xl:-translate-y-1/2">
               <QuantityStepper value={quantity} onChange={onQuantityChange} />
             </div>
           </div>
@@ -595,7 +593,6 @@ function filterBatches(batches: ApiCourseBatch[], activeFilter: string, dateRang
 export default function CourseSchedulesSection({
   courseUri,
   categoryUri,
-  courseName,
   variant = 'default',
   courseId = null,
 }: {
@@ -724,7 +721,7 @@ export default function CourseSchedulesSection({
         </div>
       ) : null}
 
-      <div className={`overflow-visible max-md:mt-8 mt-8 ${COURSE_SECTION_CARD} px-5 pt-5 pb-5 md:px-6 md:pt-6 md:pb-6`}>
+      <div id="schedules" className={`scroll-mt-[116px] overflow-visible max-md:mt-8 mt-8 ${COURSE_SECTION_CARD} px-5 pt-5 pb-5 md:px-6 md:pt-6 md:pb-6`}>
         {/* Header */}
         
         <div className="flex flex-wrap items-center gap-3">

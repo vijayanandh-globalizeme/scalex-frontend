@@ -2,7 +2,7 @@ import type { CourseLeadFormProps } from '@/components/course-detail/CourseLeadF
 
 /** Shared lead-capture form content for the site-wide brochure/contact modal. */
 export const DEFAULT_LEAD_FORM: CourseLeadFormProps = {
-  title: "Share Your Details",
+  title: "Share your details and get personalized guidance",
   purposes: [
     { id: 'training', label: 'Training' },
     { id: 'certification', label: 'Certification' },

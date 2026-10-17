@@ -1,7 +1,7 @@
 const BASE_URL = (process.env.API_BASE_URL ?? '').replace(/\/$/, '');
 const WEBSITE_URI = process.env.WEBSITE_URI ?? 'frontend';
 
-export function getApiUrl(path: string): string {
+function getApiUrl(path: string): string {
   return `${BASE_URL}/v1/${WEBSITE_URI}/${path.replace(/^\//, '')}`;
 }
 

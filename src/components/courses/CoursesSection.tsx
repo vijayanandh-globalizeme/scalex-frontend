@@ -6,6 +6,8 @@ import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } fr
 import gsap from 'gsap';
 import { useGsapScrollReveal, useGsapScrollRevealStagger } from '@/hooks/useGsapScrollReveal';
 import { useGridColumns } from '@/hooks/useGridColumns';
+import { useTabStripArrow } from '@/hooks/useTabStripArrow';
+import TabStripArrow from '@/components/shared/TabStripArrow';
 import type { MegaMenuCategory } from '@/lib/allCoursesMegaMenu';
 import type { ApiCourse } from '@/services/courseApi';
 import { getCourses } from '@/app/actions/courseActions';
@@ -325,6 +327,7 @@ export default function CoursesSection({
   const expandStartHeightRef = useRef<number | null>(null);
   const expandStartRowRef = useRef<number | null>(null);
   const cols           = useGridColumns();
+  const { stripRef, overflowing, atEnd, scrollTabIntoView } = useTabStripArrow();
 
   const loadCourses = useCallback(async (categoryId?: string) => {
     const cacheKey = categoryId ?? 'all';
@@ -354,6 +357,15 @@ export default function CoursesSection({
     setActiveTabId(tab.id);
     setVisibleCount(initialVisibleCount);
     loadCourses(tab.categoryId);
+  }
+
+  const activeTabIndex = tabs.findIndex((tab) => tab.id === activeTabId);
+
+  function showNextTab() {
+    const next = activeTabIndex + 1;
+    if (next >= tabs.length) return;
+    handleTabClick(tabs[next]);
+    scrollTabIntoView(next);
   }
 
   function handleViewMore() {
@@ -484,28 +496,38 @@ export default function CoursesSection({
           </p>
         </header>
 
-        <div
-          role="tablist"
-          aria-label="Course categories"
-          className="mt-4 flex items-center gap-2 overflow-x-auto rounded-lg bg-surface-raised p-2 shadow-[0_4px_4px_0_rgba(30,41,59,0.08),4px_-4px_4px_0_rgba(30,41,59,0.03)] [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:mt-6 md:flex-wrap md:justify-center lg:justify-between"
-        >
-          {tabs.map((tab) => {
-            const isActive = tab.id === activeTabId;
-            return (
-              <button
-                key={tab.id}
-                type="button"
-                role="tab"
-                aria-selected={isActive}
-                onClick={() => handleTabClick(tab)}
-                className={`cursor-pointer whitespace-nowrap rounded-lg px-4 py-2.5 text-center text-[16px] font-medium leading-[140%] ${
-                  isActive ? 'courses-tab-active' : 'btn-mui-brand-tint text-heading'
-                }`}
-              >
-                {tab.label}
-              </button>
-            );
-          })}
+        <div className="relative mt-4 md:mt-6">
+          <div
+            ref={stripRef}
+            role="tablist"
+            aria-label="Course categories"
+            className={`flex items-center gap-2 overflow-x-auto rounded-lg bg-surface-raised p-2 shadow-[0_4px_4px_0_rgba(30,41,59,0.08),4px_-4px_4px_0_rgba(30,41,59,0.03)] [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:flex-wrap md:justify-center lg:justify-between${overflowing ? ' max-md:pr-16' : ''}`}
+          >
+            {tabs.map((tab) => {
+              const isActive = tab.id === activeTabId;
+              return (
+                <button
+                  key={tab.id}
+                  type="button"
+                  role="tab"
+                  aria-selected={isActive}
+                  onClick={() => handleTabClick(tab)}
+                  className={`cursor-pointer whitespace-nowrap rounded-lg px-4 py-2.5 text-center text-[16px] font-medium leading-[140%] ${
+                    isActive ? 'courses-tab-active' : 'btn-mui-brand-tint text-heading'
+                  }`}
+                >
+                  {tab.label}
+                </button>
+              );
+            })}
+          </div>
+          {overflowing ? (
+            <TabStripArrow
+              className="inset-y-0"
+              onClick={showNextTab}
+              disabled={activeTabIndex >= tabs.length - 1 || atEnd}
+            />
+          ) : null}
         </div>
 
         <div ref={gridContainerRef} className="mt-8 md:mt-10">

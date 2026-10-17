@@ -29,6 +29,7 @@ export interface GuidanceSectionProps {
   description: string;
   stats: GuidanceStat[];
   formTitle: string;
+  formDescription: string;
   courses: GuidanceCourseOption[];
   purposes: GuidancePurposeOption[];
   termsHref: string;
@@ -70,6 +71,7 @@ const guidanceFieldClass =
 
 function GuidanceForm({
   formTitle,
+  formDescription,
   purposes,
   termsHref,
   privacyHref,
@@ -78,6 +80,7 @@ function GuidanceForm({
   embedded,
 }: {
   formTitle: string;
+  formDescription: string;
   purposes: GuidancePurposeOption[];
   termsHref: string;
   privacyHref: string;
@@ -148,8 +151,9 @@ function GuidanceForm({
 
       <div className="relative z-10">
         <h3 className="text-[20px] font-medium leading-normal text-heading">{formTitle}</h3>
+        <p>{formDescription}</p>
 
-        <div className="mt-8 grid grid-cols-1 gap-6">
+        <div className="mt-4 grid grid-cols-1 gap-6">
         <div>
           <div className="grid grid-cols-1 gap-6">
             <input
@@ -274,6 +278,7 @@ export default function GuidanceSection({
   description,
   stats,
   formTitle,
+  formDescription,
   purposes,
   termsHref,
   privacyHref,
@@ -338,6 +343,7 @@ export default function GuidanceSection({
           >
             <GuidanceForm
               formTitle={formTitle}
+              formDescription={formDescription}
               purposes={purposes}
               termsHref={termsHref}
               privacyHref={privacyHref}
