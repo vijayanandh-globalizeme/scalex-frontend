@@ -1,7 +1,9 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import type { CourseNavItem } from '@/lib/courseNavItems';
+import TabStripArrow from '@/components/shared/TabStripArrow';
+import { useTabStripArrow } from '@/hooks/useTabStripArrow';
 
 const HEADER_HEIGHT_PX = 64;
 const NAV_HEIGHT_PX = 52;
@@ -58,6 +60,14 @@ export default function CourseDetailStickyNav({
   const pendingScrollIdRef = useRef<string | null>(null);
   const scrollIdleTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const navScrollRef = useRef<HTMLDivElement | null>(null);
+  const { stripRef, overflowing, atEnd, scrollTabIntoView } = useTabStripArrow();
+  const setNavScrollEl = useCallback(
+    (el: HTMLDivElement | null) => {
+      navScrollRef.current = el;
+      stripRef(el);
+    },
+    [stripRef],
+  );
 
   useEffect(() => {
     const next = getVisibleNavItems(items);
@@ -172,11 +182,20 @@ export default function CourseDetailStickyNav({
     });
   }
 
+  const activeIndex = visibleItems.findIndex((item) => item.id === activeId);
+
+  function showNextSection() {
+    const next = activeIndex + 1;
+    if (next >= visibleItems.length) return;
+    scrollToSection(visibleItems[next]);
+    scrollTabIntoView(next);
+  }
+
   return (
     <nav className="sticky top-16 z-40 max-md:mb-8 mb-12" aria-label="Course sections">
-      <div className="full-bleed bg-[#fcfcfc] shadow-[0_4px_4px_0_rgba(30,41,59,0.08),4px_-4px_4px_0_rgba(30,41,59,0.03)]">
+      <div className="full-bleed relative bg-[#fcfcfc] shadow-[0_4px_4px_0_rgba(30,41,59,0.08),4px_-4px_4px_0_rgba(30,41,59,0.03)]">
         <div className="site-container">
-          <div ref={navScrollRef} className="flex h-[52px] w-full items-stretch gap-6 overflow-x-auto [-ms-overflow-style:none] [scrollbar-width:none] lg:justify-between lg:gap-0 [&::-webkit-scrollbar]:hidden">
+          <div ref={setNavScrollEl} className={`flex h-[52px] w-full items-stretch gap-6 overflow-x-auto [-ms-overflow-style:none] [scrollbar-width:none] lg:justify-between lg:gap-0 [&::-webkit-scrollbar]:hidden${overflowing ? ' max-md:pr-16' : ''}`}>
             {visibleItems.map((item) => {
               const isActive = activeId === item.id;
 
@@ -205,6 +224,13 @@ export default function CourseDetailStickyNav({
             </a>
           </div>
         </div>
+        {overflowing ? (
+          <TabStripArrow
+            className="inset-y-0"
+            onClick={showNextSection}
+            disabled={activeIndex >= visibleItems.length - 1 || atEnd}
+          />
+        ) : null}
       </div>
     </nav>
   );

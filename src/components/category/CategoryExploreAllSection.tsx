@@ -150,7 +150,7 @@ export default function CategoryExploreAllSection({ excludeId }: { excludeId?: s
             Explore All Course Categories
           </h2>
           <p className="mb-4 mt-3 text-[15px] font-medium leading-[140%] text-muted md:mb-6 md:text-[18px]">
-            Dive into specialized categories and find the specific guidance you need to master your field.
+            Discover focused learning paths across DevOps, Testing, Cyber Security, and career skills.
           </p>
         </header>
 

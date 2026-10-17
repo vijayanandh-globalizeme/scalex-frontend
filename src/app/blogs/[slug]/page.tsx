@@ -73,7 +73,7 @@ function TrendingBlogsSection({ blogs }: { blogs: TrendingBlogCardData[] }) {
         {/* Header */}
         <div className="mb-4 text-center md:mb-10">
           <h2 className="text-[24px] font-extrabold text-heading md:text-[36px]">
-            Trending Blogs that enhance your skills
+            Trending Blogs to Expand Your Knowledge
           </h2>
           <p className="mt-2 text-[15px] text-muted">Find the right course that leaps your career</p>
         </div>
@@ -703,7 +703,7 @@ export default function BlogDetailPage() {
       {blog.courseCategories.length > 0 ? (
         <CategoryCoursesSection
           categoryIds={blog.courseCategories.map((c) => c.id)}
-          heading="Popular Courses that Scale Your Career"
+          heading="Explore Courses That Give You an Edge"
           maxCourses={12}
           initialVisibleCount={3}
           loadMoreStep={3}

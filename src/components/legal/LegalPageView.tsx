@@ -79,11 +79,11 @@ function LegalSidebar() {
   return (
     <aside className="hidden w-[246px] shrink-0 lg:block" aria-label="Get in touch">
       <div
-        className="sticky z-30 flex max-h-[calc(100dvh-4.5rem)] flex-col overflow-y-auto overscroll-contain"
+        className="sticky z-30 flex max-h-[calc(100dvh-10rem)] flex-col overflow-y-auto overscroll-contain pb-2"
         style={{ top: 'calc(4rem + 4.5rem)' }}
       >
         <form onSubmit={handleSubmit} className={`${COURSE_SECTION_CARD} p-5`}>
-          <h2 className="text-[16px] font-medium leading-normal text-heading">Let us assist you</h2>
+          <h2 className="text-[16px] font-medium leading-normal text-heading">Need Help? We’re Here for You.</h2>
           <div className="mt-4 grid gap-3">
             <div>
               <input
@@ -218,7 +218,7 @@ export default function LegalPageView({
     .replace(/\s{2,}/g, ' ');        // collapse leftover double-spaces
 
   return (
-    <section className="full-bleed bg-[#F5F6F8] max-md:pt-15 pb-15">
+    <section className="full-bleed bg-[#F5F6F8] pt-10 pb-15">
       <div className="site-container">
         {/* Breadcrumb */}
         <nav className="mb-6 flex items-center gap-2 text-sm text-muted" aria-label="Breadcrumb">
@@ -239,12 +239,12 @@ export default function LegalPageView({
 
         <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_246px] lg:gap-[40px]">
           {/* Content */}
-          <div className="min-w-0 overflow-hidden">
+          <div className="min-w-0">
             <div className={`${COURSE_SECTION_CARD} p-6 md:p-8`}>
               <h1 className="mb-1 text-2xl font-bold leading-tight text-heading md:text-3xl">{title}</h1>
               <p className="mb-6 text-sm text-muted">Last updated: {updated}</p>
               <div
-                className="legal-content"
+                className="legal-content overflow-x-auto"
                 style={{ overflowWrap: 'break-word', minWidth: 0 }}
                 dangerouslySetInnerHTML={{ __html: sanitizedContent }}
               />

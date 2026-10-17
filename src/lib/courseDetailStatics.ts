@@ -1,7 +1,7 @@
 export const COURSE_FAQ_TITLE = "Frequently Asked Questions";
 export const COURSE_CONTENT_TITLE = "Course Content";
 export const COURSE_CONTENT_SYLLABUS_LABEL = "Download Syllabus";
-export const COURSE_OVERVIEW_STANDOUT_TITLE = "Most Standout Features";
+export const COURSE_OVERVIEW_STANDOUT_TITLE = "Key features";
 export const COURSE_OVERVIEW_SKILLS_TITLE = "Skills Covered";
 export const COURSE_OVERVIEW_DEMAND_LABEL = "of enterprises level skill";
 export const SKILLS_TOOLS_SKILLS_TITLE = "Skills";
@@ -20,7 +20,7 @@ export const ROADMAP_HIRING_PARTNER_LOGOS: { src: string; alt: string }[] = [
   { src: "/images/course/tcs.png", alt: "TCS" },
 ];
 
-export const CAREER_SECTION_TITLE = "Accelerate Your Career";
+export const CAREER_SECTION_TITLE = "Strong Market Demand";
 export const CAREER_SALARY_SUBTITLE = "Annual Salary in India (INR)";
 export const CAREER_SALARY_BADGE = "Competitive Salaries for In-Demand Skills";
 export const CAREER_COMPANIES_SUBTITLE = "Leading Organizations";
@@ -81,16 +81,16 @@ export const HIRING_COMPANIES: {
 ];
 
 export const UNLOCK_COURSE_BANNER = {
-  headingLines: ["Ready to unlock your full potential", "on your Job?"],
-  ctaLabel: "Contact with us",
+  headingLines: ["Talk to our experienced trainers ", "for expert guidance"],
+  ctaLabel: "Contact us",
   ctaHref: "#contact",
   imageSrc: "/images/per-5.png",
   imageAlt: "Learning advisor ready to help",
 };
 
 export const EXPERTS_COURSE_BANNER = {
-  headingLines: ["Have more questions or need", "personal guidance?"],
-  ctaLabel: "Contact Learning Advisor",
+  headingLines: ["Have more questions?", "Talk to our experts for personalized guidance."],
+  ctaLabel: "Talk to an Expert",
   ctaHref: "#contact",
   imageSrc: "/images/hero/person.png",
   imageAlt: "Learning advisor ready to help",
@@ -126,24 +126,24 @@ export const CREDENTIALS_FEATURES: {
   certificateImageSrc: "/images/certifi.png",
   certificateImageAlt: "Scrum Alliance Certified ScrumMaster certificate",
   features: [
-    {
-      id: "save-time",
-      title: "Save Time writing copy",
-      description:
-        "Define team ground rules, build a shared understanding, engage and support virtual teams, and more.",
-    },
-    {
-      id: "export-results",
-      title: "Export your results to a downloadable file",
-      description:
-        "Define team ground rules, build a shared understanding, engage and support virtual teams, and more.",
-    },
-    {
-      id: "perfect-result",
-      title: "Perfect result on the first try",
-      description:
-        "Define team ground rules, build a shared understanding, engage and support virtual teams, and more.",
-    },
+      {
+        id: 'save-time',
+        title: 'Certificate of Completion',
+        description:
+          'Earn an EdgeX certificate upon successfully completing the program.',
+      },
+      {
+        id: 'export-results',
+        title: 'Showcase Your Achievement',
+        description:
+          'Highlight your newly acquired skills and course completion.',
+      },
+      {
+        id: 'perfect-result',
+        title: 'Strengthen Your Resume',
+        description:
+          'Add your EdgeX credential to your resume and LinkedIn profile.',
+      }
   ],
 };
 

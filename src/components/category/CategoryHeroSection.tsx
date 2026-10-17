@@ -179,27 +179,6 @@ function ReviewBlock({ review }: { review: CategoryReview }) {
   );
 }
 
-function LearnersBlock({ count, label, avatarSrcs }: CategoryLearnersStat) {
-  return (
-    <div className="flex min-w-0 items-center gap-2.5">
-      <div className="flex shrink-0 items-center">
-        {avatarSrcs.map((src, index) => (
-          <div
-            key={index}
-            className={`relative h-7 w-7 shrink-0 overflow-hidden rounded-full ring-2 ring-white ${index > 0 ? '-ml-2' : ''}`}
-          >
-            <Image src={src} alt="" width={28} height={28} className="h-7 w-7 object-cover" />
-          </div>
-        ))}
-      </div>
-      <p className="text-[14px] leading-[1.3]">
-        <span className="font-bold text-heading">{count}</span>{' '}
-        <span className="font-normal text-muted">{label}</span>
-      </p>
-    </div>
-  );
-}
-
 function FeatureList({ features }: { features: string[] }) {
   return (
     <ul className="mt-6 grid min-w-0 grid-cols-1 gap-x-20 gap-y-3 lg:gap-x-32" role="list">

@@ -3,6 +3,8 @@
 import { useState } from 'react';
 import type { ApiCourseDetails } from '@/services/courseApi';
 import { COURSE_FAQ_TITLE } from '@/lib/courseDetailStatics';
+import TabStripArrow from '@/components/shared/TabStripArrow';
+import { useTabStripArrow } from '@/hooks/useTabStripArrow';
 import {
   COURSE_INNER_CARD,
   COURSE_ROW_DIVIDER_FULL,
@@ -48,10 +50,13 @@ export default function CourseFaqsSection({ faqs, title }: { faqs: FaqGroup[]; t
   const [activeCategoryId, setActiveCategoryId] = useState(faqs[0]?.categoryId ?? '');
   const [openItemId, setOpenItemId]             = useState(faqs[0]?.items[0]?.id ?? '');
   const [showAll, setShowAll]                   = useState(false);
+  const { stripRef, overflowing, atEnd, scrollTabIntoView } = useTabStripArrow();
 
   const activeGroup = faqs.find((g) => g.categoryId === activeCategoryId) ?? faqs[0];
 
   if (!activeGroup) return null;
+
+  const activeIndex = faqs.indexOf(activeGroup);
 
   const visible = showAll ? activeGroup.items : activeGroup.items.slice(0, DEFAULT_VISIBLE);
   const hasMore  = activeGroup.items.length > DEFAULT_VISIBLE;
@@ -63,13 +68,20 @@ export default function CourseFaqsSection({ faqs, title }: { faqs: FaqGroup[]; t
     setShowAll(false);
   }
 
+  function showNextTab() {
+    const next = activeIndex + 1;
+    if (next >= faqs.length) return;
+    handleTabChange(faqs[next].categoryId);
+    scrollTabIntoView(next);
+  }
+
   return (
     <div id="faqs" className={`scroll-mt-[116px] ${COURSE_SECTION_BODY}`}>
       <h2 className="section-heading text-heading">{title ?? COURSE_FAQ_TITLE}</h2>
 
       {/* Category tabs */}
-      <div className="mt-5" role="tablist" aria-label={COURSE_FAQ_TITLE}>
-        <div className={TAB_BAR_SCROLL}>
+      <div className="relative mt-5" role="tablist" aria-label={COURSE_FAQ_TITLE}>
+        <div ref={stripRef} className={`${TAB_BAR_SCROLL}${overflowing ? ' max-md:pr-16' : ''}`}>
           {faqs.map((group) => {
             const isActive = group.categoryId === activeCategoryId;
             return (
@@ -90,6 +102,13 @@ export default function CourseFaqsSection({ faqs, title }: { faqs: FaqGroup[]; t
             );
           })}
         </div>
+        {overflowing ? (
+          <TabStripArrow
+            className="top-0 h-[48px]"
+            onClick={showNextTab}
+            disabled={activeIndex >= faqs.length - 1 || atEnd}
+          />
+        ) : null}
       </div>
 
       {/* FAQ items for active category */}

@@ -5,7 +5,7 @@ function stripPlanSuffix(name: string) {
   return name.replace(/\s+Plan$/i, '');
 }
 
-export function buildPlansDataFromStatic(
+function buildPlansDataFromStatic(
   content: CoursePlanComparisonContent,
   batchId = 'static-batch',
 ): ApiCoursePlansData {

@@ -4,6 +4,8 @@ import Image from 'next/image';
 import type { ReactNode } from 'react';
 import { useState } from 'react';
 import type { ApiOtherDetail } from '@/services/courseApi';
+import TabStripArrow from '@/components/shared/TabStripArrow';
+import { useTabStripArrow } from '@/hooks/useTabStripArrow';
 import {
   CAREER_SECTION_TITLE,
   CAREER_SALARY_SUBTITLE,
@@ -123,8 +125,18 @@ export default function CourseCareerSection({
 }) {
   const [activeTabId, setActiveTabId] = useState(careerTabs[0]?.id ?? '');
   const activeTab = careerTabs.find((t) => t.id === activeTabId) ?? careerTabs[0];
+  const { stripRef, overflowing, atEnd, scrollTabIntoView } = useTabStripArrow();
 
   if (!activeTab) return null;
+
+  const activeIndex = careerTabs.indexOf(activeTab);
+
+  function showNextTab() {
+    const next = activeIndex + 1;
+    if (next >= careerTabs.length) return;
+    setActiveTabId(careerTabs[next].id);
+    scrollTabIntoView(next);
+  }
 
   return (
     <div
@@ -133,8 +145,8 @@ export default function CourseCareerSection({
     >
       <h3 className="text-[20px] font-semibold leading-[140%] text-heading">{CAREER_SECTION_TITLE}</h3>
 
-      <div className="mt-4" role="tablist" aria-label={CAREER_SECTION_TITLE}>
-        <div className={TAB_BAR_SCROLL}>
+      <div className="relative mt-4" role="tablist" aria-label={CAREER_SECTION_TITLE}>
+        <div ref={stripRef} className={`${TAB_BAR_SCROLL}${overflowing ? ' max-md:pr-16' : ''}`}>
           {careerTabs.map((tab) => {
             const isActive = tab.id === activeTabId;
             return (
@@ -155,6 +167,13 @@ export default function CourseCareerSection({
             );
           })}
         </div>
+        {overflowing ? (
+          <TabStripArrow
+            className="top-0 h-[48px]"
+            onClick={showNextTab}
+            disabled={activeIndex >= careerTabs.length - 1 || atEnd}
+          />
+        ) : null}
       </div>
 
       {careerTabs.map((tab) => (

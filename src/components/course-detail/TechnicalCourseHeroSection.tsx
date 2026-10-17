@@ -374,8 +374,6 @@ function RankedContent({ rankedContent, rankingLine }: { rankedContent?: string;
 export default function TechnicalCourseHeroSection(course: TechnicalCourseContent) {
   const {
     courseId,
-    slug,
-    categorySlug,
     breadcrumbs,
     heroTitle,
     shortDescription,
