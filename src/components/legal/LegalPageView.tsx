@@ -79,7 +79,7 @@ function LegalSidebar() {
   return (
     <aside className="hidden w-[246px] shrink-0 lg:block" aria-label="Get in touch">
       <div
-        className="sticky z-30 flex max-h-[calc(100dvh-4.5rem)] flex-col overflow-y-auto overscroll-contain"
+        className="sticky z-30 flex max-h-[calc(100dvh-10rem)] flex-col overflow-y-auto overscroll-contain pb-2"
         style={{ top: 'calc(4rem + 4.5rem)' }}
       >
         <form onSubmit={handleSubmit} className={`${COURSE_SECTION_CARD} p-5`}>
