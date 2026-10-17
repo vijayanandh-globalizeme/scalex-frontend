@@ -7,6 +7,8 @@ import { CarouselNavIcon } from '@/components/category/CategoryCarouselNav';
 import CategoryCoursesSection from '@/components/category/CategoryCoursesSection';
 import { GuidanceSection, defaultGuidanceContent } from '@/components/guidance';
 import TrendingBlogCard, { toTrendingBlogCard } from '@/components/blogs/TrendingBlogCard';
+import TabStripArrow from '@/components/shared/TabStripArrow';
+import { useTabStripArrow } from '@/hooks/useTabStripArrow';
 import { getBlogs, getTrendingBlogs, getBlogCategories, type ApiBlogListItem, type ApiBlogCategory } from '@/app/actions/blogActions';
 
 const PAGE_SIZE = 9;
@@ -116,6 +118,7 @@ export default function BlogsPage() {
   // Categories
   const [categories, setCategories] = useState<ApiBlogCategory[]>([]);
   const [activeCategoryUri, setActiveCategoryUri] = useState<string | null>(null); // null = "All Blogs"
+  const { stripRef, overflowing, atEnd, scrollTabIntoView } = useTabStripArrow();
 
   // Search
   const [query, setQuery] = useState('');
@@ -198,6 +201,16 @@ export default function BlogsPage() {
     setCurrentPage(pageNumber);
     setLoading(false);
     allBlogsSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  // Tab 0 is "All Blogs"; categories follow in order.
+  const activeTabIndex = activeCategoryUri === null ? 0 : categories.findIndex((cat) => cat.uri === activeCategoryUri) + 1;
+
+  function showNextCategory() {
+    const next = activeTabIndex + 1;
+    if (next > categories.length) return;
+    setActiveCategoryUri(categories[next - 1].uri);
+    scrollTabIntoView(next);
   }
 
   const totalHero = heroBlogs.length;
@@ -397,32 +410,42 @@ export default function BlogsPage() {
 
           {/* Category tabs — hidden while a search is active */}
           {!isSearchActive && (
-            <div
-              role="tablist"
-              aria-label="Blog categories"
-              className="mt-5 mb-6 flex items-center gap-2 overflow-x-auto rounded-lg bg-surface-raised p-2 shadow-[0_4px_4px_0_rgba(30,41,59,0.08),4px_-4px_4px_0_rgba(30,41,59,0.03)] [-ms-overflow-style:none] [scrollbar-width:none] md:mt-6 md:flex-wrap md:justify-center lg:justify-between"
-            >
-              <button
-                type="button"
-                role="tab"
-                aria-selected={activeCategoryUri === null}
-                onClick={() => setActiveCategoryUri(null)}
-                className={`cursor-pointer whitespace-nowrap rounded-lg px-3 py-2 text-center text-[13px] font-normal leading-[140%] md:px-4 md:py-2.5 md:text-[16px] ${activeCategoryUri === null ? 'courses-tab-active' : 'btn-mui-brand-tint text-heading'}`}
+            <div className="relative mt-5 mb-6 md:mt-6">
+              <div
+                ref={stripRef}
+                role="tablist"
+                aria-label="Blog categories"
+                className={`flex items-center gap-2 overflow-x-auto rounded-lg bg-surface-raised p-2 shadow-[0_4px_4px_0_rgba(30,41,59,0.08),4px_-4px_4px_0_rgba(30,41,59,0.03)] [-ms-overflow-style:none] [scrollbar-width:none] md:flex-wrap md:justify-center lg:justify-between${overflowing ? ' max-md:pr-16' : ''}`}
               >
-                All Blogs
-              </button>
-              {categories.map((cat) => (
                 <button
-                  key={cat.id}
                   type="button"
                   role="tab"
-                  aria-selected={cat.uri === activeCategoryUri}
-                  onClick={() => setActiveCategoryUri(cat.uri)}
-                  className={`cursor-pointer whitespace-nowrap rounded-lg px-3 py-2 text-center text-[13px] font-normal leading-[140%] md:px-4 md:py-2.5 md:text-[16px] ${cat.uri === activeCategoryUri ? 'courses-tab-active' : 'btn-mui-brand-tint text-heading'}`}
+                  aria-selected={activeCategoryUri === null}
+                  onClick={() => setActiveCategoryUri(null)}
+                  className={`cursor-pointer whitespace-nowrap rounded-lg px-3 py-2 text-center text-[13px] font-normal leading-[140%] md:px-4 md:py-2.5 md:text-[16px] ${activeCategoryUri === null ? 'courses-tab-active' : 'btn-mui-brand-tint text-heading'}`}
                 >
-                  {cat.name}
+                  All Blogs
                 </button>
-              ))}
+                {categories.map((cat) => (
+                  <button
+                    key={cat.id}
+                    type="button"
+                    role="tab"
+                    aria-selected={cat.uri === activeCategoryUri}
+                    onClick={() => setActiveCategoryUri(cat.uri)}
+                    className={`cursor-pointer whitespace-nowrap rounded-lg px-3 py-2 text-center text-[13px] font-normal leading-[140%] md:px-4 md:py-2.5 md:text-[16px] ${cat.uri === activeCategoryUri ? 'courses-tab-active' : 'btn-mui-brand-tint text-heading'}`}
+                  >
+                    {cat.name}
+                  </button>
+                ))}
+              </div>
+              {overflowing ? (
+                <TabStripArrow
+                  className="inset-y-0"
+                  onClick={showNextCategory}
+                  disabled={activeTabIndex >= categories.length || atEnd}
+                />
+              ) : null}
             </div>
           )}
 

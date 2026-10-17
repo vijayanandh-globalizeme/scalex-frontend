@@ -24,12 +24,20 @@ export function useTabStripArrow<T extends HTMLElement = HTMLDivElement>() {
 
     // ResizeObserver fires once on observe, which covers the initial measurement.
     const observer = new ResizeObserver(update);
-    observer.observe(strip);
-    Array.from(strip.children).forEach((child) => observer.observe(child));
+    const observeAll = () => {
+      observer.disconnect();
+      observer.observe(strip);
+      Array.from(strip.children).forEach((child) => observer.observe(child));
+    };
+    observeAll();
+    // Tabs that arrive after mount (e.g. fetched categories) change scrollWidth without resizing the strip.
+    const mutations = new MutationObserver(observeAll);
+    mutations.observe(strip, { childList: true });
     strip.addEventListener('scroll', update, { passive: true });
     window.addEventListener('resize', update);
 
     return () => {
+      mutations.disconnect();
       observer.disconnect();
       strip.removeEventListener('scroll', update);
       window.removeEventListener('resize', update);
