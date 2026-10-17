@@ -156,31 +156,10 @@ const COURSES: Record<string, CourseDetailContent> = {
   },
 };
 
-export function courseLabelToSlug(label: string): string {
-  return label
-    .toLowerCase()
-    .replace(/\([^)]*\)/g, '')
-    .trim()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-|-$/g, '');
-}
-
-export function hasCourseDetail(slug: string): boolean {
-  return slug in COURSES;
-}
-
 export function getCourseBySlug(slug: string): CourseDetailContent | undefined {
   return COURSES[slug];
 }
 
 export function getAllCourseSlugs(): string[] {
   return Object.keys(COURSES);
-}
-
-export function getCourseHref(categorySlug: string, courseLabel: string): string {
-  const courseSlug = courseLabelToSlug(courseLabel);
-  if (hasCourseDetail(courseSlug)) {
-    return `/courses/${courseSlug}`;
-  }
-  return `/categories/${categorySlug}#courses`;
 }

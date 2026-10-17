@@ -53,8 +53,6 @@ export default function ContactPageClient({
 
   const whatsappHref = `https://wa.me/${whatsapp.replace(/\D/g, '')}`;
   const addressFull = [address, addressState, addressCountry, addressPincode].filter(Boolean).join(', ');
-  const addressLine1 = address || 'Koramangala, Bengaluru 560034';
-  const addressLine2 = [addressState, addressCountry].filter(Boolean).join(', ') || 'Karnataka, India';
 
   return (
     <>

@@ -1,7 +1,7 @@
 import type { HeroSectionProps } from './HeroSection';
 import type { HeroBadge } from '@/components/shared';
 
-export const defaultHeroBadges: HeroBadge[] = [
+const defaultHeroBadges: HeroBadge[] = [
   {
     id: 'learners-1',
     variant: 'learners',

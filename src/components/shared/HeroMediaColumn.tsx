@@ -25,7 +25,7 @@ export interface HeroMediaColumnProps {
 }
 
 /** Aero: fixed at 1500+; below 1500 width shrinks and top moves down dynamically. */
-export function getAeroSize(viewportWidth: number): {
+function getAeroSize(viewportWidth: number): {
   width: number;
   height: number;
   right: number;
@@ -59,7 +59,7 @@ export function getAeroSize(viewportWidth: number): {
 }
 
 /** Fixed mobile aero position/size (sub-lg). */
-export const MOBILE_AERO_SIZE = { width: 180, height: 180, right: -60, top: 86 };
+const MOBILE_AERO_SIZE = { width: 180, height: 180, right: -60, top: 86 };
 
 export function useAeroSize() {
   const [size, setSize] = useState({ width: 400, height: 490, right: -160, top: 78 });

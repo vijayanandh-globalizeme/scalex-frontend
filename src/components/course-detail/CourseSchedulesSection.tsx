@@ -1,14 +1,12 @@
 'use client';
 
-import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useState, useRef, useEffect, useMemo, type ReactNode } from 'react';
-import { getCourseBatches, getCoursePlans, getCourseTrainers } from '@/app/actions/courseActions';
+import { getCourseBatches, getCoursePlans } from '@/app/actions/courseActions';
 import CourseFeeSection from './CourseFeeSection';
 import CourseCareerAssuranceSection from './CourseCareerAssuranceSection';
 import CoursePlanComparisonSection, { buildActivePlans } from './CoursePlanComparisonSection';
 import CourseBatchRequestBanner from './CourseBatchRequestBanner';
-import CourseBrochureCta from './CourseBrochureCta';
 import { CUSTOMIZE_BATCH_BANNER } from '@/lib/courseDetailStatics';
 import { resolvePlansDataForCourse } from '@/lib/planComparisonFallback';
 import type { ApiCoursePlansData } from '@/services/courseApi';
@@ -595,7 +593,6 @@ function filterBatches(batches: ApiCourseBatch[], activeFilter: string, dateRang
 export default function CourseSchedulesSection({
   courseUri,
   categoryUri,
-  courseName,
   variant = 'default',
   courseId = null,
 }: {

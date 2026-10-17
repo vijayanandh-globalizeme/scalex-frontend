@@ -309,7 +309,7 @@ export default function BlogsPage() {
                       transform: totalHero > 1 ? `translateX(-${(heroPage * 100) / totalHero}%)` : undefined,
                     }}
                   >
-                    {heroBlogs.map((b, index) => {
+                    {heroBlogs.map((b) => {
                       const featured = toFeaturedBlog(b);
                       return (
                       <div
