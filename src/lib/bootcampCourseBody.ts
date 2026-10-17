@@ -57,7 +57,7 @@ function buildTechnicalBody(def: TechnicalCourseDefinition): CourseBodyContent {
       ...BASE.overview,
       title: def.heroTitle.includes('Gen AI') ? 'Gen AI Course Overview' : `${def.heroTitle} Overview`,
       description: `Accelerate your career with  EdgeX 's ${def.heroTitle} program. Delivered by industry experts, this immersive training equips you with real-world data analytics skills, Gen AI tools, and hands-on projects to drive business insights, build predictive models, and unlock high-growth opportunities at leading tech companies.`,
-      standoutTitle: 'Most Standout Features',
+      standoutTitle: 'Key features',
       features: BASE.overview.features,
       skillsTitle: 'Skills Covered',
       skills: BASE.overview.skills,

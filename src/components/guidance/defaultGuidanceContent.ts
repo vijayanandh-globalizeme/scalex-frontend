@@ -9,6 +9,7 @@ export const defaultGuidanceContent: GuidanceSectionProps = {
     { id: 'countries', value: '5000+', label: 'Careers Transformed' },
   ],
   formTitle: "Let’s Find the Right Course for You",
+  formDescription: "Share your details and our career expert will help you choose the right course based on your goals.",
   courses: [
     { id: 'product-management', label: 'Product Management' },
     { id: 'agile-scrum', label: 'Agile & Scrum' },
@@ -26,6 +27,6 @@ export const defaultGuidanceContent: GuidanceSectionProps = {
   ],
   termsHref: '/terms-of-use',
   privacyHref: '/privacy-policy',
-  ctaLabel: 'Submit',
+  ctaLabel: 'Talk to Our Expert',
   decorativeArrow: { src: '/images/x-ic.png', alt: '' },
 };

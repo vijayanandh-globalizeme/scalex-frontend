@@ -7,6 +7,7 @@ import {
   CategoryCarouselControls,
   CategoryCarouselTrack,
 } from '@/components/category/CategoryCarouselNav';
+import type { ApiCategoryDetail } from '@/services/categoryApi';
 import { getBlogs, type ApiBlogListItem } from '@/app/actions/blogActions';
 
 const FETCH_LIMIT = 6;
@@ -280,7 +281,7 @@ function BlogDesktopSkeletonGrid() {
   );
 }
 
-export default function CategoryRelatedBlogsSection({ categoryId }: { categoryId?: string }) {
+export default function CategoryRelatedBlogsSection({ category, categoryId }: { category: ApiCategoryDetail, categoryId?: string }) {
   const [loading, setLoading] = useState(true);
   const [pageFetching, setPageFetching] = useState(false);
   const [page, setPage] = useState(0);
@@ -368,7 +369,7 @@ export default function CategoryRelatedBlogsSection({ categoryId }: { categoryId
             Related Blogs
           </h2>
           <p className="mt-3 text-center text-[16px] font-medium leading-[140%] break-words text-muted md:text-[18px]">
-            Go deeper into specialized topics with our latest blog posts, designed to help you navigate your career path with confidence.
+            Explore practical insights and expert knowledge to deepen your understanding of {category.name}.
           </p>
         </header>
 

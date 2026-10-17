@@ -8,10 +8,10 @@ export type ExploreCategoryItem = {
 
 export const EXPERT_CTA = {
   headingLines: [
-    'Engage in a discussion with industry experts',
-    'and receive personalized mentorship.',
+    'Connect with industry experts for',
+    'personalized learning guidance',
   ],
-  subheading: 'Our mission is to empower your growth and guide you toward a successful future.',
-  cta: { href: '/contact', label: 'Generate An Expert Callback' },
+  subheading: 'Get the right guidance on courses, certifications, and skills to support your learning journey.',
+  cta: { href: '/contact', label: 'Get Expert Guidance' },
   image: { src: '/images/julioo-1.png', alt: 'Industry expert ready to mentor learners' },
 };

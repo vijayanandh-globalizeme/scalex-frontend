@@ -140,7 +140,7 @@ const COURSES: Record<string, CourseDetailContent> = {
       partners: ENTERPRISE_PARTNERS,
     },
     form: {
-      title: "Share Your Details",
+      title: "Share your details and get personalized guidance",
       purposes: [
         { id: 'training', label: 'Training' },
         { id: 'certification', label: 'Certification' },
@@ -151,7 +151,7 @@ const COURSES: Record<string, CourseDetailContent> = {
       ],
       termsHref: '/terms-of-use',
       privacyHref: '/privacy-policy',
-      ctaLabel: 'Submit',
+      ctaLabel: 'Talk to Our Expert',
     },
   },
 };

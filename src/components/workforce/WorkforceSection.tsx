@@ -185,7 +185,7 @@ export default function WorkforceSection({
             >
               {headingBefore}
               <span className="mx-2 inline-block align-middle whitespace-nowrap" aria-label={brandLogo.alt}>
-                Edge X
+                EdgeX
               </span>
               {headingAfter}
             </h2>

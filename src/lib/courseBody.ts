@@ -520,7 +520,7 @@ const CSM_BODY: CourseBodyContent = {
     downloadGuideLabel: 'Download Free Guide',
     description:
       'Accelerate your career with EdgeX’s expert-led Certified Scrum Master (CSM) program. Delivered by globally renowned CSTs, this immersive training equips you with real-world Scrum mechanics to build high-performing teams, resolve engineering bottlenecks, and unlock high-growth international leadership opportunities.',
-    standoutTitle: 'Most Standout Features',
+    standoutTitle: 'Key features',
     features: [
       {
         id: 'hours',
@@ -1046,21 +1046,21 @@ const CSM_BODY: CourseBodyContent = {
     features: [
       {
         id: 'save-time',
-        title: 'Save Time writing copy',
+        title: 'Certificate of Completion',
         description:
-          'Define team ground rules, build a shared understanding, engage and support virtual teams, and more.',
+          'Earn an EdgeX certificate upon successfully completing the program.',
       },
       {
         id: 'export-results',
-        title: 'Export your results to a downloadable file',
+        title: 'Showcase Your Achievement',
         description:
-          'Define team ground rules, build a shared understanding, engage and support virtual teams, and more.',
+          'Highlight your newly acquired skills and course completion.',
       },
       {
         id: 'perfect-result',
-        title: 'Perfect result on the first try',
+        title: 'Strengthen Your Resume',
         description:
-          'Define team ground rules, build a shared understanding, engage and support virtual teams, and more.',
+          'Add your EdgeX credential to your resume and LinkedIn profile.',
       },
     ],
   },
@@ -1218,8 +1218,8 @@ const CSM_BODY: CourseBodyContent = {
     ],
   },
   expertCta: {
-    headingLines: ['Have more questions or need', 'personal guidance?'],
-    ctaLabel: 'Contact Learning Advisor',
+    headingLines: ['Have more questions?', 'Talk to our experts for personalized guidance'],
+    ctaLabel: 'Talk to an Expert',
     ctaHref: '#contact',
     imageSrc: '/images/hero/person.png',
     imageAlt: 'Learning advisor ready to help',
@@ -1264,7 +1264,7 @@ const CSM_BODY: CourseBodyContent = {
     })),
   },
   sidebar: {
-    assistTitle: 'Let us assist you',
+    assistTitle: 'Need Help? We’re Here for You.',
     purposes: [
       { id: 'training', label: 'Training' },
       { id: 'certification', label: 'Certification' },
@@ -1276,7 +1276,7 @@ const CSM_BODY: CourseBodyContent = {
     termsHref: '/terms-of-use',
     privacyHref: '/privacy-policy',
     ctaLabel: 'Talk To Us',
-    brochureText: 'Explore the world class Brochure here',
+    brochureText: 'Explore the complete course details and curriculum.',
     brochureCtaLabel: 'Download Brochure',
     mentorship: {
       title: 'Free 1-on-1 Mentorship',

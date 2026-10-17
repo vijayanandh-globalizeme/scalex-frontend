@@ -119,7 +119,7 @@ export const BOOTCAMP_COURSE_DEFINITIONS: BootcampCourseDefinition[] = [
 ];
 
 const DEFAULT_FORM = {
-  title: "Share Your Details",
+  title: "Share your details and get personalized guidance.",
   purposes: [
     { id: 'training', label: 'Training' },
     { id: 'certification', label: 'Certification' },
@@ -130,7 +130,7 @@ const DEFAULT_FORM = {
   ],
   termsHref: '/terms-of-use',
   privacyHref: '/privacy-policy',
-  ctaLabel: 'Submit',
+  ctaLabel: 'Talk to Our Expert',
 };
 
 function buildTechnicalCourse(def: BootcampCourseDefinition): BootcampCourseContent {

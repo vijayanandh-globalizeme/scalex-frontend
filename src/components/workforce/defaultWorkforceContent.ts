@@ -2,7 +2,7 @@ import type { WorkforceSectionProps } from './WorkforceSection';
 
 export const defaultWorkforceContent: WorkforceSectionProps = {
   headingBefore: 'Build a Future-Ready Workforce with ',
-  brandLogo: { alt: 'Edge X' },
+  brandLogo: { alt: 'EdgeX' },
   headingAfter: '',
   subheading:
     'Upskill your teams with industry-focused training designed around your business, technology and workforce needs.',
@@ -12,7 +12,7 @@ export const defaultWorkforceContent: WorkforceSectionProps = {
     { id: 'tailored', label: 'Hands-On Learning' },
     { id: 'future', label: 'Flexible Delivery' },
   ],
-  cta: { label: 'Request A Demo', href: '/request-demo' },
+  cta: { label: 'Talk to Our Enterprise Team', href: '/request-demo' },
   stats: [
     { id: 'avg-salary', label: 'Enterprise Clients', value: '250+' },
     { id: 'highest-salary', label: 'Professionals Upskilled', value: '25K+' },

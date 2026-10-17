@@ -83,7 +83,7 @@ function LegalSidebar() {
         style={{ top: 'calc(4rem + 4.5rem)' }}
       >
         <form onSubmit={handleSubmit} className={`${COURSE_SECTION_CARD} p-5`}>
-          <h2 className="text-[16px] font-medium leading-normal text-heading">Let us assist you</h2>
+          <h2 className="text-[16px] font-medium leading-normal text-heading">Need Help? We’re Here for You.</h2>
           <div className="mt-4 grid gap-3">
             <div>
               <input

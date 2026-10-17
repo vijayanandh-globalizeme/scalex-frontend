@@ -71,5 +71,18 @@ export const defaultWhyScaleXContent: WhyScaleXSectionProps = {
           'Resume building, LinkedIn guidance, interview preparation and job-search support.',
       },
     },
+    {
+      id: 'affordability',
+      label: 'Affordability',
+      others: {
+        title: 'High Upfront Cost',
+        description: 'Premium learning can come with a higher financial commitment.',
+      },
+      scalex: {
+        title: 'Affordable & Flexible Fees',
+        description:
+          'Industry-focused learning designed to be accessible without compromising on quality.',
+      },
+    },
   ],
 };

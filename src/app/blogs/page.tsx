@@ -234,7 +234,7 @@ export default function BlogsPage() {
             <h1 className="text-[28px] font-bold leading-[1.3] text-heading md:text-[40px] md:font-extrabold md:leading-[60px]">
               Your Gateway to{' '}
               <span className="relative inline-block whitespace-nowrap pb-[23px] align-top">
-                <span>Career Knowledge</span>
+                <span>Continuous Learning</span>
                 <span className="absolute bottom-0 left-0 block h-[19px] w-full overflow-hidden" aria-hidden>
                   <span className="block h-[19px] w-full origin-left animate-category-title-underline">
                     <svg xmlns="http://www.w3.org/2000/svg" width="358" height="19" viewBox="0 0 358 19" fill="none" className="block h-[19px] w-full">
@@ -252,7 +252,7 @@ export default function BlogsPage() {
               </span>
             </h1>
             <p className="mx-auto mt-2 max-w-6xl text-[15px] font-medium leading-[26px] text-muted md:text-[16px]">
-              Expert articles on Agile, Scrum, DevOps, Cloud, and career growth. Unlock insights to accelerate your professional journey.
+              Explore expert insights on DevOps, Cloud, Agile, AI Engineering, Automation testing, Cyber security, System Design and Data Science and career skills to keep learning, growing, and staying ahead in your professional journey.
             </p>
           </div>
 
@@ -391,7 +391,7 @@ export default function BlogsPage() {
           <div className="mb-4 text-center">
             <h2 className="text-center text-[34px] font-bold leading-[140%] text-[#1E293B]">All Blogs</h2>
             <p className="mx-auto mt-2 text-center text-[18px] font-medium leading-[140%] text-[#788593]">
-              The most effective project-based immersive learning experience to educate that combines hands-on projects with deep, engaging learning.
+              Discover insightful articles, practical concepts, and expert perspectives to expand your knowledge and keep learning.
             </p>
           </div>
 
@@ -566,7 +566,7 @@ export default function BlogsPage() {
       </section>
 
       <CategoryCoursesSection
-        heading="Master the Skills that Scale Your Career"
+        heading="Master the Skills That Give You an Edge"
         maxCourses={12}
         initialVisibleCount={3}
         loadMoreStep={3}

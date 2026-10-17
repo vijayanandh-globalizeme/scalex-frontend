@@ -7,21 +7,21 @@ export const defaultHeroBadges: HeroBadge[] = [
     variant: 'learners',
     placement: 'top-left',
     title: 'Job Transitions',
-    subtitle: '15K+',
+    subtitle: '5K+',
   },
   {
     id: 'learners-2',
     variant: 'learners',
     placement: 'mid-left',
     title: 'Active Learners',
-    subtitle: '100K+',
+    subtitle: '10K+',
   },
   {
     id: 'mentors',
     variant: 'mentors',
     placement: 'bottom-right',
     title: 'Expert Mentors',
-    subtitle: '1,000+',
+    subtitle: '40+',
   },
 ];
 
@@ -30,7 +30,7 @@ export const defaultHeroContent: HeroSectionProps = {
   headingYour: 'Your',
   headingAccent: 'Career Edge',
   subheading: 'Expert-led courses designed to help you thrive in the digital age',
-  primaryCta: { href: '#courses-heading', label: 'Scale Your Expertise' },
+  primaryCta: { href: '#courses-heading', label: 'Explore Courses' },
   secondaryCta: { href: '/contact', label: 'Get An Expert Callback' },
   trustedBy: {
     label: 'Trusted By',

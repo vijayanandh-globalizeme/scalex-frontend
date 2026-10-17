@@ -128,7 +128,7 @@ export default function ContactPageClient({
                   <div>
                     <p style={{ color: '#788593', fontFamily: 'Inter', fontSize: '12px', fontWeight: 600 }}>WhatsApp Us</p>
                     <a href={whatsappHref} target="_blank" rel="noopener noreferrer" style={{ color: '#1E293B', fontFamily: 'Inter', fontSize: '15px', fontWeight: 700 }}>{whatsapp}</a>
-                    <p style={{ color: '#788593', fontFamily: 'Inter', fontSize: '13px', fontWeight: 400 }}>Chat with us anytime</p>
+                    <p style={{ color: '#788593', fontFamily: 'Inter', fontSize: '13px', fontWeight: 400 }}>Available 24/7</p>
                   </div>
                 </div>
 
@@ -297,7 +297,7 @@ export default function ContactPageClient({
                   {card.title}
                 </p>
                 <p className="mt-2" style={{ color: '#788593', fontFamily: 'Inter', fontSize: '14px', fontWeight: 400, lineHeight: '22px' }}>
-                  &ldquo;{card.desc}&rdquo;
+                  {card.desc}
                 </p>
 
                 <a

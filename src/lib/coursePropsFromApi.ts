@@ -142,7 +142,7 @@ function buildBaseProps(
       partners:         companyLogos?.ENTERPRISE.length ? toPartnerLogos(companyLogos.ENTERPRISE) : ENTERPRISE_PARTNERS,
     },
     form: {
-      title: "Share Your Details",
+      title: "Share your details and get personalized guidance",
       purposes: [
         { id: 'training', label: 'Training' },
         { id: 'certification', label: 'Certification' },
@@ -153,7 +153,7 @@ function buildBaseProps(
       ],
       termsHref: '/terms-of-use',
       privacyHref: '/privacy-policy',
-      ctaLabel: 'Submit',
+      ctaLabel: 'Talk to Our Expert',
     },
   };
 }

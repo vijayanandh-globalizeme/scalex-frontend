@@ -277,7 +277,7 @@ export default function CategoryCoursesSection({
             {heading ?? `Explore all ${categoryName} courses`}
           </h2>
           <p className="mt-2 text-[16px] font-medium leading-[140%] text-muted md:mt-3 md:text-[18px]">
-            Find the right course that leaps your career
+            Build practical, in-demand skills and gain the confidence to take your career further.
           </p>
         </header>
 

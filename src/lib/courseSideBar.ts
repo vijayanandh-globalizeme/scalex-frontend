@@ -12,7 +12,7 @@ export const sidebar: {
     imageAlt: string;
   };
 } = {
-  assistTitle: 'Let us assist you',
+  assistTitle: 'Need Help? We’re Here for You.',
   purposes: [
     { id: 'training', label: 'Training' },
     { id: 'certification', label: 'Certification' },
@@ -24,7 +24,7 @@ export const sidebar: {
   termsHref:        '/terms-of-use',
   privacyHref:      '/privacy-policy',
   ctaLabel:         'Talk To Us',
-  brochureText:     'Explore the world class Brochure here',
+  brochureText:     'Explore the complete course details and curriculum.',
   brochureCtaLabel: 'Download Brochure',
   mentorship: {
     title:    'Free 1-on-1 Mentorship',
