@@ -239,12 +239,12 @@ export default function LegalPageView({
 
         <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_246px] lg:gap-[40px]">
           {/* Content */}
-          <div className="min-w-0 overflow-hidden">
+          <div className="min-w-0">
             <div className={`${COURSE_SECTION_CARD} p-6 md:p-8`}>
               <h1 className="mb-1 text-2xl font-bold leading-tight text-heading md:text-3xl">{title}</h1>
               <p className="mb-6 text-sm text-muted">Last updated: {updated}</p>
               <div
-                className="legal-content"
+                className="legal-content overflow-x-auto"
                 style={{ overflowWrap: 'break-word', minWidth: 0 }}
                 dangerouslySetInnerHTML={{ __html: sanitizedContent }}
               />
