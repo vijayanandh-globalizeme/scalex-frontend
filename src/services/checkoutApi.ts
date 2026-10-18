@@ -67,7 +67,7 @@ export type CouponValidateResult =
     }
   | { success: false; message: string };
 
-export type CheckoutSubmitPayload = {
+export type PaymentInitiatePayload = {
   batchId: string;
   planNumber: number;
   quantity: number;
@@ -81,10 +81,6 @@ export type CheckoutSubmitPayload = {
 };
 
 export type CheckoutFieldErrors = Record<string, string>;
-
-export type CheckoutSubmitResult =
-  | { success: true }
-  | { success: false; message: string; fieldErrors: CheckoutFieldErrors };
 
 // ─────────────────────────────────────────────
 // API calls
@@ -142,34 +138,11 @@ export async function validateCoupon(payload: {
   };
 }
 
-type SubmitApiErrorItem = { field?: string; message: string };
-type SubmitApiResponse = {
-  success: boolean;
-  message?: string;
-  errors?: SubmitApiErrorItem[];
-};
-
-/** POST /checkout/submit */
-export async function submitCheckout(payload: CheckoutSubmitPayload): Promise<CheckoutSubmitResult> {
-  const { ok, data } = await postWithErrors<SubmitApiResponse>('checkout/submit', payload, { revalidate: 0 });
-
-  if (ok && data?.success) return { success: true };
-
-  const fieldErrors: CheckoutFieldErrors = {};
-  for (const err of data?.errors ?? []) {
-    if (err.field && err.message) fieldErrors[err.field] = err.message;
-  }
-
-  return {
-    success: false,
-    message: data?.message || 'Something went wrong. Please try again.',
-    fieldErrors,
-  };
-}
-
 // ─────────────────────────────────────────────
 // Paytm payment
 // ─────────────────────────────────────────────
+
+type PaymentApiErrorItem = { field?: string; message: string };
 
 export type PaymentInitiateResult =
   | { success: true; orderId: string; txnToken: string; mid: string; amount: number; actionUrl: string }
@@ -179,11 +152,11 @@ type PaymentInitiateApiResponse = {
   success: boolean;
   message?: string;
   data?: { orderId: string; txnToken: string; mid: string; amount: number; actionUrl: string };
-  errors?: SubmitApiErrorItem[];
+  errors?: PaymentApiErrorItem[];
 };
 
 /** POST /checkout/payment/initiate */
-export async function initiatePayment(payload: CheckoutSubmitPayload): Promise<PaymentInitiateResult> {
+export async function initiatePayment(payload: PaymentInitiatePayload): Promise<PaymentInitiateResult> {
   const { ok, data } = await postWithErrors<PaymentInitiateApiResponse>('checkout/payment/initiate', payload, {
     revalidate: 0,
   });
@@ -205,16 +178,18 @@ export async function initiatePayment(payload: CheckoutSubmitPayload): Promise<P
 }
 
 export type ApiOrderStatus = {
-  id: string;
-  status: 'PENDING' | 'SUCCESS' | 'FAILED';
-  amount: string;
-  batch: { course: { name: string; uri: string; category: { uri: string } } };
+  orderNo: string;
+  status: 'INITIATED' | 'PENDING' | 'SUCCESS' | 'FAILED' | 'CANCELLED';
+  finalAmount: string;
+  currency: string;
+  courseName: string;
+  course: { name: string; uri: string; category: { uri: string } } | null;
 };
 
 type OrderStatusApiResponse = { success: boolean; data: ApiOrderStatus };
 
-/** GET /checkout/order/:orderId */
-export async function fetchOrderStatus(orderId: string): Promise<ApiOrderStatus | null> {
-  const res = await get<OrderStatusApiResponse>(`checkout/order/${orderId}`, { revalidate: 0 });
+/** GET /checkout/order/:orderNo */
+export async function fetchOrderStatus(orderNo: string): Promise<ApiOrderStatus | null> {
+  const res = await get<OrderStatusApiResponse>(`checkout/order/${encodeURIComponent(orderNo)}`, { revalidate: 0 });
   return res?.success ? res.data : null;
 }

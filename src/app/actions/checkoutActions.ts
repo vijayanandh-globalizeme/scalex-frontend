@@ -3,12 +3,10 @@
 import {
   fetchAvailableCoupons,
   validateCoupon,
-  submitCheckout,
   initiatePayment,
   type ApiAvailableCoupon,
   type CouponValidateResult,
-  type CheckoutSubmitPayload,
-  type CheckoutSubmitResult,
+  type PaymentInitiatePayload,
   type PaymentInitiateResult,
 } from '@/services/checkoutApi';
 
@@ -32,10 +30,6 @@ export async function applyCoupon(payload: {
   return validateCoupon(payload);
 }
 
-export async function submitCheckoutForm(payload: CheckoutSubmitPayload): Promise<CheckoutSubmitResult> {
-  return submitCheckout(payload);
-}
-
-export async function initiatePaymentAction(payload: CheckoutSubmitPayload): Promise<PaymentInitiateResult> {
+export async function initiatePaymentAction(payload: PaymentInitiatePayload): Promise<PaymentInitiateResult> {
   return initiatePayment(payload);
 }

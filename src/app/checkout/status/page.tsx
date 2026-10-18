@@ -26,7 +26,9 @@ export default async function CheckoutStatusPage({ searchParams }: Props) {
     );
   }
 
-  const courseHref = `/${order.batch.course.category.uri}/${order.batch.course.uri}`;
+  const courseName = order.course?.name ?? order.courseName;
+  const courseHref = order.course ? `/${order.course.category.uri}/${order.course.uri}` : '/';
+  const amount = `${order.currency} ${Number(order.finalAmount).toFixed(2)}`;
 
   if (order.status === 'SUCCESS') {
     return (
@@ -40,7 +42,10 @@ export default async function CheckoutStatusPage({ searchParams }: Props) {
         </div>
         <h1 className="mt-5 text-[24px] font-extrabold text-heading">Payment Successful!</h1>
         <p className="mt-2 max-w-[420px] text-[14px] leading-relaxed text-muted">
-          Thanks for enrolling in {order.batch.course.name}. Our team will reach out with the next steps shortly.
+          Thanks for enrolling in {courseName}. Our team will reach out with the next steps shortly.
+        </p>
+        <p className="mt-3 text-[13px] text-muted">
+          Order No: <span className="font-semibold text-heading">{order.orderNo}</span> · Paid: {amount}
         </p>
         <Link
           href={courseHref}
@@ -52,7 +57,7 @@ export default async function CheckoutStatusPage({ searchParams }: Props) {
     );
   }
 
-  if (order.status === 'PENDING') {
+  if (order.status === 'PENDING' || order.status === 'INITIATED') {
     return (
       <div className="site-container py-24 text-center">
         <h1 className="text-[24px] font-extrabold text-heading">Payment pending</h1>
@@ -66,10 +71,15 @@ export default async function CheckoutStatusPage({ searchParams }: Props) {
 
   return (
     <div className="site-container flex flex-col items-center py-24 text-center">
-      <h1 className="text-[24px] font-extrabold text-heading">Payment failed</h1>
+      <h1 className="text-[24px] font-extrabold text-heading">
+        {order.status === 'CANCELLED' ? 'Payment cancelled' : 'Payment failed'}
+      </h1>
       <p className="mt-3 max-w-[420px] text-[14px] leading-relaxed text-muted">
-        Your payment for {order.batch.course.name}&nbsp; couldn&apos;t be completed. No amount has been charged. Please try
+        Your payment for {courseName}&nbsp; couldn&apos;t be completed. No amount has been charged. Please try
         again.
+      </p>
+      <p className="mt-3 text-[13px] text-muted">
+        Order No: <span className="font-semibold text-heading">{order.orderNo}</span>
       </p>
       <Link
         href={courseHref}
