@@ -387,6 +387,7 @@ export default function TechnicalCourseHeroSection(course: TechnicalCourseConten
     hiringPartners,
     startedAt,
     brochureUrl,
+    heroImageUrl,
   } = course;
   const isCsmPage = false;
   const isDevopsPage = true;
@@ -619,13 +620,29 @@ export default function TechnicalCourseHeroSection(course: TechnicalCourseConten
             className="gsap-reveal-pending min-w-0 max-md:w-full max-md:max-w-full max-md:overflow-visible"
           >
             <div className="max-md:hidden">
-              <HeroMediaColumn
-                figureSrc={heroFigureSrc}
-                figureAlt="Technical course learner"
-                badges={heroBadges}
-                aeroShiftRight={isCsmPage}
-                figureAlign={isDevopsPage ? 'left' : 'right'}
-              />
+              {heroImageUrl ? (
+                // Admin-uploaded hero image replaces the figure, aero and floating badges.
+                <div className="relative h-[400px] w-full lg:h-[537px]">
+                  <div className="relative h-full w-full">
+                    <Image
+                      src={heroImageUrl}
+                      alt={heroTitle}
+                      fill
+                      priority
+                      sizes="(max-width: 1024px) 50vw, 560px"
+                      className="object-contain object-left-bottom"
+                    />
+                  </div>
+                </div>
+              ) : (
+                <HeroMediaColumn
+                  figureSrc={heroFigureSrc}
+                  figureAlt="Technical course learner"
+                  badges={heroBadges}
+                  aeroShiftRight={isCsmPage}
+                  figureAlign={isDevopsPage ? 'left' : 'right'}
+                />
+              )}
             </div>
             {collaboration.length > 0 ? (
               <div

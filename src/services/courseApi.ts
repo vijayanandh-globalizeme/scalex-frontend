@@ -23,6 +23,8 @@ export type ApiCourseOverview = {
   shortDescription: string | null;
   noIndex: boolean;
   featureImage: ApiCourseFile;
+  /** Optional hero right-column image; null → default hero media / lead form. */
+  heroImage?: ApiCourseFile | null;
   /** BASIC → single "Training partner" logo; TECHNICAL/BOOTCAMP → up to 2 "Collaboration with" logos. */
   companyLogos: ApiCourseFile[];
   details: {

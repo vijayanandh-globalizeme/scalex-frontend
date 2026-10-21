@@ -120,6 +120,7 @@ export default function CourseDetailHeroSection({
   form,
   licensedPartner,
   enterprise,
+  heroImageUrl,
 }: CourseDetailContent) {
   const sectionRef = useRef<HTMLElement>(null);
   const rowRefs = useRef<(HTMLDivElement | null)[]>([]);
@@ -169,7 +170,7 @@ export default function CourseDetailHeroSection({
         aria-hidden
       />
       <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden>
-        {!(slug === 'certified-scrum-master' && categorySlug === 'agile-and-scrum') ? (
+        {!heroImageUrl && !(slug === 'certified-scrum-master' && categorySlug === 'agile-and-scrum') ? (
           <div className="absolute right-[6%] top-[10%] hidden h-[54%] w-[46%] md:block md:w-[33%] lg:w-[19%]">
             <Image
               src="/images/hero/aero-bg-v2.png"
@@ -341,7 +342,7 @@ export default function CourseDetailHeroSection({
             }`}
           >
             {/* Aero behind form — same as home hero (CSM only) */}
-            {slug === 'certified-scrum-master' && categorySlug === 'agile-and-scrum' ? (
+            {!heroImageUrl && slug === 'certified-scrum-master' && categorySlug === 'agile-and-scrum' ? (
               <div
                 className="pointer-events-none absolute z-0 hidden lg:block"
                 style={{ top: 40, right: -170, width: 360, height: 440 }}
@@ -358,10 +359,24 @@ export default function CourseDetailHeroSection({
               </div>
             ) : null}
             <div className="relative z-10">
-            <CourseLeadForm
-              {...form}
-              emphasizedFields={slug === 'certified-scrum-master' && categorySlug === 'agile-and-scrum'}
-            />
+            {heroImageUrl ? (
+              // Admin-uploaded hero image replaces the lead form + aero (desktop only).
+              <div className="relative h-[400px] w-full max-md:hidden lg:h-[480px]">
+                <Image
+                  src={heroImageUrl}
+                  alt={titlePrefix}
+                  fill
+                  priority
+                  sizes="(max-width: 1024px) 50vw, 528px"
+                  className="object-contain object-center"
+                />
+              </div>
+            ) : (
+              <CourseLeadForm
+                {...form}
+                emphasizedFields={slug === 'certified-scrum-master' && categorySlug === 'agile-and-scrum'}
+              />
+            )}
             {licensedPartner ? (
               <div className="mt-5 lg:mt-6" aria-label="Licensed training partner">
                 <CourseLicensedPartnerStrip {...licensedPartner} />

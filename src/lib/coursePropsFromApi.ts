@@ -126,6 +126,7 @@ function buildBaseProps(
     learnersStat:  buildLearnersStat(settings),
     primaryCta:    { href: schedulePath, label: 'View Schedules' },
     secondaryCta:  { href: '#schedules', label: 'View Schedules' },
+    heroImageUrl:  course.heroImage?.url ?? null,
     licensedPartner: course.companyLogos.length
       ? {
           label: 'Licensed Training Partner',
