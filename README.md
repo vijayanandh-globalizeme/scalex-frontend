@@ -17,7 +17,7 @@ Open the URL printed in the terminal (usually `http://localhost:3000`).
 - **Build**: `npm run build`
 - **Start**: `npm run start`
 - **Typecheck**: `npx tsc --noEmit`
-
+- **
 ## Project structure
 
 - `src/app/` – Next.js routes (App Router)
