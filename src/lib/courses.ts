@@ -36,6 +36,8 @@ export interface CourseDetailContent {
   learnersStat: CategoryLearnersStat;
   primaryCta: { href: string; label: string };
   secondaryCta: { href: string; label: string };
+  /** Admin-uploaded hero image — when set, replaces the hero right-column media/lead form (desktop only). */
+  heroImageUrl?: string | null;
   /** Absent when the course has no training-partner logo uploaded. */
   licensedPartner?: {
     label: string;
