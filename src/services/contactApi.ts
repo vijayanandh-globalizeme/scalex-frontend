@@ -7,6 +7,13 @@ export type ContactSubmitPayload = {
   purpose: string;
   /** Course URI captured from the course-search field (footer form only). */
   courseName?: string;
+  /** Email-only context (not stored): tailors the confirmation mail + team alert. */
+  leadType?: 'contact' | 'webinar' | 'demo';
+  /** Where the lead came from, e.g. the popup label "Download Syllabus". */
+  source?: string;
+  courseId?: string;
+  /** Brochure/guide/syllabus link to include in the confirmation mail (API re-validates it). */
+  downloadUrl?: string;
 };
 
 /** Field name → message, keyed by the API's validated field names (name/email/phone/purpose/courseName). */

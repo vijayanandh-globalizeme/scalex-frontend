@@ -77,6 +77,7 @@ export default function CourseAssistForm({
       email,
       phone,
       purpose: purposeLabel,
+      source: 'Course sidebar enquiry',
     });
     if (result.success) {
       setStatus('idle');

@@ -98,7 +98,17 @@ export default function CourseLeadForm({
     setStatus('submitting');
     setFieldErrors({});
     const purposeLabel = purposes.find((p) => p.id === purpose)?.label ?? purpose;
-    const result = await sendContact({ name, email, phone, purpose: purposeLabel });
+    const result = await sendContact({
+      name,
+      email,
+      phone,
+      purpose: purposeLabel,
+      // Context for the confirmation email / team alert (not stored).
+      ...(leadType === 'contact' || leadType === 'webinar' || leadType === 'demo' ? { leadType } : {}),
+      source: eyebrow ?? (bare ? 'Website popup' : 'Course page enquiry'),
+      ...(courseId ? { courseId } : {}),
+      ...(downloadUrl ? { downloadUrl } : {}),
+    });
     if (result.success) {
       setStatus('idle');
       setName('');

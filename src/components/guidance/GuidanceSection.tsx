@@ -113,6 +113,7 @@ function GuidanceForm({
       phone,
       purpose: purposeLabel,
       ...(courseUri ? { courseName: courseUri } : {}),
+      source: 'Career guidance form',
     });
     if (result.success) {
       setStatus('idle');
