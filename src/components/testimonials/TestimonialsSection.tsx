@@ -307,7 +307,7 @@ function TestimonialCard({
       <div className="pointer-events-none absolute right-2 bottom-2 z-0 h-[56.011px] w-[51.503px]" aria-hidden>
         <Image
           src="/images/x-ic.png"
-          alt=""
+          alt="Decorative EdgeX mark"
           fill
           sizes="52px"
           className="object-contain object-right-bottom"

@@ -28,7 +28,7 @@ function LinkedInBadge({ href, name }: { href?: string; name: string }) {
     >
       <Image
         src="/images/image 20233.png"
-        alt=""
+        alt={`${name} on LinkedIn`}
         width={36}
         height={36}
         className="h-9 w-9 object-contain"

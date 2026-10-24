@@ -86,7 +86,7 @@ function BlogCardFooter({ blog, isSolid, compact = false }: { blog: BlogItem; is
         <span
           className={`relative shrink-0 overflow-hidden rounded-full ${compact ? 'h-8 w-8' : 'h-9 w-9'} ${isSolid ? 'ring-2 ring-white/30' : 'ring-1 ring-zinc-200'}`}
         >
-          <Image src={blog.authorAvatar} alt="" fill sizes="36px" loading="eager" className="object-cover" />
+          <Image src={blog.authorAvatar} alt={blog.author} fill sizes="36px" loading="eager" className="object-cover" />
         </span>
         <span className="min-w-0">
           <span
@@ -129,7 +129,7 @@ function WhiteBlogCard({ blog, mobile = false }: { blog: BlogItem; mobile?: bool
         >
           <Image
             src={blog.imageSrc}
-            alt=""
+            alt={blog.title}
             fill
             sizes={mobile ? '45vw' : '(max-width: 1024px) 90vw, 412px'}
             loading="eager"

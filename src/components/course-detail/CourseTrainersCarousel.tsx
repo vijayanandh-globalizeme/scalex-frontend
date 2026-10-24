@@ -88,7 +88,7 @@ function TrainerCard({ trainer }: { trainer: ApiTrainer }) {
         style={{ fontFamily: 'Inter, sans-serif' }}
       >
         View Profile on
-        <Image src="/images/linked.png" alt="" width={22} height={22} className="h-[22px] w-[22px] shrink-0 object-contain" aria-hidden />
+        <Image src="/images/linked.png" alt="LinkedIn" width={22} height={22} className="h-[22px] w-[22px] shrink-0 object-contain" aria-hidden />
       </Link>
     </article>
   );

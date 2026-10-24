@@ -300,7 +300,7 @@ const HeroMediaColumn = forwardRef<HTMLDivElement, HeroMediaColumnProps>(
                 >
                   <Image
                     src={aeroSrc}
-                    alt=""
+                    alt="Decorative EdgeX aero background"
                     width={aeroSize.mobile.width}
                     height={aeroSize.mobile.height}
                     sizes={`${aeroSize.mobile.width}px`}
@@ -318,7 +318,7 @@ const HeroMediaColumn = forwardRef<HTMLDivElement, HeroMediaColumnProps>(
                 >
                   <Image
                     src={aeroSrc}
-                    alt=""
+                    alt="Decorative EdgeX aero background"
                     width={aeroSize.width}
                     height={aeroSize.height}
                     sizes={`${aeroSize.width}px`}
