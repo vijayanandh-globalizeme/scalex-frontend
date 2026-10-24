@@ -461,7 +461,7 @@ export default function BlogDetailPage() {
                   <span className="inline-flex flex-col items-start gap-1 text-left">
                     <Image
                       src="/images/calener_icon.png"
-                      alt=""
+                      alt="Published date"
                       width={16}
                       height={16}
                       className="h-4 w-4 shrink-0 object-contain"
@@ -472,7 +472,7 @@ export default function BlogDetailPage() {
                   <span className="inline-flex flex-col items-start gap-1 text-left">
                     <Image
                       src="/images/eye-ic.png"
-                      alt=""
+                      alt="Views"
                       width={16}
                       height={16}
                       className="h-4 w-4 shrink-0 object-contain"
@@ -483,7 +483,7 @@ export default function BlogDetailPage() {
                   <span className="inline-flex flex-col items-start gap-1 text-left">
                     <Image
                       src="/images/time-icon.png"
-                      alt=""
+                      alt="Reading time"
                       width={16}
                       height={16}
                       className="h-4 w-4 shrink-0 object-contain"
@@ -659,7 +659,7 @@ export default function BlogDetailPage() {
                     </p>
                     <button
                       type="button"
-                      onClick={() => openBrochureModal({ type: 'contact', courseId: null })}
+                      onClick={() => openBrochureModal({ type: 'contact', image: 'request-demo', courseId: null })}
                       className="inline-flex cursor-pointer items-center justify-center rounded-full bg-brand px-4 py-1.5 text-[12px] font-semibold text-white hover:bg-brand/90 transition-colors"
                     >
                       Explore Now

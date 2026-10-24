@@ -78,6 +78,7 @@ export default function CourseOverviewSection({
           {showGuideCta ? (
             <CourseBrochureCta
               openModal
+              image="free-guide"
               courseId={courseId}
               downloadUrl={downloadUrl}
               className={

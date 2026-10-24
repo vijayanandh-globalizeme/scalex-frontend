@@ -107,7 +107,7 @@ export default function ContactPageClient({
                 {/* Phone */}
                 <div className="flex items-start gap-4">
                   <div className="flex h-11 w-11 shrink-0 items-center justify-center" style={{ borderRadius: '20px', background: '#F8F9FB' }}>
-                    <Image src="/images/ph.png" alt="" width={24} height={24} className="object-contain" />
+                    <Image src="/images/ph.png" alt="Phone" width={24} height={24} className="object-contain" />
                   </div>
                   <div>
                     <p style={{ color: '#788593', fontFamily: 'Inter', fontSize: '12px', fontWeight: 600 }}>Call us</p>
@@ -133,7 +133,7 @@ export default function ContactPageClient({
                 {/* Email */}
                 <div className="flex items-start gap-4">
                   <div className="flex h-11 w-11 shrink-0 items-center justify-center" style={{ borderRadius: '20px', background: '#F8F9FB' }}>
-                    <Image src="/images/email.png" alt="" width={24} height={24} className="object-contain" />
+                    <Image src="/images/email.png" alt="Email" width={24} height={24} className="object-contain" />
                   </div>
                   <div>
                     <p style={{ color: '#788593', fontFamily: 'Inter', fontSize: '12px', fontWeight: 600 }}>Email us</p>
@@ -145,7 +145,7 @@ export default function ContactPageClient({
                 {/* Address */}
                 <div className="flex items-start gap-4">
                   <div className="flex h-11 w-11 shrink-0 items-center justify-center" style={{ borderRadius: '20px', background: '#F8F9FB' }}>
-                    <Image src="/images/visit.png" alt="" width={24} height={24} className="object-contain" />
+                    <Image src="/images/visit.png" alt="Office location" width={24} height={24} className="object-contain" />
                   </div>
                   <div>
                     <p style={{ color: '#788593', fontFamily: 'Inter', fontSize: '12px', fontWeight: 600 }}>Visit us</p>
@@ -160,6 +160,7 @@ export default function ContactPageClient({
                 <CourseBrochureCta
                   openModal
                   type="contact"
+                  image="expert-call"
                   courseId={null}
                   className="btn-brand inline-flex h-[54px] items-center gap-2 px-6 md:px-7 max-md:box-border max-md:w-full max-md:min-w-0 max-md:max-w-full max-md:px-4"
                   style={{ fontSize: '16px', fontWeight: 600, fontFamily: 'Inter', color: '#FFF' }}

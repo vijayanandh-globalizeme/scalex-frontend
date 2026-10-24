@@ -305,7 +305,7 @@ export default function CategoryHeroSection({
           <div className={`${bgClassName} hidden md:block`}>
             <Image
               src={backgroundImage.src}
-              alt=""
+              alt="Decorative EdgeX aero background"
               fill
               priority={false}
               sizes="(max-width: 768px) 46vw, (max-width: 1024px) 33vw, 400px"

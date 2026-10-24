@@ -61,7 +61,7 @@ function LegalSidebar() {
     setStatus('submitting');
     setFieldErrors({});
     const purposeLabel = PURPOSES.find((p) => p.id === purpose)?.label ?? purpose;
-    const result = await sendContact({ name, email, phone, purpose: purposeLabel });
+    const result = await sendContact({ name, email, phone, purpose: purposeLabel, source: 'Policy page enquiry' });
     if (result.success) {
       setStatus('idle');
       setName('');

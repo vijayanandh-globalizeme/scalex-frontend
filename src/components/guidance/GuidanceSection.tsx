@@ -113,6 +113,7 @@ function GuidanceForm({
       phone,
       purpose: purposeLabel,
       ...(courseUri ? { courseName: courseUri } : {}),
+      source: 'Career guidance form',
     });
     if (result.success) {
       setStatus('idle');
@@ -141,7 +142,7 @@ function GuidanceForm({
         <div className="pointer-events-none absolute right-3 bottom-3 z-0 h-28 w-28" aria-hidden>
           <Image
             src={decorativeArrow.src}
-            alt=""
+            alt={decorativeArrow.alt ?? 'Decorative arrow'}
             fill
             sizes="112px"
             className="object-contain object-right-bottom"

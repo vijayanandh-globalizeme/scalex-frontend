@@ -255,7 +255,7 @@ export function CourseCard({
                     <span className="inline-flex items-center gap-1">
                       <Image
                         src="/images/Save-icon.png"
-                        alt=""
+                        alt="Savings"
                         width={14}
                         height={14}
                         className="h-3.5 w-3.5 object-contain"
@@ -267,7 +267,7 @@ export function CourseCard({
                     <span className="inline-flex items-center gap-1">
                       <Image
                         src="/images/last-iocn.png"
-                        alt=""
+                        alt="Limited slots"
                         width={14}
                         height={14}
                         className="h-3.5 w-3.5 object-contain"

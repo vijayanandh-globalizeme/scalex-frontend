@@ -217,7 +217,7 @@ export default function CourseReviewsClient({
                 >
                   {tab.logoSrc ? (
                     <span className="relative h-[18px] w-[18px] shrink-0">
-                      <Image src={tab.logoSrc} alt="" fill className="object-contain object-left" sizes="18px" />
+                      <Image src={tab.logoSrc} alt={`${tab.label} logo`} fill className="object-contain object-left" sizes="18px" />
                     </span>
                   ) : null}
                   {tab.label}

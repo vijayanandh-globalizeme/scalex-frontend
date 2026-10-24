@@ -130,7 +130,7 @@ function WhatsAppFabIcon({ className }: { className?: string }) {
   return (
     <Image
       src="/images/whatspp.svg"
-      alt=""
+      alt="WhatsApp"
       width={40}
       height={40}
       className={`pointer-events-none object-contain ${className ?? 'h-10 w-10'}`}
@@ -239,7 +239,7 @@ const Footer = ({
                 <div className="mb-6 flex flex-wrap items-center gap-2.5">
                   {socialIcons.map(({ href, src, label }) => (
                     <Link key={label} href={href} className="flex shrink-0" aria-label={label} target="_blank" rel="noopener noreferrer">
-                      <Image src={src} alt="" width={40} height={40} className="h-10 w-10 object-contain" sizes="40px" />
+                      <Image src={src} alt={label} width={40} height={40} className="h-10 w-10 object-contain" sizes="40px" />
                     </Link>
                   ))}
                 </div>

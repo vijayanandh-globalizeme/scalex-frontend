@@ -95,7 +95,7 @@ function AwardPhotoCard({ card }: { card: AwardCard }) {
       <div className="interactive-card-media relative aspect-[6/5] w-full bg-[#1E293B]">
         {/* Blurred copy fills the frame so the full trophy can sit uncropped on top. */}
         <span className="absolute inset-0 scale-110 blur-xl" aria-hidden>
-          <Image src={card.imageSrc!} alt="" fill sizes="64px" className="object-cover object-center" />
+          <Image src={card.imageSrc!} alt={card.imageAlt ?? card.title} fill sizes="64px" className="object-cover object-center" />
         </span>
         <div className="absolute inset-0 flex justify-center">
           <Image
@@ -112,7 +112,7 @@ function AwardPhotoCard({ card }: { card: AwardCard }) {
         <span className="pointer-events-none absolute inset-y-0 right-0 w-1/2" aria-hidden>
           <Image
             src="/images/xaero.png"
-            alt=""
+            alt="Decorative EdgeX aero graphic"
             fill
             sizes="160px"
             className="object-contain object-right"
@@ -151,7 +151,7 @@ function AwardCardItem({ card, embedded = false }: { card: AwardCard; embedded?:
         >
           <Image
             src="/images/xaero.png"
-            alt=""
+            alt="Decorative EdgeX aero graphic"
             fill
             sizes={embedded ? '80px' : '50vw'}
             className="object-contain object-right"

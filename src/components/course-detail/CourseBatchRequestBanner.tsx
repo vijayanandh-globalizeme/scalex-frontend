@@ -74,6 +74,7 @@ export default function CourseBatchRequestBanner({
           <CourseBrochureCta
             href={banner.ctaHref}
             type="contact"
+            image="request-batch"
             courseId={courseId}
             className="btn-brand inline-flex h-9 w-fit shrink-0 items-center justify-center rounded-lg px-2.5 text-[12px] font-medium leading-[18px] whitespace-nowrap text-white"
           >
@@ -121,6 +122,7 @@ export default function CourseBatchRequestBanner({
           <CourseBrochureCta
             href={banner.ctaHref}
             type="contact"
+            image="request-batch"
             courseId={courseId}
             className="btn-brand mt-4 inline-flex h-10 w-fit items-center justify-center gap-2 rounded-lg px-5 text-[14px] font-medium leading-[18px] text-white"
           >

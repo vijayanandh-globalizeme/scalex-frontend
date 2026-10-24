@@ -174,7 +174,7 @@ export default function CourseDetailHeroSection({
           <div className="absolute right-[6%] top-[10%] hidden h-[54%] w-[46%] md:block md:w-[33%] lg:w-[19%]">
             <Image
               src="/images/hero/aero-bg-v2.png"
-              alt=""
+              alt="Decorative EdgeX aero background"
               fill
               sizes="(max-width: 768px) 46vw, (max-width: 1024px) 33vw, 400px"
               className="object-contain object-center"
@@ -289,7 +289,7 @@ export default function CourseDetailHeroSection({
                       key={`${src}-${index}`}
                       className={`relative h-7 w-7 shrink-0 overflow-hidden rounded-full ring-2 ring-white ${index > 0 ? '-ml-2' : ''}`}
                     >
-                      <Image src={src} alt="" width={28} height={28} className="h-7 w-7 object-cover" />
+                      <Image src={src} alt={`Learner ${index + 1}`} width={28} height={28} className="h-7 w-7 object-cover" />
                     </div>
                   ))}
                 </div>
@@ -304,7 +304,7 @@ export default function CourseDetailHeroSection({
               {brochureUrl ? (
                 <button
                   type="button"
-                  onClick={() => openBrochureModal({ type: 'contact', courseId, downloadUrl: brochureUrl })}
+                  onClick={() => openBrochureModal({ type: 'contact', image: 'download-brochure', courseId, downloadUrl: brochureUrl })}
                   className="btn-brand h-[54px] w-full cursor-pointer gap-2 px-6 sm:w-auto md:px-7"
                 >
                   Download Brochure
@@ -350,7 +350,7 @@ export default function CourseDetailHeroSection({
               >
                 <Image
                   src="/images/hero/aero-bg-v2.png"
-                  alt=""
+                  alt="Decorative EdgeX aero background"
                   width={360}
                   height={440}
                   sizes="360px"

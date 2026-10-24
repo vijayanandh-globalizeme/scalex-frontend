@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import Image from 'next/image';
 import CourseLeadForm, { type CourseLeadFormProps } from './CourseLeadForm';
-import type { BrochureModalType } from './CourseBrochureModalContext';
+import type { BrochureModalType, BrochurePopupArtwork } from './CourseBrochureModalContext';
 import styles from './CourseBrochureModal.module.css';
 
 const TRANSITION_MS = 350;
@@ -26,6 +26,8 @@ export default function CourseBrochureModal({
   isOpen,
   onClose,
   form,
+  image,
+  label,
   leadType,
   courseId,
   downloadUrl,
@@ -33,6 +35,9 @@ export default function CourseBrochureModal({
   isOpen: boolean;
   onClose: () => void;
   form: CourseLeadFormProps;
+  image: BrochurePopupArtwork;
+  /** RHS pill text. */
+  label: string;
   leadType?: BrochureModalType;
   courseId?: string | null;
   downloadUrl?: string | null;
@@ -103,49 +108,42 @@ export default function CourseBrochureModal({
         role="dialog"
         aria-modal="true"
         aria-labelledby="course-brochure-modal-title"
-        className={`${styles.panel} relative z-10 flex w-full max-w-[860px] max-h-[min(90vh,640px)] overflow-hidden rounded-[20px] bg-white shadow-[0_24px_60px_rgba(0,0,0,0.35)] ${isAnimated ? styles.isOpen : ''}`}
+        className={`${styles.panel} relative z-10 flex w-full max-w-[420px] max-h-[90vh] overflow-hidden rounded-[20px] bg-white shadow-[0_24px_60px_rgba(0,0,0,0.35)] md:h-[min(90vh,544px)] md:max-w-[820px] ${isAnimated ? styles.isOpen : ''}`}
       >
         <button
           type="button"
           onClick={onClose}
-          className="btn-mui-ink-tint absolute right-3 top-3 z-20 flex h-9 w-9 items-center justify-center rounded-full bg-white/90 text-heading shadow-sm"
+          className="absolute right-4 top-4 z-20 flex h-8 w-8 items-center justify-center rounded-full bg-[#F1F5F9] text-[#64748B] transition-colors hover:bg-[#E2E8F0] hover:text-heading"
           aria-label="Close"
         >
-          <CloseIcon />
+          <CloseIcon className="h-4 w-4" />
         </button>
 
-        {/* LHS — branded image panel (hidden on small screens) */}
+        {/* LHS — CTA-specific artwork, 50% width (hidden on small screens).
+            The artwork's rounded corners are transparent; the split background
+            matches the colour beside its top/bottom corners so they disappear. */}
         <div
-          className="relative hidden w-[320px] shrink-0 overflow-hidden md:block"
-          style={{ background: 'linear-gradient(160deg, #0D0D0D 0%, #161A26 55%, #FF002C 220%)' }}
+          className="relative hidden w-1/2 shrink-0 overflow-hidden md:block"
+          style={{ background: `linear-gradient(to bottom, ${image.bg[0]} 50%, ${image.bg[1]} 50%)` }}
         >
-          <div className="relative z-10 p-7">
-            <p className="text-[24px] font-extrabold leading-tight text-white">
-              Let&apos;s get
-              <br />
-              Started
-            </p>
-            <p className="mt-3 text-[13px] leading-relaxed text-white/70">
-              Everything you need to make the right learning decision.
-            </p>
-          </div>
-          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[300px]">
-            <Image
-              src="/images/person-3.png"
-              alt="EdgeX course advisor"
-              fill
-              className="object-contain object-bottom"
-              sizes="320px"
-            />
-          </div>
+          <Image
+            key={image.src}
+            src={image.src}
+            alt={image.alt}
+            fill
+            priority
+            className="object-cover object-top"
+            sizes="410px"
+          />
         </div>
 
-        {/* RHS — lead form */}
-        <div className="relative min-w-0 flex-1 overflow-y-auto">
+        {/* RHS — lead form, 50% width */}
+        <div className="relative flex min-w-0 flex-1 flex-col justify-center overflow-y-auto md:w-1/2">
           <CourseLeadForm
             {...form}
             showArrowDecor={false}
             bare
+            eyebrow={label}
             titleId="course-brochure-modal-title"
             leadType={leadType}
             courseId={courseId}

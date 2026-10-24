@@ -202,7 +202,7 @@ function TestimonialCardOnly({ story, mobile = false }: { story: Reviewer; mobil
           <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-full bg-zinc-100">
             <Image
               src={story.avatarUrl}
-              alt=""
+              alt={story.name}
               fill
               sizes="40px"
               className="object-cover"

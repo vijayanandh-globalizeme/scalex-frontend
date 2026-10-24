@@ -289,7 +289,7 @@ function HeroMediaColumn({
             >
               <Image
                 src={aeroSrc}
-                alt=""
+                alt="Decorative EdgeX aero background"
                 width={MOBILE_AERO_SIZE.width}
                 height={MOBILE_AERO_SIZE.height}
                 sizes={`${MOBILE_AERO_SIZE.width}px`}
@@ -307,7 +307,7 @@ function HeroMediaColumn({
             >
               <Image
                 src={aeroSrc}
-                alt=""
+                alt="Decorative EdgeX aero background"
                 width={aeroSize.width}
                 height={aeroSize.height}
                 sizes={`${aeroSize.width}px`}
@@ -477,7 +477,7 @@ export default function TechnicalCourseHeroSection(course: TechnicalCourseConten
                 <div className="inline-flex items-center gap-2 rounded-[8px] bg-[#FCF9F3] px-4 py-2">
                   <Image
                     src="/images/money.png"
-                    alt=""
+                    alt="Price"
                     width={20}
                     height={20}
                     className="h-5 w-5 shrink-0 object-contain"
@@ -568,6 +568,7 @@ export default function TechnicalCourseHeroSection(course: TechnicalCourseConten
                 <CourseBrochureCta
                   openModal
                   type="contact"
+                  image="download-brochure"
                   courseId={courseId}
                   downloadUrl={brochureUrl}
                   className="btn-brand inline-flex h-[54px] w-full items-center justify-center gap-2 px-6 max-md:box-border max-md:min-w-0 max-md:max-w-full max-md:px-4 sm:w-auto md:px-7"
@@ -600,7 +601,7 @@ export default function TechnicalCourseHeroSection(course: TechnicalCourseConten
                         key={`${src}-${index}`}
                         className={`relative h-[28px] w-[28px] shrink-0 overflow-hidden rounded-full ring-2 ring-white ${index > 0 ? '-ml-2' : ''}`}
                       >
-                        <Image src={src} alt="" width={28} height={28} className="h-[28px] w-[28px] object-cover" />
+                        <Image src={src} alt={`Learner ${index + 1}`} width={28} height={28} className="h-[28px] w-[28px] object-cover" />
                       </div>
                     ))}
                   </div>

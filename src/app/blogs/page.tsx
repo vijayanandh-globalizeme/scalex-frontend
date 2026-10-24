@@ -225,10 +225,6 @@ export default function BlogsPage() {
         className="full-bleed relative z-10 min-h-[594px] overflow-visible max-md:pt-10 max-md:pb-15 md:h-[594px] md:pt-10"
       >
         <div className="blogs-hero-bg pointer-events-none absolute inset-0" aria-hidden />
-        {/* Decorative EdgeX watermark */}
-        <div className="pointer-events-none absolute right-0 top-1/4 z-0 hidden h-[340px] w-[300px] opacity-[0.07] md:block" aria-hidden>
-          <Image src="/images/scalex-mark.png" alt="" fill className="object-contain object-right" />
-        </div>
 
         <div className="site-container relative z-10">
           {/* Breadcrumb */}
@@ -304,7 +300,7 @@ export default function BlogsPage() {
               >
                 <Image
                   src="/images/aero-bg-v2.png"
-                  alt=""
+                  alt="Decorative EdgeX aero background"
                   fill
                   sizes="(min-width: 1920px) 320px, (max-width: 767px) 160px, 240px"
                   className="object-contain"
@@ -500,11 +496,11 @@ export default function BlogsPage() {
                       </span>
                       <div className="ml-auto flex items-center gap-3">
                         <span className="flex items-center gap-1 text-[11px] text-muted">
-                          <Image src="/images/eye-ic.png" alt="" width={14} height={14} className="h-[14px] w-[14px] shrink-0 object-contain" aria-hidden />
+                          <Image src="/images/eye-ic.png" alt="Views" width={14} height={14} className="h-[14px] w-[14px] shrink-0 object-contain" aria-hidden />
                           {b.views.toLocaleString()} Views
                         </span>
                         <span className="flex items-center gap-1 text-[11px] text-muted">
-                          <Image src="/images/time-icon.png" alt="" width={14} height={14} className="h-[14px] w-[14px] shrink-0 object-contain" aria-hidden />
+                          <Image src="/images/time-icon.png" alt="Reading time" width={14} height={14} className="h-[14px] w-[14px] shrink-0 object-contain" aria-hidden />
                           {b.readTimeMinutes} Min Read
                         </span>
                       </div>

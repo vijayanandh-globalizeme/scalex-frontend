@@ -23,10 +23,10 @@ export default async function AboutPage() {
       <section className="full-bleed relative mt-0 overflow-hidden max-md:pt-15 pb-15 md:py-10" style={{ background: '#141414' }}>
         {/* Cross icon bottom right */}
         <div className="pointer-events-none absolute right-0 bottom-0" aria-hidden>
-          <Image src="/images/cros.png" alt="" width={220} height={220} className="object-contain" />
+          <Image src="/images/cros.png" alt="Decorative cross graphic" width={220} height={220} className="object-contain" />
         </div>
         <div className="pointer-events-none absolute right-0 bottom-0" aria-hidden>
-          <Image src="/images/cros.png" alt="" width={220} height={220} className="object-contain" />
+          <Image src="/images/cros.png" alt="Decorative cross graphic" width={220} height={220} className="object-contain" />
         </div>
 
         <div className="site-container relative z-10">
