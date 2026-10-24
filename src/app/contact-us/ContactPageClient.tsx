@@ -160,6 +160,7 @@ export default function ContactPageClient({
                 <CourseBrochureCta
                   openModal
                   type="contact"
+                  image="expert-call"
                   courseId={null}
                   className="btn-brand inline-flex h-[54px] items-center gap-2 px-6 md:px-7 max-md:box-border max-md:w-full max-md:min-w-0 max-md:max-w-full max-md:px-4"
                   style={{ fontSize: '16px', fontWeight: 600, fontFamily: 'Inter', color: '#FFF' }}

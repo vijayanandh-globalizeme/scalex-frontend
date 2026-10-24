@@ -414,7 +414,7 @@ export default function TestimonialsSection({
             </p>
             <button
               type="button"
-              onClick={() => openBrochureModal({ type: 'contact', courseId: null })}
+              onClick={() => openBrochureModal({ type: 'contact', image: 'expert-call', courseId: null })}
               className="btn-brand mt-6 inline-flex h-[40px] cursor-pointer items-center justify-center gap-2 px-6 text-[14px] font-semibold md:mt-8 md:px-7 md:text-[15px]"
             >
               {ctaLabel}

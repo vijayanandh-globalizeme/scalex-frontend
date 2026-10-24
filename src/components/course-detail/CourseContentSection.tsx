@@ -78,6 +78,8 @@ export default function CourseContentSection({
         {syllabusUrl ? (
           <CourseBrochureCta
             openModal
+            image="download-brochure"
+            label="Download Syllabus"
             courseId={courseId}
             downloadUrl={syllabusUrl}
             className="btn-brand-outline inline-flex h-10 shrink-0 items-center justify-center gap-2 self-start px-5 text-[13px] font-semibold sm:self-auto"

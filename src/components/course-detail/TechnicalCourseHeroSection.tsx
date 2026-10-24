@@ -568,6 +568,7 @@ export default function TechnicalCourseHeroSection(course: TechnicalCourseConten
                 <CourseBrochureCta
                   openModal
                   type="contact"
+                  image="download-brochure"
                   courseId={courseId}
                   downloadUrl={brochureUrl}
                   className="btn-brand inline-flex h-[54px] w-full items-center justify-center gap-2 px-6 max-md:box-border max-md:min-w-0 max-md:max-w-full max-md:px-4 sm:w-auto md:px-7"

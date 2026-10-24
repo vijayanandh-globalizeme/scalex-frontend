@@ -134,6 +134,7 @@ export default function CourseDetailSidebar({
           </p>
           <CourseBrochureCta
             openModal
+            image="download-brochure"
             courseId={courseId}
             downloadUrl={brochureUrl}
             className="btn-brand-outline mt-4 inline-flex h-10 w-full items-center justify-center gap-2 text-[13px] font-semibold"

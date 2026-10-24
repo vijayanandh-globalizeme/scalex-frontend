@@ -109,6 +109,7 @@ function ExpertCtaCard({ content, headingId }: { content: ExpertCtaContent; head
           <CourseBrochureCta
             openModal
             type="contact"
+            image="expert-call"
             courseId={null}
             className="btn-brand mt-4 inline-flex h-10 items-center justify-center gap-2 px-5 text-[13px] font-semibold"
           >
@@ -167,6 +168,7 @@ function ExpertCtaFullBleed({ content, headingId }: { content: ExpertCtaContent;
             <CourseBrochureCta
               openModal
               type="contact"
+              image="expert-call"
               courseId={null}
               className="btn-brand mt-8 inline-flex h-[54px] items-center justify-center gap-3 px-8"
             >

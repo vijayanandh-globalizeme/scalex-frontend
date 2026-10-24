@@ -6,12 +6,15 @@ import {
   isBrochureModalHref,
   useCourseBrochureModal,
   type BrochureModalType,
+  type BrochurePopupImage,
 } from './CourseBrochureModalContext';
 
 export default function CourseBrochureCta({
   href,
   openModal = false,
   type = 'contact',
+  image,
+  label,
   courseId = null,
   downloadUrl = null,
   className,
@@ -23,6 +26,10 @@ export default function CourseBrochureCta({
   openModal?: boolean;
   /** Lead type recorded when the modal opens from this CTA. */
   type?: BrochureModalType;
+  /** Popup LHS artwork; omitted → default for `type`. */
+  image?: BrochurePopupImage;
+  /** Popup RHS pill text; omitted → the artwork's own label. */
+  label?: string;
   courseId?: string | null;
   /** File (brochure/guide/syllabus) to unlock after a successful submit. */
   downloadUrl?: string | null;
@@ -36,7 +43,7 @@ export default function CourseBrochureCta({
     return (
       <button
         type="button"
-        onClick={() => openBrochureModal({ type, courseId, downloadUrl })}
+        onClick={() => openBrochureModal({ type, image, label, courseId, downloadUrl })}
         className={`cursor-pointer ${className ?? ''}`}
         style={style}
       >

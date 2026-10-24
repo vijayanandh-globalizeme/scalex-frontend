@@ -659,7 +659,7 @@ export default function BlogDetailPage() {
                     </p>
                     <button
                       type="button"
-                      onClick={() => openBrochureModal({ type: 'contact', courseId: null })}
+                      onClick={() => openBrochureModal({ type: 'contact', image: 'request-demo', courseId: null })}
                       className="inline-flex cursor-pointer items-center justify-center rounded-full bg-brand px-4 py-1.5 text-[12px] font-semibold text-white hover:bg-brand/90 transition-colors"
                     >
                       Explore Now

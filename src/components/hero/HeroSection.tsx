@@ -168,7 +168,7 @@ export default function HeroSection(props: HeroSectionProps) {
                 )}
                 <button
                   type="button"
-                  onClick={() => openBrochureModal({ type: 'contact', courseId: null })}
+                  onClick={() => openBrochureModal({ type: 'contact', image: 'expert-call', courseId: null })}
                   className="btn-brand-outline inline-flex h-[54px] w-full min-w-0 cursor-pointer items-center justify-center gap-[18px] px-6 text-sm font-semibold sm:ml-auto sm:w-[275px] md:text-[15px]"
                 >
                   {secondaryCta.label}

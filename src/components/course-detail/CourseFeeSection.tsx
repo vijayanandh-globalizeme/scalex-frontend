@@ -116,7 +116,7 @@ function PricingCard({
   const { openBrochureModal } = useCourseBrochureModal();
   // EMI plan → capture a lead via the brochure modal.
   // Full-price plan → open the plan comparison modal (via the parent's onEnroll).
-  const onClickEnroll = isEmi ? () => openBrochureModal({ type: 'contact', courseId }) : onEnroll;
+  const onClickEnroll = isEmi ? () => openBrochureModal({ type: 'contact', image: 'expert-call', courseId }) : onEnroll;
 
   return (
     <div
@@ -204,6 +204,7 @@ export default function CourseFeeSection({
         <CourseBrochureCta
           openModal
           type="contact"
+          image="expert-call"
           courseId={courseId}
           className="btn-brand-outline btn-brand-outline--flat inline-flex h-10 shrink-0 items-center justify-center gap-2 self-start rounded-lg px-5 text-[14px] font-semibold sm:self-auto"
         >

@@ -82,6 +82,7 @@ export default function AboutHero() {
             <CourseBrochureCta
               openModal
               type="contact"
+              image="skill-up-team"
               courseId={null}
               className="btn-brand inline-flex h-[54px] items-center gap-3 px-8"
               style={{ fontSize: '16px', fontWeight: 600, fontFamily: 'Inter' }}

@@ -153,6 +153,7 @@ export default function CourseCareerAssuranceSection() {
 
           <CourseBrochureCta
             openModal
+            image="placement-report"
             className="btn-brand mt-6 inline-flex h-10 w-fit items-center justify-center gap-2 rounded-lg px-5 text-[13px] font-semibold leading-[18px] text-white sm:text-[14px]"
           >
             {content.ctaLabel}

@@ -28,6 +28,8 @@ export interface CourseLeadFormProps {
   downloadUrl?: string | null;
   /** Drop the form's own card chrome (border/rounding/shadow) — used inside the modal's right column. */
   bare?: boolean;
+  /** Small pill above the title (modal only), e.g. "Download Brochure". */
+  eyebrow?: string;
   /** Stronger field borders/placeholders for hero forms that sit on light decorative backgrounds. */
   emphasizedFields?: boolean;
 }
@@ -37,6 +39,10 @@ const fieldClassName =
 
 const emphasizedFieldClassName =
   'h-11 w-full rounded-lg border border-[#454545] bg-white px-4 text-[14px] text-heading placeholder:text-[#5C6B7A] focus:border-brand focus:outline-none';
+
+/** Compact, soft-filled fields for the popup's half-width RHS column. */
+const bareFieldClassName =
+  'h-10 w-full rounded-[10px] border border-[#E2E8F0] bg-[#F8FAFC] px-3.5 text-[13px] text-heading placeholder:text-[#94A3B8] transition-colors focus:border-brand focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand/15';
 
 function CheckCircle({ checked }: { checked: boolean }) {
   return (
@@ -72,6 +78,7 @@ export default function CourseLeadForm({
   courseId,
   downloadUrl,
   bare = false,
+  eyebrow,
   emphasizedFields = false,
 }: CourseLeadFormProps) {
   const [agreed, setAgreed] = useState(true);
@@ -115,7 +122,31 @@ export default function CourseLeadForm({
     }
   }
 
-  const inputClassName = emphasizedFields ? emphasizedFieldClassName : fieldClassName;
+  const inputClassName = bare ? bareFieldClassName : emphasizedFields ? emphasizedFieldClassName : fieldClassName;
+
+  const termsConsent = (
+    <label className={`flex items-start gap-2 ${bare ? 'mt-3 text-[11px] leading-[1.5] text-[#64748B]' : 'mt-4 text-[12px] text-subtle'}`}>
+      <button
+        type="button"
+        onClick={() => setAgreed((v) => !v)}
+        className="mt-[2px]"
+        aria-pressed={agreed}
+        aria-label="I agree to the Terms & Conditions and Privacy Policy"
+      >
+        <CheckCircle checked={agreed} />
+      </button>
+      <span>
+        I agree to EdgeX&apos;s{' '}
+        <Link href={termsHref} target="_blank" rel="noopener noreferrer" className="text-link hover:underline active:underline">
+          Terms &amp; Conditions
+        </Link>{' '}
+        and{' '}
+        <Link href={privacyHref} target="_blank" rel="noopener noreferrer" className="text-link hover:underline active:underline">
+          Privacy Policy.
+        </Link>
+      </span>
+    </label>
+  );
 
   return (
     <div className="relative w-full">
@@ -123,19 +154,27 @@ export default function CourseLeadForm({
         onSubmit={handleSubmit}
         className={
           bare
-            ? 'relative z-10 w-full bg-white p-6 md:p-8'
+            ? 'relative z-10 flex w-full flex-col bg-white px-6 py-7 md:px-8'
             : emphasizedFields
               ? 'relative z-10 w-full rounded-[20px] border border-[#A3A3A3] bg-white p-6 shadow-[0_4px_12px_0_rgba(30,41,59,0.14),0_2px_4px_0_rgba(30,41,59,0.06)] md:p-8'
               : 'relative z-10 w-full rounded-[20px] border border-[#C7C7C7] bg-white p-6 shadow-[0_4px_4px_0_rgba(30,41,59,0.11),0_4px_4px_0_rgba(30,41,59,0.03)] md:p-8'
         }
       >
-        <h2 id={titleId} className="text-left text-[20px] font-medium leading-normal text-heading">
+        {bare && eyebrow ? (
+          <span className="inline-flex w-fit items-center rounded-full bg-[#FFF1F3] px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.06em] text-brand">
+            {eyebrow}
+          </span>
+        ) : null}
+        <h2
+          id={titleId}
+          className={`text-left text-heading ${bare ? `pr-8 text-[19px] font-bold leading-[1.35] ${eyebrow ? 'mt-3' : ''}` : 'text-[20px] font-medium leading-normal'}`}
+        >
           {title}
         </h2>
         {leadType ? <input type="hidden" name="leadType" value={leadType} /> : null}
         {courseId ? <input type="hidden" name="courseId" value={courseId} /> : null}
 
-        <div className="mt-5 grid grid-cols-1 gap-5">
+        <div className={`grid grid-cols-1 ${bare ? 'mt-5 gap-3' : 'mt-5 gap-5'}`}>
           <div>
             <input
               type="text"
@@ -174,7 +213,7 @@ export default function CourseLeadForm({
               required
               value={purpose}
               onChange={(e) => { setPurpose(e.target.value); clearFieldError('purpose'); }}
-              className={`${inputClassName} ${fieldErrorClass(!!fieldErrors.purpose)}`}
+              className={`${inputClassName} ${fieldErrorClass(!!fieldErrors.purpose)} ${bare && !purpose ? 'text-[#94A3B8]' : ''}`}
             >
               <option value="" disabled>
                 Select Purpose
@@ -189,38 +228,20 @@ export default function CourseLeadForm({
           </div>
         </div>
 
-        <label className="mt-4 flex items-start gap-2 text-[12px] text-subtle">
-          <button
-            type="button"
-            onClick={() => setAgreed((v) => !v)}
-            className="mt-[2px]"
-            aria-pressed={agreed}
-            aria-label="I agree to the Terms & Conditions and Privacy Policy"
-          >
-            <CheckCircle checked={agreed} />
-          </button>
-          <span>
-            I agree to EdgeX&apos;s{' '}
-            <Link href={termsHref} target="_blank" rel="noopener noreferrer" className="text-link hover:underline active:underline">
-              Terms &amp; Conditions
-            </Link>{' '}
-            and{' '}
-            <Link href={privacyHref} target="_blank" rel="noopener noreferrer" className="text-link hover:underline active:underline">
-              Privacy Policy.
-            </Link>
-          </span>
-        </label>
+        {bare ? null : termsConsent}
 
         <button
           type="submit"
           disabled={!agreed || status === 'submitting'}
-          className="btn-brand mt-5 inline-flex h-[44px] items-center justify-center gap-2 self-start px-6 text-[14px] font-semibold disabled:cursor-not-allowed"
+          className={`btn-brand inline-flex items-center justify-center gap-2 font-semibold disabled:cursor-not-allowed ${bare ? 'mt-5 h-11 w-full rounded-[10px] text-[14px]' : 'mt-5 h-[44px] self-start px-6 text-[14px]'}`}
         >
           {status === 'submitting' ? 'Submitting…' : ctaLabel}
           <svg className="btn-arrow-icon" width="18" height="15" viewBox="0 0 18 15" fill="currentColor" aria-hidden>
             <path d="M10.6333 15c.2326 0 .4361-.0891.63-.2771l6.4459-6.5599c.1938-.188.2908-.4156.2908-.663s-.097-.475-.2908-.663L11.2827.2968C11.0694.0792 10.8659 0 10.6333 0c-.475 0-.8434.3562-.8434.851 0 .2375.0775.465.2326.6234l2.1714 2.2559 4.0419 3.7698-4.0419 3.7697-2.1714 2.256c-.1551.1484-.2326.3859-.2326.6233 0 .495.3684.851.8434.851ZM.853 8.3806h12.2617l3.1211-.1979c.3974-.0297.6688-.277.6688-.6827 0-.4057-.2714-.6531-.6688-.6828l-3.1211-.1978H.853C.349 6.6194 0 6.9855 0 7.5c0 .5145.349.8806.853.8806Z" />
           </svg>
         </button>
+
+        {bare ? termsConsent : null}
 
         {status === 'error' && Object.keys(fieldErrors).length === 0 ? (
           <p className="mt-3 text-[13px] font-medium text-brand">{errorMessage || 'Something went wrong. Please try again.'}</p>

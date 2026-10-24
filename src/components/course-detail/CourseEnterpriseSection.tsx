@@ -61,6 +61,7 @@ export function CourseEnterpriseCard({
         <CourseBrochureCta
           openModal
           type="contact"
+          image="skill-up-team"
           courseId={courseId}
           className="btn-brand-outline inline-flex h-[48px] shrink-0 items-center justify-center gap-2 self-start px-6 text-[14px] font-semibold md:self-auto"
         >

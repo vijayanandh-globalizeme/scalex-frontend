@@ -304,7 +304,7 @@ export default function CourseDetailHeroSection({
               {brochureUrl ? (
                 <button
                   type="button"
-                  onClick={() => openBrochureModal({ type: 'contact', courseId, downloadUrl: brochureUrl })}
+                  onClick={() => openBrochureModal({ type: 'contact', image: 'download-brochure', courseId, downloadUrl: brochureUrl })}
                   className="btn-brand h-[54px] w-full cursor-pointer gap-2 px-6 sm:w-auto md:px-7"
                 >
                   Download Brochure
