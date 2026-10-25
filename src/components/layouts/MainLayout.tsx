@@ -1,6 +1,7 @@
 import { ReactNode } from 'react';
 import Footer from './components/Footer';
 import Header from './components/Header';
+import OfferRibbon from './components/OfferRibbon';
 import { fetchLayout, fetchSetting } from '@/services/layoutApi';
 import { CourseBrochureModalProvider } from '@/components/course-detail';
 import { LeadSuccessProvider } from '@/components/feedback/LeadSuccessProvider';
@@ -21,6 +22,8 @@ const MainLayout = async ({ children }: { children: ReactNode }) => {
             otherMenus={otherMenus}
             phone={settings.CONTACT_PHONE_NO ?? '+91 98480 32919'}
           />
+          {/* Offer ribbon — between the header and every page's hero */}
+          <OfferRibbon />
           <main id="main-content" className="min-w-0 flex-1 overflow-visible">
             {children}
           </main>
