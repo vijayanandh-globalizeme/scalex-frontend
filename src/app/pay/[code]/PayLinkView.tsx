@@ -27,6 +27,7 @@ function money(currency: string, value: number): string {
 export default function PayLinkView({ link }: { link: ApiPaymentLink }) {
   const [firstName, setFirstName]     = useState('');
   const [lastName, setLastName]       = useState('');
+  const [email, setEmail]             = useState(link.payerEmail ?? '');
   const [phone, setPhone]             = useState('');
   const [companyName, setCompanyName] = useState('');
   const [designation, setDesignation] = useState('');
@@ -53,7 +54,7 @@ export default function PayLinkView({ link }: { link: ApiPaymentLink }) {
     setStatus('submitting');
     setErrorMessage(null);
 
-    const result = await payPaymentLinkAction(link.code, { firstName, lastName, phone, companyName, designation });
+    const result = await payPaymentLinkAction(link.code, { firstName, lastName, email, phone, companyName, designation });
 
     if (result.success) {
       // Leaves status 'submitting' — the page is about to navigate away to Paytm.
@@ -123,8 +124,15 @@ export default function PayLinkView({ link }: { link: ApiPaymentLink }) {
 
               <div className="mt-5 grid grid-cols-1 gap-5">
                 <div>
-                  <input type="email" value={link.payerEmail} readOnly className={`${fieldClassName} cursor-not-allowed bg-[#F5F6F8] text-muted`} />
-                  <p className="mt-1 text-[12px] text-subtle">This payment link is personal to this email address.</p>
+                  <input
+                    type="email"
+                    required
+                    placeholder="Email *"
+                    className={`${fieldClassName} ${fieldErrorClass(!!fieldErrors.email)}`}
+                    value={email}
+                    onChange={(e) => { setEmail(e.target.value); clearFieldError('email'); }}
+                  />
+                  {fieldErrors.email ? <p className="mt-1 text-[12px] font-medium text-brand">{fieldErrors.email}</p> : null}
                 </div>
                 <div>
                   <input

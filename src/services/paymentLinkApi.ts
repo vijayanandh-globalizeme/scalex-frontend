@@ -10,7 +10,7 @@ export type ApiPaymentLink = {
   courseName: string;
   planName: string | null;
   paymentType: PaymentLinkType;
-  payerEmail: string;
+  payerEmail: string | null;
   currency: string;
   taxName: string | null;
   taxPercentage: string;
@@ -32,6 +32,7 @@ export type ApiPaymentLink = {
 export type PaymentLinkPayPayload = {
   firstName: string;
   lastName: string;
+  email: string;
   phone: string;
   companyName?: string;
   designation?: string;
