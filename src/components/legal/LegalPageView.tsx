@@ -6,6 +6,7 @@ import { COURSE_SECTION_CARD } from '@/components/course-detail/courseSectionCar
 import { sendContact } from '@/app/actions/contactActions';
 import { useLeadSuccess } from '@/components/feedback/LeadSuccessProvider';
 import { useContactFieldErrors, fieldErrorClass } from '@/components/feedback/useContactFieldErrors';
+import CourseSearchSelect from '@/components/guidance/CourseSearchSelect';
 
 // ── Sidebar contact form ──────────────────────────────────────────────────────
 
@@ -50,6 +51,8 @@ function LegalSidebar() {
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [purpose, setPurpose] = useState('');
+  // Optional course pick — its short name is sent as `courseName`.
+  const [courseShortName, setCourseShortName] = useState('');
   const [status, setStatus] = useState<'idle' | 'submitting' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState('');
   const { showLeadSuccess } = useLeadSuccess();
@@ -61,13 +64,21 @@ function LegalSidebar() {
     setStatus('submitting');
     setFieldErrors({});
     const purposeLabel = PURPOSES.find((p) => p.id === purpose)?.label ?? purpose;
-    const result = await sendContact({ name, email, phone, purpose: purposeLabel, source: 'Policy page enquiry' });
+    const result = await sendContact({
+      name,
+      email,
+      phone,
+      purpose: purposeLabel,
+      ...(courseShortName ? { courseName: courseShortName } : {}),
+      source: 'Policy page enquiry',
+    });
     if (result.success) {
       setStatus('idle');
       setName('');
       setEmail('');
       setPhone('');
       setPurpose('');
+      setCourseShortName('');
       showLeadSuccess();
     } else {
       setStatus('error');
@@ -117,6 +128,14 @@ function LegalSidebar() {
                 onChange={(e) => { setPhone(e.target.value); clearFieldError('phone'); }}
               />
               {fieldErrors.phone ? <p className="mt-1 text-[11px] font-medium text-brand">{fieldErrors.phone}</p> : null}
+            </div>
+            <div>
+              <CourseSearchSelect
+                className={`${fieldClassName} ${fieldErrorClass(!!fieldErrors.courseName)}`}
+                placeholder="Search Course (optional)"
+                onSelect={(c) => { setCourseShortName(c?.shortName ?? ''); clearFieldError('courseName'); }}
+              />
+              {fieldErrors.courseName ? <p className="mt-1 text-[11px] font-medium text-brand">{fieldErrors.courseName}</p> : null}
             </div>
             <div>
               <select

@@ -371,6 +371,7 @@ export async function fetchCourses(options: { categoryId?: string; categoryIds?:
 
 export type ApiCourseSearchItem = {
   name: string;
+  shortName: string;
   courseUri: string;
   categoryUri: string;
 };

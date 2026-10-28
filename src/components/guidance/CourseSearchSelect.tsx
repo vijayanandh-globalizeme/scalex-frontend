@@ -8,14 +8,24 @@ interface CourseSearchSelectProps {
   className?: string;
   placeholder?: string;
   required?: boolean;
-  /** Fires with the selected course, or null when the field is cleared/edited. */
-  onSelect: (course: { name: string; courseUri: string } | null) => void;
+  /** Fires with the selected course short name, or null when the field is cleared/edited. */
+  onSelect: (course: { shortName: string } | null) => void;
+}
+
+/** One entry per short name — several courses can share one (e.g. "DOCT"). */
+function uniqueShortNames(items: ApiCourseSearchItem[]): string[] {
+  const seen = new Set<string>();
+  for (const item of items) {
+    const s = item.shortName?.trim();
+    if (s) seen.add(s);
+  }
+  return [...seen];
 }
 
 /**
- * Type-ahead course picker backed by the course search API. Shows course names
- * in a dropdown; on selection it reports the course name + uri to the parent
- * (the footer form sends the uri as `courseName`).
+ * Type-ahead course picker backed by the course search API. Shows course short
+ * names in a dropdown; on selection it reports the short name to the parent,
+ * which sends it as `courseName` (stored on the lead as-is).
  */
 export default function CourseSearchSelect({
   className,
@@ -24,17 +34,17 @@ export default function CourseSearchSelect({
   onSelect,
 }: CourseSearchSelectProps) {
   const [query, setQuery] = useState('');
-  const [results, setResults] = useState<ApiCourseSearchItem[]>([]);
+  const [results, setResults] = useState<string[]>([]);
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   // Tracks whether the current text corresponds to a confirmed selection, so we
   // can require a real pick (native validity) rather than free-typed text.
-  const [selectedUri, setSelectedUri] = useState('');
+  const [selected, setSelected] = useState('');
   const wrapRef = useRef<HTMLDivElement>(null);
 
   // Debounced search whenever the typed query changes (and isn't a selection).
   useEffect(() => {
-    if (selectedUri) return; // text reflects a confirmed pick — don't re-search
+    if (selected) return; // text reflects a confirmed pick — don't re-search
     const q = query.trim();
     if (q.length < 2) {
       setResults([]);
@@ -43,12 +53,12 @@ export default function CourseSearchSelect({
     setLoading(true);
     const timer = setTimeout(async () => {
       const items = await getCourseSearch(q);
-      setResults(items);
+      setResults(uniqueShortNames(items));
       setLoading(false);
       setOpen(true);
     }, 300);
     return () => clearTimeout(timer);
-  }, [query, selectedUri]);
+  }, [query, selected]);
 
   // Close the dropdown on outside click.
   useEffect(() => {
@@ -61,18 +71,18 @@ export default function CourseSearchSelect({
 
   function handleChange(value: string) {
     setQuery(value);
-    if (selectedUri) {
-      setSelectedUri('');
+    if (selected) {
+      setSelected('');
       onSelect(null); // editing after a pick invalidates it
     }
   }
 
-  function pick(item: ApiCourseSearchItem) {
-    setQuery(item.name);
-    setSelectedUri(item.courseUri);
+  function pick(shortName: string) {
+    setQuery(shortName);
+    setSelected(shortName);
     setResults([]);
     setOpen(false);
-    onSelect({ name: item.name, courseUri: item.courseUri });
+    onSelect({ shortName });
   }
 
   return (
@@ -92,14 +102,14 @@ export default function CourseSearchSelect({
           {loading ? (
             <li className="px-4 py-2 text-[13px] text-placeholder">Searching…</li>
           ) : (
-            results.map((c) => (
-              <li key={c.courseUri}>
+            results.map((shortName) => (
+              <li key={shortName}>
                 <button
                   type="button"
-                  onClick={() => pick(c)}
+                  onClick={() => pick(shortName)}
                   className="block w-full px-4 py-2 text-left text-[14px] text-heading hover:bg-zinc-50"
                 >
-                  {c.name}
+                  {shortName}
                 </button>
               </li>
             ))

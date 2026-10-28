@@ -6,6 +6,7 @@ import { sendContact } from '@/app/actions/contactActions';
 import { useLeadSuccess } from '@/components/feedback/LeadSuccessProvider';
 import { useContactFieldErrors, fieldErrorClass } from '@/components/feedback/useContactFieldErrors';
 import { useCourseBrochureModal } from './CourseBrochureModalContext';
+import CourseSearchSelect from '@/components/guidance/CourseSearchSelect';
 
 export interface CourseLeadFormProps {
   title: string;
@@ -86,6 +87,8 @@ export default function CourseLeadForm({
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [purpose, setPurpose] = useState('');
+  // Off a course page (no courseId) the visitor can pick a course; its short name is sent as `courseName`.
+  const [courseShortName, setCourseShortName] = useState('');
   const [status, setStatus] = useState<'idle' | 'submitting' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState('');
   const { showLeadSuccess } = useLeadSuccess();
@@ -106,7 +109,7 @@ export default function CourseLeadForm({
       // Context for the confirmation email / team alert (not stored).
       ...(leadType === 'contact' || leadType === 'webinar' || leadType === 'demo' ? { leadType } : {}),
       source: eyebrow ?? (bare ? 'Website popup' : 'Course page enquiry'),
-      ...(courseId ? { courseId } : {}),
+      ...(courseId ? { courseId } : courseShortName ? { courseName: courseShortName } : {}),
       ...(downloadUrl ? { downloadUrl } : {}),
     });
     if (result.success) {
@@ -115,6 +118,7 @@ export default function CourseLeadForm({
       setEmail('');
       setPhone('');
       setPurpose('');
+      setCourseShortName('');
       // Close the modal first so the success popup isn't layered on top of it.
       closeBrochureModal();
       if (downloadUrl) {
@@ -218,6 +222,16 @@ export default function CourseLeadForm({
             />
             {fieldErrors.phone ? <p className="mt-1 text-[12px] font-medium text-brand">{fieldErrors.phone}</p> : null}
           </div>
+          {courseId ? null : (
+            <div>
+              <CourseSearchSelect
+                className={`${inputClassName} ${fieldErrorClass(!!fieldErrors.courseName)}`}
+                placeholder="Search Course (optional)"
+                onSelect={(c) => { setCourseShortName(c?.shortName ?? ''); clearFieldError('courseName'); }}
+              />
+              {fieldErrors.courseName ? <p className="mt-1 text-[12px] font-medium text-brand">{fieldErrors.courseName}</p> : null}
+            </div>
+          )}
           <div>
             <select
               required

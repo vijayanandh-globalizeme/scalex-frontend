@@ -374,6 +374,7 @@ export default function CourseDetailHeroSection({
             ) : (
               <CourseLeadForm
                 {...form}
+                courseId={courseId}
                 emphasizedFields={slug === 'certified-scrum-master' && categorySlug === 'agile-and-scrum'}
               />
             )}

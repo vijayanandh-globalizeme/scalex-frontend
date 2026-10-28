@@ -119,6 +119,7 @@ export default function CourseDetailSidebar({
     <aside className={`hidden ${width} shrink-0 overflow-visible lg:block`} aria-label="Course assistance">
       <div className="sticky z-30 flex flex-col overflow-visible" style={{ top: stickyTop }}>
         <CourseAssistForm
+          courseId={courseId}
           config={{
             assistTitle: sidebar.assistTitle,
             purposes: sidebar.purposes,

@@ -94,8 +94,8 @@ function GuidanceForm({
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [purpose, setPurpose] = useState('');
-  // The course field sends the selected course's uri as `courseName` (optional).
-  const [courseUri, setCourseUri] = useState('');
+  // The course field sends the selected course's short name as `courseName` (optional).
+  const [courseShortName, setCourseShortName] = useState('');
   const [status, setStatus] = useState<'idle' | 'submitting' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState('');
   const { showLeadSuccess } = useLeadSuccess();
@@ -112,7 +112,7 @@ function GuidanceForm({
       email,
       phone,
       purpose: purposeLabel,
-      ...(courseUri ? { courseName: courseUri } : {}),
+      ...(courseShortName ? { courseName: courseShortName } : {}),
       source: 'Career guidance form',
     });
     if (result.success) {
@@ -122,7 +122,7 @@ function GuidanceForm({
       setEmail('');
       setPhone('');
       setPurpose('');
-      setCourseUri('');
+      setCourseShortName('');
       showLeadSuccess();
     } else {
       setStatus('error');
@@ -202,7 +202,7 @@ function GuidanceForm({
           <CourseSearchSelect
             className={`${guidanceFieldClass} ${fieldErrorClass(!!fieldErrors.courseName)}`}
             placeholder="Search Course (optional)"
-            onSelect={(c) => { setCourseUri(c?.courseUri ?? ''); clearFieldError('courseName'); }}
+            onSelect={(c) => { setCourseShortName(c?.shortName ?? ''); clearFieldError('courseName'); }}
           />
           {fieldErrors.courseName ? <p className="mt-1 text-[12px] font-medium text-brand">{fieldErrors.courseName}</p> : null}
         </div>

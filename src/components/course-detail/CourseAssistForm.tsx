@@ -6,6 +6,7 @@ import { sendContact } from '@/app/actions/contactActions';
 import { useLeadSuccess } from '@/components/feedback/LeadSuccessProvider';
 import { useContactFieldErrors, fieldErrorClass } from '@/components/feedback/useContactFieldErrors';
 import { COURSE_SECTION_CARD } from './courseSectionCard';
+import CourseSearchSelect from '@/components/guidance/CourseSearchSelect';
 
 const fieldClassName =
   'h-10 w-full rounded-lg border border-[#6E6E6E] bg-white px-3 text-[13px] text-heading placeholder:text-placeholder focus:border-brand focus:outline-none';
@@ -51,9 +52,12 @@ export type CourseAssistFormConfig = {
 
 export default function CourseAssistForm({
   config,
+  courseId,
   className,
 }: {
   config: CourseAssistFormConfig;
+  /** Set on a course page — the lead is tied to this course. Without it the visitor can pick one. */
+  courseId?: string | null;
   className?: string;
 }) {
   const [agreed, setAgreed] = useState(true);
@@ -61,6 +65,7 @@ export default function CourseAssistForm({
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [purpose, setPurpose] = useState('');
+  const [courseShortName, setCourseShortName] = useState('');
   const [status, setStatus] = useState<'idle' | 'submitting' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState('');
   const { showLeadSuccess } = useLeadSuccess();
@@ -78,6 +83,7 @@ export default function CourseAssistForm({
       phone,
       purpose: purposeLabel,
       source: 'Course sidebar enquiry',
+      ...(courseId ? { courseId } : courseShortName ? { courseName: courseShortName } : {}),
     });
     if (result.success) {
       setStatus('idle');
@@ -85,6 +91,7 @@ export default function CourseAssistForm({
       setEmail('');
       setPhone('');
       setPurpose('');
+      setCourseShortName('');
       showLeadSuccess();
     } else {
       setStatus('error');
@@ -139,6 +146,19 @@ export default function CourseAssistForm({
           />
           {fieldErrors.phone ? <p className="mt-1 text-[11px] font-medium text-brand">{fieldErrors.phone}</p> : null}
         </div>
+        {courseId ? null : (
+          <div>
+            <CourseSearchSelect
+              className={`${fieldClassName} ${fieldErrorClass(!!fieldErrors.courseName)}`}
+              placeholder="Search Course (optional)"
+              onSelect={(c) => {
+                setCourseShortName(c?.shortName ?? '');
+                clearFieldError('courseName');
+              }}
+            />
+            {fieldErrors.courseName ? <p className="mt-1 text-[11px] font-medium text-brand">{fieldErrors.courseName}</p> : null}
+          </div>
+        )}
         <div>
           <select
             required
