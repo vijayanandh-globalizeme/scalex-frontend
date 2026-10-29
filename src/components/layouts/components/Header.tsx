@@ -8,6 +8,9 @@ import type { MegaMenuCategory } from '@/lib/allCoursesMegaMenu';
 import type { OtherMenu } from '@/services/layoutApi';
 import { RESOURCES_ITEMS } from '@/lib/headerStaticNav';
 
+/** LMS sign-in page; the Sign In buttons open it in a new tab. */
+const LMS_URL = process.env.LMS_URL || '#';
+
 function SignInArrow({ className }: { className?: string }) {
   return (
     <svg
@@ -71,7 +74,7 @@ const Header = ({
                 Talk to Adviser
               </a>
             )}
-            <HeaderMobileMenu categories={megaMenuCategories} otherMenus={otherMenus} />
+            <HeaderMobileMenu categories={megaMenuCategories} otherMenus={otherMenus} lmsUrl={LMS_URL} />
           </div>
         </div>
 
@@ -125,13 +128,15 @@ const Header = ({
                 </Link>
               </nav>
 
-              <Link
-                href="#"
+              <a
+                href={LMS_URL}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="btn-brand-outline btn-brand-outline-hover-fill header-fluid-text flex h-10 shrink-0 items-center gap-1.5 px-3 py-0 min-[1400px]:gap-2 min-[1400px]:px-4"
               >
                 Sign In
                 <SignInArrow className="btn-arrow-icon shrink-0 text-current" />
-              </Link>
+              </a>
             </div>
           </div>
         </div>

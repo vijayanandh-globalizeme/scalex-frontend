@@ -13,6 +13,8 @@ const MENU_TRANSITION_MS = 450;
 type HeaderMobileMenuProps = {
   categories: MegaMenuCategory[];
   otherMenus: OtherMenu[];
+  /** LMS sign-in URL, opened in a new tab. */
+  lmsUrl: string;
 };
 
 function MenuIcon() {
@@ -215,6 +217,7 @@ function MobileNavSection({
 export default function HeaderMobileMenu({
   categories,
   otherMenus,
+  lmsUrl,
 }: HeaderMobileMenuProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [isPanelMounted, setIsPanelMounted] = useState(false);
@@ -343,14 +346,16 @@ export default function HeaderMobileMenu({
                 paddingBottom: 'max(1rem, env(safe-area-inset-bottom))',
               }}
             >
-              <Link
-                href="#"
+              <a
+                href={lmsUrl}
+                target="_blank"
+                rel="noopener noreferrer"
                 onClick={closeMenu}
                 className="btn-brand-outline btn-brand-outline-hover-fill header-fluid-text flex w-full items-center justify-center gap-2 px-4 py-3.5 transition-transform duration-150 active:scale-[0.98]"
               >
                 Sign In
                 <SignInArrow className="btn-arrow-icon shrink-0 text-current" />
-              </Link>
+              </a>
             </div>
           </div>
         </>
