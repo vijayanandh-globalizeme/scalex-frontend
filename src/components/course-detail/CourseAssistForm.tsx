@@ -70,10 +70,19 @@ export default function CourseAssistForm({
   const [errorMessage, setErrorMessage] = useState('');
   const { showLeadSuccess } = useLeadSuccess();
   const { fieldErrors, setFieldErrors, clearFieldError } = useContactFieldErrors();
+  // Off a course page (e.g. the blog sidebar) the visitor must pick a course,
+  // and the placeholders mark required fields with a star.
+  const requireCourse = !courseId;
+  const placeholder = (text: string) => (requireCourse ? `${text} *` : text);
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (status === 'submitting') return;
+    if (requireCourse && !courseShortName) {
+      setStatus('error');
+      setFieldErrors({ courseName: 'Please select a course.' });
+      return;
+    }
     setStatus('submitting');
     setFieldErrors({});
     const purposeLabel = config.purposes.find((p) => p.id === purpose)?.label ?? purpose;
@@ -108,7 +117,7 @@ export default function CourseAssistForm({
           <input
             type="text"
             required
-            placeholder="Full Name"
+            placeholder={placeholder('Full Name')}
             className={`${fieldClassName} ${fieldErrorClass(!!fieldErrors.name)}`}
             value={name}
             onChange={(e) => {
@@ -122,7 +131,7 @@ export default function CourseAssistForm({
           <input
             type="email"
             required
-            placeholder="Email ID"
+            placeholder={placeholder('Email ID')}
             className={`${fieldClassName} ${fieldErrorClass(!!fieldErrors.email)}`}
             value={email}
             onChange={(e) => {
@@ -136,7 +145,7 @@ export default function CourseAssistForm({
           <input
             type="tel"
             required
-            placeholder="Contact Number"
+            placeholder={placeholder('Contact Number')}
             className={`${fieldClassName} ${fieldErrorClass(!!fieldErrors.phone)}`}
             value={phone}
             onChange={(e) => {
@@ -150,7 +159,7 @@ export default function CourseAssistForm({
           <div>
             <CourseSearchSelect
               className={`${fieldClassName} ${fieldErrorClass(!!fieldErrors.courseName)}`}
-              placeholder="Search Course (optional)"
+              placeholder="Search Course *"
               onSelect={(c) => {
                 setCourseShortName(c?.shortName ?? '');
                 clearFieldError('courseName');
@@ -170,7 +179,7 @@ export default function CourseAssistForm({
             className={`${fieldClassName} ${fieldErrorClass(!!fieldErrors.purpose)}`}
           >
             <option value="" disabled>
-              Purpose
+              {placeholder('Purpose')}
             </option>
             {config.purposes.map((p) => (
               <option key={p.id} value={p.id}>

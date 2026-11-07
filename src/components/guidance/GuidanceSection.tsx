@@ -94,7 +94,7 @@ function GuidanceForm({
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [purpose, setPurpose] = useState('');
-  // The course field sends the selected course's short name as `courseName` (optional).
+  // The course field (required) sends the selected course's short name as `courseName`.
   const [courseShortName, setCourseShortName] = useState('');
   const [status, setStatus] = useState<'idle' | 'submitting' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState('');
@@ -104,6 +104,11 @@ function GuidanceForm({
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (status === 'submitting') return;
+    if (!courseShortName) {
+      setStatus('error');
+      setFieldErrors({ courseName: 'Please select a course.' });
+      return;
+    }
     setStatus('submitting');
     setFieldErrors({});
     const purposeLabel = purposes.find((p) => p.id === purpose)?.label ?? purpose;
@@ -112,7 +117,7 @@ function GuidanceForm({
       email,
       phone,
       purpose: purposeLabel,
-      ...(courseShortName ? { courseName: courseShortName } : {}),
+      courseName: courseShortName,
       source: 'Career guidance form',
     });
     if (result.success) {
@@ -160,7 +165,7 @@ function GuidanceForm({
             <input
               type="text"
               required
-              placeholder="First Name"
+              placeholder="First Name *"
               value={firstName}
               onChange={(e) => { setFirstName(e.target.value); clearFieldError('name'); }}
               className={`${guidanceFieldClass} ${fieldErrorClass(!!fieldErrors.name)}`}
@@ -168,7 +173,7 @@ function GuidanceForm({
             <input
               type="text"
               required
-              placeholder="Last Name"
+              placeholder="Last Name *"
               value={lastName}
               onChange={(e) => { setLastName(e.target.value); clearFieldError('name'); }}
               className={`${guidanceFieldClass} ${fieldErrorClass(!!fieldErrors.name)}`}
@@ -180,7 +185,7 @@ function GuidanceForm({
           <input
             type="email"
             required
-            placeholder="Email ID"
+            placeholder="Email ID *"
             value={email}
             onChange={(e) => { setEmail(e.target.value); clearFieldError('email'); }}
             className={`${guidanceFieldClass} ${fieldErrorClass(!!fieldErrors.email)}`}
@@ -191,7 +196,7 @@ function GuidanceForm({
           <input
             type="tel"
             required
-            placeholder="Contact Number"
+            placeholder="Contact Number *"
             value={phone}
             onChange={(e) => { setPhone(e.target.value); clearFieldError('phone'); }}
             className={`${guidanceFieldClass} ${fieldErrorClass(!!fieldErrors.phone)}`}
@@ -201,7 +206,7 @@ function GuidanceForm({
         <div>
           <CourseSearchSelect
             className={`${guidanceFieldClass} ${fieldErrorClass(!!fieldErrors.courseName)}`}
-            placeholder="Search Course (optional)"
+            placeholder="Search Course *"
             onSelect={(c) => { setCourseShortName(c?.shortName ?? ''); clearFieldError('courseName'); }}
           />
           {fieldErrors.courseName ? <p className="mt-1 text-[12px] font-medium text-brand">{fieldErrors.courseName}</p> : null}
@@ -214,7 +219,7 @@ function GuidanceForm({
             className={`${guidanceFieldClass} ${fieldErrorClass(!!fieldErrors.purpose)}`}
           >
             <option value="" disabled>
-              Select Purpose
+              Select Purpose *
             </option>
             {purposes.map((p) => (
               <option key={p.id} value={p.id}>
