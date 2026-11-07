@@ -94,10 +94,19 @@ export default function CourseLeadForm({
   const { showLeadSuccess } = useLeadSuccess();
   const { closeBrochureModal } = useCourseBrochureModal();
   const { fieldErrors, setFieldErrors, clearFieldError } = useContactFieldErrors();
+  // The popup opened off a course page must say which course the lead is for.
+  const requireCourse = bare && !courseId;
+  // Popup placeholders double as labels — required ones carry a star.
+  const placeholder = (text: string) => (bare ? `${text} *` : text);
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (status === 'submitting') return;
+    if (requireCourse && !courseShortName) {
+      setStatus('error');
+      setFieldErrors({ courseName: 'Please select a course.' });
+      return;
+    }
     setStatus('submitting');
     setFieldErrors({});
     const purposeLabel = purposes.find((p) => p.id === purpose)?.label ?? purpose;
@@ -193,7 +202,7 @@ export default function CourseLeadForm({
             <input
               type="text"
               required
-              placeholder="Full Name"
+              placeholder={placeholder('Full Name')}
               className={`${inputClassName} ${fieldErrorClass(!!fieldErrors.name)}`}
               value={name}
               onChange={(e) => { setName(e.target.value); clearFieldError('name'); }}
@@ -204,7 +213,7 @@ export default function CourseLeadForm({
             <input
               type="email"
               required
-              placeholder="Email ID"
+              placeholder={placeholder('Email ID')}
               className={`${inputClassName} ${fieldErrorClass(!!fieldErrors.email)}`}
               value={email}
               onChange={(e) => { setEmail(e.target.value); clearFieldError('email'); }}
@@ -215,7 +224,7 @@ export default function CourseLeadForm({
             <input
               type="tel"
               required
-              placeholder="Contact Number"
+              placeholder={placeholder('Contact Number')}
               className={`${inputClassName} ${fieldErrorClass(!!fieldErrors.phone)}`}
               value={phone}
               onChange={(e) => { setPhone(e.target.value); clearFieldError('phone'); }}
@@ -226,7 +235,7 @@ export default function CourseLeadForm({
             <div>
               <CourseSearchSelect
                 className={`${inputClassName} ${fieldErrorClass(!!fieldErrors.courseName)}`}
-                placeholder="Search Course (optional)"
+                placeholder={requireCourse ? 'Search Course *' : 'Search Course (optional)'}
                 onSelect={(c) => { setCourseShortName(c?.shortName ?? ''); clearFieldError('courseName'); }}
               />
               {fieldErrors.courseName ? <p className="mt-1 text-[12px] font-medium text-brand">{fieldErrors.courseName}</p> : null}
@@ -240,7 +249,7 @@ export default function CourseLeadForm({
               className={`${inputClassName} ${fieldErrorClass(!!fieldErrors.purpose)} ${bare && !purpose ? 'text-[#94A3B8]' : ''}`}
             >
               <option value="" disabled>
-                Select Purpose
+                {placeholder('Select Purpose')}
               </option>
               {purposes.map((p) => (
                 <option key={p.id} value={p.id}>
